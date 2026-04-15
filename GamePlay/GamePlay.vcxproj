@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Super Mario Bros\Resource;C:\DoAn\Super-Mario-Bros\Super Mario Bros\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -119,6 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Super Mario Bros\Resource;C:\DoAn\Super-Mario-Bros\Super Mario Bros\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -127,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BrickTest.h" />
     <ClInclude Include="GameObject.h" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +142,12 @@
     <ProjectReference Include="..\Resource\Resource.vcxproj">
       <Project>{e6557f33-229d-44b9-8110-dfdfd16eaf41}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BrickTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="brick.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
