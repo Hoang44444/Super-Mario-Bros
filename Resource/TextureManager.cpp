@@ -1,7 +1,7 @@
 #include "TextureManager.h"
 #include <Windows.h>
 #include "Renderer.h"
-// #include "debug.h"
+#include "debug.h"
 	
 
 TextureManager* TextureManager::__instance = NULL;
@@ -26,7 +26,7 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath) {
 	HRESULT hr = D3DX10GetImageInfoFromFile(texturePath, NULL, &imageInfo, NULL);
 	if (FAILED(hr))
 	{
-		//DebugOut((wchar_t*)L"[ERROR] D3DX10GetImageInfoFromFile failed for  file: %s with error: %d\n", texturePath, hr);
+		DebugOut((wchar_t*)L"[ERROR] D3DX10GetImageInfoFromFile failed for  file: %s with error: %d\n", texturePath, hr);
 		return NULL;
 	}
 

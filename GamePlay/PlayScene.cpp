@@ -18,10 +18,6 @@ void PlayScene::Load()
 
 	objects.push_back(brick);
 
-	wchar_t path[MAX_PATH];
-	GetCurrentDirectory(MAX_PATH, path);
-	OutputDebugString(path);
-	OutputDebugString(L"\n");
 }
 
 void PlayScene::Update(DWORD dt)

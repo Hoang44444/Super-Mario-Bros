@@ -1,6 +1,7 @@
 ﻿#include "Renderer.h"
 #include "Camera.h"
 #include <cwchar>
+#include "debug.h"
 
 Renderer* Renderer::__instance = NULL;
 
@@ -50,7 +51,7 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 
 	if (hr != S_OK)
 	{
-		/*DebugOut((wchar_t*)L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);*/
+		DebugOut((wchar_t*)L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -59,7 +60,7 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	hr = pSwapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID*)&pBackBuffer);
 	if (hr != S_OK)
 	{
-		/*DebugOut((wchar_t*)L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);*/
+		DebugOut((wchar_t*)L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -69,7 +70,7 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	pBackBuffer->Release();
 	if (hr != S_OK)
 	{
-		//DebugOut((wchar_t*)L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut((wchar_t*)L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -112,7 +113,7 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 
 	if (hr != S_OK)
 	{
-		//DebugOut((wchar_t*)L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
+		DebugOut((wchar_t*)L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
 		return;
 	}
 
@@ -143,7 +144,7 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	StateDesc.RenderTargetWriteMask[0] = D3D10_COLOR_WRITE_ENABLE_ALL;
 	pD3DDevice->CreateBlendState(&StateDesc, &this->pBlendStateAlpha);
 
-	//DebugOut((wchar_t*)L"[INFO] InitDirectX has been successful\n");
+	DebugOut((wchar_t*)L"[INFO] InitDirectX has been successful\n");
 
 	return;
 }
