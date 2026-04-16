@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Super Mario Bros\Resource</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Resource</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -115,7 +115,7 @@
       <AdditionalDependencies>d3dx10.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>C:\DoAn\Super-Mario-Bros\Super Mario Bros\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\DoAn\Super-Mario-Bros\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -126,7 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Super Mario Bros\Resource</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Resource</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -137,7 +137,7 @@
       <AdditionalDependencies>d3dx10.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>C:\DoAn\Super-Mario-Bros\Super Mario Bros\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\DoAn\Super-Mario-Bros\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

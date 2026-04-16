@@ -35,6 +35,16 @@ void Camera::SetMapSize(int width, int height)
     this->mapHeight = height;
 }
 
+float Camera::GetX()
+{
+	return x;
+}
+
+float Camera::GetY()
+{
+	return y;
+}
+
 void Camera::Follow(float targetX, float targetY)
 {
     // Đưa player về giữa màn hình

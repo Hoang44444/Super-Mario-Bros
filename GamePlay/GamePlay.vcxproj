@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Super Mario Bros\Resource;C:\DoAn\Super-Mario-Bros\Super Mario Bros\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Resource;C:\DoAn\Super-Mario-Bros\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Super Mario Bros\Resource;C:\DoAn\Super-Mario-Bros\Super Mario Bros\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Resource;C:\DoAn\Super-Mario-Bros\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -130,7 +130,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BrickTest.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -145,9 +150,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BrickTest.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="brick.png" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

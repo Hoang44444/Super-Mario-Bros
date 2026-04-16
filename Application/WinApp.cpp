@@ -1,5 +1,8 @@
-﻿#include "WinApp.h"
+#include "WinApp.h"
 #include "Renderer.h"
+#include "SceneManager.h"
+#include "PlayScene.h"
+
 #define MAX_FRAME_RATE 60
 
 WinApp::WinApp() : m_hwnd(nullptr), m_hInstance(nullptr), m_isRunning(false) {
@@ -7,6 +10,7 @@ WinApp::WinApp() : m_hwnd(nullptr), m_hInstance(nullptr), m_isRunning(false) {
 
 WinApp::~WinApp() {
 }
+
 bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
     m_hInstance = hInstance;
 
@@ -20,15 +24,25 @@ bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
     wc.lpszClassName = L"WindowClass";
     RegisterClassEx(&wc);
 
+    RECT rect = { 0, 0, 1280, 720 };
+    AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
+    int windowWidth = rect.right - rect.left;
+    int windowHeight = rect.bottom - rect.top;
+
     // 2. Tạo cửa sổ
     m_hwnd = CreateWindowEx(0, L"WindowClass", L"C++ DirectX Game Engine",
         WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-        width, height, NULL, NULL, m_hInstance, this); // Truyền 'this' để static proc có thể truy cập
+        windowWidth, windowHeight, NULL, NULL, m_hInstance, this);
 
     if (!m_hwnd) return false;
 
     Renderer::GetInstance()->Init(m_hwnd, hInstance);
-    ShowWindow(m_hwnd, SW_SHOW);
+    ShowWindow(m_hwnd, SW_SHOW);                  
+    UpdateWindow(m_hwnd);
+    // Initialise SceneManager and PlayScene
+    SceneManager::GetInstance()->Add(1, new PlayScene(1, L""));
+    SceneManager::GetInstance()->SwitchScene(1);
+
     m_isRunning = true;
     return true;
 }
@@ -39,7 +53,7 @@ int WinApp::Run() {
     ULONGLONG tickPerFrame = 1000 / MAX_FRAME_RATE;
     // ĐÂY LÀ GAME LOOP
     while (m_isRunning) {
-        // Kiểm tra tin nhắn từ Windows (như đóng cửa sổ, nhấn phím)
+        // Kiểm tra tin nhắn từ Windows
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
@@ -49,14 +63,12 @@ int WinApp::Run() {
         }
         ULONGLONG now = GetTickCount64();
 
-        // dt: the time between (beginning of last frame) and now
-        // this frame: the frame we are about to render
         ULONGLONG dt = now - frameStart;
 
         if (dt >= tickPerFrame)
         {
             frameStart = now;
-            Update((DWORD)dt);
+            Update((float)dt);
             Render();
         }
         else
@@ -66,12 +78,14 @@ int WinApp::Run() {
 }
 
 void WinApp::Update(float deltaTime) {
-    // Gọi m_pWorld->Update(deltaTime)
+    SceneManager::GetInstance()->Update((DWORD)deltaTime);
 }
 
 void WinApp::Render() {
-    // Gọi m_pRenderer->Draw(...)
     Renderer::GetInstance()->BeginRender();
+
+    SceneManager::GetInstance()->Render();
+
     Renderer::GetInstance()->EndRender();
 }
 

@@ -27,11 +27,3 @@ LPSPRITE SpriteManager::Get(int id)
     return it->second;
 }
 
-LPSPRITE SpriteManager::Get(int id)
-{
-    auto it = sprites.find(id);
-    if (it == sprites.end())
-        return NULL;
-
-    return it->second;
-}

@@ -1,5 +1,5 @@
 #include "SceneManager.h"
-
+#include <string>
 SceneManager* SceneManager::__instance = NULL;
 
 SceneManager* SceneManager::GetInstance()
@@ -26,6 +26,8 @@ void SceneManager::Update(DWORD dt)
 {
 	if (scenes.find(current_scene) != scenes.end())
 		scenes[current_scene]->Update(dt);
+
+
 }
 
 void SceneManager::Render()
