@@ -1,0 +1,6 @@
+[TEXTURES]
+0 ..\GamePlay\brick.ico
+
+[OBJECTS]
+# type x y left right vx
+1 100 100 50 400 0.1
