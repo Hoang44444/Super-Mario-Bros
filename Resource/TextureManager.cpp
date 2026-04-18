@@ -38,12 +38,12 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath) {
 	info.FirstMipLevel = 0;
 	info.MipLevels = 1;
 	info.Usage = D3D10_USAGE_DEFAULT;
-	info.BindFlags = D3DX10_DEFAULT;
-	info.CpuAccessFlags = D3DX10_DEFAULT;
-	info.MiscFlags = D3DX10_DEFAULT;
-	info.Format = imageInfo.Format;
+	info.BindFlags = D3D10_BIND_SHADER_RESOURCE;
+	info.CpuAccessFlags = 0;
+	info.MiscFlags = 0;
+	info.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	info.Filter = D3DX10_FILTER_NONE;
-	info.MipFilter = D3DX10_DEFAULT;
+	info.MipFilter = D3DX10_FILTER_NONE;
 	info.pSrcInfo = &imageInfo;
 
 	// Loads the texture into a temporary ID3D10Resource object
@@ -58,7 +58,7 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath) {
 	// Make sure the texture was loaded successfully
 	if (FAILED(hr))
 	{
-		//DebugOut((wchar_t*)L"[ERROR] Failed to load texture file: %s with error: %d\n", texturePath, hr);
+		DebugOut((wchar_t*)L"[ERROR] Failed to load texture file: %s with error: %d\n", texturePath, hr);
 		return NULL;
 	}
 
@@ -67,7 +67,7 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath) {
 	pD3D10Resource->Release();
 
 	if (!tex) {
-		//DebugOut((wchar_t*)L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
+		DebugOut((wchar_t*)L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
 		return NULL;
 	}
 
@@ -95,7 +95,7 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath) {
 
 	device->CreateShaderResourceView(tex, &SRVDesc, &gSpriteTextureRV);
 
-	//DebugOut(L"[INFO] Texture loaded Ok from file: %s \n", texturePath);
+	DebugOut(L"[INFO] Texture loaded Ok from file: %s (w=%d, h=%d)\n", texturePath, desc.Width, desc.Height);
 
 	return new Texture(tex, gSpriteTextureRV);
 }
@@ -110,7 +110,7 @@ LPTEXTURE TextureManager::Get(unsigned int i)
 {
 	LPTEXTURE t = textures[i];
 	if (t == NULL)
-		//DebugOut(L"[ERROR] Texture Id %d not found !\n", i);
+		DebugOut(L"[ERROR] Texture Id %d not found !\n", i);
 
 	return t;
 }
