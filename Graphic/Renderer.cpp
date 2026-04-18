@@ -87,6 +87,8 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	viewPort.TopLeftY = 0;
 	pD3DDevice->RSSetViewports(1, &viewPort);
 
+	DebugOut(L"[INFO] Viewport set: %d x %d\n", backBufferWidth, backBufferHeight);
+
 	//
 	//
 	//
@@ -130,6 +132,11 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 		10);
 	hr = spriteObject->SetProjectionTransform(&matProjection);
 
+	// Set identity view transform as default
+	D3DXMATRIX matView;
+	D3DXMatrixIdentity(&matView);
+	spriteObject->SetViewTransform(&matView);
+
 	// Initialize the blend state for alpha drawing
 	D3D10_BLEND_DESC StateDesc;
 	ZeroMemory(&StateDesc, sizeof(D3D10_BLEND_DESC));
@@ -138,7 +145,7 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	StateDesc.SrcBlend = D3D10_BLEND_SRC_ALPHA;
 	StateDesc.DestBlend = D3D10_BLEND_INV_SRC_ALPHA;
 	StateDesc.BlendOp = D3D10_BLEND_OP_ADD;
-	StateDesc.SrcBlendAlpha = D3D10_BLEND_ZERO;
+	StateDesc.SrcBlendAlpha = D3D10_BLEND_ONE;
 	StateDesc.DestBlendAlpha = D3D10_BLEND_ZERO;
 	StateDesc.BlendOpAlpha = D3D10_BLEND_OP_ADD;
 	StateDesc.RenderTargetWriteMask[0] = D3D10_COLOR_WRITE_ENABLE_ALL;
@@ -151,31 +158,31 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 
 void Renderer::BeginRender()
 {
-    float color[4] = { 0.2f, 0.2f, 0.2f, 0.2f }; // Màu nền đen
+    float color[4] = { 0.2f, 0.2f, 0.2f, 1.0f }; // Màu nền xám, alpha = 1.0f
     pD3DDevice->ClearRenderTargetView(pRenderTargetView, color);
 
     pD3DDevice->OMSetBlendState(pBlendStateAlpha, NULL, 0xffffffff);
-    spriteObject->Begin(D3DX10_SPRITE_SORT_DEPTH_BACK_TO_FRONT);
+    pD3DDevice->PSSetSamplers(0, 1, &this->pPointSamplerState);
+    spriteObject->Begin(0); // Use 0 for default sorting (order of buffering)
 }
 
 void Renderer::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha)
 {
 	if (tex == NULL) {
-		OutputDebugString(L"[ERROR] Draw called with NULL texture\n");
+		DebugOut(L"[ERROR] Draw called with NULL texture\n");
 		return;
 	}
 
-	wchar_t log[256];
 	float width = (rect != NULL) ? (float)(rect->right - rect->left) : (float)tex->getWidth();
 	float height = (rect != NULL) ? (float)(rect->bottom - rect->top) : (float)tex->getHeight();
 	float screen_x = x - Camera::GetInstance()->GetX();
 	float screen_y = y - Camera::GetInstance()->GetY();
 
-	swprintf_s(log, L"[DRAW] screen_x=%.1f screen_y=%.1f w=%.1f h=%.1f bufH=%d\n",
-		screen_x, screen_y, width, height, backBufferHeight);
-	OutputDebugString(log);
-
-	Camera* cam = Camera::GetInstance();
+	// Log draw call every 60 frames or so to avoid flooding
+	static int drawCount = 0;
+	if (drawCount++ % 60 == 0) {
+		DebugOut(L"[DRAW] x=%.1f, y=%.1f, w=%.1f, h=%.1f, texSRV=%p\n", screen_x, screen_y, width, height, tex->getShaderResourceView());
+	}
 
 	D3DX10_SPRITE sprite;
 	ZeroMemory(&sprite, sizeof(D3DX10_SPRITE));
@@ -200,8 +207,9 @@ void Renderer::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha)
 	sprite.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
 
 	// Set the world matrix for the sprite
+	// Offset x, y by half width/height because ID3DX10Sprite is centered at origin
 	D3DXMATRIX matWorld, matTranslation, matScale;
-	D3DXMatrixTranslation(&matTranslation, screen_x, screen_y, 1.0f);
+	D3DXMatrixTranslation(&matTranslation, screen_x + width / 2.0f, screen_y + height / 2.0f, 1.0f);
 
 	D3DXMatrixScaling(&matScale, width, height, 1.0f);
 
