@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "SceneManager.h"
 #include "PlayScene.h"
+#include "Camera.h"
 
 #define MAX_FRAME_RATE 60
 
@@ -29,6 +30,10 @@ bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
     int windowWidth = rect.right - rect.left;
     int windowHeight = rect.bottom - rect.top;
 
+    wchar_t buffer[128];	
+    swprintf_s(buffer, 128, L"[WINDOWS SIZE] windowWidth = %d, windowHeight = %d\n", windowWidth, windowHeight);
+	OutputDebugString(buffer);
+
     // 2. Tạo cửa sổ
     m_hwnd = CreateWindowEx(0, L"WindowClass", L"C++ DirectX Game Engine",
         WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
@@ -36,11 +41,16 @@ bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
 
     if (!m_hwnd) return false;
 
-    Renderer::GetInstance()->Init(m_hwnd, hInstance);
     ShowWindow(m_hwnd, SW_SHOW);                  
     UpdateWindow(m_hwnd);
+
+    Renderer::GetInstance()->Init(m_hwnd, hInstance);
+
+    // Initialise Camera size
+    Camera::GetInstance()->SetSize(windowWidth, windowHeight);
+
     // Initialise SceneManager and PlayScene
-    SceneManager::GetInstance()->Add(1, new PlayScene(1, L""));
+    SceneManager::GetInstance()->Add(1, new PlayScene(1, L"scene01.txt"));
     SceneManager::GetInstance()->SwitchScene(1);
 
     m_isRunning = true;
