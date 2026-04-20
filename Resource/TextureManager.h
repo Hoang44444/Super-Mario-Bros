@@ -19,5 +19,4 @@ public:
 	void Clear();
 	LPTEXTURE LoadTexture(LPCWSTR texturePath);
 	static TextureManager* GetInstance();
-
 };

@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "PlayScene.h"
 #include "Camera.h"
+#include "TextureManager.h"
 
 #define MAX_FRAME_RATE 60
 
@@ -50,6 +51,7 @@ bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
     Camera::GetInstance()->SetSize(windowWidth, windowHeight);
 
     // Initialise SceneManager and PlayScene
+    // scene01.txt will handle its own texture loading (brick.png)
     SceneManager::GetInstance()->Add(1, new PlayScene(1, L"scene01.txt"));
     SceneManager::GetInstance()->SwitchScene(1);
 
@@ -82,6 +84,7 @@ int WinApp::Run() {
             Render();
         }
         else
+
             Sleep((DWORD)(tickPerFrame - dt));
     }
     return (int)msg.wParam;

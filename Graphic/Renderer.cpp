@@ -122,12 +122,12 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	D3DXMATRIX matProjection;
 
 	// Create the projection matrix using the values in the viewport
-	// Fix: swapped TopLeftY and Height to make Y increase downwards (top-left is 0,0)
+	// Giữ nguyên hệ tọa độ chuẩn: Y hướng lên (0 ở dưới, Height ở trên)
 	D3DXMatrixOrthoOffCenterLH(&matProjection,
 		(float)viewPort.TopLeftX,
 		(float)viewPort.Width,
-		(float)viewPort.Height,
-		(float)viewPort.TopLeftY,
+		(float)viewPort.TopLeftY, // Bottom = 0
+		(float)viewPort.Height,    // Top = Height
 		0.1f,
 		10);
 	hr = spriteObject->SetProjectionTransform(&matProjection);
@@ -163,7 +163,7 @@ void Renderer::BeginRender()
 
     pD3DDevice->OMSetBlendState(pBlendStateAlpha, NULL, 0xffffffff);
     pD3DDevice->PSSetSamplers(0, 1, &this->pPointSamplerState);
-    spriteObject->Begin(0); // Use 0 for default sorting (order of buffering)
+    spriteObject->Begin(D3DX10_SPRITE_SORT_TEXTURE); 
 }
 
 void Renderer::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha)
@@ -175,14 +175,10 @@ void Renderer::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha)
 
 	float width = (rect != NULL) ? (float)(rect->right - rect->left) : (float)tex->getWidth();
 	float height = (rect != NULL) ? (float)(rect->bottom - rect->top) : (float)tex->getHeight();
+	
+	// Tọa độ trên màn hình (đã trừ camera)
 	float screen_x = x - Camera::GetInstance()->GetX();
 	float screen_y = y - Camera::GetInstance()->GetY();
-
-	// Log draw call every 60 frames or so to avoid flooding
-	static int drawCount = 0;
-	if (drawCount++ % 60 == 0) {
-		DebugOut(L"[DRAW] x=%.1f, y=%.1f, w=%.1f, h=%.1f, texSRV=%p\n", screen_x, screen_y, width, height, tex->getShaderResourceView());
-	}
 
 	D3DX10_SPRITE sprite;
 	ZeroMemory(&sprite, sizeof(D3DX10_SPRITE));
@@ -190,7 +186,6 @@ void Renderer::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha)
 	sprite.pTexture = tex->getShaderResourceView();
 	sprite.TextureIndex = 0;
 
-	// Calculate texture coordinate and size
 	if (rect != NULL)
 	{
 		sprite.TexCoord.x = (float)rect->left / tex->getWidth();
@@ -206,18 +201,21 @@ void Renderer::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha)
 
 	sprite.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
 
-	// Set the world matrix for the sprite
-	// Offset x, y by half width/height because ID3DX10Sprite is centered at origin
 	D3DXMATRIX matWorld, matTranslation, matScale;
-	D3DXMatrixTranslation(&matTranslation, screen_x + width / 2.0f, screen_y + height / 2.0f, 1.0f);
+	
+	// File mẫu: Lật tọa độ Y thủ công (BackBufferHeight - y)
+	// Và ID3DX10Sprite vẽ từ tâm, nên ta cộng thêm (width/2, height/2) để tọa độ (x,y) là góc trên bên trái
+	// Lưu ý: Do hệ tọa độ Y hướng lên, việc "xuống dưới" nghĩa là (BackBufferHeight - screen_y)
+	float draw_x = screen_x + width / 2.0f;
+	float draw_y = (float)backBufferHeight - (screen_y + height / 2.0f);
 
+	D3DXMatrixTranslation(&matTranslation, draw_x, draw_y, 0.1f); 
 	D3DXMatrixScaling(&matScale, width, height, 1.0f);
 
 	matWorld = matScale * matTranslation;
-
 	sprite.matWorld = matWorld;
 
-	spriteObject->DrawSpritesBuffered(&sprite, 1);
+	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
 
 void Renderer::EndRender()
