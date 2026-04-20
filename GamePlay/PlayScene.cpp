@@ -18,7 +18,7 @@ using namespace std;
 void PlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
-
+		
 	ifstream f;
 	f.open(sceneFilePath);
 
@@ -36,10 +36,23 @@ void PlayScene::Load()
 	{
 		string line(str);
 
+		// remove carriage return at the end of line (Windows fix)
+		if (!line.empty() && line.back() == '\r') {
+			line.pop_back();
+		}
+
 		if (line.empty() || line[0] == '#') continue;	// skip empty or comment lines	
 
-		if (line == "[TEXTURES]") { section = SCENE_SECTION_TEXTURES; continue; }
-		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; }
+		if (line == "[TEXTURES]") { 
+			section = SCENE_SECTION_TEXTURES; 
+			DebugOut(L"[INFO] Entering section [TEXTURES]\n");
+			continue; 
+		}
+		if (line == "[OBJECTS]") { 
+			section = SCENE_SECTION_OBJECTS; 
+			DebugOut(L"[INFO] Entering section [OBJECTS]\n");
+			continue; 
+		}
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -52,6 +65,7 @@ void PlayScene::Load()
 			int id;
 			if (sscanf_s(str, "%d %s", &id, path, (unsigned int)sizeof(path)) == 2) {
 				wstring wpath = wstring(path, path + strlen(path));
+				DebugOut(L"[INFO] Loading texture ID %d from: %s\n", id, wpath.c_str());
 				TextureManager::GetInstance()->Add(id, wpath.c_str());
 			}
 			break;
@@ -66,7 +80,13 @@ void PlayScene::Load()
 				{
 				case 1: // BRICK
 					obj = new Brick(x, y, left, right, vx);
-					((Brick*)obj)->SetTexture(TextureManager::GetInstance()->Get(0));
+					LPTEXTURE tex = TextureManager::GetInstance()->Get(0);
+					if (tex != NULL) {
+						((Brick*)obj)->SetTexture(tex);
+						DebugOut(L"[INFO] Brick created at (%.1f, %.1f) with texture ID 0\n", x, y);
+					} else {
+						DebugOut(L"[ERROR] Failed to get texture ID 0 for Brick!\n");
+					}
 					break;
 				}
 

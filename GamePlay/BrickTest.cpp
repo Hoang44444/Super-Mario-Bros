@@ -1,5 +1,5 @@
 #include "BrickTest.h"
-
+#include "debug.h"
 void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//// Move the brick left and right between the limits
@@ -21,9 +21,16 @@ void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Brick::Render()
 {
-	OutputDebugString(L"[RENDER] Brick::Render called!\n");
 	if (texture != NULL)
 		Renderer::GetInstance()->Draw(x, y, texture);
+	else {
+		// Fallback: Nếu không có texture, ta vẫn có thể debug bằng cách log vị trí (hạn chế log để tránh lag)
+		static DWORD lastLog = 0;
+		if (GetTickCount() - lastLog > 2000) {
+			DebugOut(L"[WARNING] Brick::Render: Texture is NULL at (%.1f, %.1f)\n", x, y);
+			lastLog = GetTickCount();
+		}
+	}
 }
 
 void Brick::GetBoundingBox(float& l, float& t, float& r, float& b)
