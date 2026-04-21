@@ -203,19 +203,16 @@ void Renderer::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha)
 
 	D3DXMATRIX matWorld, matTranslation, matScale;
 	
-	// File mẫu: Lật tọa độ Y thủ công (BackBufferHeight - y)
-	// Và ID3DX10Sprite vẽ từ tâm, nên ta cộng thêm (width/2, height/2) để tọa độ (x,y) là góc trên bên trái
-	// Lưu ý: Do hệ tọa độ Y hướng lên, việc "xuống dưới" nghĩa là (BackBufferHeight - screen_y)
 	float draw_x = screen_x + width / 2.0f;
 	float draw_y = (float)backBufferHeight - (screen_y + height / 2.0f);
 
-	D3DXMatrixTranslation(&matTranslation, draw_x, draw_y, 0.1f); 
+	D3DXMatrixTranslation(&matTranslation, draw_x, draw_y, 0.5f); 
 	D3DXMatrixScaling(&matScale, width, height, 1.0f);
 
 	matWorld = matScale * matTranslation;
 	sprite.matWorld = matWorld;
 
-	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
+	spriteObject->DrawSpritesBuffered(&sprite, 1);
 }
 
 void Renderer::EndRender()

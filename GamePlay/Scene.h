@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <string>
 #include "KeyEventHandler.h"
 
 class Scene
@@ -7,7 +8,7 @@ class Scene
 protected:
 	LPKEYEVENTHANDLER key_handler;
 	int id;
-	LPCWSTR sceneFilePath;
+	std::wstring sceneFilePath;
 
 public:
 	Scene(int id, LPCWSTR filePath)

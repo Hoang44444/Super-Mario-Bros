@@ -142,8 +142,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="AnimationFrame.h" />
     <ClInclude Include="AnimationManager.h" />
+    <ClInclude Include="AnimationFrame.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Renderer.h" />
   </ItemGroup>

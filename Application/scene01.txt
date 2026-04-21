@@ -1,6 +1,6 @@
-[TEXTURES]
-0 ..\GamePlay\brick.png
+[ASSETS]
+brick.txt
 
 [OBJECTS]
-# 	type 	x 	y 	left 	right 	vx
-	1 	100 	100 	10 	1250 	0.1
+# type x y
+1 100 100

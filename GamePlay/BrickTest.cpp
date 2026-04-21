@@ -1,5 +1,6 @@
 #include "BrickTest.h"
 #include "debug.h"
+#include "AnimationManager.h"
 void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//// Move the brick left and right between the limits
@@ -21,28 +22,19 @@ void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Brick::Render()
 {
-	if (texture != NULL)
-		Renderer::GetInstance()->Draw(x, y, texture);
-	else {
-		// Fallback: Nếu không có texture, ta vẫn có thể debug bằng cách log vị trí (hạn chế log để tránh lag)
-		static DWORD lastLog = 0;
-		if (GetTickCount() - lastLog > 2000) {
-			DebugOut(L"[WARNING] Brick::Render: Texture is NULL at (%.1f, %.1f)\n", x, y);
-			lastLog = GetTickCount();
-		}
-	}
+	AnimationManager* animations = AnimationManager::GetInstance();
+	// For testing, we assume animation ID 100 is the brick
+	LPANIMATION ani = animations->Get(100);
+	if (ani != NULL)
+		ani->Render(x, y);
+	else
+		DebugOut(L"[ERROR] Brick animation 100 not found\n");
 }
 
 void Brick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;
-	if (texture != NULL) {
-		r = x + texture->getWidth();
-		b = y + texture->getHeight();
-	}
-	else {
-		r = x + 16.0f; // Default width
-		b = y + 16.0f; // Default height
-	}
+	r = x + 16.0f; // Default width
+	b = y + 16.0f; // Default height
 }

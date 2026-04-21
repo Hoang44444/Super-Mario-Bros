@@ -131,11 +131,11 @@
   <ItemGroup>
     <ClInclude Include="BrickTest.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -151,8 +151,8 @@
   <ItemGroup>
     <ClCompile Include="BrickTest.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="PlayScene.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
