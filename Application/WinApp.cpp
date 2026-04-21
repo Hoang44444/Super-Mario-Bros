@@ -1,9 +1,7 @@
 #include "WinApp.h"
 #include "Renderer.h"
-#include "SceneManager.h"
-#include "PlayScene.h"
+#include "GameManager.h"
 #include "Camera.h"
-#include "TextureManager.h"
 
 #define MAX_FRAME_RATE 60
 
@@ -26,14 +24,10 @@ bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
     wc.lpszClassName = L"WindowClass";
     RegisterClassEx(&wc);
 
-    RECT rect = { 0, 0, 1280, 720 };
+    RECT rect = { 0, 0, width, height };
     AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
     int windowWidth = rect.right - rect.left;
     int windowHeight = rect.bottom - rect.top;
-
-    wchar_t buffer[128];	
-    swprintf_s(buffer, 128, L"[WINDOWS SIZE] windowWidth = %d, windowHeight = %d\n", windowWidth, windowHeight);
-	OutputDebugString(buffer);
 
     // 2. Tạo cửa sổ
     m_hwnd = CreateWindowEx(0, L"WindowClass", L"C++ DirectX Game Engine",
@@ -45,15 +39,11 @@ bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
     ShowWindow(m_hwnd, SW_SHOW);                  
     UpdateWindow(m_hwnd);
 
-    Renderer::GetInstance()->Init(m_hwnd, hInstance);
+    GameManager::GetInstance()->Init(m_hwnd, hInstance);
+    GameManager::GetInstance()->Load(L"super-mario-bros.txt");
 
     // Initialise Camera size
     Camera::GetInstance()->SetSize(windowWidth, windowHeight);
-
-    // Initialise SceneManager and PlayScene
-    // scene01.txt will handle its own texture loading (brick.png)
-    SceneManager::GetInstance()->Add(1, new PlayScene(1, L"scene01.txt"));
-    SceneManager::GetInstance()->SwitchScene(1);
 
     m_isRunning = true;
     return true;
@@ -63,9 +53,8 @@ int WinApp::Run() {
     MSG msg = { 0 };
     ULONGLONG frameStart = GetTickCount64();
     ULONGLONG tickPerFrame = 1000 / MAX_FRAME_RATE;
-    // ĐÂY LÀ GAME LOOP
+    
     while (m_isRunning) {
-        // Kiểm tra tin nhắn từ Windows
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
@@ -74,7 +63,6 @@ int WinApp::Run() {
                 m_isRunning = false;
         }
         ULONGLONG now = GetTickCount64();
-
         ULONGLONG dt = now - frameStart;
 
         if (dt >= tickPerFrame)
@@ -84,21 +72,18 @@ int WinApp::Run() {
             Render();
         }
         else
-
             Sleep((DWORD)(tickPerFrame - dt));
     }
     return (int)msg.wParam;
 }
 
 void WinApp::Update(float deltaTime) {
-    SceneManager::GetInstance()->Update((DWORD)deltaTime);
+    GameManager::GetInstance()->Update((DWORD)deltaTime);
 }
 
 void WinApp::Render() {
     Renderer::GetInstance()->BeginRender();
-
-    SceneManager::GetInstance()->Render();
-
+    GameManager::GetInstance()->Render();
     Renderer::GetInstance()->EndRender();
 }
 

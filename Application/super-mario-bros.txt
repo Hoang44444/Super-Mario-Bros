@@ -1,0 +1,8 @@
+[SETTINGS]
+start    1
+
+[SCENES]
+1  scene01.txt
+
+[TEXTURES]
+0   brick.png

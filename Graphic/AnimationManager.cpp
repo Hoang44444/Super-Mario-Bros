@@ -1,26 +1,34 @@
 #include "AnimationManager.h"
+#include "debug.h"
+
+AnimationManager* AnimationManager::__instance = NULL;
+
+AnimationManager* AnimationManager::GetInstance()
+{
+	if (__instance == NULL) __instance = new AnimationManager();
+	return __instance;
+}
 
 void AnimationManager::Add(int id, LPANIMATION ani)
 {
-    if (animations.find(id) != animations.end())
-        return;
-
-    animations[id] = ani;
+	animations[id] = ani;
 }
 
 LPANIMATION AnimationManager::Get(int id)
 {
-    auto it = animations.find(id);
-    if (it == animations.end())
-        return NULL;
-
-    return it->second;
+	LPANIMATION ani = animations[id];
+	if (ani == NULL)
+		DebugOut(L"[ERROR] Animation ID %d not found\n", id);
+	return ani;
 }
 
 void AnimationManager::Clear()
 {
-    for (auto& a : animations)
-        delete a.second;
+	for (auto x : animations)
+	{
+		LPANIMATION ani = x.second;
+		delete ani;
+	}
 
-    animations.clear();
+	animations.clear();
 }
