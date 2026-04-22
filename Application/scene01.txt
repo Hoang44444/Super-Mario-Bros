@@ -1,5 +1,5 @@
 [ASSETS]
-brick.txt
+..\GamePlay\brick.txt
 
 [OBJECTS]
 # type x y
