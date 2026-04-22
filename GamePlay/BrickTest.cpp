@@ -1,6 +1,7 @@
 #include "BrickTest.h"
 #include "debug.h"
 #include "AnimationManager.h"
+#include "AssetID.h"
 void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//// Move the brick left and right between the limits
@@ -24,11 +25,11 @@ void Brick::Render()
 {
 	AnimationManager* animations = AnimationManager::GetInstance();
 	// For testing, we assume animation ID 100 is the brick
-	LPANIMATION ani = animations->Get(100);
+	LPANIMATION ani = animations->Get(ID_ANI_BRICK);
 	if (ani != NULL)
 		ani->Render(x, y);
 	else
-		DebugOut(L"[ERROR] Brick animation 100 not found\n");
+		DebugOut(L"[ERROR] Brick animation %d not found\n", ID_ANI_BRICK);
 }
 
 void Brick::GetBoundingBox(float& l, float& t, float& r, float& b)

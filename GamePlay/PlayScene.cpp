@@ -9,6 +9,7 @@
 #include "SpriteManager.h"
 #include "AnimationManager.h"
 #include "debug.h"
+#include "AssetID.h"
 
 using namespace std;
 
@@ -171,7 +172,7 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (type)
 	{
-	case 1: // BRICK
+	case OBJECT_TYPE_BRICK:
 		// In a real refactor, we would pass more parameters if needed
 		obj = new Brick(x, y, x - 100, x + 100); 
 		break;
