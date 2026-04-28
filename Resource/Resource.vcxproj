@@ -141,6 +141,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AssetID.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="AssetID.h" />
     <ClInclude Include="Sprite.h" />
