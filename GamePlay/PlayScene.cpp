@@ -4,26 +4,27 @@
 #include <sstream>
 
 #include "PlayScene.h"
+#include "Mario.h"
+#include "MarioKeyHandler.h"
 #include "BrickTest.h"
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
+#include "../Resource/AssetID.h"
 #include "debug.h"
-#include "AssetID.h"
+#include "GameManager.h"
 
 using namespace std;
-
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_ASSETS 1
-#define SCENE_SECTION_OBJECTS 2
-
-#define ASSET_SECTION_UNKNOWN -1
-#define ASSET_SECTION_SPRITES 1
-#define ASSET_SECTION_ANIMATIONS 2
 
 void PlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath.c_str());
+
+	if (key_handler == NULL)
+	{
+		key_handler = new MarioKeyHandler(this);
+		GameManager::GetInstance()->SetKeyHandler(key_handler);
+	}
 		
 	ifstream f;
 	f.open(sceneFilePath.c_str());
@@ -172,6 +173,15 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (type)
 	{
+	case OBJECT_TYPE_MARIO:
+		if (player != NULL) 
+		{
+			DebugOut(L"[ERROR] MARIO object was created before! \n");
+			return;
+		}
+		obj = new Mario(x, y); 
+		player = obj;
+		break;
 	case OBJECT_TYPE_BRICK:
 		// In a real refactor, we would pass more parameters if needed
 		obj = new Brick(x, y, x - 100, x + 100); 
@@ -205,4 +215,5 @@ void PlayScene::Unload()
 		delete objects[i];
 	}
 	objects.clear();
+	player = NULL;
 }

@@ -1,7 +1,8 @@
 #include "BrickTest.h"
 #include "debug.h"
 #include "AnimationManager.h"
-#include "AssetID.h"
+#include "../Resource/AssetID.h"
+
 void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//// Move the brick left and right between the limits
@@ -24,7 +25,7 @@ void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void Brick::Render()
 {
 	AnimationManager* animations = AnimationManager::GetInstance();
-	// For testing, we assume animation ID 100 is the brick
+	
 	LPANIMATION ani = animations->Get(ID_ANI_BRICK);
 	if (ani != NULL)
 		ani->Render(x, y);

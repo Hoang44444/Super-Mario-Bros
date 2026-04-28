@@ -6,6 +6,7 @@
 
 class PlayScene : public Scene
 {
+	LPGAMEOBJECT player;
 	std::vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_ASSETS(string line);
@@ -17,10 +18,14 @@ class PlayScene : public Scene
 	void LoadAssets(LPCWSTR assetFile);
 
 public:
-	PlayScene(int id, LPCWSTR filePath) : Scene(id, filePath) {}
+	PlayScene(int id, LPCWSTR filePath) : Scene(id, filePath) {
+		player = NULL;
+	}
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+
+	LPGAMEOBJECT GetPlayer() { return player; }
 };
 
