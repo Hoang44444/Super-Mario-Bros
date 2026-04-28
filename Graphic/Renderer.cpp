@@ -22,6 +22,9 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	backBufferWidth = r.right - r.left;
 	backBufferHeight = r.bottom - r.top;
 
+	// Calculate Global Scale based on height
+	globalScale = (float)backBufferHeight / (float)INTERNAL_SCREEN_HEIGHT;
+
 	// Create & clear the DXGI_SWAP_CHAIN_DESC structure
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
@@ -87,7 +90,7 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	viewPort.TopLeftY = 0;
 	pD3DDevice->RSSetViewports(1, &viewPort);
 
-	DebugOut(L"[INFO] Viewport set: %d x %d\n", backBufferWidth, backBufferHeight);
+	DebugOut(L"[INFO] Viewport set: %d x %d | Global Scale: %f\n", backBufferWidth, backBufferHeight, globalScale);
 
 	//
 	//
@@ -122,12 +125,12 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	D3DXMATRIX matProjection;
 
 	// Create the projection matrix using the values in the viewport
-	// Giữ nguyên hệ tọa độ chuẩn: Y hướng lên (0 ở dưới, Height ở trên)
+	// Divide Width and Height by globalScale to create a "Virtual Resolution" (Zoom in)
 	D3DXMatrixOrthoOffCenterLH(&matProjection,
 		(float)viewPort.TopLeftX,
-		(float)viewPort.Width,
+		(float)viewPort.Width / globalScale,
 		(float)viewPort.TopLeftY, // Bottom = 0
-		(float)viewPort.Height,    // Top = Height
+		(float)viewPort.Height / globalScale,    // Top = Height
 		0.1f,
 		10);
 	hr = spriteObject->SetProjectionTransform(&matProjection);
@@ -204,7 +207,9 @@ void Renderer::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha)
 	D3DXMATRIX matWorld, matTranslation, matScale;
 	
 	float draw_x = screen_x + width / 2.0f;
-	float draw_y = (float)backBufferHeight - (screen_y + height / 2.0f);
+	// Use Logical Height (BackBufferHeight / globalScale) for the Y calculation
+	float logicalHeight = (float)backBufferHeight / globalScale;
+	float draw_y = logicalHeight - (screen_y + height / 2.0f);
 
 	D3DXMatrixTranslation(&matTranslation, draw_x, draw_y, 0.5f); 
 	D3DXMatrixScaling(&matScale, width, height, 1.0f);
@@ -219,6 +224,73 @@ void Renderer::EndRender()
 {
     spriteObject->End();
     pSwapChain->Present(0, 0);
+}
+
+LPTEXTURE Renderer::GetTexture(LPCWSTR filePath)
+{
+    if (filePath == NULL || pD3DDevice == NULL)
+    {
+        return NULL;
+    }
+
+    ID3D10Resource* pD3D10Resource = NULL;
+    ID3D10Texture2D* tex = NULL;
+
+    D3DX10_IMAGE_INFO imageInfo;
+    HRESULT hr = D3DX10GetImageInfoFromFile(filePath, NULL, &imageInfo, NULL);
+    if (FAILED(hr))
+    {
+        DebugOut(L"[ERROR] D3DX10GetImageInfoFromFile failed for file: %s\n", filePath);
+        return NULL;
+    }
+
+    D3DX10_IMAGE_LOAD_INFO info;
+    ZeroMemory(&info, sizeof(D3DX10_IMAGE_LOAD_INFO));
+    info.Width = imageInfo.Width;
+    info.Height = imageInfo.Height;
+    info.Depth = imageInfo.Depth;
+    info.FirstMipLevel = 0;
+    info.MipLevels = imageInfo.MipLevels;
+    info.Usage = D3D10_USAGE_DEFAULT;
+    info.BindFlags = D3D10_BIND_SHADER_RESOURCE;
+    info.CpuAccessFlags = 0;
+    info.MiscFlags = 0;
+
+    hr = D3DX10CreateTextureFromFile(pD3DDevice, filePath, &info, NULL, &pD3D10Resource, NULL);
+    if (FAILED(hr))
+    {
+        DebugOut(L"[ERROR] D3DX10CreateTextureFromFile failed for file: %s\n", filePath);
+        return NULL;
+    }
+
+    hr = pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID*)&tex);
+    if (FAILED(hr))
+    {
+        DebugOut(L"[ERROR] QueryInterface failed for texture: %s\n", filePath);
+        pD3D10Resource->Release();
+        return NULL;
+    }
+
+    ID3D10ShaderResourceView* spriteResourceView = NULL;
+    D3D10_SHADER_RESOURCE_VIEW_DESC SRVDesc;
+    ZeroMemory(&SRVDesc, sizeof(SRVDesc));
+    SRVDesc.Format = imageInfo.Format;
+    SRVDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
+    SRVDesc.Texture2D.MostDetailedMip = 0;
+    SRVDesc.Texture2D.MipLevels = imageInfo.MipLevels;
+
+    hr = pD3DDevice->CreateShaderResourceView(tex, &SRVDesc, &spriteResourceView);
+    pD3D10Resource->Release();
+
+    if (FAILED(hr))
+    {
+        DebugOut(L"[ERROR] CreateShaderResourceView failed for texture: %s\n", filePath);
+        tex->Release();
+        return NULL;
+    }
+
+    LPTEXTURE texture = new Texture(tex, spriteResourceView);
+    return texture;
 }
 
 Renderer::~Renderer()

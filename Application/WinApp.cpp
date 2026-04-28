@@ -14,6 +14,13 @@ WinApp::~WinApp() {
 bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
     m_hInstance = hInstance;
 
+    GameManager::GetInstance()->LoadSettings(L"super-mario-bros.txt");
+    int screenWidth = GameManager::GetInstance()->GetScreenWidth();
+    int screenHeight = GameManager::GetInstance()->GetScreenHeight();
+
+    if (screenWidth == 0) screenWidth = width;
+    if (screenHeight == 0) screenHeight = height;
+
     // 1. Đăng ký lớp cửa sổ
     WNDCLASSEX wc = { 0 };
     wc.cbSize = sizeof(WNDCLASSEX);
@@ -24,7 +31,7 @@ bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
     wc.lpszClassName = L"WindowClass";
     RegisterClassEx(&wc);
 
-    RECT rect = { 0, 0, width, height };
+    RECT rect = { 0, 0, screenWidth, screenHeight };
     AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
     int windowWidth = rect.right - rect.left;
     int windowHeight = rect.bottom - rect.top;
@@ -43,7 +50,7 @@ bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
     GameManager::GetInstance()->Load(L"super-mario-bros.txt");
 
     // Initialise Camera size
-    Camera::GetInstance()->SetSize(windowWidth, windowHeight);
+    Camera::GetInstance()->SetSize((float)screenWidth, (float)screenHeight);
 
     m_isRunning = true;
     return true;
@@ -68,6 +75,7 @@ int WinApp::Run() {
         if (dt >= tickPerFrame)
         {
             frameStart = now;
+            GameManager::GetInstance()->ProcessKeyboard();
             Update((float)dt);
             Render();
         }
@@ -89,9 +97,16 @@ void WinApp::Render() {
 
 // Xử lý sự kiện cửa sổ
 LRESULT CALLBACK WinApp::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
-    if (message == WM_DESTROY) {
+    switch (message) {
+    case WM_DESTROY:
         PostQuitMessage(0);
         return 0;
+    case WM_KEYDOWN:
+        GameManager::GetInstance()->OnKeyDown((int)wParam);
+        break;
+    case WM_KEYUP:
+        GameManager::GetInstance()->OnKeyUp((int)wParam);
+        break;
     }
     return DefWindowProc(hWnd, message, wParam, lParam);
 }

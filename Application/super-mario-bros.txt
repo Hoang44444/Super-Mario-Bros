@@ -1,8 +1,11 @@
 [SETTINGS]
 start    1
+screen_width 1920
+screen_height 1080
 
 [SCENES]
 1  scene01.txt
 
 [TEXTURES]
 0   brick.png
+1   ../GamePlay/texture/mario.png

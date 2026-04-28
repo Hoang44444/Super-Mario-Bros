@@ -7,6 +7,7 @@
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
+#include "../Resource/AssetID.h"
 #include "debug.h"
 #include "Renderer.h"
 
@@ -17,6 +18,9 @@ GameManager::GameManager()
 	current_scene = -1;
 	next_scene = -1;
 	hWnd = NULL;
+	screenWidth = 0;
+	screenHeight = 0;
+	key_handler = NULL;
 }
 
 GameManager* GameManager::GetInstance()
@@ -29,6 +33,60 @@ void GameManager::Init(HWND hWnd, HINSTANCE hInstance)
 {
 	this->hWnd = hWnd;
 	Renderer::GetInstance()->Init(hWnd, hInstance);
+}
+
+void GameManager::ProcessKeyboard()
+{
+	if (key_handler != NULL)
+	{
+		BYTE states[256];
+		if (GetKeyboardState(states))
+		{
+			key_handler->KeyState(states);
+		}
+	}
+}
+
+void GameManager::OnKeyDown(int KeyCode)
+{
+	if (key_handler != NULL)
+		key_handler->OnKeyDown(KeyCode);
+}
+
+void GameManager::OnKeyUp(int KeyCode)
+{
+	if (key_handler != NULL)
+		key_handler->OnKeyUp(KeyCode);
+}
+
+void GameManager::LoadSettings(LPCWSTR gameFile)
+{
+	DebugOut(L"[INFO] Start loading game settings from : %s \n", gameFile);
+
+	ifstream f;
+	f.open(gameFile);
+
+	if (!f.is_open())
+	{
+		DebugOut(L"[ERROR] Failed to open game file: %s\n", gameFile);
+		return;
+	}
+
+	int section = -1;
+
+	char str[1024];
+	while (f.getline(str, 1024))
+	{
+		string line(str);
+		if (line.empty() || line[0] == '#') continue;
+
+		if (line == "[SETTINGS]") { section = GAME_SECTION_SETTINGS; continue; }
+		if (line[0] == '[') { section = -1; continue; }
+
+		if (section == GAME_SECTION_SETTINGS)
+			_ParseSection_SETTINGS(line);
+	}
+	f.close();
 }
 
 /*
@@ -48,9 +106,6 @@ void GameManager::Load(LPCWSTR gameFile)
 	}
 
 	int section = -1;
-#define GAME_SECTION_SETTINGS 1
-#define GAME_SECTION_SCENES 2
-#define GAME_SECTION_TEXTURES 3
 
 	char str[1024];
 	while (f.getline(str, 1024))
@@ -88,6 +143,10 @@ void GameManager::_ParseSection_SETTINGS(string line)
 
 	if (tokens[0] == "start")
 		next_scene = atoi(tokens[1].c_str());
+	else if (tokens[0] == "screen_width")
+		screenWidth = atoi(tokens[1].c_str());
+	else if (tokens[0] == "screen_height")
+		screenHeight = atoi(tokens[1].c_str());
 }
 
 void GameManager::_ParseSection_SCENES(string line)
@@ -136,7 +195,7 @@ void GameManager::SwitchScene()
 
 	current_scene = next_scene;
 	LPSCENE s = scenes[current_scene];
-	// GameManager::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
+	GameManager::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
 	s->Load();
 }
 
