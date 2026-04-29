@@ -2,6 +2,8 @@
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
 #include "debug.h"
+#include "Bullet.h"
+#include "BrickTest.h"
 
 void Mario::MovementUpdate(DWORD dt) {
 	// Simple movement for testing
@@ -15,18 +17,12 @@ void Mario::MovementUpdate(DWORD dt) {
 void Mario::ShootBullet() {
 	float bulletX = x + (direction > 0 ? 15.0f : -8.0f);
 	float bulletY = y + 10.0f;
-	DebugOut(L"[MARIO ACTION] SHOOT BULLET at x: %f, y: %f\n", bulletX, bulletY);
 	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
 }
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	MovementUpdate(dt);
-	// Ground collision simulation (temp)
-	if (y > 150) {
-		y = 150;
-		vy = 0;
-	}
+	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void Mario::SetState(int state)
@@ -43,8 +39,10 @@ void Mario::SetState(int state)
 		direction = -1;
 		break;
 	case MARIO_STATE_JUMP:
-		if (y >= 150.0f)
-			vy = -MARIO_JUMP_SPEED;
+		if (isOnGround) {
+			vy = MARIO_JUMP_SPEED;
+			isOnGround = false;
+		}
 		break;
 	case MARIO_STATE_IDLE:
 		vx = 0;
@@ -75,7 +73,7 @@ void Mario::Render()
 		aniId = ID_ANI_MARIO_DIE;
 	else if (level == MARIO_LEVEL_BIG)
 	{
-		if (vy != 0) {
+		if (!isOnGround) {
 			if (direction > 0) aniId = ID_ANI_MARIO_BIG_JUMP_WALK_RIGHT;
 			else aniId = ID_ANI_MARIO_BIG_JUMP_WALK_LEFT;
 		}
@@ -90,7 +88,7 @@ void Mario::Render()
 	}
 	else if (level == MARIO_LEVEL_SMALL)
 	{
-		if (vy != 0) {
+		if (!isOnGround) {
 			if (direction > 0) aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
 			else aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT;
 		}
@@ -122,5 +120,29 @@ void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 		r = x + 13;
 		b = y + 15;
 	}
+}
+
+void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	if(dynamic_cast<Brick*>(e->obj))
+	{
+		DebugOut(L"Collision with Brick\n");
+		// Simple collision response for testing
+		if (e->ny < 0) { // Colliding from above
+			y += e->t * vy * e->ny;
+			vy = 0;
+			isOnGround = true;
+		}
+		else if (e->nx != 0) { // Colliding from sides
+			x += e->t * vx * e->nx;
+			vx = 0;
+		}
+	}
+}
+
+void Mario::OnNoCollision(DWORD dt)
+{
+	MovementUpdate(dt);
+	DebugOut(L"[MARIO POSITION] x: %f, y: %f\n", x, y);
 }
 

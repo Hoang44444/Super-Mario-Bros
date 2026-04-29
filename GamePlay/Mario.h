@@ -1,6 +1,5 @@
 #pragma once
 #include "GameObject.h"
-#include "Bullet.h"
 
 // MARIO LEVELS
 #define MARIO_LEVEL_SMALL	1
@@ -38,15 +37,27 @@ private:
 	float gravity = MARIO_GRAVITY;
 	float accelX = MARIO_ACCEL_X;
 	void MovementUpdate(DWORD dt);
+
+	bool isOnGround = false; 
 public:
 	Mario(float x, float y) : GameObject(x, y) {
 		level = MARIO_LEVEL_SMALL;
 	};
 	~Mario() {};
+	// ACTIONS
 	void ShootBullet();
+
+	// CORE
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void Render();
 	void SetState(int state);
+
+	// COLLISION
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+	bool IsCollidable() { return true; }
+	bool IsBlocking() { return false; }
+
+	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void OnNoCollision(DWORD dt);
 };
 

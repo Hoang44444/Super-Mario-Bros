@@ -7,8 +7,8 @@
 using namespace std;
 
 
-class CCollisionEvent;
-typedef CCollisionEvent* LPCOLLISIONEVENT;
+class CollisionEvent;
+typedef CollisionEvent* LPCOLLISIONEVENT;
 
 class GameObject
 {
@@ -59,6 +59,7 @@ public:
     virtual void OnCollisionWith(LPCOLLISIONEVENT e) {}
 
     static bool IsDeleted(const LPGAMEOBJECT& o) { return o->isDeleted; };
+    virtual int IsDirectionColliable(float nx, float ny) { return 1; }
 
 	// Scene management
 	void SetScene(Scene* s) { this->scene = s; }

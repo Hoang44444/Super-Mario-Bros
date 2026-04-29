@@ -94,12 +94,14 @@ void PlayScene::LoadAssets(LPCWSTR assetFile)
 
 		if (line == "[SPRITES]") { section = ASSET_SECTION_SPRITES; continue; }
 		if (line == "[ANIMATIONS]") { section = ASSET_SECTION_ANIMATIONS; continue; }
+		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; }
 		if (line[0] == '[') { section = ASSET_SECTION_UNKNOWN; continue; }
 
 		switch (section)
 		{
 		case ASSET_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
 		case ASSET_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
+		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		}
 	}
 
