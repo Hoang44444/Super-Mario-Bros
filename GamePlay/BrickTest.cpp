@@ -6,19 +6,19 @@
 void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//// Move the brick left and right between the limits
-	x += vx * dt;
-	if (x < leftLimit) {
-		x = leftLimit;
-		vx = -vx; // Reverse direction
-	}
-	else if (x > rightLimit) {
-		x = rightLimit;
-		vx = -vx; // Reverse direction
-	}
+	//x += vx * dt;
+	//if (x < leftLimit) {
+	//	x = leftLimit;
+	//	vx = -vx; // Reverse direction
+	//}
+	//else if (x > rightLimit) {
+	//	x = rightLimit;
+	//	vx = -vx; // Reverse direction
+	//}
 
-	wchar_t buffer[128];
-	swprintf_s(buffer, 128, L"[BRICK POSITION]x = %f, y = %f\n", this->x, this->y);
-	OutputDebugString(buffer);
+	//wchar_t buffer[128];
+	//swprintf_s(buffer, 128, L"[BRICK POSITION]x = %f, y = %f\n", this->x, this->y);
+	//OutputDebugString(buffer);
 
 }
 

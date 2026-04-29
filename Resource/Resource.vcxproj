@@ -143,7 +143,6 @@
   <ItemGroup>
     <ClInclude Include="AssetID.h" />
     <ClInclude Include="debug.h" />
-    <ClInclude Include="AssetID.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="Texture.h" />

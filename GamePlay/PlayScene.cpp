@@ -94,12 +94,14 @@ void PlayScene::LoadAssets(LPCWSTR assetFile)
 
 		if (line == "[SPRITES]") { section = ASSET_SECTION_SPRITES; continue; }
 		if (line == "[ANIMATIONS]") { section = ASSET_SECTION_ANIMATIONS; continue; }
+		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; }
 		if (line[0] == '[') { section = ASSET_SECTION_UNKNOWN; continue; }
 
 		switch (section)
 		{
 		case ASSET_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
 		case ASSET_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
+		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		}
 	}
 
@@ -188,15 +190,32 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
-	if (obj != NULL)
+	if (obj != NULL) {
+		obj->SetScene(this);
 		objects.push_back(obj);
+	}
 }
 
 void PlayScene::Update(DWORD dt)
 {
+	vector<LPGAMEOBJECT> coObjects;
+	for (auto obj : objects) coObjects.push_back(obj);
+
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &objects);
+		if (!objects[i]->IsDeleted())
+			objects[i]->Update(dt, &coObjects);
+	}
+
+	// Remove deleted objects
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->IsDeleted())
+		{
+			delete objects[i];
+			objects.erase(objects.begin() + i);
+			i--;
+		}
 	}
 }
 

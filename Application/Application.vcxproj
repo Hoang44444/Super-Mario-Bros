@@ -140,9 +140,6 @@
     <ProjectReference Include="..\Graphic\Graphic.vcxproj">
       <Project>{5ac3afb7-6bbf-4fd2-b4e1-c846947ea458}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Resource\Resource.vcxproj">
-      <Project>{e6557f33-229d-44b9-8110-dfdfd16eaf41}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
