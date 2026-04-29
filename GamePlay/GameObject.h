@@ -1,11 +1,11 @@
 #pragma once
 #include <vector>
 #include <Windows.h>
+#include "Collision.h"
+#include "Scene.h"
 
 using namespace std;
 
-class GameObject;
-typedef GameObject* LPGAMEOBJECT;
 
 class CCollisionEvent;
 typedef CCollisionEvent* LPCOLLISIONEVENT;
@@ -18,6 +18,7 @@ protected:
     int direction; // -1: left, 1: right
     int state;
     bool isDeleted;
+	Scene* scene; // Reference to the scene the object belongs to
 
 public:
     GameObject() {
@@ -58,4 +59,8 @@ public:
     virtual void OnCollisionWith(LPCOLLISIONEVENT e) {}
 
     static bool IsDeleted(const LPGAMEOBJECT& o) { return o->isDeleted; };
+
+	// Scene management
+	void SetScene(Scene* s) { this->scene = s; }
 };
+typedef GameObject* LPGAMEOBJECT;

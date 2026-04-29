@@ -26,18 +26,21 @@
 //
 #define OBJECT_TYPE_MARIO 0
 #define OBJECT_TYPE_BRICK 1
+#define OBJECT_TYPE_BULLET 2
 
 //
 // TEXTURE IDs
 //
 #define ID_TEX_BRICK 0
 #define ID_TEX_MARIO 1
+#define ID_TEX_MISC 2
 #define ID_TEX_BBOX -100
 
 //
 // ANIMATION IDs
 //
 #define ID_ANI_BRICK 100
+#define ID_ANI_BULLET 200
 
 // BIG MARIO
 #define ID_ANI_MARIO_BIG_IDLE_RIGHT 400

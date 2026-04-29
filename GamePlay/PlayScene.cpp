@@ -188,15 +188,32 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
-	if (obj != NULL)
+	if (obj != NULL) {
+		obj->SetScene(this);
 		objects.push_back(obj);
+	}
 }
 
 void PlayScene::Update(DWORD dt)
 {
+	vector<LPGAMEOBJECT> coObjects;
+	for (auto obj : objects) coObjects.push_back(obj);
+
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &objects);
+		if (!objects[i]->IsDeleted())
+			objects[i]->Update(dt, &coObjects);
+	}
+
+	// Remove deleted objects
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->IsDeleted())
+		{
+			delete objects[i];
+			objects.erase(objects.begin() + i);
+			i--;
+		}
 	}
 }
 

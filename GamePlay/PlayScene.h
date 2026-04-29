@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include <vector>
+#include "debug.h"
 
 class PlayScene : public Scene
 {
@@ -25,6 +26,12 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+
+	void AddObject(LPGAMEOBJECT obj) { 
+		obj->SetScene(this);
+		objects.push_back(obj); 
+		DebugOut(L"[SCENE] Added new object. Total objects: %d\n", objects.size());
+	}
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 };

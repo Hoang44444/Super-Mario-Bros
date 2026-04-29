@@ -1,0 +1,8 @@
+[SPRITES]
+# id   left  top  right  bottom  tex_id
+# Using Mario's small idle sprite temporarily for debugging
+20001  247   0    260    15      1
+
+[ANIMATIONS]
+# id   sprite1_id  time1
+200    20001       100

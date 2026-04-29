@@ -9,3 +9,4 @@ screen_height 1080
 [TEXTURES]
 0   brick.png
 1   ../GamePlay/texture/mario.png
+2   ../GamePlay/texture/misc.png

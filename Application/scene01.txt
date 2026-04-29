@@ -1,6 +1,7 @@
 [ASSETS]
 brick.txt
 mario.txt
+bullet.txt
 
 [OBJECTS]
 # type x y

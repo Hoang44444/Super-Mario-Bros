@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Bullet.h"
 
 #define MARIO_LEVEL_SMALL	1
 #define MARIO_LEVEL_BIG		2
@@ -14,6 +15,7 @@
 
 #define MARIO_STATE_SIT				400
 #define MARIO_STATE_SIT_RELEASE		401
+#define MARIO_STATE_SHOOT			500
 
 
 class Mario : public GameObject
@@ -28,6 +30,7 @@ public:
 		level = MARIO_LEVEL_SMALL;
 	};
 	~Mario() {};
+	void ShootBullet();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void Render();
 	void SetState(int state);

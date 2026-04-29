@@ -5,6 +5,12 @@
 
 using namespace std;
 
+class GameObject;
+typedef GameObject* LPGAMEOBJECT;
+
+class CCollisionEvent;
+typedef CCollisionEvent* LPCOLLISIONEVENT;
+
 struct CCollisionEvent
 {
 	LPGAMEOBJECT src_obj;		// The object that is moving

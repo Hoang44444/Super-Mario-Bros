@@ -1,6 +1,7 @@
 #include "Mario.h"
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
+#include "debug.h"
 
 void Mario::MovementUpdate(DWORD dt) {
 	// Simple movement for testing
@@ -11,18 +12,21 @@ void Mario::MovementUpdate(DWORD dt) {
 	this->vy += this->gravity * dt;
 }
 
+void Mario::ShootBullet() {
+	float bulletX = x + (direction > 0 ? 15.0f : -8.0f);
+	float bulletY = y + 10.0f;
+	DebugOut(L"[MARIO ACTION] SHOOT BULLET at x: %f, y: %f\n", bulletX, bulletY);
+	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
+}
+
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	MovementUpdate(dt);
-
 	// Ground collision simulation (temp)
 	if (y > 150) {
 		y = 150;
 		vy = 0;
 	}
-
-	if (vx > 0) direction = 1;
-	else if (vx < 0) direction = -1;
 }
 
 void Mario::SetState(int state)
@@ -39,7 +43,7 @@ void Mario::SetState(int state)
 		direction = -1;
 		break;
 	case MARIO_STATE_JUMP:
-		if (vy == 0)
+		if (y >= 150.0f)
 			vy = -0.5f;
 		break;
 	case MARIO_STATE_IDLE:
@@ -47,6 +51,10 @@ void Mario::SetState(int state)
 		break;
 	case MARIO_STATE_DIE:
 		vy = -0.5f;
+		break;
+	case MARIO_STATE_SHOOT:
+		ShootBullet();
+		this->state = MARIO_STATE_IDLE; // Revert to idle so Mario doesn't disappear
 		break;
 	}
 }
