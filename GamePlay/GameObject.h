@@ -27,6 +27,7 @@ public:
         this->direction = 1;
         this->state = -1;
         this->isDeleted = false;
+		scene = nullptr;
     };
     GameObject(float x, float y) : GameObject() { this->x = x; this->y = y;};
 

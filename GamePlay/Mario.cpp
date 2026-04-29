@@ -16,7 +16,7 @@ void Mario::MovementUpdate(DWORD dt) {
 
 void Mario::ShootBullet() {
 	float bulletX = x + (direction > 0 ? 15.0f : -8.0f);
-	float bulletY = y + 10.0f;
+	float bulletY = y;
 	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
 }
 
@@ -40,7 +40,7 @@ void Mario::SetState(int state)
 		break;
 	case MARIO_STATE_JUMP:
 		if (isOnGround) {
-			vy = MARIO_JUMP_SPEED;
+			vy = -MARIO_JUMP_SPEED;
 			isOnGround = false;
 		}
 		break;
@@ -143,6 +143,5 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 void Mario::OnNoCollision(DWORD dt)
 {
 	MovementUpdate(dt);
-	DebugOut(L"[MARIO POSITION] x: %f, y: %f\n", x, y);
 }
 

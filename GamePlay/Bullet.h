@@ -26,6 +26,7 @@ public:
 	bool IsCollidable() { return true; }
 	bool IsBlocking() { return false; }
 	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void OnNoCollision(DWORD dt);
 
 	void Moving(DWORD dt);
 };

@@ -16,7 +16,7 @@ void Bullet::Moving(DWORD dt)
 
 void Bullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	Moving(dt);
+	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void Bullet::Render()
@@ -39,5 +39,10 @@ void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (!e->obj->IsBlocking()) return; // Bullet doesn't block, so it can pass through objects
 
 	this->Delete(); // Mark for deletion on collision
+}
+
+void Bullet::OnNoCollision(DWORD dt)
+{
+	Moving(dt);
 }
 
