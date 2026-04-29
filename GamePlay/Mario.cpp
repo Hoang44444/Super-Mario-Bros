@@ -35,26 +35,34 @@ void Mario::SetState(int state)
 	switch (state)
 	{
 	case MARIO_STATE_WALKING_RIGHT:
-		vx = 0.1f;
+		vx = MARIO_WALK_SPEED;
 		direction = 1;
 		break;
 	case MARIO_STATE_WALKING_LEFT:
-		vx = -0.1f;
+		vx = -MARIO_WALK_SPEED;
 		direction = -1;
 		break;
 	case MARIO_STATE_JUMP:
 		if (y >= 150.0f)
-			vy = -0.5f;
+			vy = -MARIO_JUMP_SPEED;
 		break;
 	case MARIO_STATE_IDLE:
 		vx = 0;
 		break;
 	case MARIO_STATE_DIE:
-		vy = -0.5f;
+		vy = -MARIO_JUMP_SPEED;
 		break;
 	case MARIO_STATE_SHOOT:
 		ShootBullet();
 		this->state = MARIO_STATE_IDLE; // Revert to idle so Mario doesn't disappear
+		break;
+	case MARIO_STATE_RUNNING_LEFT:
+		vx = -MARIO_RUN_SPEED;
+		direction = -1;
+		break;
+	case MARIO_STATE_RUNNING_RIGHT:
+		vx = MARIO_RUN_SPEED;
+		direction = 1;
 		break;
 	}
 }
