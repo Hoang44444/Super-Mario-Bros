@@ -6,12 +6,32 @@
 #include "BrickTest.h"
 
 void Mario::MovementUpdate(DWORD dt) {
-	// Simple movement for testing
-	this->x += this->vx * dt;
-	this->y += this->vy * dt;
+	vx += accelX * dt;
+	vy += gravity * dt;
 
-	this->vx += this->accelX * dt;
-	this->vy += this->gravity * dt;
+	// Friction logic when IDLE
+	if (state == MARIO_STATE_IDLE) {
+		if (vx > 0) {
+			vx -= MARIO_ACCEL_WALK * dt;
+			if (vx < 0) vx = 0;
+		}
+		else if (vx < 0) {
+			vx += MARIO_ACCEL_WALK * dt;
+			if (vx > 0) vx = 0;
+		}
+	}
+	else if(state == MARIO_STATE_DIE) {
+		vx = 0;
+	}
+
+	// Max speed capping
+	float maxV = MARIO_VELOCITY_WALK_MAX;
+	if (state == MARIO_STATE_RUNNING_RIGHT || state == MARIO_STATE_RUNNING_LEFT)
+		maxV = MARIO_VELOCITY_RUN_MAX;
+
+	if (abs(vx) > maxV) {
+		vx = (vx > 0) ? maxV : -maxV;
+	}
 }
 
 void Mario::ShootBullet() {
@@ -22,6 +42,7 @@ void Mario::ShootBullet() {
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	MovementUpdate(dt);
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -31,36 +52,47 @@ void Mario::SetState(int state)
 	switch (state)
 	{
 	case MARIO_STATE_WALKING_RIGHT:
-		vx = MARIO_WALK_SPEED;
+		accelX = MARIO_ACCEL_WALK;
 		direction = 1;
 		break;
+
 	case MARIO_STATE_WALKING_LEFT:
-		vx = -MARIO_WALK_SPEED;
+		accelX = -MARIO_ACCEL_WALK;
 		direction = -1;
 		break;
+
+	case MARIO_STATE_RUNNING_RIGHT:
+		accelX = MARIO_ACCEL_RUN;
+		direction = 1;
+		break;
+
+	case MARIO_STATE_RUNNING_LEFT:
+		accelX = -MARIO_ACCEL_RUN;
+		direction = -1;
+		break;
+
 	case MARIO_STATE_JUMP:
 		if (isOnGround) {
 			vy = -MARIO_JUMP_SPEED;
 			isOnGround = false;
 		}
 		break;
+
 	case MARIO_STATE_IDLE:
-		vx = 0;
+		accelX = 0;
 		break;
+
 	case MARIO_STATE_DIE:
 		vy = -MARIO_JUMP_SPEED;
+		accelX = 0;
 		break;
+
 	case MARIO_STATE_SHOOT:
 		ShootBullet();
-		this->state = MARIO_STATE_IDLE; // Revert to idle so Mario doesn't disappear
 		break;
-	case MARIO_STATE_RUNNING_LEFT:
-		vx = -MARIO_RUN_SPEED;
-		direction = -1;
-		break;
-	case MARIO_STATE_RUNNING_RIGHT:
-		vx = MARIO_RUN_SPEED;
-		direction = 1;
+
+	case MARIO_STATE_SIT:
+		accelX = 0;
 		break;
 	}
 }
@@ -126,21 +158,16 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if(dynamic_cast<Brick*>(e->obj))
 	{
-		// Simple collision response for testing
-		if (e->ny < 0) { // Colliding from above
-			y += e->t * vy * e->ny;
+		if (e->ny < 0 && e->obj->IsBlocking()) { 
 			vy = 0;
 			isOnGround = true;
-		}
-		else if (e->nx != 0) { // Colliding from sides
-			x += e->t * vx * e->nx;
-			vx = 0;
 		}
 	}
 }
 
 void Mario::OnNoCollision(DWORD dt)
 {
-	MovementUpdate(dt);
+	x += vx * dt;
+	y += vy * dt;
 }
 
