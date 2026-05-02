@@ -1,9 +1,10 @@
 #include "Mario.h"
-#include "AnimationManager.h"
+#include "../Graphic/AnimationManager.h"
 #include "../Resource/AssetID.h"
-#include "debug.h"
+#include "../Resource/debug.h"
 #include "Bullet.h"
 #include "BrickTest.h"
+#include "Goomba.h"
 
 void Mario::MovementUpdate(DWORD dt) {
 	// Simple movement for testing
@@ -22,6 +23,11 @@ void Mario::ShootBullet() {
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (state == MARIO_STATE_DIE)
+	{
+		MovementUpdate(dt);
+		return;
+	}
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -124,6 +130,9 @@ void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (state == MARIO_STATE_DIE) 
+		return;
+
 	if(dynamic_cast<Brick*>(e->obj))
 	{
 		DebugOut(L"Collision with Brick\n");
@@ -136,6 +145,24 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 		else if (e->nx != 0) { // Colliding from sides
 			x += e->t * vx * e->nx;
 			vx = 0;
+		}
+	}
+	else if (dynamic_cast<Goomba*>(e->obj))
+	{
+		Goomba* goomba = dynamic_cast<Goomba*>(e->obj);
+
+		// If Goomba is already dead, ignore the collision
+		if (goomba->GetState() != GOOMBA_STATE_DIE)
+		{
+			if (e->ny < 0) // Mario hits from above (Stomp)
+			{
+				goomba->SetState(GOOMBA_STATE_DIE);
+				vy = -MARIO_JUMP_SPEED / 2.0f; // Mario does a little bounce
+			}
+			else // Mario hits from the sides or bottom
+			{
+				SetState(MARIO_STATE_DIE); // Mario dies
+			}
 		}
 	}
 }

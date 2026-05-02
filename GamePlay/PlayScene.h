@@ -3,7 +3,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include <vector>
-#include "debug.h"
+#include "../Resource/debug.h"
 
 class PlayScene : public Scene
 {

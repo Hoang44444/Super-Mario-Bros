@@ -5,13 +5,14 @@
 
 #include "PlayScene.h"
 #include "Mario.h"
+#include "Goomba.h"
 #include "MarioKeyHandler.h"
 #include "BrickTest.h"
-#include "TextureManager.h"
-#include "SpriteManager.h"
-#include "AnimationManager.h"
+#include "../Resource/TextureManager.h"
+#include "../Resource/SpriteManager.h"
+#include "../Graphic/AnimationManager.h"
 #include "../Resource/AssetID.h"
-#include "debug.h"
+#include "../Resource/debug.h"
 #include "GameManager.h"
 
 using namespace std;
@@ -187,6 +188,9 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK:
 		// In a real refactor, we would pass more parameters if needed
 		obj = new Brick(x, y, x - 100, x + 100); 
+		break;
+	case OBJECT_TYPE_GOOMBA:
+		obj = new Goomba(x, y);
 		break;
 	}
 

@@ -1,7 +1,7 @@
 #include "Collision.h"
 #include "GameObject.h"
 
-#include "debug.h"
+#include "../Resource/debug.h"
 
 #define BLOCK_PUSH_FACTOR 0.01f
 
