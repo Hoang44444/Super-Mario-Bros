@@ -30,4 +30,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="scene01.txt" />
+    <Text Include="super-mario-bros.txt" />
+    <Text Include="mario.txt" />
+    <Text Include="bullet.txt" />
+    <Text Include="brick.txt" />
+    <Text Include="goomba.txt" />
+  </ItemGroup>
 </Project>

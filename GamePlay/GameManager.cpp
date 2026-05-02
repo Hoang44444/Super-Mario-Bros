@@ -4,12 +4,12 @@
 
 #include "GameManager.h"
 #include "PlayScene.h"
-#include "TextureManager.h"
-#include "SpriteManager.h"
-#include "AnimationManager.h"
+#include "../Resource/TextureManager.h"
+#include "../Resource/SpriteManager.h"
+#include "../Graphic/AnimationManager.h"
 #include "../Resource/AssetID.h"
-#include "debug.h"
-#include "Renderer.h"
+#include "../Resource/debug.h"
+#include "../Graphic/Renderer.h"
 
 GameManager* GameManager::__instance = NULL;
 

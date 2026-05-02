@@ -1,6 +1,6 @@
 #include "BrickTest.h"
-#include "debug.h"
-#include "AnimationManager.h"
+#include "../Resource/debug.h"
+#include "../Graphic/AnimationManager.h"
 #include "../Resource/AssetID.h"
 
 void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

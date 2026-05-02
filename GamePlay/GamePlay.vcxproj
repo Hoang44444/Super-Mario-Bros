@@ -134,6 +134,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Goomba.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioKeyHandler.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="Goomba.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
