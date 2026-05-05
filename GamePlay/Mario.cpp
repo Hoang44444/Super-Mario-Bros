@@ -6,10 +6,8 @@
 #include "BrickTest.h"
 
 void Mario::MovementUpdate(DWORD dt) {
-	// Simple movement for testing
 	this->x += this->vx * dt;
 	this->y += this->vy * dt;
-
 	this->vx += this->accelX * dt;
 	this->vy += this->gravity * dt;
 }
@@ -52,7 +50,7 @@ void Mario::SetState(int state)
 		break;
 	case MARIO_STATE_SHOOT:
 		ShootBullet();
-		this->state = MARIO_STATE_IDLE; // Revert to idle so Mario doesn't disappear
+		this->state = MARIO_STATE_IDLE;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		vx = -MARIO_RUN_SPEED;
@@ -124,16 +122,24 @@ void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if(dynamic_cast<Brick*>(e->obj))
+	if (dynamic_cast<Brick*>(e->obj))
 	{
-		DebugOut(L"Collision with Brick\n");
-		// Simple collision response for testing
-		if (e->ny < 0) { // Colliding from above
+		if (e->ny < 0)
+		{
+			// Landing on top of a brick - snap to surface, stop falling
 			y += e->t * vy * e->ny;
 			vy = 0;
 			isOnGround = true;
 		}
-		else if (e->nx != 0) { // Colliding from sides
+		else if (e->ny > 0)
+		{
+			// Hitting a brick from BELOW - bounce off, keep falling
+			// Just zero out upward velocity so Mario falls back down
+			vy = 0;
+		}
+		else if (e->nx != 0)
+		{
+			// Side collision - stop horizontal movement
 			x += e->t * vx * e->nx;
 			vx = 0;
 		}
@@ -144,4 +150,3 @@ void Mario::OnNoCollision(DWORD dt)
 {
 	MovementUpdate(dt);
 }
-

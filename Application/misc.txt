@@ -1,0 +1,86 @@
+[SPRITES]
+# id     l    t    r    b    tex_id
+# misc.png (tex_id=2) is 639x360
+#
+# ---- BLOCK TILES (GENERAL section, 16x16 each) ----
+#
+# Floating brick (brown) - y=110-126, x=286-302
+20001  286  110  302  126   2
+
+# ? block frame 1 (yellow-orange) - y=78-94, x=318-334
+20002  318   78  334   94   2
+
+# ? block frame 2 - y=94-110, x=302-318 (slightly different shade)
+20003  302   94  318  110   2
+
+# ? block frame 3 - y=126-142, x=302-318
+20004  302  126  318  142   2
+
+# Used/empty block (grey-tan) - y=94-110, x=334-350
+20005  334   94  350  110   2
+
+# Ground tile (dark brown, solid) - y=126-142, x=286-302
+20006  286  126  302  142   2
+
+# Ground tile variant 2 - y=142-158, x=286-302
+20007  286  142  302  158   2
+
+# Orange/red block - y=206-222, x=302-318
+20008  302  206  318  222   2
+
+# Green block - y=222-238, x=302-318
+20009  302  222  318  238   2
+
+# Grey block - y=238-254, x=350-366
+20010  350  238  366  254   2
+
+# ---- CLOUD SPRITE (large, split into 3x16px columns) ----
+# Cloud left section - x=280-296, y=280-344
+20020  280  280  296  344   2
+
+# Cloud middle section - x=392-408, y=280-344
+20021  392  280  408  344   2
+
+# Cloud right section - x=584-600, y=280-344
+20022  584  280  600  344   2
+
+# Cloud left-edge (for 3-wide cloud) - x=280-296, y=280-344
+# Reusing 20020, 20021, 20022 to assemble: L + M + M + R
+
+[ANIMATIONS]
+# ani_id  sprite_id time  [more frames...]
+
+# 100 = plain ground brick (defined in brick.txt, tex 0)
+
+# 101 = ? block (3-frame animated)
+101  20002 150  20003 150  20004 150
+
+# 102 = used/empty block (static)
+102  20005 100
+
+# 103 = floating brick (brown, static)
+103  20001 100
+
+# 104 = ground tile (dark, for variety)
+104  20006 100
+
+# 105 = ground tile variant 2
+105  20007 100
+
+# 106 = orange block
+106  20008 100
+
+# 107 = green block
+107  20009 100
+
+# 108 = grey block
+108  20010 100
+
+# 120 = cloud LEFT column  (16x64px tall)
+120  20020 100
+
+# 121 = cloud MIDDLE column
+121  20021 100
+
+# 122 = cloud RIGHT column
+122  20022 100

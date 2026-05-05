@@ -138,6 +138,7 @@
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioKeyHandler.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="Portal.h" />
     <ClInclude Include="Scene.h" />
   </ItemGroup>
   <ItemGroup>
