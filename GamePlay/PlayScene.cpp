@@ -263,9 +263,10 @@ void PlayScene::Update(DWORD dt)
 
 		float camX = px - 80.0f;
 
-		// Clamp: don't go before the start or past the end of the level
+		// Use Camera's own map width so this works for every scene
+		float maxCamX = (float)(Camera::GetInstance()->GetMapWidth() - 282);
 		if (camX < 0) camX = 0;
-		if (camX > 3408.0f - 282.0f) camX = 3408.0f - 282.0f;
+		if (maxCamX > 0 && camX > maxCamX) camX = maxCamX;
 
 		// Only move right, never scroll back left
 		if (camX > Camera::GetInstance()->GetX())

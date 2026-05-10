@@ -574,4 +574,4 @@ pipes.txt
 
 # === PORTAL (end of level, invisible trigger) ===
 # Format: 50  x  y  width  height  scene_id
-50  3296  64  32  136  2
+50  3296  64  32  136  101

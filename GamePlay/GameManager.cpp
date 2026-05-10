@@ -4,6 +4,7 @@
 
 #include "GameManager.h"
 #include "PlayScene.h"
+#include "TransitionScene.h"
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
@@ -162,7 +163,20 @@ void GameManager::_ParseSection_SCENES(string line)
 	string path = tokens[1];
 	wstring wpath = wstring(path.begin(), path.end());
 
-	scenes[id] = new PlayScene(id, wpath.c_str());
+	// Scene IDs 101, 102, 103 are transition screens.
+	// Format in super-mario-bros.txt:
+	//   101  transition_1to2  target_scene_id  tex_id  display_ms
+	if (tokens.size() >= 5 && path == "transition")
+	{
+		int target = atoi(tokens[2].c_str());
+		int tex_id = atoi(tokens[3].c_str());
+		DWORD ms = (DWORD)atoi(tokens[4].c_str());
+		scenes[id] = new TransitionScene(id, L"transition", target, tex_id, ms);
+	}
+	else
+	{
+		scenes[id] = new PlayScene(id, wpath.c_str());
+	}
 }
 
 void GameManager::_ParseSection_TEXTURES(string line)
@@ -194,6 +208,7 @@ void GameManager::SwitchScene()
 	AnimationManager::GetInstance()->Clear();
 
 	current_scene = next_scene;
+	next_scene = -1;  // Reset so SwitchScene() does not fire again next frame
 	LPSCENE s = scenes[current_scene];
 	GameManager::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
 	s->Load();
