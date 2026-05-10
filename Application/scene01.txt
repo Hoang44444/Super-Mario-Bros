@@ -2,7 +2,7 @@
 brick.txt
 mario.txt
 bullet.txt
-
+item.txt
 [OBJECTS]
 ########## MARIO ##########
 # type 	x 	y
@@ -129,3 +129,9 @@ bullet.txt
 1 1872 200
 1 1888 200
 1 1904 200
+########## ITEMS ##########
+3 200 100
+4 150 100
+5 100 100
+7 50 100
+6 150 100

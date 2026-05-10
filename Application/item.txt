@@ -1,0 +1,40 @@
+
+# ==========================================
+# CÁC ITEM(Lấy từ ảnh misc.png - ID 2)
+# ==========================================
+[SPRITES]
+#1.Nấm đỏ
+# id    l    t    r    b    tex_id
+
+3000    300    189    315   204   2
+
+# 2. ĐỒNG XU (Coin) - Gồm 3 frame để làm hiệu ứng xoay
+3100    300    171    316   186   2
+3101    318   171    334   186   2
+3102    336   171    352   186   2
+
+# 3. HOA LỬA (Fire Flower) - Gồm 4 frame lấp lánh
+3200    336   189   352  205   2
+
+# 4. NGÔI SAO (Star)
+3300    354  207    370  223   2
+
+# 5. NẤM XANH (1-Up Mushroom)
+3400    318  189    334  205   2
+
+[ANIMATIONS]
+# id    sprite_id   time ...
+
+# Nấm đỏ (ID_ANI = 300)
+300     3000  100
+
+# Đồng xu lấp lánh (ID_ANI = 310)
+310     3100  100   3101  100   3102  100
+
+# Hoa lửa lấp lánh (ID_ANI = 320)
+320     3200  100
+# Ngôi sao (ID_ANI = 330)
+330     3300  100
+
+# Nấm xanh (ID_ANI = 340)
+340     3400  100
