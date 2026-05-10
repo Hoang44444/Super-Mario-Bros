@@ -8,6 +8,7 @@
 #include "Goomba.h"
 #include "MarioKeyHandler.h"
 #include "BrickTest.h"
+#include "Troopa.h"
 #include "../Resource/TextureManager.h"
 #include "../Resource/SpriteManager.h"
 #include "../Graphic/AnimationManager.h"
@@ -191,6 +192,9 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA:
 		obj = new Goomba(x, y);
+		break;
+	case OBJECT_TYPE_TROOPA:
+		obj = new Troopa(x, y);
 		break;
 	}
 

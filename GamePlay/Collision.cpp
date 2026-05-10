@@ -1,360 +1,359 @@
 #include "Collision.h"
 #include "GameObject.h"
 
-#include "../Resource/debug.h"
 
-#define BLOCK_PUSH_FACTOR 0.01f
+#include "../Resource/debug.h" 
+
+#define BLOCK_PUSH_FACTOR 0.1f
+#define INF std::numeric_limits<float>::infinity()
 
 Collision* Collision::__instance = NULL;
 
 int CollisionEvent::WasCollided() {
-	return
-		t >= 0.0f && t <= 1.0f && obj->IsDirectionColliable(nx, ny) == 1;
+    return t >= 0.0f && t <= 1.0f && obj->IsDirectionColliable(nx, ny) == 1;
 }
 
 Collision* Collision::GetInstance()
 {
-	if (__instance == NULL) __instance = new Collision();
-	return __instance;
+    if (__instance == NULL) __instance = new Collision();
+    return __instance;
 }
 
 /*
-	SweptAABB
+    SweptAABB (Math core)
 */
 void Collision::SweptAABB(
-	float ml, float mt, float mr, float mb,
-	float dx, float dy,
-	float sl, float st, float sr, float sb,
-	float& t, float& nx, float& ny)
+    float ml, float mt, float mr, float mb,
+    float dx, float dy,
+    float sl, float st, float sr, float sb,
+    float& t, float& nx, float& ny)
 {
+    float dx_entry, dx_exit, tx_entry, tx_exit;
+    float dy_entry, dy_exit, ty_entry, ty_exit;
 
-	float dx_entry, dx_exit, tx_entry, tx_exit;
-	float dy_entry, dy_exit, ty_entry, ty_exit;
+    float t_entry;
+    float t_exit;
 
-	float t_entry;
-	float t_exit;
+    t = -1.0f;          // no collision
+    nx = ny = 0;
 
-	t = -1.0f;			// no collision
-	nx = ny = 0;
+    // Broad-phase test 
+    float bl = dx > 0 ? ml : ml + dx;
+    float bt = dy > 0 ? mt : mt + dy;
+    float br = dx > 0 ? mr + dx : mr;
+    float bb = dy > 0 ? mb + dy : mb;
 
-	//
-	// Broad-phase test 
-	//
-
-	float bl = dx > 0 ? ml : ml + dx;
-	float bt = dy > 0 ? mt : mt + dy;
-	float br = dx > 0 ? mr + dx : mr;
-	float bb = dy > 0 ? mb + dy : mb;
-
-	if (br < sl || bl > sr || bb < st || bt > sb) return;
+    if (br < sl || bl > sr || bb < st || bt > sb) return;
+    if (dx == 0 && dy == 0) return;
 
 
-	if (dx == 0 && dy == 0) return;		// moving object is not moving > obvious no collision
+    if (mr > sl && ml < sr && mb > st && mt < sb) {
+        t = 0.0f;
 
-	if (dx > 0)
-	{
-		dx_entry = sl - mr;
-		dx_exit = sr - ml;
-	}
-	else if (dx < 0)
-	{
-		dx_entry = sr - ml;
-		dx_exit = sl - mr;
-	}
+        float overlap_left = mr - sl;
+        float overlap_right = sr - ml;
+        float overlap_top = mb - st;
+        float overlap_bottom = sb - mt;
 
+        float min_x = (overlap_left < overlap_right) ? overlap_left : overlap_right;
+        float min_y = (overlap_top < overlap_bottom) ? overlap_top : overlap_bottom;
 
-	if (dy > 0)
-	{
-		dy_entry = st - mb;
-		dy_exit = sb - mt;
-	}
-	else if (dy < 0)
-	{
-		dy_entry = sb - mt;
-		dy_exit = st - mb;
-	}
+        // THE FIX: Multi-Axis Corner Grind Resolution
+        // If both overlaps are small (e.g., less than 4 pixels), the object is snagged in a corner.
+        // We MUST return both normals so the Goomba knows to trigger its turnaround logic!
+        if (min_x < 4.0f && min_y < 4.0f) {
+            nx = (overlap_left < overlap_right) ? -1.0f : 1.0f;
+            ny = (overlap_top < overlap_bottom) ? -1.0f : 1.0f;
+        }
+        // Standard single-axis resolution for flat surfaces
+        else if (min_x < min_y) {
+            ny = 0.0f;
+            nx = (overlap_left < overlap_right) ? -1.0f : 1.0f;
+        }
+        else {
+            nx = 0.0f;
+            ny = (overlap_top < overlap_bottom) ? -1.0f : 1.0f;
+        }
+        return;
+    }
 
-	if (dx == 0)
-	{
-		tx_entry = -9999999.0f;
-		tx_exit = 99999999.0f;
-	}
-	else
-	{
-		tx_entry = dx_entry / dx;
-		tx_exit = dx_exit / dx;
-	}
+    if (dx > 0) { dx_entry = sl - mr; dx_exit = sr - ml; }
+    else if (dx < 0) { dx_entry = sr - ml; dx_exit = sl - mr; }
+    else { dx_entry = 0.0f; dx_exit = 0.0f; }
 
-	if (dy == 0)
-	{
-		ty_entry = -99999999999.0f;
-		ty_exit = 99999999999.0f;
-	}
-	else
-	{
-		ty_entry = dy_entry / dy;
-		ty_exit = dy_exit / dy;
-	}
+    if (dy > 0) { dy_entry = st - mb; dy_exit = sb - mt; }
+    else if (dy < 0) { dy_entry = sb - mt; dy_exit = st - mb; }
+    else { dy_entry = 0.0f; dy_exit = 0.0f; }
 
+    if (std::abs(dx_entry) < 0.2f) dx_entry = 0.0f;
+    if (std::abs(dy_entry) < 0.2f) dy_entry = 0.0f;
 
-	if ((tx_entry < 0.0f && ty_entry < 0.0f) || tx_entry > 1.0f || ty_entry > 1.0f) return;
+    if (dx == 0) {
+        tx_entry = -INF;
+        tx_exit = INF;
+    }
+    else {
+        tx_entry = dx_entry / dx;
+        tx_exit = dx_exit / dx;
+    }
 
-	t_entry = max(tx_entry, ty_entry);
-	t_exit = min(tx_exit, ty_exit);
+    if (dy == 0) {
+        ty_entry = -INF;
+        ty_exit = INF;
+    }
+    else {
+        ty_entry = dy_entry / dy;
+        ty_exit = dy_exit / dy;
+    }
 
-	if (t_entry > t_exit) return;
+    if ((tx_entry < 0.0f && ty_entry < 0.0f) || tx_entry > 1.0f || ty_entry > 1.0f) return;
 
-	t = t_entry;
+    t_entry = (std::max)(tx_entry, ty_entry);
+    t_exit = (std::min)(tx_exit, ty_exit);
 
-	if (tx_entry > ty_entry)
-	{
-		ny = 0.0f;
-		dx > 0 ? nx = -1.0f : nx = 1.0f;
-	}
-	else
-	{
-		nx = 0.0f;
-		dy > 0 ? ny = -1.0f : ny = 1.0f;
-	}
+    if (t_entry > t_exit) return;
 
+    t = t_entry;
+
+    if (tx_entry > ty_entry) {
+        ny = 0.0f;
+        nx = (dx > 0) ? -1.0f : 1.0f;
+    }
+    else if (tx_entry < ty_entry) {
+        nx = 0.0f;
+        ny = (dy > 0) ? -1.0f : 1.0f;
+    }
+    else {
+        // TIE-BREAKER FIX
+        nx = (dx > 0) ? -1.0f : 1.0f;
+        ny = (dy > 0) ? -1.0f : 1.0f;
+    }
 }
 
 /*
-	Extension of original SweptAABB to deal with two moving objects
+    Extension of original SweptAABB to deal with two moving objects
 */
 LPCOLLISIONEVENT Collision::SweptAABB(LPGAMEOBJECT objSrc, DWORD dt, LPGAMEOBJECT objDest)
 {
-	float sl, st, sr, sb;		// static object bbox
-	float ml, mt, mr, mb;		// moving object bbox
-	float t, nx, ny;
+    float sl, st, sr, sb;       // static object bbox
+    float ml, mt, mr, mb;       // moving object bbox
+    float t, nx, ny;
 
-	float mvx, mvy;
-	objSrc->GetSpeed(mvx, mvy);
-	float mdx = mvx * dt;
-	float mdy = mvy * dt;
+    float mvx, mvy;
+    objSrc->GetSpeed(mvx, mvy);
+    float mdx = mvx * dt;
+    float mdy = mvy * dt;
 
-	float svx, svy;
-	objDest->GetSpeed(svx, svy);
-	float sdx = svx * dt;
-	float sdy = svy * dt;
+    float svx, svy;
+    objDest->GetSpeed(svx, svy);
+    float sdx = svx * dt;
+    float sdy = svy * dt;
 
-	//
-	// NOTE: new m speed = original m speed - collide object speed
-	// 
-	float dx = mdx - sdx;
-	float dy = mdy - sdy;
+    // NOTE: new m speed = original m speed - collide object speed
+    float dx = mdx - sdx;
+    float dy = mdy - sdy;
 
-	objSrc->GetBoundingBox(ml, mt, mr, mb);
-	objDest->GetBoundingBox(sl, st, sr, sb);
+    objSrc->GetBoundingBox(ml, mt, mr, mb);
+    objDest->GetBoundingBox(sl, st, sr, sb);
 
-	SweptAABB(
-		ml, mt, mr, mb,
-		dx, dy,
-		sl, st, sr, sb,
-		t, nx, ny
-	);
+    SweptAABB(
+        ml, mt, mr, mb,
+        dx, dy,
+        sl, st, sr, sb,
+        t, nx, ny
+    );
 
-	CollisionEvent* e = new CollisionEvent(t, nx, ny, dx, dy, objDest, objSrc);
-	return e;
+    CollisionEvent* e = new CollisionEvent(t, nx, ny, dx, dy, objDest, objSrc);
+    return e;
 }
 
 /*
-	Calculate potential collisions with the list of colliable objects
-
-	coObjects: the list of colliable objects
-	coEvents: list of potential collisions
+    Calculate potential collisions with the list of colliable objects
 */
 void Collision::Scan(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* objDests, vector<LPCOLLISIONEVENT>& coEvents)
 {
-	for (UINT i = 0; i < objDests->size(); i++)
-	{
-		LPCOLLISIONEVENT e = SweptAABB(objSrc, dt, objDests->at(i));
+    for (UINT i = 0; i < objDests->size(); i++)
+    {
+        LPCOLLISIONEVENT e = SweptAABB(objSrc, dt, objDests->at(i));
 
-		if (e->WasCollided() == 1)
-			coEvents.push_back(e);
-		else
-			delete e;
-	}
-
-	//std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
+        if (e->WasCollided() == 1)
+            coEvents.push_back(e);
+        else
+            delete e;
+    }
 }
 
 void Collision::Filter(LPGAMEOBJECT objSrc,
-	vector<LPCOLLISIONEVENT>& coEvents,
-	LPCOLLISIONEVENT& colX,
-	LPCOLLISIONEVENT& colY,
-	int filterBlock = 1,		// 1 = only filter block collisions, 0 = filter all collisions 
-	int filterX = 1,			// 1 = process events on X-axis, 0 = skip events on X 
-	int filterY = 1)			// 1 = process events on Y-axis, 0 = skip events on Y
+    vector<LPCOLLISIONEVENT>& coEvents,
+    LPCOLLISIONEVENT& colX,
+    LPCOLLISIONEVENT& colY,
+    int filterBlock = 1,
+    int filterX = 1,
+    int filterY = 1)
 {
-	float min_tx, min_ty;
+    float min_tx, min_ty;
 
-	min_tx = 1.0f;
-	min_ty = 1.0f;
-	int min_ix = -1;
-	int min_iy = -1;
+    min_tx = 1.0f;
+    min_ty = 1.0f;
+    int min_ix = -1;
+    int min_iy = -1;
 
-	for (UINT i = 0; i < coEvents.size(); i++)
-	{
-		LPCOLLISIONEVENT c = coEvents[i];
-		if (c->isDeleted) continue;
-		if (c->obj->IsDeleted()) continue;
+    for (UINT i = 0; i < coEvents.size(); i++)
+    {
+        LPCOLLISIONEVENT c = coEvents[i];
+        if (c->isDeleted) continue;
+        if (c->obj->IsDeleted()) continue;
 
-		// ignore collision event with object having IsBlocking = 0 (like coin, mushroom, etc)
-		if (filterBlock == 1 && !c->obj->IsBlocking())
-		{
-			continue;
-		}
+        if (filterBlock == 1 && !c->obj->IsBlocking())
+        {
+            continue;
+        }
 
-		if (c->t < min_tx && c->nx != 0 && filterX == 1) {
-			min_tx = c->t; min_ix = i;
-		}
+        if (c->t < min_tx && c->nx != 0 && filterX == 1) {
+            // TILE SEAM CHECK (Horizontal collisions)
+            float sl, st, sr, sb, ml, mt, mr, mb;
+            c->obj->GetBoundingBox(sl, st, sr, sb);
+            objSrc->GetBoundingBox(ml, mt, mr, mb);
 
-		if (c->t < min_ty && c->ny != 0 && filterY == 1) {
-			min_ty = c->t; min_iy = i;
-		}
-	}
+            if (mb <= st + 0.5f) continue; // Ignore floor seams
+            if (mt >= sb - 0.5f) continue; // Ignore ceiling seams
 
-	if (min_ix >= 0) colX = coEvents[min_ix];
-	if (min_iy >= 0) colY = coEvents[min_iy];
+            min_tx = c->t; min_ix = i;
+        }
+
+        if (c->t < min_ty && c->ny != 0 && filterY == 1) {
+            // VERTICAL TILE SEAM CHECK (Vertical collisions)
+            float sl, st, sr, sb, ml, mt, mr, mb;
+            c->obj->GetBoundingBox(sl, st, sr, sb);
+            objSrc->GetBoundingBox(ml, mt, mr, mb);
+
+            // If we are sliding perfectly flush against a wall, 
+            // ignore head-bonks or floor-catches on that wall's vertical seams!
+            if (mr <= sl + 0.5f) continue; // Ignore left wall seams
+            if (ml >= sr - 0.5f) continue; // Ignore right wall seams
+
+            min_ty = c->t; min_iy = i;
+        }
+    }
+
+    if (min_ix >= 0) colX = coEvents[min_ix];
+    if (min_iy >= 0) colY = coEvents[min_iy];
 }
 
 /*
-*  Simple/Sample collision framework
-*  NOTE: Student might need to improve this based on game logic
+*  Two-Pass sliding collision framework
 */
 void Collision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vector<LPCOLLISIONEVENT> coEvents;
-	LPCOLLISIONEVENT colX = NULL;
-	LPCOLLISIONEVENT colY = NULL;
+    vector<LPCOLLISIONEVENT> coEvents;
+    LPCOLLISIONEVENT colX = NULL;
+    LPCOLLISIONEVENT colY = NULL;
 
-	coEvents.clear();
+    coEvents.clear();
 
-	if (objSrc->IsCollidable())
-	{
-		Scan(objSrc, dt, coObjects, coEvents);
-	}
+    if (objSrc->IsCollidable())
+    {
+        Scan(objSrc, dt, coObjects, coEvents);
+    }
 
-	// No collision detected
-	if (coEvents.size() == 0)
-	{
-		objSrc->OnNoCollision(dt);
-	}
-	else
-	{
-		Filter(objSrc, coEvents, colX, colY);
+    // No collision detected
+    if (coEvents.size() == 0)
+    {
+        objSrc->OnNoCollision(dt);
+    }
+    else
+    {
+        Filter(objSrc, coEvents, colX, colY);
 
-		float x, y, vx, vy, dx, dy;
-		objSrc->GetPosition(x, y);
-		objSrc->GetSpeed(vx, vy);
-		dx = vx * dt;
-		dy = vy * dt;
+        float x, y, vx, vy, dx, dy;
+        objSrc->GetPosition(x, y);
+        objSrc->GetSpeed(vx, vy);
+        dx = vx * dt;
+        dy = vy * dt;
 
-		if (colX != NULL && colY != NULL)
-		{
-			if (colY->t < colX->t)	// was collision on Y first ?
-			{
-				y += colY->t * dy + colY->ny * BLOCK_PUSH_FACTOR;
-				objSrc->SetPosition(x, y);
+        if (colX != NULL && colY != NULL)
+        {
+            if (colY->t < colX->t)  // was collision on Y first ?
+            {
+                y += colY->t * dy + colY->ny * BLOCK_PUSH_FACTOR;
+                objSrc->SetPosition(x, y);
 
-				objSrc->OnCollisionWith(colY);
+                objSrc->OnCollisionWith(colY);
 
-				//
-				// see if after correction on Y, is there still a collision on X ? 
-				//
-				LPCOLLISIONEVENT colX_other = NULL;
+                // see if after correction on Y, is there still a collision on X ? 
+                LPCOLLISIONEVENT colX_other = NULL;
 
-				//
-				// check again if there is true collision on X 
-				//
-				colX->isDeleted = true;		// remove current collision event on X
+                colX->isDeleted = true;     // remove current collision event on X
+                coEvents.push_back(SweptAABB(objSrc, dt, colX->obj)); // replace with a new event
 
-				// replace with a new collision event using corrected location 
-				coEvents.push_back(SweptAABB(objSrc, dt, colX->obj));
+                Filter(objSrc, coEvents, colX_other, colY, 1, 1, 0);
 
-				// re-filter on X only
-				Filter(objSrc, coEvents, colX_other, colY, /*filterBlock = */ 1, 1, /*filterY=*/0);
+                if (colX_other != NULL)
+                {
+                    x += colX_other->t * dx + colX_other->nx * BLOCK_PUSH_FACTOR;
+                    objSrc->OnCollisionWith(colX_other);
+                }
+                else
+                {
+                    x += dx;
+                }
+            }
+            else // collision on X first
+            {
+                x += colX->t * dx + colX->nx * BLOCK_PUSH_FACTOR;
+                objSrc->SetPosition(x, y);
 
-				if (colX_other != NULL)
-				{
-					x += colX_other->t * dx + colX_other->nx * BLOCK_PUSH_FACTOR;
-					objSrc->OnCollisionWith(colX_other);
-				}
-				else
-				{
-					x += dx;
-				}
-			}
-			else // collision on X first
-			{
-				x += colX->t * dx + colX->nx * BLOCK_PUSH_FACTOR;
-				objSrc->SetPosition(x, y);
+                objSrc->OnCollisionWith(colX);
 
-				objSrc->OnCollisionWith(colX);
+                // see if after correction on X, is there still a collision on Y ? 
+                LPCOLLISIONEVENT colY_other = NULL;
 
-				//
-				// see if after correction on X, is there still a collision on Y ? 
-				//
-				LPCOLLISIONEVENT colY_other = NULL;
+                colY->isDeleted = true;     // remove current collision event on Y
+                coEvents.push_back(SweptAABB(objSrc, dt, colY->obj)); // replace with a new event
 
-				//
-				// check again if there is true collision on Y
-				//
-				colY->isDeleted = true;		// remove current collision event on Y
+                Filter(objSrc, coEvents, colX, colY_other, 1, 0, 1);
 
-				// replace with a new collision event using corrected location 
-				coEvents.push_back(SweptAABB(objSrc, dt, colY->obj));
+                if (colY_other != NULL)
+                {
+                    y += colY_other->t * dy + colY_other->ny * BLOCK_PUSH_FACTOR;
+                    objSrc->OnCollisionWith(colY_other);
+                }
+                else
+                {
+                    y += dy;
+                }
+            }
+        }
+        else if (colX != NULL)
+        {
+            x += colX->t * dx + colX->nx * BLOCK_PUSH_FACTOR;
+            y += dy;
+            objSrc->OnCollisionWith(colX);
+        }
+        else if (colY != NULL)
+        {
+            x += dx;
+            y += colY->t * dy + colY->ny * BLOCK_PUSH_FACTOR;
+            objSrc->OnCollisionWith(colY);
+        }
+        else // both colX & colY are NULL 
+        {
+            x += dx;
+            y += dy;
+        }
 
-				// re-filter on Y only
-				Filter(objSrc, coEvents, colX, colY_other, /*filterBlock = */ 1, /*filterX=*/0, /*filterY=*/1);
+        objSrc->SetPosition(x, y);
+    }
 
-				if (colY_other != NULL)
-				{
-					y += colY_other->t * dy + colY_other->ny * BLOCK_PUSH_FACTOR;
-					objSrc->OnCollisionWith(colY_other);
-				}
-				else
-				{
-					y += dy;
-				}
-			}
-		}
-		else
-			if (colX != NULL)
-			{
-				x += colX->t * dx + colX->nx * BLOCK_PUSH_FACTOR;
-				y += dy;
-				objSrc->OnCollisionWith(colX);
-			}
-			else
-				if (colY != NULL)
-				{
-					x += dx;
-					y += colY->t * dy + colY->ny * BLOCK_PUSH_FACTOR;
-					objSrc->OnCollisionWith(colY);
-				}
-				else // both colX & colY are NULL 
-				{
-					x += dx;
-					y += dy;
-				}
+    // Scan all non-blocking collisions for further collision logic
+    for (UINT i = 0; i < coEvents.size(); i++)
+    {
+        LPCOLLISIONEVENT e = coEvents[i];
+        if (e->isDeleted) continue;
+        if (e->obj->IsBlocking()) continue;  // blocking collisions were handled already
 
-		objSrc->SetPosition(x, y);
-	}
+        objSrc->OnCollisionWith(e);
+    }
 
-	//
-	// Scan all non-blocking collisions for further collision logic
-	//
-	for (UINT i = 0; i < coEvents.size(); i++)
-	{
-		LPCOLLISIONEVENT e = coEvents[i];
-		if (e->isDeleted) continue;
-		if (e->obj->IsBlocking()) continue;  // blocking collisions were handled already, skip them
-
-		objSrc->OnCollisionWith(e);
-	}
-
-
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+    for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }

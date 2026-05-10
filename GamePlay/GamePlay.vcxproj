@@ -140,6 +140,7 @@
     <ClInclude Include="MarioKeyHandler.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Troopa.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -160,6 +161,7 @@
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="Troopa.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

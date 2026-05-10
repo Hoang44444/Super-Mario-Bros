@@ -37,5 +37,6 @@
     <Text Include="bullet.txt" />
     <Text Include="brick.txt" />
     <Text Include="goomba.txt" />
+    <Text Include="troopa.txt" />
   </ItemGroup>
 </Project>

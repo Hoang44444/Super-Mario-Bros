@@ -2,6 +2,7 @@
 #include "../Graphic/AnimationManager.h"
 #include "../Resource/AssetID.h"
 #include "../Resource/debug.h"
+#include "Collision.h"
 
 Goomba::Goomba(float x, float y) : GameObject(x, y)
 {
@@ -13,17 +14,27 @@ Goomba::Goomba(float x, float y) : GameObject(x, y)
 
 void Goomba::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x;
-	t = y;
-	r = x + GOOMBA_BBOX_WIDTH;
+	// Visual dimensions of your drawn Goomba sprite
+	float visualWidth = 16.0f;
+	float visualHeight = 16.0f;
 
+	// Center horizontally (Fixes wall sinking asymmetry)
+	float xOffset = (visualWidth - GOOMBA_BBOX_WIDTH) / 2.0f;
+	l = x + xOffset;
+	r = l + GOOMBA_BBOX_WIDTH;
+
+	// Anchor vertically to the BOTTOM (Fixes floor sinking AND ceiling snagging)
 	if (state == GOOMBA_STATE_DIE)
 	{
-		b = y + GOOMBA_BBOX_HEIGHT_DIE;
+		float yOffsetDie = visualHeight - GOOMBA_BBOX_HEIGHT_DIE;
+		t = y + yOffsetDie;
+		b = t + GOOMBA_BBOX_HEIGHT_DIE;
 	}
 	else
 	{
-		b = y + GOOMBA_BBOX_HEIGHT;
+		float yOffset = visualHeight - GOOMBA_BBOX_HEIGHT; // 16.0f - 15.0f = 1.0f
+		t = y + yOffset; // Top of physics box starts 1 pixel below the top of visual sprite
+		b = t + GOOMBA_BBOX_HEIGHT; // Bottom of physics box ends exactly at y + 16.0f!
 	}
 }
 
@@ -35,14 +46,20 @@ void Goomba::OnNoCollision(DWORD dt)
 
 void Goomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->ny != 0 && e->obj->IsBlocking())
+	if (!e->obj->IsBlocking()) return;
+	if (dynamic_cast<Goomba*>(e->obj)) return; // Don't block other Goombas
+
+	if (e->ny != 0)
 	{
 		vy = 0;
 	}
-	else if (e->nx != 0 && e->obj->IsBlocking())
+	else if (e->nx != 0)
 	{
-		vx = -vx;
-		direction = -direction;
+		if ((e->nx < 0 && vx > 0) || (e->nx > 0 && vx < 0))
+		{
+			vx = -vx;
+			direction = -direction;
+		}
 	}
 }
 
@@ -51,27 +68,29 @@ void Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+	// Despawn logic (using the new timeout macro)
 	if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
 	{
 		isDeleted = true;
 		return;
 	}
 
-	if (state != GOOMBA_STATE_DIE) {
-		Collision::GetInstance()->Process(this, dt, coObjects);
-	}
+	GameObject::Update(dt, coObjects);
+	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void Goomba::Render()
 {
 	int aniId = ID_ANI_GOOMBA_WALKING;
-
 	if (state == GOOMBA_STATE_DIE)
 	{
 		aniId = ID_ANI_GOOMBA_DIE;
 	}
 
 	AnimationManager::GetInstance()->Get(aniId)->Render(x, y);
+
+	// Optional: Draws the bounding box if you implemented it in GameObject
+	// RenderBoundingBox(); 
 }
 
 void Goomba::SetState(int state)
@@ -81,12 +100,11 @@ void Goomba::SetState(int state)
 	{
 	case GOOMBA_STATE_DIE:
 		die_start = GetTickCount64();
-		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
+		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2; // Shift down when squished
 		vx = 0;
 		vy = 0;
 		ay = 0;
 		break;
-
 	case GOOMBA_STATE_WALKING:
 		vx = -GOOMBA_WALKING_SPEED;
 		direction = -1;

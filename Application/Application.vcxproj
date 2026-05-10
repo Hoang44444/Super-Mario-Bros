@@ -151,6 +151,7 @@
     <Text Include="mario.txt" />
     <Text Include="scene01.txt" />
     <Text Include="super-mario-bros.txt" />
+    <Text Include="troopa.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

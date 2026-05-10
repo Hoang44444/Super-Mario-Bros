@@ -2,9 +2,9 @@
 #include "GameObject.h"
 
 
-#define GOOMBA_BBOX_WIDTH 18.0f
-#define GOOMBA_BBOX_HEIGHT 17.0f
-#define GOOMBA_BBOX_HEIGHT_DIE 11.0f
+#define GOOMBA_BBOX_WIDTH 14.0f
+#define GOOMBA_BBOX_HEIGHT 15.0f
+#define GOOMBA_BBOX_HEIGHT_DIE 7.0f
 
 #define GOOMBA_GRAVITY 0.002f
 #define GOOMBA_WALKING_SPEED 0.05f

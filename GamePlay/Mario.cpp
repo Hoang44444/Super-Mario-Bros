@@ -5,9 +5,10 @@
 #include "Bullet.h"
 #include "BrickTest.h"
 #include "Goomba.h"
+#include "Troopa.h"
+#include "GameObject.h"
 
 void Mario::MovementUpdate(DWORD dt) {
-	// Simple movement for testing
 	this->x += this->vx * dt;
 	this->y += this->vy * dt;
 
@@ -23,11 +24,19 @@ void Mario::ShootBullet() {
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+
+	this->vx += this->accelX * dt;
+	this->vy += this->gravity * dt;
+
 	if (state == MARIO_STATE_DIE)
 	{
-		MovementUpdate(dt);
+		this->x += this->vx * dt;
+		this->y += this->vy * dt;
 		return;
 	}
+
+	isOnGround = false;
+
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -58,7 +67,7 @@ void Mario::SetState(int state)
 		break;
 	case MARIO_STATE_SHOOT:
 		ShootBullet();
-		this->state = MARIO_STATE_IDLE; // Revert to idle so Mario doesn't disappear
+		this->state = MARIO_STATE_IDLE;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		vx = -MARIO_RUN_SPEED;
@@ -114,61 +123,115 @@ void Mario::Render()
 
 void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x;
-	t = y;
 	if (level == MARIO_LEVEL_BIG)
 	{
-		r = x + 15;
-		b = y + 27;
+		l = x + 1.0f;
+		r = x + 15.0f;
+
+		t = y;
+		b = y + 31.0f;
 	}
 	else
 	{
-		r = x + 13;
-		b = y + 15;
+		l = x + 1.5f;
+		r = x + 14.5f;
+
+		t = y;
+		b = y + 15.0f;
 	}
 }
 
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (state == MARIO_STATE_DIE) 
-		return;
+	if (state == MARIO_STATE_DIE) return;
 
-	if(dynamic_cast<Brick*>(e->obj))
+	if (e->ny != 0 && e->obj->IsBlocking())
 	{
-		DebugOut(L"Collision with Brick\n");
-		// Simple collision response for testing
-		if (e->ny < 0) { // Colliding from above
-			y += e->t * vy * e->ny;
-			vy = 0;
-			isOnGround = true;
-		}
-		else if (e->nx != 0) { // Colliding from sides
-			x += e->t * vx * e->nx;
-			vx = 0;
-		}
+		vy = 0;
+		if (e->ny < 0) isOnGround = true;
 	}
-	else if (dynamic_cast<Goomba*>(e->obj))
+	else if (e->nx != 0 && e->obj->IsBlocking())
+	{
+		vx = 0;
+	}
+
+	if (dynamic_cast<Goomba*>(e->obj))
 	{
 		Goomba* goomba = dynamic_cast<Goomba*>(e->obj);
-
-		// If Goomba is already dead, ignore the collision
-		if (goomba->GetState() != GOOMBA_STATE_DIE)
-		{
-			if (e->ny < 0) // Mario hits from above (Stomp)
-			{
+		if (e->ny < 0) {
+			if (goomba->GetState() != GOOMBA_STATE_DIE) {
 				goomba->SetState(GOOMBA_STATE_DIE);
-				vy = -MARIO_JUMP_SPEED / 2.0f; // Mario does a little bounce
+				vy = -MARIO_JUMP_SPEED / 1.5f;
 			}
-			else // Mario hits from the sides or bottom
+		}
+		else {
+			if (goomba->GetState() != GOOMBA_STATE_DIE) SetState(MARIO_STATE_DIE);
+		}
+	}
+
+	else if (dynamic_cast<Troopa*>(e->obj))
+	{
+		Troopa* troopa = dynamic_cast<Troopa*>(e->obj);
+		int tState = troopa->GetState();
+
+		if (e->ny < 0)
+		{
+			if (tState == TROOPA_STATE_SHELL_MOVING)
 			{
-				SetState(MARIO_STATE_DIE); // Mario dies
+				SetState(MARIO_STATE_DIE);
 			}
+			else
+			{
+				if (tState == TROOPA_STATE_WALKING) {
+					troopa->SetState(TROOPA_STATE_SHELL);
+				}
+				else if (tState == TROOPA_STATE_SHELL) {
+					troopa->SetState(TROOPA_STATE_SHELL_MOVING);
+
+					float marioCenter = this->x + 7.0f;
+					float troopaCenter = troopa->GetX() + 8.0f;
+					float shellVx = (marioCenter < troopaCenter) ? TROOPA_SHELL_SPEED : -TROOPA_SHELL_SPEED;
+					troopa->SetVx(shellVx);
+				}
+
+				vy = -MARIO_JUMP_SPEED / 1.5f;
+				this->y -= 5.0f;
+			}
+		}
+		else if (e->nx != 0)
+		{
+			if (tState == TROOPA_STATE_SHELL)
+			{
+				troopa->SetState(TROOPA_STATE_SHELL_MOVING);
+
+				float marioCenter = this->x + 7.0f;
+				float troopaCenter = troopa->GetX() + 8.0f;
+				float shellVx = (marioCenter < troopaCenter) ? TROOPA_SHELL_SPEED : -TROOPA_SHELL_SPEED;
+				troopa->SetVx(shellVx);
+
+
+				float bumpOffset = (shellVx > 0) ? 5.0f : -5.0f;
+				troopa->SetPosition(troopa->GetX() + bumpOffset, troopa->GetY());
+			}
+			else
+			{
+
+				if (this->vy >= 0)
+				{
+					SetState(MARIO_STATE_DIE);
+				}
+			}
+		}
+		else if (e->ny > 0)
+		{
+			SetState(MARIO_STATE_DIE);
 		}
 	}
 }
 
 void Mario::OnNoCollision(DWORD dt)
 {
-	MovementUpdate(dt);
+	this->x += this->vx * dt;
+	this->y += this->vy * dt;
 }
 
