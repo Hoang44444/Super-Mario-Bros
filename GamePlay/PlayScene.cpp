@@ -5,14 +5,19 @@
 
 #include "PlayScene.h"
 #include "Mario.h"
+#include "Goomba.h"
 #include "MarioKeyHandler.h"
 #include "BrickTest.h"
+#include "Troopa.h"
+#include "../Resource/TextureManager.h"
+#include "../Resource/SpriteManager.h"
+#include "../Graphic/AnimationManager.h"
 #include "Portal.h"
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
-#include "debug.h"
+#include "../Resource/debug.h"
 #include "GameManager.h"
 #include "../Graphic/Camera.h"
 #include "Mushroom.h"
@@ -217,6 +222,12 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		float h = (float)atof(tokens[4].c_str());
 		int scene_id = atoi(tokens[5].c_str());
 		obj = new Portal(x, y, w, h, scene_id);
+		break;
+	case OBJECT_TYPE_GOOMBA:
+		obj = new Goomba(x, y);
+		break;
+	case OBJECT_TYPE_TROOPA:
+		obj = new Troopa(x, y);
 		break;
 	}
 

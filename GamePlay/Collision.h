@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <vector>
 #include <algorithm>
+#include <limits>
+#include <cmath>
 
 using namespace std;
 
@@ -14,7 +16,7 @@ typedef CollisionEvent* LPCOLLISIONEVENT;
 
 struct CollisionEvent
 {
-	LPGAMEOBJECT src_obj;		// source object : the object from which to calculate collision
+	LPGAMEOBJECT src_obj;		// source object: the object from which to calculate collision
 	LPGAMEOBJECT obj;			// the target object
 
 	float t, nx, ny;
@@ -66,6 +68,7 @@ public:
 		LPGAMEOBJECT objSrc,
 		DWORD dt,
 		LPGAMEOBJECT objDest);
+
 	void Scan(
 		LPGAMEOBJECT objSrc,
 		DWORD dt,

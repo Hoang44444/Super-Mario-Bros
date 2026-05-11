@@ -4,6 +4,12 @@
 
 #include "GameManager.h"
 #include "PlayScene.h"
+#include "../Resource/TextureManager.h"
+#include "../Resource/SpriteManager.h"
+#include "../Graphic/AnimationManager.h"
+#include "../Resource/AssetID.h"
+#include "../Resource/debug.h"
+#include "../Graphic/Renderer.h"
 #include "TransitionScene.h"
 #include "MenuScene.h"
 

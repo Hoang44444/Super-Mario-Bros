@@ -22,6 +22,8 @@ screen_height 1080
 0   ../GamePlay/texture/brick.png
 1   ../GamePlay/texture/mario.png
 2   ../GamePlay/texture/misc.png
+3	../GamePlay/texture/enemies.png
+4	../GamePlay/texture/enemies2.png
 3   ../GamePlay/texture/enemies.png
 10  ../GamePlay/texture/transition_1to2.png
 11  ../GamePlay/texture/transition_2to3.png
