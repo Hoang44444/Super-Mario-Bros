@@ -9,6 +9,8 @@ screen_height 1080
 2  scene02.txt
 3  scene03.txt
 4  scene04.txt
+0 ../Application/menuscene.txt
+1 ../Application/scene01.txt
 
 # Transition screens (path must be "transition", then: target_scene  tex_id  duration_ms)
 # tex_id 10 = transition_1to2.png, 11 = transition_2to3.png, 12 = transition_3to4.png
@@ -25,3 +27,7 @@ screen_height 1080
 11  ../GamePlay/texture/transition_2to3.png
 12  ../GamePlay/texture/transition_3to4.png
 4   ../GamePlay/texture/floating_brick.png
+0 ../GamePlay/texture/brick.png
+1 ../GamePlay/texture/mario.png
+2 ../GamePlay/texture/misc.png
+3 ../GamePlay/texture/menu.png

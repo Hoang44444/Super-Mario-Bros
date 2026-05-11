@@ -1,4 +1,5 @@
 #pragma once
+#include <Windows.h>
 #include "AnimationFrame.h"
 #include <vector>
 using namespace std;

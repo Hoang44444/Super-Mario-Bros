@@ -1,51 +1,59 @@
 #pragma once
+
 #include <Windows.h>
 #include <unordered_map>
 #include <string>
+#include <vector>
 
 #include "Scene.h"
 
 class GameManager
 {
-	static GameManager* __instance;
-	HWND hWnd;									// Window handle
+private:
+    static GameManager* __instance;
 
-	std::unordered_map<int, LPSCENE> scenes;
-	int current_scene;
-	int next_scene;
+    HWND hWnd;
 
-	LPKEYEVENTHANDLER key_handler;
+    std::unordered_map<int, LPSCENE> scenes;
 
-	int screenWidth;
-	int screenHeight;
+    int current_scene;
+    int next_scene;
 
-	void _ParseSection_SETTINGS(std::string line);
-	void _ParseSection_SCENES(std::string line);
-	void _ParseSection_TEXTURES(std::string line);
+    LPKEYEVENTHANDLER key_handler;
+
+    int screenWidth;
+    int screenHeight;
+
+    void _ParseSection_SETTINGS(std::string line);
+    void _ParseSection_SCENES(std::string line);
+    void _ParseSection_TEXTURES(std::string line);
 
 public:
-	GameManager();
-	void Init(HWND hWnd, HINSTANCE hInstance);
+    GameManager();
 
-	void SetKeyHandler(LPKEYEVENTHANDLER handler) { this->key_handler = handler; }
-	void ProcessKeyboard();
-	void OnKeyDown(int KeyCode);
-	void OnKeyUp(int KeyCode);
+    void Init(HWND hWnd, HINSTANCE hInstance);
 
-	void LoadSettings(LPCWSTR gameFile);
-	void Load(LPCWSTR gameFile);
+    void LoadSettings(LPCWSTR gameFile);
+    void Load(LPCWSTR gameFile);
 
-	int GetScreenWidth() { return screenWidth; }
-	int GetScreenHeight() { return screenHeight; }
+    void Update(DWORD dt);
+    void Render();
 
-	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
-	void SwitchScene();
-	void InitiateSwitchScene(int scene_id) { next_scene = scene_id; }
+    void ProcessKeyboard();
+    void OnKeyDown(int KeyCode);
+    void OnKeyUp(int KeyCode);
 
-	void Update(DWORD dt);
-	void Render();
+    void SwitchScene();
+    void InitiateSwitchScene(int scene_id);
 
-	static GameManager* GetInstance();
+    void SetKeyHandler(LPKEYEVENTHANDLER handler);
 
-	~GameManager();
+    int GetScreenWidth() { return screenWidth; }
+    int GetScreenHeight() { return screenHeight; }
+
+    LPSCENE GetCurrentScene();
+
+    static GameManager* GetInstance();
+
+    ~GameManager();
 };

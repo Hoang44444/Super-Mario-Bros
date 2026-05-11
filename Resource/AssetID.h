@@ -27,6 +27,18 @@
 #define ID_TEX_MISC     2
 #define ID_TEX_ENEMIES  3
 #define ID_TEX_BBOX    -100
+#define OBJECT_TYPE_MUSHROOM 3
+#define OBJECT_TYPE_COIN 4
+#define OBJECT_TYPE_STAR 5
+#define OBJECT_TYPE_ONE_UP_MUSHROOM 6
+#define OBJECT_TYPE_FIRE_FLOWER 7
+//
+// TEXTURE IDs.
+//
+#define ID_TEX_BRICK 0
+#define ID_TEX_MARIO 1
+#define ID_TEX_MISC 2
+#define ID_TEX_BBOX -100
 
 // ANIMATION IDs
 #define ID_ANI_BRICK         100   // ground / plain brick  (brick.png)
@@ -35,6 +47,14 @@
 #define ID_ANI_PIPE_TOP      103   // pipe top cap          (enemies.png)
 #define ID_ANI_PIPE_BODY     104   // pipe body segment     (enemies.png)
 #define ID_ANI_BULLET        200
+//
+#define ID_ANI_BRICK 100
+#define ID_ANI_BULLET 200
+#define ID_ANI_MUSHROOM 300
+#define ID_ANI_COIN 310
+#define ID_ANI_FIRE_FLOWER 320
+#define ID_ANI_STAR 330
+#define ID_ANI_ONE_UP_MUSHROOM 340
 
 // BIG MARIO
 #define ID_ANI_MARIO_BIG_IDLE_RIGHT       400
