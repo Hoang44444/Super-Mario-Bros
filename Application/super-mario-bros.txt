@@ -4,6 +4,10 @@ screen_width 1920
 screen_height 1080
 
 [SCENES]
+1  scene01.txt
+2  scene02.txt
+3  scene03.txt
+4  scene04.txt
 0 ../Application/menuscene.txt
 1 ../Application/scene01.txt
 

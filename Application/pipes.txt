@@ -1,0 +1,33 @@
+[SPRITES]
+# id     l    t    r    b    tex_id
+# enemies.png (tex_id=3) is 480x900
+#
+# Pipe sprites from segment 6 (x=288-320): 
+# This segment has clear green content on BOTH halves (confirmed by analysis)
+#
+# Pipe CAP left half  (16x20px, includes rim)
+30001  288   58  304   78   3
+
+# Pipe CAP right half
+30002  304   58  320   78   3
+
+# Pipe BODY left half  (16x16px, repeating segment)
+30003  288   78  304   94   3
+
+# Pipe BODY right half
+30004  304   78  320   94   3
+
+[ANIMATIONS]
+# ani_id  sprite_id  time
+
+# 110 = pipe cap LEFT
+110  30001  100
+
+# 111 = pipe cap RIGHT
+111  30002  100
+
+# 112 = pipe body LEFT
+112  30003  100
+
+# 113 = pipe body RIGHT
+113  30004  100
