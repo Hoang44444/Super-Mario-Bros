@@ -42,14 +42,17 @@ private:
 	int lives = 3;
 	bool isInvincible = false;
 	bool isOnGround = false; 
+	int lives = 3;
+	int score = 0;
 public:
 	Mario(float x, float y) : GameObject(x, y) {
 		level = MARIO_LEVEL_SMALL;
-	};
+	}
 	~Mario() {};
 	// ACTIONS
 	void MovementUpdate(DWORD dt);
 	void ShootBullet();
+	void MovementUpdate(DWORD dt);
 
 	// CORE
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
@@ -63,6 +66,7 @@ public:
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnNoCollision(DWORD dt);
+
 	//Getter/Setter
 	int GetLevel() { return this->level; }
 	void SetLevel(int l) { this->level = l; }
