@@ -1,7 +1,7 @@
 #include "Bullet.h"
-#include "AnimationManager.h"
+#include "../Graphic/AnimationManager.h"
 #include "../Resource/AssetID.h"
-#include "debug.h"
+#include "../Resource/debug.h"
 
 void Bullet::Moving(DWORD dt)
 {

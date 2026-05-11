@@ -1,10 +1,26 @@
 #pragma once
+
 #include <Windows.h>
 #include <string>
 #include "KeyEventHandler.h"
 
 class GameObject;
 typedef GameObject* LPGAMEOBJECT;
+
+class Scene;
+typedef Scene* LPSCENE;
+
+// --- Lớp trung gian xử lý phím (BẠN ĐANG THIẾU CÁI NÀY) ---
+class SceneKeyHandler : public KeyEventHandler
+{
+protected:
+	LPSCENE scence; // Biến lưu scene hiện tại (để ép kiểu sang MenuScene/PlayScene)
+public:
+	virtual void KeyState(BYTE* states) = 0;
+	virtual void OnKeyDown(int KeyCode) = 0;
+	virtual void OnKeyUp(int KeyCode) = 0;
+	SceneKeyHandler(LPSCENE s) : KeyEventHandler() { scence = s; }
+};
 
 class Scene
 {
@@ -29,5 +45,3 @@ public:
 	virtual void Render() = 0;
 	virtual void AddObject(LPGAMEOBJECT obj) = 0;
 };
-
-typedef Scene* LPSCENE;

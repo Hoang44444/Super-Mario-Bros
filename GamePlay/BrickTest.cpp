@@ -1,6 +1,6 @@
 #include "BrickTest.h"
-#include "debug.h"
-#include "AnimationManager.h"
+#include "../Resource/debug.h"
+#include "../Graphic/AnimationManager.h"
 #include "../Resource/AssetID.h"
 
 void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -26,11 +26,11 @@ void Brick::Render()
 {
 	AnimationManager* animations = AnimationManager::GetInstance();
 	
-	LPANIMATION ani = animations->Get(ID_ANI_BRICK);
+	LPANIMATION ani = animations->Get(this->animId);
 	if (ani != NULL)
 		ani->Render(x, y);
 	else
-		DebugOut(L"[ERROR] Brick animation %d not found\n", ID_ANI_BRICK);
+		DebugOut(L"[ERROR] Brick animation %d not found\n", this->animId);
 }
 
 void Brick::GetBoundingBox(float& l, float& t, float& r, float& b)

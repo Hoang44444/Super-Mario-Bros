@@ -136,14 +136,19 @@
     <ClInclude Include="FireFlower.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Goomba.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioKeyHandler.h" />
+    <ClInclude Include="MenuScene.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="OneUpMushroom.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="Portal.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Troopa.h" />
+    <ClInclude Include="TransitionScene.h" />
     <ClInclude Include="Star.h" />
   </ItemGroup>
   <ItemGroup>
@@ -166,9 +171,13 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MenuScene.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="OneUpMushroom.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="Troopa.cpp" />
+    <ClCompile Include="TransitionScene.cpp" />
     <ClCompile Include="Star.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
