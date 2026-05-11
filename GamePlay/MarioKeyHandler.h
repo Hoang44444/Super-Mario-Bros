@@ -21,14 +21,14 @@ public:
 
 		if (states[VK_RIGHT] & 0x80)
 		{
-			if (states[VK_CONTROL] & 0x80)
+			if (states[VK_SHIFT] & 0x80)
 				mario->SetState(MARIO_STATE_RUNNING_RIGHT);
 			else
 				mario->SetState(MARIO_STATE_WALKING_RIGHT);
 		}
 		else if (states[VK_LEFT] & 0x80)
 		{
-			if (states[VK_CONTROL] & 0x80)
+			if (states[VK_SHIFT] & 0x80)
 				mario->SetState(MARIO_STATE_RUNNING_LEFT);
 			else
 				mario->SetState(MARIO_STATE_WALKING_LEFT);
