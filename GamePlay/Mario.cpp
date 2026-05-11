@@ -118,7 +118,15 @@ void Mario::Render()
 	}
 
 	if (aniId != -1)
-		AnimationManager::GetInstance()->Get(aniId)->Render(x, y);
+	{
+		int drawX = (int)round(x);
+		int drawY = (int)round(y);
+		if (direction > 0) {
+			drawX += 1;
+		}
+
+		AnimationManager::GetInstance()->Get(aniId)->Render(drawX, drawY);
+	}
 }
 
 void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -150,7 +158,7 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 		vy = 0;
 		if (e->ny < 0) isOnGround = true;
 	}
-	else if (e->nx != 0 && e->obj->IsBlocking())
+	if (e->nx != 0 && e->obj->IsBlocking())
 	{
 		vx = 0;
 	}
@@ -180,27 +188,13 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 			{
 				SetState(MARIO_STATE_DIE);
 			}
-			else
+			else if (tState == TROOPA_STATE_WALKING)
 			{
-				if (tState == TROOPA_STATE_WALKING) {
-					troopa->SetState(TROOPA_STATE_SHELL);
-				}
-				else if (tState == TROOPA_STATE_SHELL) {
-					troopa->SetState(TROOPA_STATE_SHELL_MOVING);
-
-					float marioCenter = this->x + 7.0f;
-					float troopaCenter = troopa->GetX() + 8.0f;
-					float shellVx = (marioCenter < troopaCenter) ? TROOPA_SHELL_SPEED : -TROOPA_SHELL_SPEED;
-					troopa->SetVx(shellVx);
-				}
-
+				troopa->SetState(TROOPA_STATE_SHELL);
 				vy = -MARIO_JUMP_SPEED / 1.5f;
-				this->y -= 5.0f;
+				this->y -= 2.0f;
 			}
-		}
-		else if (e->nx != 0)
-		{
-			if (tState == TROOPA_STATE_SHELL)
+			else if (tState == TROOPA_STATE_SHELL)
 			{
 				troopa->SetState(TROOPA_STATE_SHELL_MOVING);
 
@@ -209,22 +203,24 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 				float shellVx = (marioCenter < troopaCenter) ? TROOPA_SHELL_SPEED : -TROOPA_SHELL_SPEED;
 				troopa->SetVx(shellVx);
 
+				vy = -MARIO_JUMP_SPEED / 1.5f;
+				this->y -= 2.0f;
+			}
+		}
+		else if (e->nx != 0 || e->ny > 0)
+		{
+			if (tState == TROOPA_STATE_SHELL)
+			{
+				troopa->SetState(TROOPA_STATE_SHELL_MOVING);
+				float shellVx = (e->nx < 0) ? TROOPA_SHELL_SPEED : -TROOPA_SHELL_SPEED;
+				troopa->SetVx(shellVx);
 
-				float bumpOffset = (shellVx > 0) ? 5.0f : -5.0f;
-				troopa->SetPosition(troopa->GetX() + bumpOffset, troopa->GetY());
+				troopa->SetPosition(troopa->GetX() + (e->nx * -2.0f), troopa->GetY());
 			}
 			else
 			{
-
-				if (this->vy >= 0)
-				{
-					SetState(MARIO_STATE_DIE);
-				}
+				SetState(MARIO_STATE_DIE);
 			}
-		}
-		else if (e->ny > 0)
-		{
-			SetState(MARIO_STATE_DIE);
 		}
 	}
 }

@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <d3dx10.h>
 #include <vector>
+#include <cmath>
 
 #include "../Graphic/Animation.h"
 #include "../Graphic/AnimationManager.h"

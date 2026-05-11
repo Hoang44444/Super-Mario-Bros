@@ -11,3 +11,4 @@ screen_height 1080
 1   ../GamePlay/texture/mario.png
 2   ../GamePlay/texture/misc.png
 3	../GamePlay/texture/enemies.png
+4	../GamePlay/texture/enemies2.png

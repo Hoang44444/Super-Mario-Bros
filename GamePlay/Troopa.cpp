@@ -46,11 +46,19 @@ void Troopa::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (e->ny != 0)
 	{
-		vy = 0;
+
+		if ((e->ny < 0 && vy > 0) || (e->ny > 0 && vy < 0))
+		{
+			vy = 0;
+		}
 	}
 	else if (e->nx != 0)
 	{
-		vx = -vx;
+
+		if ((e->nx < 0 && vx > 0) || (e->nx > 0 && vx < 0))
+		{
+			vx = -vx;
+		}
 	}
 }
 
