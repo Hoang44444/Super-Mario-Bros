@@ -161,7 +161,7 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 
 void Renderer::BeginRender()
 {
-    float color[4] = { 0.2f, 0.2f, 0.2f, 1.0f }; // Màu nền xám, alpha = 1.0f
+    float color[4] = { 0.39f, 0.58f, 0.93f, 1 }; // Màu nền xanh, alpha = 1.0f
     pD3DDevice->ClearRenderTargetView(pRenderTargetView, color);
 
     pD3DDevice->OMSetBlendState(pBlendStateAlpha, NULL, 0xffffffff);
