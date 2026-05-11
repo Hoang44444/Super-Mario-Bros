@@ -30,7 +30,7 @@
 #define MARIO_ACCEL_WALK			0.0004f
 #define MARIO_VELOCITY_WALK_MAX		0.05f
 #define MARIO_VELOCITY_RUN_MAX		0.15f
-#define MARIO_JUMP_SPEED			0.5f
+#define MARIO_JUMP_SPEED			0.7f
 
 class Mario : public GameObject
 {
@@ -38,7 +38,6 @@ private:
 	int level; 
 	float gravity = MARIO_GRAVITY;
 	float accelX = 0;
-	void MovementUpdate(DWORD dt);
 	int score = 0;
 	int lives = 3;
 	bool isInvincible = false;
@@ -49,6 +48,7 @@ public:
 	};
 	~Mario() {};
 	// ACTIONS
+	void MovementUpdate(DWORD dt);
 	void ShootBullet();
 
 	// CORE

@@ -57,10 +57,10 @@
     <ClInclude Include="FireFlower.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Star.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="OneUpMushroom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Star.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

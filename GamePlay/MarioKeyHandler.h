@@ -48,6 +48,7 @@ public:
 		case VK_SPACE:
 			mario->SetState(MARIO_STATE_JUMP);
 			break;
+		case 'k':
 		case 'K':
 			mario->SetState(MARIO_STATE_SHOOT);
 			break;
