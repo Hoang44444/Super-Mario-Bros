@@ -26,5 +26,6 @@ public:
 
     float GetX();
     float GetY();
+    int   GetMapWidth() { return mapWidth; }
+    int   GetMapHeight() { return mapHeight; }
 };
-

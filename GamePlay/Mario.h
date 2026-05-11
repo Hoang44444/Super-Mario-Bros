@@ -28,7 +28,7 @@
 #define MARIO_GRAVITY				0.001f
 #define MARIO_ACCEL_X				0.0f
 #define MARIO_RUN_SPEED				0.15f
-#define MARIO_WALK_SPEED			0.1f
+#define MARIO_WALK_SPEED			1.0f
 #define MARIO_JUMP_SPEED			0.5f
 
 class Mario : public GameObject
