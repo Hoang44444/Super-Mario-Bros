@@ -25,18 +25,15 @@
 #define MARIO_STATE_SHOOT			500
 
 // PARAMETERS
-<<<<<<< HEAD
 #define MARIO_GRAVITY				0.002f
 #define MARIO_ACCEL_RUN				0.0005f
 #define MARIO_ACCEL_WALK			0.0004f
 #define MARIO_VELOCITY_WALK_MAX		0.05f
 #define MARIO_VELOCITY_RUN_MAX		0.15f
-=======
 #define MARIO_GRAVITY				0.001f
 #define MARIO_ACCEL_X				0.0f
 #define MARIO_RUN_SPEED				0.15f
 #define MARIO_WALK_SPEED			1.0f
->>>>>>> a03c71b078dd7cb8d4c3b516c8524ce94e6d89da
 #define MARIO_JUMP_SPEED			0.5f
 
 class Mario : public GameObject
@@ -45,8 +42,10 @@ private:
 	int level; 
 	float gravity = MARIO_GRAVITY;
 	float accelX = 0;
-
+	bool isInvincible = false;
 	bool isOnGround = false; 
+	int lives = 3;
+	int score = 0;
 public:
 	Mario(float x, float y) : GameObject(x, y) {
 		level = MARIO_LEVEL_SMALL;
@@ -68,6 +67,7 @@ public:
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnNoCollision(DWORD dt);
+
 	//Getter/Setter
 	int GetLevel() { return this->level; }
 	void SetLevel(int l) { this->level = l; }

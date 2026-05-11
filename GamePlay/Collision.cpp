@@ -170,11 +170,18 @@ void Collision::Scan(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* objDes
     for (UINT i = 0; i < objDests->size(); i++)
     {
         LPCOLLISIONEVENT e = SweptAABB(objSrc, dt, objDests->at(i));
+        for (UINT i = 0; i < objDests->size(); i++)
+        {
+            LPGAMEOBJECT objDest = objDests->at(i);
+            if (objSrc == objDest) continue;
 
-        if (e->WasCollided() == 1)
-            coEvents.push_back(e);
-        else
-            delete e;
+            LPCOLLISIONEVENT e = SweptAABB(objSrc, dt, objDest);
+
+            if (e->WasCollided() == 1)
+                coEvents.push_back(e);
+            else
+                delete e;
+        }
     }
 }
 

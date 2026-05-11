@@ -44,8 +44,7 @@ public:
 		this->x = x;
 		this->y = y;
 	}
-
-	virtual ~GameObject() {}
+    virtual ~GameObject() {};
 
 	// --- POSITION & GETTERS (Fixed C2248) ---
 	void SetPosition(float x, float y) { this->x = x; this->y = y; }

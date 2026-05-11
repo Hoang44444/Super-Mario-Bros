@@ -25,20 +25,21 @@
 #include "Star.h"
 #include "FireFlower.h"
 #include "OneUpMushroom.h"
-
+#include "Camera.h"
 
 using namespace std;
 
 void PlayScene::Load()
 {
-	Mushroom* mushroom = new Mushroom(100.0f, 50.0f);
-
 	if (key_handler == NULL)
 	{
 		key_handler = new MarioKeyHandler(this);
 		GameManager::GetInstance()->SetKeyHandler(key_handler);
 	}
 
+	// Set map size for camera clamping
+	Camera::GetInstance()->SetMapSize(2000, 240);
+		
 	ifstream f;
 	f.open(sceneFilePath.c_str());
 	if (!f.is_open())
@@ -277,6 +278,15 @@ void PlayScene::Update(DWORD dt)
 	}
 
 	// Clean up deleted objects
+	// Update camera to follow player
+	if (player != NULL)
+	{
+		float px, py;
+		player->GetPosition(px, py);
+		Camera::GetInstance()->Follow(px, py);
+	}
+
+	// Remove deleted objects
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (objects[i]->IsDeleted())
