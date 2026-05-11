@@ -24,3 +24,4 @@ screen_height 1080
 10  ../GamePlay/texture/transition_1to2.png
 11  ../GamePlay/texture/transition_2to3.png
 12  ../GamePlay/texture/transition_3to4.png
+4   ../GamePlay/texture/floating_brick.png

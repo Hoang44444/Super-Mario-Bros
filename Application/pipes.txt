@@ -1,33 +1,36 @@
 [SPRITES]
-# id     l    t    r    b    tex_id
+# id    l    t    r    b    tex_id
 # enemies.png (tex_id=3) is 480x900
-#
-# Pipe sprites from segment 6 (x=288-320): 
-# This segment has clear green content on BOTH halves (confirmed by analysis)
-#
-# Pipe CAP left half  (16x20px, includes rim)
-30001  288   58  304   78   3
+# Pipe segment used: x=336-368 (32px wide = 2 tiles)
+# Verified: all 4 halves have 100% green pixels, cleanest pipe in sheet
 
-# Pipe CAP right half
-30002  304   58  320   78   3
+# === PIPE CAP (top rim, 16x23px each half) ===
+# Cap rows: y=71-93 (23px tall)
+# Left half  of cap
+30001  336  71  352  94   3
 
-# Pipe BODY left half  (16x16px, repeating segment)
-30003  288   78  304   94   3
+# Right half of cap
+30002  352  71  368  94   3
 
-# Pipe BODY right half
-30004  304   78  320   94   3
+# === PIPE BODY (repeating segment, 16x24px each half) ===
+# Body rows: y=94-117 (24px tall)
+# Left half  of body
+30003  336  94  352  118   3
+
+# Right half of body
+30004  352  94  368  118   3
 
 [ANIMATIONS]
 # ani_id  sprite_id  time
 
-# 110 = pipe cap LEFT
+# 110 = pipe cap LEFT  (16px wide, 23px tall)
 110  30001  100
 
-# 111 = pipe cap RIGHT
+# 111 = pipe cap RIGHT (16px wide, 23px tall)
 111  30002  100
 
-# 112 = pipe body LEFT
+# 112 = pipe body LEFT  (16px wide, 24px tall)
 112  30003  100
 
-# 113 = pipe body RIGHT
+# 113 = pipe body RIGHT (16px wide, 24px tall)
 113  30004  100

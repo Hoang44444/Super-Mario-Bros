@@ -1,86 +1,76 @@
 [SPRITES]
-# id     l    t    r    b    tex_id
+# id    l    t    r    b    tex_id
 # misc.png (tex_id=2) is 639x360
-#
-# ---- BLOCK TILES (GENERAL section, 16x16 each) ----
-#
-# Floating brick (brown) - y=110-126, x=286-302
-20001  286  110  302  126   2
+# All coordinates verified by pixel scan
 
-# ? block frame 1 (yellow-orange) - y=78-94, x=318-334
-20002  318   78  334   94   2
+# === BLOCK TILES (from GENERAL section, y=118-134 row) ===
+# This row has the highest fill % — cleanest tiles in the sheet
 
-# ? block frame 2 - y=94-110, x=302-318 (slightly different shade)
-20003  302   94  318  110   2
+# Ground / plain brick (brown, 82% fill)
+20001  286  118  302  134   2
 
-# ? block frame 3 - y=126-142, x=302-318
-20004  302  126  318  142   2
+# Floating brick — floating_brick.png (tex_id=4), full 16x16 image
+20030    0    0   16   16   4
 
-# Used/empty block (grey-tan) - y=94-110, x=334-350
-20005  334   94  350  110   2
+# ? BLock Frams
+# Frame 1
+20002  302  118  318  134   2
 
-# Ground tile (dark brown, solid) - y=126-142, x=286-302
-20006  286  126  302  142   2
+# Frame 2 (brightest)
+20003  318  118  334  134   2
 
-# Ground tile variant 2 - y=142-158, x=286-302
-20007  286  142  302  158   2
+# Frame 3
+20004  334  118  350  134   2
 
-# Orange/red block - y=206-222, x=302-318
-20008  302  206  318  222   2
+# Frame 4
+20008  350  118  366  134   2
 
-# Green block - y=222-238, x=302-318
-20009  302  222  318  238   2
+# Frame 5
+20009  366  118  382  134   2
 
-# Grey block - y=238-254, x=350-366
-20010  350  238  366  254   2
+# Brick variant 2 (brown, 81% fill)
+20005  350  118  366  134   2
 
-# ---- CLOUD SPRITE (large, split into 3x16px columns) ----
-# Cloud left section - x=280-296, y=280-344
-20020  280  280  296  344   2
+# Used / empty block frame 1 (grey, 75% fill)
+20006  398  118  414  134   2
 
-# Cloud middle section - x=392-408, y=280-344
-20021  392  280  408  344   2
+# Used / empty block frame 2 (grey, 71% fill)
+20007  414  118  430  134   2
 
-# Cloud right section - x=584-600, y=280-344
-20022  584  280  600  344   2
+# === CLOUD SPRITE (x=280-632, y=270-353 in misc.png) ===
+# Cloud is one large shape. Split into 3 non-overlapping 16px-wide columns:
+# Left section  : x=280-296
+# Middle section: x=424-440 (from the widest middle part of the cloud)
+# Right section : x=616-632
 
-# Cloud left-edge (for 3-wide cloud) - x=280-296, y=280-344
-# Reusing 20020, 20021, 20022 to assemble: L + M + M + R
+# Cloud LEFT column  (16x84px)
+20010  280  270  296  354   2
+
+# Cloud MIDDLE column (16x84px)
+20011  424  270  440  354   2
+
+# Cloud RIGHT column  (16x84px)
+20012  616  270  632  354   2
 
 [ANIMATIONS]
-# ani_id  sprite_id time  [more frames...]
+# ani_id  sprite_id  time  [more frames]
 
-# 100 = plain ground brick (defined in brick.txt, tex 0)
+# 100 = plain ground/brick (defined in brick.txt, tex 0)
 
-# 101 = ? block (3-frame animated)
-101  20002 150  20003 150  20004 150
+# 101 = ? block (5 frames)
+101  20002 120  20003 140  20004 120  20008 120  20009 120
 
 # 102 = used/empty block (static)
-102  20005 100
+102  20006 100
 
-# 103 = floating brick (brown, static)
-103  20001 100
+# 103 = floating brick (floating_brick.png)
+103  20030 100
 
-# 104 = ground tile (dark, for variety)
-104  20006 100
+# 120 = cloud LEFT column  (non-blocking, 16x84px)
+120  20010 100
 
-# 105 = ground tile variant 2
-105  20007 100
+# 121 = cloud MIDDLE column (non-blocking, 16x84px)
+121  20011 100
 
-# 106 = orange block
-106  20008 100
-
-# 107 = green block
-107  20009 100
-
-# 108 = grey block
-108  20010 100
-
-# 120 = cloud LEFT column  (16x64px tall)
-120  20020 100
-
-# 121 = cloud MIDDLE column
-121  20021 100
-
-# 122 = cloud RIGHT column
-122  20022 100
+# 122 = cloud RIGHT column  (non-blocking, 16x84px)
+122  20012 100
