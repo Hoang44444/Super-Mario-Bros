@@ -1,14 +1,15 @@
-#include "TextureManager.h"
 #include <Windows.h>
+#include <d3d10.h>
+#include <d3dx10.h>
+
+#include "TextureManager.h"
 #include "Renderer.h"
 #include "debug.h"
-	
 
 TextureManager* TextureManager::__instance = NULL;
 
 TextureManager::TextureManager()
 {
-
 }
 
 TextureManager* TextureManager::GetInstance()
@@ -17,7 +18,33 @@ TextureManager* TextureManager::GetInstance()
 	return __instance;
 }
 
-LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath) {
+void TextureManager::Add(int id, LPCWSTR filePath)
+{
+	textures[id] = LoadTexture(filePath);
+}
+
+LPTEXTURE TextureManager::Get(unsigned int i)
+{
+	LPTEXTURE t = textures[i];
+	if (t == NULL)
+		DebugOut(L"[ERROR] Texture Id %d not found !\n", i);
+
+	return t;
+}
+
+void TextureManager::Clear()
+{
+	for (auto x : textures)
+	{
+		LPTEXTURE tex = x.second;
+		if (tex != NULL) delete tex;
+	}
+
+	textures.clear();
+}
+
+LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath)
+{
 	ID3D10Resource* pD3D10Resource = NULL;
 	ID3D10Texture2D* tex = NULL;
 
@@ -47,7 +74,7 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath) {
 	info.pSrcInfo = &imageInfo;
 
 	// Loads the texture into a temporary ID3D10Resource object
-	ID3D10Device* device= Renderer::GetInstance()->GetDevice();
+	ID3D10Device* device = Renderer::GetInstance()->GetDevice();
 	hr = D3DX10CreateTextureFromFile(device,
 		texturePath,
 		&info,
@@ -71,63 +98,20 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath) {
 		return NULL;
 	}
 
-	//
-	// Create the Share Resource View for this texture 
-	// 	   
-	// Get the texture details
+	// Create a shader resource view of the texture
 	D3D10_TEXTURE2D_DESC desc;
 	tex->GetDesc(&desc);
 
-	// Create a shader resource view of the texture
 	D3D10_SHADER_RESOURCE_VIEW_DESC SRVDesc;
-
-	// Clear out the shader resource view description structure
 	ZeroMemory(&SRVDesc, sizeof(SRVDesc));
-
-	// Set the texture format
 	SRVDesc.Format = desc.Format;
-
-	// Set the type of resource
 	SRVDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
 	SRVDesc.Texture2D.MipLevels = desc.MipLevels;
 
 	ID3D10ShaderResourceView* gSpriteTextureRV = NULL;
-
 	device->CreateShaderResourceView(tex, &SRVDesc, &gSpriteTextureRV);
 
 	DebugOut(L"[INFO] Texture loaded Ok from file: %s (w=%d, h=%d)\n", texturePath, desc.Width, desc.Height);
 
 	return new Texture(tex, gSpriteTextureRV);
 }
-
-
-void TextureManager::Add(int id, LPCWSTR filePath)
-{
-	textures[id] = LoadTexture(filePath);
-}
-
-LPTEXTURE TextureManager::Get(unsigned int i)
-{
-	LPTEXTURE t = textures[i];
-	if (t == NULL)
-		DebugOut(L"[ERROR] Texture Id %d not found !\n", i);
-
-	return t;
-}
-
-/*
-	Clear all loaded textures
-*/
-void TextureManager::Clear()
-{
-	for (auto x : textures)
-	{
-		LPTEXTURE tex = x.second;
-		if (tex != NULL) delete tex;
-	}
-
-	textures.clear();
-}
-
-
-

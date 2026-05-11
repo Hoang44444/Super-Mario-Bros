@@ -1,6 +1,8 @@
 #pragma once
-#include "Animation.h"
 #include <unordered_map>
+#include "Animation.h"
+
+using namespace std;
 
 class AnimationManager
 {
@@ -15,4 +17,3 @@ public:
 
 	static AnimationManager* GetInstance();
 };
-

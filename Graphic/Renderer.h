@@ -17,10 +17,17 @@ class Renderer
     int backBufferWidth = 0;
     int backBufferHeight = 0;
 
+    float globalScale = 1.0f;
+
 public:
+    static const int INTERNAL_SCREEN_WIDTH = 282; // (240 * 1.175 approx for 4:3)
+    static const int INTERNAL_SCREEN_HEIGHT = 240; 
+
     static Renderer* GetInstance();
 
     void Init(HWND hWnd, HINSTANCE hInstance);
+
+    float GetGlobalScale() { return globalScale; }
 
     // Các hàm vẽ
     void BeginRender();
@@ -32,5 +39,6 @@ public:
     ID3DX10Sprite* GetSpriteHandler() { return spriteObject; }
     int GetBackBufferWidth() { return backBufferWidth; }
     int GetBackBufferHeight() { return backBufferHeight; }
+    LPTEXTURE GetTexture(LPCWSTR filePath);
     ~Renderer();
 };

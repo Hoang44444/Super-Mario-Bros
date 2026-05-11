@@ -33,6 +33,10 @@ public:
 			else
 				mario->SetState(MARIO_STATE_WALKING_LEFT);
 		}
+		if(states[VK_RIGHT] & 0x80)
+			mario->SetState(MARIO_STATE_WALKING_RIGHT);
+		else if (states[VK_LEFT] & 0x80)
+			mario->SetState(MARIO_STATE_WALKING_LEFT);
 		else
 			mario->SetState(MARIO_STATE_IDLE);
 	}
@@ -50,6 +54,7 @@ public:
 			break;
 		case 'k':
 		case 'K':
+			DebugOut(L"[KEYBOARD] Key 'k' pressed: Shooting bullet\n");
 			mario->SetState(MARIO_STATE_SHOOT);
 			break;
 		}

@@ -3,7 +3,7 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     WinApp myApp;
-    if (myApp.Initialize(hInstance, 1280, 720)) {
+    if (myApp.Initialize(hInstance, 800, 600)) {
         return myApp.Run();
     }
 

@@ -1,13 +1,17 @@
 #pragma once
 #include <Windows.h>
+#include <string>
 #include "KeyEventHandler.h"
+
+class GameObject;
+typedef GameObject* LPGAMEOBJECT;
 
 class Scene
 {
 protected:
 	LPKEYEVENTHANDLER key_handler;
 	int id;
-	LPCWSTR sceneFilePath;
+	std::wstring sceneFilePath;
 
 public:
 	Scene(int id, LPCWSTR filePath)
@@ -23,6 +27,7 @@ public:
 	virtual void Unload() = 0;
 	virtual void Update(DWORD dt) = 0;
 	virtual void Render() = 0;
+	virtual void AddObject(LPGAMEOBJECT obj) = 0;
 };
 
 typedef Scene* LPSCENE;

@@ -102,7 +102,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Graphic;C:\DoAn\Super-Mario-Bros\GamePlay;C:\DoAn\Super-Mario-Bros\Resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DoAn\Super-Mario-Bros\Graphic;C:\DoAn\Super-Mario-Bros\GamePlay;C:\DoAn\Super-Mario-Bros\Resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,9 +139,6 @@
     </ProjectReference>
     <ProjectReference Include="..\Graphic\Graphic.vcxproj">
       <Project>{5ac3afb7-6bbf-4fd2-b4e1-c846947ea458}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Resource\Resource.vcxproj">
-      <Project>{e6557f33-229d-44b9-8110-dfdfd16eaf41}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
