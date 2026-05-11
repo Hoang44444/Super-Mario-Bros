@@ -20,9 +20,19 @@ public:
 		if (mario->GetState() == MARIO_STATE_DIE) return;
 
 		if (states[VK_RIGHT] & 0x80)
-			mario->SetState(MARIO_STATE_WALKING_RIGHT);
+		{
+			if (states[VK_CONTROL] & 0x80)
+				mario->SetState(MARIO_STATE_RUNNING_RIGHT);
+			else
+				mario->SetState(MARIO_STATE_WALKING_RIGHT);
+		}
 		else if (states[VK_LEFT] & 0x80)
-			mario->SetState(MARIO_STATE_WALKING_LEFT);
+		{
+			if (states[VK_CONTROL] & 0x80)
+				mario->SetState(MARIO_STATE_RUNNING_LEFT);
+			else
+				mario->SetState(MARIO_STATE_WALKING_LEFT);
+		}
 		else
 			mario->SetState(MARIO_STATE_IDLE);
 	}
@@ -39,7 +49,6 @@ public:
 			mario->SetState(MARIO_STATE_JUMP);
 			break;
 		case 'K':
-			DebugOut(L"[KEYBOARD] Key 'k' pressed: Shooting bullet\n");
 			mario->SetState(MARIO_STATE_SHOOT);
 			break;
 		}

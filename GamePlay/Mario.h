@@ -26,9 +26,10 @@
 
 // PARAMETERS
 #define MARIO_GRAVITY				0.002f
-#define MARIO_ACCEL_X				0.0f
-#define MARIO_RUN_SPEED				0.15f
-#define MARIO_WALK_SPEED			0.1f
+#define MARIO_ACCEL_RUN				0.0005f
+#define MARIO_ACCEL_WALK			0.0004f
+#define MARIO_VELOCITY_WALK_MAX		0.05f
+#define MARIO_VELOCITY_RUN_MAX		0.15f
 #define MARIO_JUMP_SPEED			0.5f
 
 class Mario : public GameObject
@@ -36,7 +37,7 @@ class Mario : public GameObject
 private:
 	int level; 
 	float gravity = MARIO_GRAVITY;
-	float accelX = MARIO_ACCEL_X;
+	float accelX = 0;
 	void MovementUpdate(DWORD dt);
 	int score = 0;
 	int lives = 3;
