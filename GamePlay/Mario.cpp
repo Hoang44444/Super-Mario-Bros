@@ -14,11 +14,6 @@
 #include "OneUpMushroom.h"
 
 void Mario::MovementUpdate(DWORD dt) {
-	this->x += this->vx * dt;
-	this->y += this->vy * dt;
-	this->vx += this->accelX * dt;
-	this->vy += this->gravity * dt;
-	isOnGround = false;
 	vx += accelX * dt;
 	vy += gravity * dt;
 
@@ -55,19 +50,7 @@ void Mario::ShootBullet() {
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	this->vx += this->accelX * dt;
-	this->vy += this->gravity * dt;
-
-	if (state == MARIO_STATE_DIE)
-	{
-		this->x += this->vx * dt;
-		this->y += this->vy * dt;
-		return;
-	}
-
-	isOnGround = false;
-
+	MovementUpdate(dt);
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -77,36 +60,47 @@ void Mario::SetState(int state)
 	switch (state)
 	{
 	case MARIO_STATE_WALKING_RIGHT:
-		vx = MARIO_WALK_SPEED;
+		accelX = MARIO_ACCEL_WALK;
 		direction = 1;
 		break;
+
 	case MARIO_STATE_WALKING_LEFT:
-		vx = -MARIO_WALK_SPEED;
+		accelX = -MARIO_ACCEL_WALK;
 		direction = -1;
 		break;
+
+	case MARIO_STATE_RUNNING_RIGHT:
+		accelX = MARIO_ACCEL_RUN;
+		direction = 1;
+		break;
+
+	case MARIO_STATE_RUNNING_LEFT:
+		accelX = -MARIO_ACCEL_RUN;
+		direction = -1;
+		break;
+
 	case MARIO_STATE_JUMP:
 		if (isOnGround) {
 			vy = -MARIO_JUMP_SPEED;
 			isOnGround = false;
 		}
 		break;
+
 	case MARIO_STATE_IDLE:
-		vx = 0;
+		accelX = 0;
 		break;
+
 	case MARIO_STATE_DIE:
 		vy = -MARIO_JUMP_SPEED;
+		accelX = 0;
 		break;
+
 	case MARIO_STATE_SHOOT:
 		ShootBullet();
-		this->state = MARIO_STATE_IDLE;
 		break;
-	case MARIO_STATE_RUNNING_LEFT:
-		vx = -MARIO_RUN_SPEED;
-		direction = -1;
-		break;
-	case MARIO_STATE_RUNNING_RIGHT:
-		vx = MARIO_RUN_SPEED;
-		direction = 1;
+
+	case MARIO_STATE_SIT:
+		accelX = 0;
 		break;
 	}
 }
@@ -186,7 +180,13 @@ void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (state == MARIO_STATE_DIE) return;
+	if (dynamic_cast<Brick*>(e->obj))
+	{
+		if (e->ny < 0 && e->obj->IsBlocking()) { 
+			vy = 0;
+			isOnGround = true;
+		}
+	}
 
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
@@ -342,7 +342,6 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void Mario::OnNoCollision(DWORD dt)
 {
-	this->x += this->vx * dt;
-	this->y += this->vy * dt;
+	x += vx * dt;
+	y += vy * dt;
 }
-

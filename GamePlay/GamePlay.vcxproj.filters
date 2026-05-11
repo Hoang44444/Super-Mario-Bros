@@ -52,7 +52,16 @@
     <ClInclude Include="Portal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TransitionScene.h">
+    <ClInclude Include="Coin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FireFlower.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OneUpMushroom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Star.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
