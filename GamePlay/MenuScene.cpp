@@ -200,8 +200,8 @@ void MenuScene::Render()
         RECT r = title->GetRect();
 
         renderer->Draw(
-            0.0f,
-            0.0f,
+            100.0f,
+            10.0f,
             title->GetTexture(),
             &r
         );

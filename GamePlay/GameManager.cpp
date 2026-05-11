@@ -228,12 +228,38 @@ void GameManager::_ParseSection_TEXTURES(string line)
 
 void GameManager::LoadSettings(LPCWSTR gameFile)
 {
-    DebugOut(
-        L"[INFO] Loading settings from %s\n",
-        gameFile
-    );
-}
+    DebugOut(L"[INFO] Loading settings from %s\n", gameFile);
 
+    ifstream f(gameFile);
+    if (!f.is_open())
+    {
+        DebugOut(L"[ERROR] Cannot open settings file!\n");
+        return;
+    }
+
+    int section = -1;
+    char str[1024];
+
+    while (f.getline(str, 1024))
+    {
+        string line = Trim(str);
+        if (line.empty() || line[0] == '#') continue;
+
+        if (line.find("[SETTINGS]") != string::npos)
+        {
+            section = GAME_SECTION_SETTINGS;
+            continue;
+        }
+
+        // Gặp section khác thì dừng
+        if (line[0] == '[') break;
+
+        if (section == GAME_SECTION_SETTINGS)
+            _ParseSection_SETTINGS(line);
+    }
+
+    f.close();
+}
 void GameManager::Load(LPCWSTR gameFile)
 {
     DebugOut(
