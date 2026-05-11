@@ -13,12 +13,18 @@
 #include "../Resource/AssetID.h"
 #include "debug.h"
 #include "GameManager.h"
+#include "Mushroom.h"
+#include "Coin.h"
+#include "Star.h"
+#include "FireFlower.h"
+#include "OneUpMushroom.h"
+
 
 using namespace std;
 
 void PlayScene::Load()
 {
-	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath.c_str());
+	Mushroom* mushroom = new Mushroom(100.0f, 50.0f);
 
 	if (key_handler == NULL)
 	{
@@ -187,6 +193,21 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK:
 		// In a real refactor, we would pass more parameters if needed
 		obj = new Brick(x, y, x - 100, x + 100); 
+		break;
+	case OBJECT_TYPE_MUSHROOM:
+		obj = new Mushroom(x, y);
+		break;
+	case OBJECT_TYPE_COIN:
+		obj = new Coin(x, y);
+		break;
+	case OBJECT_TYPE_FIRE_FLOWER:
+		obj = new FireFlower(x, y);
+		break;
+	case OBJECT_TYPE_STAR:
+		obj = new Star(x, y);
+		break;
+	case OBJECT_TYPE_ONE_UP_MUSHROOM:
+		obj = new OneUpMushroom(x, y);
 		break;
 	}
 
