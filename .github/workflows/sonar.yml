@@ -1,0 +1,80 @@
+name: SonarCloud C++ Analysis
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  build:
+    name: Build and Analyze
+    runs-on: windows-latest
+
+    env:
+      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore "Super Mario Bros.sln"
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Install SonarScanner
+        shell: powershell
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+
+      - name: Download Build Wrapper
+        shell: powershell
+        run: |
+          Invoke-WebRequest `
+            -Uri https://sonarcloud.io/static/cpp/build-wrapper-win-x86.zip `
+            -OutFile build-wrapper.zip
+
+          Expand-Archive `
+            build-wrapper.zip `
+            -DestinationPath .
+
+      - name: Sonar Begin
+        shell: powershell
+        run: |
+          dotnet-sonarscanner begin `
+            /k:"Hoang44444_Super-Mario-Bros" `
+            /o:"hoang44444" `
+            /d:sonar.token="$env:SONAR_TOKEN" `
+            /d:sonar.host.url="https://sonarcloud.io" `
+            /d:sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
+
+      - name: Build with Build Wrapper
+        shell: powershell
+        run: |
+          .\build-wrapper-win-x86\build-wrapper-win-x86-64.exe `
+            --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} `
+            msbuild "Super Mario Bros.sln" `
+            /t:Rebuild `
+            /p:Configuration=Release `
+            /p:Platform=x64
+
+      - name: Sonar End
+        shell: powershell
+        run: |
+          dotnet-sonarscanner end `
+            /d:sonar.token="$env:SONAR_TOKEN"
