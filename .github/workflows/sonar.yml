@@ -20,6 +20,7 @@ jobs:
 
     env:
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -28,13 +29,13 @@ jobs:
           fetch-depth: 0
 
       - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2
+        uses: NuGet/setup-nuget@65fd6d3f0a8f9b5f6e1a8c2d7d7cdecb0f0f6d8e
 
       - name: Restore NuGet packages
         run: nuget restore "Super Mario Bros.sln"
 
       - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v2.0.0
 
       - name: Install SonarScanner
         shell: powershell
@@ -54,13 +55,11 @@ jobs:
 
       - name: Sonar Begin
         shell: powershell
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           dotnet-sonarscanner begin `
             /k:"Hoang44444_Super-Mario-Bros" `
             /o:"hoang44444" `
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
+            /d:sonar.token="$env:SONAR_TOKEN" `
             /d:sonar.host.url="https://sonarcloud.io" `
             /d:sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
 
@@ -76,8 +75,6 @@ jobs:
 
       - name: Sonar End
         shell: powershell
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           dotnet-sonarscanner end `
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+            /d:sonar.token="$env:SONAR_TOKEN"
