@@ -127,13 +127,12 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 	if(dynamic_cast<Brick*>(e->obj))
 	{
 		DebugOut(L"Collision with Brick\n");
-		// Simple collision response for testing
-		if (e->ny < 0) { // Colliding from above
+		if (e->ny < 0) { 
 			y += e->t * vy * e->ny;
 			vy = 0;
 			isOnGround = true;
 		}
-		else if (e->nx != 0) { // Colliding from sides
+		else if (e->nx != 0) { 
 			x += e->t * vx * e->nx;
 			vx = 0;
 		}
