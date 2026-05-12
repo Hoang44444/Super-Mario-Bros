@@ -3,11 +3,11 @@ name: SonarCloud C++ Analysis
 on:
   push:
     branches:
-      - clean-repo
+      - main
 
   pull_request:
     branches:
-      - clean-repo
+      - main
     types:
       - opened
       - synchronize
