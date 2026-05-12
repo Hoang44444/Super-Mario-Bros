@@ -6,7 +6,7 @@
 #define MARIO_LEVEL_BIG		2
 #define MARIO_LEVEL_FIRE	3
 
-// MARIO STATES
+// MARIO STATES 
 #define MARIO_STATE_DIE				-10
 #define MARIO_STATE_IDLE			0
 
@@ -31,6 +31,8 @@
 #define MARIO_VELOCITY_WALK_MAX		0.05f
 #define MARIO_VELOCITY_RUN_MAX		0.15f
 #define MARIO_JUMP_SPEED			0.7f
+#define MARIO_INVINCIBLE_BLINK_INTERVAL 100
+#define MARIO_INVICIBLE_TIME 5000
 
 class Mario : public GameObject
 {
@@ -42,6 +44,7 @@ private:
 	int lives = 3;
 	bool isInvincible = false;
 	bool isOnGround = false; 
+	ULONGLONG untouchable_start = 0;
 public:
 	Mario(float x, float y) : GameObject(x, y) {
 		level = MARIO_LEVEL_SMALL;
@@ -50,6 +53,7 @@ public:
 	// ACTIONS
 	void MovementUpdate(DWORD dt);
 	void ShootBullet();
+	void InvincibleAction();
 
 	// CORE
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);

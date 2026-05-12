@@ -10,6 +10,7 @@
 #include "FireFlower.h"
 #include "OneUpMushroom.h"
 
+// ACTIONS
 void Mario::MovementUpdate(DWORD dt) {
 	vx += accelX * dt;
 	vy += gravity * dt;
@@ -40,14 +41,26 @@ void Mario::MovementUpdate(DWORD dt) {
 }
 
 void Mario::ShootBullet() {
-	float bulletX = x + (direction > 0 ? 15.0f : -8.0f);
-	float bulletY = y;
-	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
+	if (this->GetState() == MARIO_LEVEL_FIRE) {
+		float bulletX = x + (direction > 0 ? 15.0f : -8.0f);
+		float bulletY = y;
+		scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
+	}
 }
+
+void Mario::InvincibleAction() {
+	if (this->isInvincible == true) {
+		if (GetTickCount64() - untouchable_start > MARIO_INVICIBLE_TIME) {
+			isInvincible = false;
+		}
+	}
+}
+// CORE
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	MovementUpdate(dt);
+	InvincibleAction();
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -108,8 +121,22 @@ void Mario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
-	// BẠN CÓ THỂ BỔ SUNG LEVEL FIRE VÀO ĐÂY SAU NẾU CÓ ANIMATION RIÊNG
-	else if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_FIRE)
+
+	if (level == MARIO_LEVEL_FIRE) {
+		if (!isOnGround) {
+			if (direction > 0) aniId = ID_ANI_MARIO_BIG_JUMP_WALK_RIGHT;
+			else aniId = ID_ANI_MARIO_BIG_JUMP_WALK_LEFT;
+		}
+		else if (vx != 0) {
+			if (direction > 0) aniId = ID_ANI_MARIO_BIG_WALKING_RIGHT;
+			else aniId = ID_ANI_MARIO_BIG_WALKING_LEFT;
+		}
+		else {
+			if (direction > 0) aniId = ID_ANI_MARIO_BIG_IDLE_RIGHT;
+			else aniId = ID_ANI_MARIO_BIG_IDLE_LEFT;
+		}
+	}
+	if (level == MARIO_LEVEL_BIG)
 	{
 		if (!isOnGround) {
 			if (direction > 0) aniId = ID_ANI_MARIO_BIG_JUMP_WALK_RIGHT;
@@ -124,7 +151,7 @@ void Mario::Render()
 			else aniId = ID_ANI_MARIO_BIG_IDLE_LEFT;
 		}
 	}
-	else if (level == MARIO_LEVEL_SMALL)
+	if (level == MARIO_LEVEL_SMALL)
 	{
 		if (!isOnGround) {
 			if (direction > 0) aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
@@ -138,6 +165,11 @@ void Mario::Render()
 			if (direction > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
 			else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
 		}
+	}
+
+	if (this->isInvincible == true) {
+		if (((GetTickCount64() - untouchable_start) / MARIO_INVINCIBLE_BLINK_INTERVAL) % 2 == 0)
+			return;
 	}
 
 	if (aniId != -1)
@@ -211,6 +243,7 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 		Star* star = dynamic_cast<Star*>(e->obj);
 		if (!star->IsDeleted()) {
 			this->isInvincible = true; // Kích hoạt trạng thái bất tử 
+			this->untouchable_start = GetTickCount64();
 			this->AddScore(1000);
 			star->Delete();
 		}
