@@ -29,13 +29,13 @@ jobs:
           fetch-depth: 0
 
       - name: Setup NuGet
-        uses: NuGet/setup-nuget@65fd6d3f0a8f9b5f6e1a8c2d7d7cdecb0f0f6d8e
+        uses: NuGet/setup-nuget@v2
 
       - name: Restore NuGet packages
         run: nuget restore "Super Mario Bros.sln"
 
       - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2.0.0
+        uses: microsoft/setup-msbuild@v2
 
       - name: Install SonarScanner
         shell: powershell
