@@ -48,7 +48,7 @@ private:
 public:
 	Mario(float x, float y) : GameObject(x, y) {
 		level = MARIO_LEVEL_SMALL;
-	};
+	}
 	~Mario() {};
 	// ACTIONS
 	void MovementUpdate(DWORD dt);
@@ -67,6 +67,7 @@ public:
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnNoCollision(DWORD dt);
+
 	//Getter/Setter
 	int GetLevel() { return this->level; }
 	void SetLevel(int l) { this->level = l; }
