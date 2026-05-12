@@ -141,6 +141,7 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void Mario::OnNoCollision(DWORD dt)
 {
+
 	MovementUpdate(dt);
 }
 
