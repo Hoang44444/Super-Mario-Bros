@@ -1,8 +1,10 @@
 [SPRITES]
-# id   left  top  right  bottom  tex_id
-# Using Mario's small idle sprite temporarily for debugging
-20001  247   0    260    15      1
-
+# id left top right bottom tex_id
+20001 178 550 189 564 1
+20002 178 571 189 585 1
+20003 195 571 210 585 1
+20004 195 550 210 564 1
 [ANIMATIONS]
-# id   sprite1_id  time1
-200    20001       100
+# id sprite1_id time1 sprite2_id time2 ......
+200 20001 100 20002 100 20003 100 20004 100
+201 20004 100 20003 100 20002 100 20001 100

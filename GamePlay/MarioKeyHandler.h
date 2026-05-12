@@ -18,6 +18,7 @@ public:
 		if (mario == NULL) return;
 
 		if (mario->GetState() == MARIO_STATE_DIE) return;
+		if (mario->GetState() == MARIO_STATE_SHOOT) return;
 
 		if (states[VK_RIGHT] & 0x80)
 		{
@@ -48,7 +49,6 @@ public:
 		case VK_SPACE:
 			mario->SetState(MARIO_STATE_JUMP);
 			break;
-		case 'k':
 		case 'K':
 			mario->SetState(MARIO_STATE_SHOOT);
 			break;
