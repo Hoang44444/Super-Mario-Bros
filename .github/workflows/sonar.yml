@@ -1,0 +1,38 @@
+name: SonarCloud C++ Analysis
+on:
+  push:
+    branches: [ main ] # Chỉ chạy khi push lên main
+  pull_request:
+    branches: [ main ] # Chạy khi mở PR vào main
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    name: Build and analyze
+    runs-on: windows-latest
+    env:
+      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install sonar-scanner and build-wrapper
+        uses: SonarSource/sonarcloud-github-c-cpp@v3
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Run build-wrapper
+        shell: powershell
+        run: |
+          # msbuild sẽ tự động build cả Static Lib và EXE nếu chúng nằm trong cùng Solution
+          build-wrapper-win-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} msbuild "Super Mario Bros.sln" /t:Rebuild /p:Configuration=Release /p:Platform=x64
+
+      - name: Run sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          sonar-scanner --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
