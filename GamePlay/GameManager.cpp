@@ -4,6 +4,7 @@
 
 #include "GameManager.h"
 #include "PlayScene.h"
+#include "MenuScene.h"
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
@@ -162,7 +163,12 @@ void GameManager::_ParseSection_SCENES(string line)
 	string path = tokens[1];
 	wstring wpath = wstring(path.begin(), path.end());
 
-	scenes[id] = new PlayScene(id, wpath.c_str());
+	if (id == 1) {
+		scenes[id] = new MenuScene(id, wpath.c_str());
+	}
+	else {
+		scenes[id] = new PlayScene(id, wpath.c_str());
+	}
 }
 
 void GameManager::_ParseSection_TEXTURES(string line)

@@ -1,0 +1,9 @@
+[ASSETS]
+Objects/menu_background.txt
+
+[MAP]
+1408 768
+
+[OBJECTS]
+# type 	x 	y
+-1 	0 	0

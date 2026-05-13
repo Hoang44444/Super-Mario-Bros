@@ -137,8 +137,11 @@
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioKeyHandler.h" />
+    <ClInclude Include="MenuBackground.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="MenuScene.h" />
+    <ClInclude Include="MenuSceneKeyHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -157,7 +160,9 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MenuBackground.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="MenuScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

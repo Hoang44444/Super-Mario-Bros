@@ -40,7 +40,7 @@ public:
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene();
-	void InitiateSwitchScene(int scene_id) { next_scene = scene_id; }
+	void InitiateSwitchScene(int scene_id) { next_scene = scene_id; SwitchScene(); }
 
 	void Update(DWORD dt);
 	void Render();

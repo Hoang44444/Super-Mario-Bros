@@ -47,10 +47,11 @@ bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
     UpdateWindow(m_hwnd);
 
     GameManager::GetInstance()->Init(m_hwnd, hInstance);
-    GameManager::GetInstance()->Load(L"super-mario-bros.txt");
 
-    // Initialise Camera size
-    Camera::GetInstance()->SetSize((float)screenWidth, (float)screenHeight);
+    Camera::GetInstance()->SetSize(Renderer::INTERNAL_SCREEN_WIDTH, Renderer::INTERNAL_SCREEN_HEIGHT);
+
+
+    GameManager::GetInstance()->Load(L"super-mario-bros.txt");
 
     m_isRunning = true;
     return true;

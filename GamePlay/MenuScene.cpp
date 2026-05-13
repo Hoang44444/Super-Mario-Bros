@@ -1,32 +1,32 @@
+#include "MenuScene.h"
+#include "MenuSceneKeyHandler.h"
+#include "GameManager.h"
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
 
-#include "PlayScene.h"
-#include "Mario.h"
-#include "MarioKeyHandler.h"
-#include "BrickTest.h"
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
 #include "debug.h"
-#include "GameManager.h"
+#include "MenuBackground.h"
 #include "Camera.h"
 
-using namespace std;
-
-void PlayScene::Load()
+void MenuScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath.c_str());
 
+	Camera::GetInstance()->SetPosition(0, 0);
+
 	if (key_handler == NULL)
 	{
-		key_handler = new MarioKeyHandler(this);
+		key_handler = new MenuSceneKeyHandler(this);
 		GameManager::GetInstance()->SetKeyHandler(key_handler);
 	}
-		
+
 	ifstream f;
 	f.open(sceneFilePath.c_str());
 
@@ -61,7 +61,7 @@ void PlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene from %s\n", sceneFilePath.c_str());
 }
 
-void PlayScene::_ParseSection_ASSETS(string line)
+void MenuScene::_ParseSection_ASSETS(string line)
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -74,7 +74,7 @@ void PlayScene::_ParseSection_ASSETS(string line)
 	LoadAssets(path.c_str());
 }
 
-void PlayScene::LoadAssets(LPCWSTR assetFile)
+void MenuScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
 
@@ -112,7 +112,7 @@ void PlayScene::LoadAssets(LPCWSTR assetFile)
 	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
 
-void PlayScene::_ParseSection_SPRITES(string line)
+void MenuScene::_ParseSection_SPRITES(string line)
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -138,7 +138,7 @@ void PlayScene::_ParseSection_SPRITES(string line)
 	SpriteManager::GetInstance()->Add(id, l, t, r, b, tex);
 }
 
-void PlayScene::_ParseSection_ANIMATIONS(string line)
+void MenuScene::_ParseSection_ANIMATIONS(string line)
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -153,7 +153,7 @@ void PlayScene::_ParseSection_ANIMATIONS(string line)
 	for (int i = 1; i < tokens.size(); i += 2)
 	{
 		int sprite_id = atoi(tokens[i].c_str());
-		int frame_time = atoi(tokens[i+1].c_str());
+		int frame_time = atoi(tokens[i + 1].c_str());
 		LPSPRITE sprite = SpriteManager::GetInstance()->Get(sprite_id);
 		ani->Add(sprite, frame_time);
 	}
@@ -161,7 +161,7 @@ void PlayScene::_ParseSection_ANIMATIONS(string line)
 	AnimationManager::GetInstance()->Add(ani_id, ani);
 }
 
-void PlayScene::_ParseSection_OBJECTS(string line)
+void MenuScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -178,19 +178,8 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (type)
 	{
-	case OBJECT_TYPE_MARIO:
-		if (player != NULL) 
-		{
-			DebugOut(L"[ERROR] MARIO object was created before! \n");
-			return;
-		}
-		obj = new Mario(x, y); 
-		player = obj;
-		break;
-	case OBJECT_TYPE_BRICK:
-		// In a real refactor, we would pass more parameters if needed
-		obj = new Brick(x, y, x - 100, x + 100); 
-		break;
+	case OBJECT_TYPE_MENU_BACKGROUND:
+		obj = new MenuBackground(x, y);
 	}
 
 	if (obj != NULL) {
@@ -199,7 +188,7 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	}
 }
 
-void PlayScene::_ParseSection_MAP(string line)
+void MenuScene::_ParseSection_MAP(string line)
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -214,7 +203,7 @@ void PlayScene::_ParseSection_MAP(string line)
 	Camera::GetInstance()->SetMapSize(width, height);
 }
 
-void PlayScene::Update(DWORD dt)
+void MenuScene::Update(DWORD dt)
 {
 	vector<LPGAMEOBJECT> coObjects;
 	for (auto obj : objects) coObjects.push_back(obj);
@@ -224,15 +213,6 @@ void PlayScene::Update(DWORD dt)
 		if (!objects[i]->IsDeleted())
 			objects[i]->Update(dt, &coObjects);
 	}
-
-	// skip the rest if scene was already unloaded (Mario died)
-	if (player == NULL) return;
-
-	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
-
-	Camera::GetInstance()->Follow(cx, cy);
 
 	// Remove deleted objects
 	for (size_t i = 0; i < objects.size(); i++)
@@ -246,7 +226,7 @@ void PlayScene::Update(DWORD dt)
 	}
 }
 
-void PlayScene::Render()
+void MenuScene::Render()
 {
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -254,12 +234,11 @@ void PlayScene::Render()
 	}
 }
 
-void PlayScene::Unload()
+void MenuScene::Unload()
 {
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		delete objects[i];
 	}
 	objects.clear();
-	player = NULL;
 }

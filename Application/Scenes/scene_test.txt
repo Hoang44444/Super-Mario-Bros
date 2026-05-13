@@ -3,6 +3,9 @@ Objects/brick.txt
 Objects/mario.txt
 Objects/bullet.txt
 
+[MAP]
+2000 240
+
 [OBJECTS]
 ########## MARIO ##########
 # type 	x 	y

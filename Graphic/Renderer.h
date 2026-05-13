@@ -20,7 +20,7 @@ class Renderer
     float globalScale = 1.0f;
 
 public:
-    static const int INTERNAL_SCREEN_WIDTH = 282; // (240 * 1.175 approx for 4:3)
+    static const int INTERNAL_SCREEN_WIDTH = 440; 
     static const int INTERNAL_SCREEN_HEIGHT = 240; 
 
     static Renderer* GetInstance();
@@ -33,12 +33,15 @@ public:
     void BeginRender();
     void EndRender();
     void Draw(float x, float y, LPTEXTURE tex, RECT* rect = NULL, float alpha = 1.0f);
+    void DrawScaled(float x, float y, LPTEXTURE tex, float dest_width, float dest_height, RECT* rect = NULL, float alpha = 1.0f);
 
     // Getters
     ID3D10Device* GetDevice() { return pD3DDevice; }
     ID3DX10Sprite* GetSpriteHandler() { return spriteObject; }
     int GetBackBufferWidth() { return backBufferWidth; }
     int GetBackBufferHeight() { return backBufferHeight; }
+    int GetInternalWidth() { return INTERNAL_SCREEN_WIDTH; }
+    int GetInternalHeight() { return INTERNAL_SCREEN_HEIGHT; }
     LPTEXTURE GetTexture(LPCWSTR filePath);
     ~Renderer();
 };

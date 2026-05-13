@@ -52,9 +52,10 @@ void Camera::Follow(float targetX, float targetY)
     y = targetY - screenHeight / 2;
 
     // Clamp không cho ra ngoài map
-    x = std::max(0.0f, x);
-    y = std::max(0.0f, y);
+    // Ensure we don't clamp to a negative value if map is smaller than screen
+    float max_x = std::max(0.0f, (float)(mapWidth - screenWidth));
+    float max_y = std::max(0.0f, (float)(mapHeight - screenHeight));
 
-    x = std::min(x, (float)(mapWidth - screenWidth));
-    y = std::min(y, (float)(mapHeight - screenHeight));
+    x = std::max(0.0f, std::min(x, max_x));
+    y = std::max(0.0f, std::min(y, max_y));
 }
