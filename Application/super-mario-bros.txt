@@ -4,9 +4,9 @@ screen_width 1920
 screen_height 1080
 
 [SCENES]
-1  scene01.txt
+1  Scenes/scene_test.txt
 
 [TEXTURES]
-0   ../GamePlay/texture/brick.png
-1   ../GamePlay/texture/mario.png
-2   ../GamePlay/texture/misc.png
+0   Texture/brick.png
+1   Texture/mario.png
+2   Texture/misc.png
