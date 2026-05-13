@@ -1,7 +1,7 @@
 [ASSETS]
-brick.txt
-mario.txt
-bullet.txt
+Objects/brick.txt
+Objects/mario.txt
+Objects/bullet.txt
 
 [OBJECTS]
 ########## MARIO ##########
