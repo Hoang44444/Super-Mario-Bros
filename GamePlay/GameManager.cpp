@@ -163,12 +163,7 @@ void GameManager::_ParseSection_SCENES(string line)
 	string path = tokens[1];
 	wstring wpath = wstring(path.begin(), path.end());
 
-	if (id == 1) {
-		scenes[id] = new MenuScene(id, wpath.c_str());
-	}
-	else {
-		scenes[id] = new PlayScene(id, wpath.c_str());
-	}
+	scenes[id] = new PlayScene(id, wpath.c_str());
 }
 
 void GameManager::_ParseSection_TEXTURES(string line)

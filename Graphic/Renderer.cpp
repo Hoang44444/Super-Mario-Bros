@@ -223,10 +223,6 @@ void Renderer::DrawScaled(float x, float y, LPTEXTURE tex, float dest_width, flo
 	DebugOut(L"[DEBUG] draw_x=%.2f, draw_y=%.2f, logicalH=%.2f\n", draw_x, draw_y, logicalHeight);
 	D3DXMatrixTranslation(&matTranslation, draw_x, draw_y, 0.5f); 
 	D3DXMatrixScaling(&matScale, dest_width, dest_height, 1.0f);
-	// Normalize scale: D3DX10Sprite matWorld is applied to a quad of texture size
-	/*float scaleX = dest_width / (rect != NULL ? (rect->right - rect->left) : tex->getWidth());
-	float scaleY = dest_height / (rect != NULL ? (rect->bottom - rect->top) : tex->getHeight());
-	D3DXMatrixScaling(&matScale, scaleX, scaleY, 1.0f);*/
 
 	matWorld = matScale * matTranslation;
 	sprite.matWorld = matWorld;
