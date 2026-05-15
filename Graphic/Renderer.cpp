@@ -171,7 +171,7 @@ void Renderer::BeginRender()
 
 void Renderer::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha)
 {
-	if (tex == NULL) return;
+	if (tex == nullptr) return;
 
 	float width = (rect != NULL) ? (float)(rect->right - rect->left) : (float)tex->getWidth();
 	float height = (rect != NULL) ? (float)(rect->bottom - rect->top) : (float)tex->getHeight();

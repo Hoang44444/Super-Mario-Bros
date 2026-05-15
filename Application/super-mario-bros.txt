@@ -1,5 +1,5 @@
 [SETTINGS]
-start    1
+start    2
 screen_width 1920
 screen_height 1080
 

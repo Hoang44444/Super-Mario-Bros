@@ -226,7 +226,7 @@ void PlayScene::Update(DWORD dt)
 	}
 
 	// skip the rest if scene was already unloaded (Mario died)
-	if (player == NULL) return;
+	if (player == nullptr) return;
 
 	// Update camera to follow mario
 	float cx, cy;
