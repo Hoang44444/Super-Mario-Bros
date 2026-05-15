@@ -13,6 +13,7 @@
 #include "../Resource/AssetID.h"
 #include "debug.h"
 #include "GameManager.h"
+#include "Camera.h"
 
 using namespace std;
 
@@ -45,12 +46,14 @@ void PlayScene::Load()
 
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; }
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; }
+		if (line == "[MAP]") { section = SCENE_SECTION_MAP; continue; }
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		switch (section)
 		{
 		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
 		}
 	}
 
@@ -196,6 +199,21 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	}
 }
 
+void PlayScene::_ParseSection_MAP(string line)
+{
+	vector<string> tokens;
+	stringstream ss(line);
+	string token;
+	while (ss >> token) tokens.push_back(token);
+
+	if (tokens.size() < 2) return;
+
+	int width = atoi(tokens[0].c_str());
+	int height = atoi(tokens[1].c_str());
+
+	Camera::GetInstance()->SetMapSize(width, height);
+}
+
 void PlayScene::Update(DWORD dt)
 {
 	vector<LPGAMEOBJECT> coObjects;
@@ -206,6 +224,15 @@ void PlayScene::Update(DWORD dt)
 		if (!objects[i]->IsDeleted())
 			objects[i]->Update(dt, &coObjects);
 	}
+
+	// skip the rest if scene was already unloaded (Mario died)
+	if (player == nullptr) return;
+
+	// Update camera to follow mario
+	float cx, cy;
+	player->GetPosition(cx, cy);
+
+	Camera::GetInstance()->Follow(cx, cy);
 
 	// Remove deleted objects
 	for (size_t i = 0; i < objects.size(); i++)

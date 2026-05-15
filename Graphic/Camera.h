@@ -20,6 +20,7 @@ public:
 
     void SetPosition(float x, float y);
     void SetSize(int width, int height);
+    void GetSize(int& width, int& height) { width = screenWidth; height = screenHeight; }
     void SetMapSize(int width, int height);
 
     void Follow(float targetX, float targetY);
