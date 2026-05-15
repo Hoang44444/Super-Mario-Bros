@@ -22,7 +22,7 @@ void Bullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void Bullet::Render()
 {
 	DebugOut(L"[BULLET] Rendering at x: %f, y: %f\n", x, y);
-	AnimationManager::GetInstance()->Get(ID_ANI_BULLET)->Render(x, y);
+	AnimationManager::GetInstance()->Get(ID_ANI_BULLET)->Render(x, y, z);
 }
 
 void Bullet::GetBoundingBox(float& l, float& t, float& r, float& b)

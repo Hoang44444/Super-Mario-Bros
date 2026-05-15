@@ -102,7 +102,7 @@ void Mario::Render()
 	}
 
 	if (aniId != -1)
-		AnimationManager::GetInstance()->Get(aniId)->Render(x, y);
+		AnimationManager::GetInstance()->Get(aniId)->Render(x, y, z);
 }
 
 void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -126,6 +126,7 @@ void Mario::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
 		isOnGround = true;
 		vy = 0;
 	}
+	DebugOut(L"[MARIO POSITION] x=%f y=%f z=%f\n", x, y, z);
 }
 
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)

@@ -18,7 +18,7 @@ public:
     }
 
     void Add(LPSPRITE sprite, DWORD time);
-    void Render(float x, float y);
+    void Render(float x, float y, float z);
 
     ~Animation(){}
 };

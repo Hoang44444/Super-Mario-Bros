@@ -5,7 +5,7 @@
 class Background : public GameObject
 {
 public:
-    Background(float x, float y) : GameObject(x, y) {}
+    Background(float x, float y, float z) : GameObject(x, y, z) {}
 
     void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) override {}
     void Render() override;

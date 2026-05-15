@@ -186,8 +186,6 @@ void Renderer::DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_w
 		return;
 	}
 
-	// Debug scaling
-	DebugOut(L"[DEBUG] DrawScaled: x=%.2f, y=%.2f, dest_w=%.2f, dest_h=%.2f, globalScale=%.2f\n", x, y, dest_width, dest_height, globalScale);
 
 	// Tọa độ trên màn hình (đã trừ camera)
 	float screen_x = x - Camera::GetInstance()->GetX();
@@ -220,7 +218,7 @@ void Renderer::DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_w
 	// Use Logical Height (BackBufferHeight / globalScale) for the Y calculation
 	float logicalHeight = (float)backBufferHeight / globalScale;
 	float draw_y = logicalHeight - (screen_y + dest_height / 2.0f);
-	DebugOut(L"[DEBUG] draw_x=%.2f, draw_y=%.2f, logicalH=%.2f\n", draw_x, draw_y, logicalHeight);
+
 	D3DXMatrixTranslation(&matTranslation, draw_x, draw_y, z);
 	D3DXMatrixScaling(&matScale, dest_width, dest_height, 1.0f);
 

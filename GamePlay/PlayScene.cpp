@@ -169,12 +169,12 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	string token;
 	while (ss >> token) tokens.push_back(token);
 
-	if (tokens.size() < 3) return;
+	if (tokens.size() < 4) return;
 
 	int type = atoi(tokens[0].c_str());
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
-
+	float z = (float)atof(tokens[3].c_str());
 	GameObject* obj = NULL;
 
 	switch (type)
@@ -185,16 +185,16 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] MARIO object was created before! \n");
 			return;
 		}
-		obj = new Mario(x, y); 
+		obj = new Mario(x, y, z); 
 		player = obj;
 		break;
 		
 	case OBJECT_TYPE_BRICK:
-		obj = new Brick(x, y);
+		obj = new Brick(x, y, z);
 		break;
 
     case OBJECT_TYPE_BACKGROUND_LEVEL1_1:
-        obj = new Background(x, y);
+        obj = new Background(x, y, z);
 		break;
 	}
 
@@ -234,8 +234,8 @@ void PlayScene::Update(DWORD dt)
 	if (player == nullptr) return;
 
 	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
+	float cx, cy, cz;
+	player->GetPosition(cx, cy, cz);
 
 	Camera::GetInstance()->Follow(cx, cy);
 

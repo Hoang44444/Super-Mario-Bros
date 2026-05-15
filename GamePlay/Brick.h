@@ -6,7 +6,7 @@ constexpr float BRICK_BBOX_HEIGHT = 16.0f;
 
 class Brick : public GameObject {
 public:
-	Brick(float x, float y) : GameObject(x, y) {
+	Brick(float x, float y, float z) : GameObject(x, y, z) {
 		this->state = 0;
 	}
 	~Brick() {};
