@@ -166,20 +166,20 @@ void Renderer::BeginRender()
 
     pD3DDevice->OMSetBlendState(pBlendStateAlpha, NULL, 0xffffffff);
     pD3DDevice->PSSetSamplers(0, 1, &this->pPointSamplerState);
-    spriteObject->Begin(D3DX10_SPRITE_SORT_TEXTURE); 
+    spriteObject->Begin(D3DX10_SPRITE_SORT_DEPTH_BACK_TO_FRONT);
 }
 
-void Renderer::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha)
+void Renderer::Draw(float x, float y, float z, LPTEXTURE tex, RECT* rect, float alpha)
 {
 	if (tex == nullptr) return;
 
 	float width = (rect != NULL) ? (float)(rect->right - rect->left) : (float)tex->getWidth();
 	float height = (rect != NULL) ? (float)(rect->bottom - rect->top) : (float)tex->getHeight();
 
-	DrawScaled(x, y, tex, width, height, rect, alpha);
+	DrawScaled(x, y, z, tex, width, height, rect, alpha);
 }
 
-void Renderer::DrawScaled(float x, float y, LPTEXTURE tex, float dest_width, float dest_height, RECT* rect, float alpha)
+void Renderer::DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_width, float dest_height, RECT* rect, float alpha)
 {
 	if (tex == NULL) {
 		DebugOut(L"[ERROR] DrawScaled called with NULL texture\n");
@@ -221,7 +221,7 @@ void Renderer::DrawScaled(float x, float y, LPTEXTURE tex, float dest_width, flo
 	float logicalHeight = (float)backBufferHeight / globalScale;
 	float draw_y = logicalHeight - (screen_y + dest_height / 2.0f);
 	DebugOut(L"[DEBUG] draw_x=%.2f, draw_y=%.2f, logicalH=%.2f\n", draw_x, draw_y, logicalHeight);
-	D3DXMatrixTranslation(&matTranslation, draw_x, draw_y, 0.5f); 
+	D3DXMatrixTranslation(&matTranslation, draw_x, draw_y, z);
 	D3DXMatrixScaling(&matScale, dest_width, dest_height, 1.0f);
 
 	matWorld = matScale * matTranslation;
