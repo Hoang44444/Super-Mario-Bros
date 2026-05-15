@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\Scenes">
+      <UniqueIdentifier>{9b7de751-f7e2-409d-8d53-b896e0e9200a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Objects">
+      <UniqueIdentifier>{3508c2fe-27d8-44cf-b027-6dd8cef60f17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
@@ -29,5 +35,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Scenes\menu_scene.txt">
+      <Filter>Resource Files\Scenes</Filter>
+    </Text>
+    <Text Include="Scenes\scene_test.txt">
+      <Filter>Resource Files\Scenes</Filter>
+    </Text>
+    <Text Include="Objects\brick.txt">
+      <Filter>Resource Files\Objects</Filter>
+    </Text>
+    <Text Include="Objects\bullet.txt">
+      <Filter>Resource Files\Objects</Filter>
+    </Text>
+    <Text Include="Objects\mario.txt">
+      <Filter>Resource Files\Objects</Filter>
+    </Text>
+    <Text Include="Objects\menu_background.txt">
+      <Filter>Resource Files\Objects</Filter>
+    </Text>
+    <Text Include="super-mario-bros.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="background.txt">
+      <Filter>Resource Files\Objects</Filter>
+    </Text>
   </ItemGroup>
 </Project>

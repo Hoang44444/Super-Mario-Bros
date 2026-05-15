@@ -59,5 +59,8 @@ public:
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnNoCollision(DWORD dt);
+
+	// COLISION WITH
+	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 };
 

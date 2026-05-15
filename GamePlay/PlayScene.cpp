@@ -6,7 +6,7 @@
 #include "PlayScene.h"
 #include "Mario.h"
 #include "MarioKeyHandler.h"
-#include "BrickTest.h"
+#include "Background.h"
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
@@ -14,6 +14,7 @@
 #include "debug.h"
 #include "GameManager.h"
 #include "Camera.h"
+#include "Brick.h"
 
 using namespace std;
 
@@ -187,9 +188,13 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Mario(x, y); 
 		player = obj;
 		break;
+		
 	case OBJECT_TYPE_BRICK:
-		// In a real refactor, we would pass more parameters if needed
-		obj = new Brick(x, y, x - 100, x + 100); 
+		obj = new Brick(x, y);
+		break;
+
+    case OBJECT_TYPE_BACKGROUND_LEVEL1_1:
+        obj = new Background(x, y);
 		break;
 	}
 

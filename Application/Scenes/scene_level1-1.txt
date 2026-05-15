@@ -1,0 +1,25 @@
+[ASSETS]
+Objects/brick.txt
+Objects/mario.txt
+Objects/bullet.txt
+Objects/background.txt
+
+[MAP]
+3376 480
+
+[OBJECTS]
+
+########## BACKGROUND ##########
+3 0 105
+
+########## BRICK ##########
+1 0 480
+1 16 480
+1 32 480
+1 48 480
+1 64 480
+1 80 480
+1 96 480
+
+########## MARIO ##########
+0 0 225

@@ -144,6 +144,16 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="background.txt" />
+    <Text Include="Objects\brick.txt" />
+    <Text Include="Objects\bullet.txt" />
+    <Text Include="Objects\mario.txt" />
+    <Text Include="Objects\menu_background.txt" />
+    <Text Include="Scenes\menu_scene.txt" />
+    <Text Include="Scenes\scene_test.txt" />
+    <Text Include="super-mario-bros.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets" Condition="Exists('..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" />

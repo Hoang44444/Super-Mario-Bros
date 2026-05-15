@@ -3,8 +3,7 @@
 #include "../Resource/AssetID.h"
 #include "debug.h"
 #include "Bullet.h"
-#include "BrickTest.h"
-
+#include "Brick.h"
 void Mario::MovementUpdate(DWORD dt) {
 	// Simple movement for testing
 	this->x += this->vx * dt;
@@ -122,20 +121,17 @@ void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 	}
 }
 
+void Mario::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
+	if (e->ny < 0) {
+		isOnGround = true;
+		vy = 0;
+	}
+}
+
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if(dynamic_cast<Brick*>(e->obj))
-	{
-		DebugOut(L"Collision with Brick\n");
-		if (e->ny < 0) { 
-			y += e->t * vy * e->ny;
-			vy = 0;
-			isOnGround = true;
-		}
-		else if (e->nx != 0) { 
-			x += e->t * vx * e->nx;
-			vx = 0;
-		}
+	if (dynamic_cast<Brick*>(e->obj)) {
+		OnCollisionWithBrick(e);
 	}
 }
 
