@@ -159,10 +159,8 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="Brick.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Mario.cpp" />
-    <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="SwitchScenePoint.cpp" />
   </ItemGroup>
