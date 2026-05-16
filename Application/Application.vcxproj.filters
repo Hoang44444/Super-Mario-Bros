@@ -37,9 +37,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Scenes\menu_scene.txt">
-      <Filter>Resource Files\Scenes</Filter>
-    </Text>
     <Text Include="Scenes\scene_test.txt">
       <Filter>Resource Files\Scenes</Filter>
     </Text>
@@ -60,6 +57,9 @@
     </Text>
     <Text Include="background.txt">
       <Filter>Resource Files\Objects</Filter>
+    </Text>
+    <Text Include="Scenes\scene_level1-1.txt">
+      <Filter>Resource Files\Scenes</Filter>
     </Text>
   </ItemGroup>
 </Project>

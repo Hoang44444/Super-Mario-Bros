@@ -150,7 +150,7 @@
     <Text Include="Objects\bullet.txt" />
     <Text Include="Objects\mario.txt" />
     <Text Include="Objects\menu_background.txt" />
-    <Text Include="Scenes\menu_scene.txt" />
+    <Text Include="Scenes\scene_level1-1.txt" />
     <Text Include="Scenes\scene_test.txt" />
     <Text Include="super-mario-bros.txt" />
   </ItemGroup>
