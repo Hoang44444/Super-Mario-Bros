@@ -16,6 +16,6 @@ public:
 	void OnNoCollision(DWORD dt) override;
 	void OnCollisionWithMario(LPCOLLISIONEVENT e);
 	bool IsCollidable() { return true; }
-	bool IsBlocking() { return true; }
+	bool IsBlocking() { return false; }
 };
 
