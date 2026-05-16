@@ -39,6 +39,8 @@ public:
 	int GetScreenHeight() { return screenHeight; }
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
+	int GetCurrentSceneID() { return current_scene; }
+
 	void SwitchScene();
 	void InitiateSwitchScene(int scene_id) { next_scene = scene_id; SwitchScene(); }
 

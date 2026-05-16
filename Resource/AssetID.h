@@ -29,6 +29,7 @@
         constexpr int OBJECT_TYPE_BULLET = 2;
         constexpr int OBJECT_TYPE_BACKGROUND = 3;
 		constexpr int OBJECT_TYPE_PIPE = 4;
+		constexpr int OBJECT_TYPE_SWITCH_SCENE_POINT = 5;
 
         //
         // TEXTURE IDs

@@ -16,6 +16,7 @@
 #include "Camera.h"
 #include "Brick.h"
 #include "Pipe.h"
+#include "SwitchScenePoint.h"
 
 using namespace std;
 
@@ -199,6 +200,9 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_PIPE:
 		obj = new Pipe(x, y, z);
+		break;
+	case OBJECT_TYPE_SWITCH_SCENE_POINT:
+		obj = new SwitchScenePoint(x, y, z);
 		break;
 	}
 
