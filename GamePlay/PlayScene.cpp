@@ -15,6 +15,7 @@
 #include "GameManager.h"
 #include "Camera.h"
 #include "Brick.h"
+#include "Pipe.h"
 
 using namespace std;
 
@@ -180,21 +181,24 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	switch (type)
 	{
 	case OBJECT_TYPE_MARIO:
-		if (player != NULL) 
+		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before! \n");
 			return;
 		}
-		obj = new Mario(x, y, z); 
+		obj = new Mario(x, y, z);
 		player = obj;
 		break;
-		
+
 	case OBJECT_TYPE_BRICK:
 		obj = new Brick(x, y, z);
 		break;
 
-    case OBJECT_TYPE_BACKGROUND_LEVEL1_1:
-        obj = new Background(x, y, z);
+	case OBJECT_TYPE_BACKGROUND:
+		obj = new Background(x, y, z);
+		break;
+	case OBJECT_TYPE_PIPE:
+		obj = new Pipe(x, y, z);
 		break;
 	}
 
@@ -237,7 +241,9 @@ void PlayScene::Update(DWORD dt)
 	float cx, cy, cz;
 	player->GetPosition(cx, cy, cz);
 
-	Camera::GetInstance()->Follow(cx, cy);
+	static float fixedCameraY = cy;
+
+	Camera::GetInstance()->Follow(cx, fixedCameraY);
 
 	// Remove deleted objects
 	for (size_t i = 0; i < objects.size(); i++)

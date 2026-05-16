@@ -14,3 +14,4 @@ screen_height 1080
 2   Texture/misc.png
 3   Texture/menu_scene.png
 4   Texture/level1-1.png
+-100 Texture/bbox.png

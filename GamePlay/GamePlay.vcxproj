@@ -139,6 +139,7 @@
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioKeyHandler.h" />
+    <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Scene.h" />
   </ItemGroup>
@@ -160,6 +161,7 @@
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PlayScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

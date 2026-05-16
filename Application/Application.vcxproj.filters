@@ -49,9 +49,6 @@
     <Text Include="Objects\mario.txt">
       <Filter>Resource Files\Objects</Filter>
     </Text>
-    <Text Include="Objects\menu_background.txt">
-      <Filter>Resource Files\Objects</Filter>
-    </Text>
     <Text Include="super-mario-bros.txt">
       <Filter>Resource Files</Filter>
     </Text>

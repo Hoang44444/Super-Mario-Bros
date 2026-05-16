@@ -24,11 +24,11 @@
         //
         // OBJECT TYPES
         //
-        constexpr int OBJECT_TYPE_MENU_BACKGROUND = -1;
         constexpr int OBJECT_TYPE_MARIO = 0;
         constexpr int OBJECT_TYPE_BRICK = 1;
         constexpr int OBJECT_TYPE_BULLET = 2;
-        constexpr int OBJECT_TYPE_BACKGROUND_LEVEL1_1 = 3;
+        constexpr int OBJECT_TYPE_BACKGROUND = 3;
+		constexpr int OBJECT_TYPE_PIPE = 4;
 
         //
         // TEXTURE IDs
@@ -82,3 +82,7 @@
         constexpr int ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT = 1601;
 
         constexpr int ID_ANI_MARIO_DIE = 999;
+
+		// PIPE
+		constexpr int ID_ANI_PIPE_HEAD = 3100;
+		constexpr int ID_ANI_PIPE_BODY = 3101;

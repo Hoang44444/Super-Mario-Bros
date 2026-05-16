@@ -4,6 +4,8 @@
 #include "debug.h"
 #include "Bullet.h"
 #include "Brick.h"
+#include "Pipe.h"
+
 void Mario::MovementUpdate(DWORD dt) {
 	// Simple movement for testing
 	this->x += this->vx * dt;
@@ -126,12 +128,28 @@ void Mario::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
 		isOnGround = true;
 		vy = 0;
 	}
+	if (e->nx != 0) {
+		vx = 0;
+	}
 	DebugOut(L"[MARIO POSITION] x=%f y=%f z=%f\n", x, y, z);
+}
+
+void Mario::OnCollisionWithPipe(LPCOLLISIONEVENT e) {
+	if (e->ny < 0) {
+		isOnGround = true;
+		vy = 0;
+	}
+	if (e->nx != 0) {
+		vx = 0;
+	}
 }
 
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<Brick*>(e->obj)) {
+		OnCollisionWithBrick(e);
+	}
+	else if (dynamic_cast<Pipe*>(e->obj)) {
 		OnCollisionWithBrick(e);
 	}
 }

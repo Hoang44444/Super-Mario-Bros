@@ -62,5 +62,6 @@ public:
 
 	// COLISION WITH
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
 };
 

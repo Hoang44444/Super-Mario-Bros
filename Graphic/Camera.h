@@ -6,7 +6,7 @@ class Camera
 private:
     static Camera* __instance;
 
-    float x, y;               // vị trí camera (world)
+    float x, y;              
     int screenWidth;
     int screenHeight;
 
@@ -23,7 +23,7 @@ public:
     void GetSize(int& width, int& height) { width = screenWidth; height = screenHeight; }
     void SetMapSize(int width, int height);
 
-    void Follow(float targetX, float targetY);
+    void Follow(float targetX, float targerY);
 
     float GetX();
     float GetY();
