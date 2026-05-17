@@ -67,39 +67,33 @@ void Mario::SetState(int state)
 	}
 }
 
-void Mario::MarioSmallRender(int aniId) {
-	if (level == MARIO_LEVEL_SMALL)
-	{
-		if (!isOnGround) {
-			if (direction > 0) aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
-			else aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT;
-		}
-		else if (vx != 0) {
-			if (direction > 0) aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
-			else aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
-		}
-		else {
-			if (direction > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
-			else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
-		}
+void Mario::MarioSmallRender(int& aniId) {
+	if (!isOnGround) {
+		if (direction > 0) aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
+		else aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT;
+	}
+	else if (vx != 0) {
+		if (direction > 0) aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
+		else aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
+	}
+	else {
+		if (direction > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
+		else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
 	}
 }
 
-void Mario::MarioBigRender(int aniId) {
-	if (level == MARIO_LEVEL_BIG)
-	{
-		if (!isOnGround) {
-			if (direction > 0) aniId = ID_ANI_MARIO_BIG_JUMP_WALK_RIGHT;
-			else aniId = ID_ANI_MARIO_BIG_JUMP_WALK_LEFT;
-		}
-		else if (vx != 0) {
-			if (direction > 0) aniId = ID_ANI_MARIO_BIG_WALKING_RIGHT;
-			else aniId = ID_ANI_MARIO_BIG_WALKING_LEFT;
-		}
-		else {
-			if (direction > 0) aniId = ID_ANI_MARIO_BIG_IDLE_RIGHT;
-			else aniId = ID_ANI_MARIO_BIG_IDLE_LEFT;
-		}
+void Mario::MarioBigRender(int& aniId) {
+	if (!isOnGround) {
+		if (direction > 0) aniId = ID_ANI_MARIO_BIG_JUMP_WALK_RIGHT;
+		else aniId = ID_ANI_MARIO_BIG_JUMP_WALK_LEFT;
+	}
+	else if (vx != 0) {
+		if (direction > 0) aniId = ID_ANI_MARIO_BIG_WALKING_RIGHT;
+		else aniId = ID_ANI_MARIO_BIG_WALKING_LEFT;
+	}
+	else {
+		if (direction > 0) aniId = ID_ANI_MARIO_BIG_IDLE_RIGHT;
+		else aniId = ID_ANI_MARIO_BIG_IDLE_LEFT;
 	}
 }
 
