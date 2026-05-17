@@ -65,5 +65,9 @@ public:
 	void OnCollisionWithEnemy(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 	void OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e);
+
+	// RENDER WITH MARIO LEVEL
+	void MarioSmallRender(int aniId);
+	void MarioBigRender(int andId);
 };
 
