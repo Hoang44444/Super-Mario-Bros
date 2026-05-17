@@ -1,5 +1,5 @@
 [SETTINGS]
-start    2
+start    1
 screen_width 1920
 screen_height 1080
 
@@ -16,5 +16,5 @@ screen_height 1080
 2   Texture/Items/misc.png
 3   Texture/Scene/menu_scene.png
 4   Texture/Scene/Level1/level1-1.png
-5   Texture/Scene/Level1/levle1-2.png
+5   Texture/Scene/Level1/level1-2.png
 -100 Texture/bbox.png

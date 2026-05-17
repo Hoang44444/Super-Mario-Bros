@@ -30,7 +30,10 @@ void Animation::Render(float x, float y, float z)
     }
 
     LPSPRITE sprite = frames[currentFrame]->GetSprite();
+    if (sprite == nullptr) return;
+
     RECT rect = sprite->GetRect();
+    if (sprite->GetTexture() == nullptr) return;
 
     Renderer::GetInstance()->Draw(
         x, y, z,

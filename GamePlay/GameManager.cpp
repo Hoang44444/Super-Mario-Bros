@@ -204,6 +204,9 @@ void GameManager::Update(DWORD dt)
 {
 	if (current_scene != -1)
 		scenes[current_scene]->Update(dt);
+
+	if (next_scene != current_scene && next_scene >= 0)
+		SwitchScene();
 }
 
 void GameManager::Render()

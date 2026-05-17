@@ -45,6 +45,9 @@
     <Filter Include="Header Files\Object\InvisibleObject">
       <UniqueIdentifier>{6ebb9be3-519b-4ab5-835f-424e4ed7b3e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Object\InvisibleObject">
+      <UniqueIdentifier>{7ca4ff27-a279-4eea-bb4f-0d28e7710163}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp">
@@ -59,14 +62,14 @@
     <ClCompile Include="Mario.cpp">
       <Filter>Source Files\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="SwitchScenePoint.cpp">
-      <Filter>Source Files\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Background.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
     <ClCompile Include="PlayScene.cpp">
       <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchScenePoint.cpp">
+      <Filter>Source Files\Object\InvisibleObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
