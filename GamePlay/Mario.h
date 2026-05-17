@@ -64,5 +64,6 @@ public:
 	void OnCollisionWithStaticObject(LPCOLLISIONEVENT e);
 	void OnCollisionWithEnemy(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
+	void OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e);
 };
 

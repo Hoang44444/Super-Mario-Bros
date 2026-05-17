@@ -6,6 +6,7 @@
 #include "StaticObject.h"
 #include "Enemy.h"
 #include "Item.h"
+#include "InvisibleObject.h"
 void Mario::MovementUpdate(DWORD dt) {
 	// Simple movement for testing
 	this->x += this->vx * dt;
@@ -146,6 +147,12 @@ void Mario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 	item->OnMarioCollision(this);
 }
 
+void Mario::OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e)
+{
+	auto invisibleObject = dynamic_cast<InvisibleObject*>(e->obj);
+	invisibleObject->OnMarioCollision(this);
+}
+
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<StaticObject*>(e->obj)) {
@@ -156,6 +163,9 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (dynamic_cast<Item*>(e->obj)) {
 		OnCollisionWithItem(e);
+	}
+	else if (dynamic_cast<InvisibleObject*>(e->obj)) {
+		OnCollisionWithInvisibleObject(e);
 	}
 }
 

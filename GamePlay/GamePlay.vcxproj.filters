@@ -42,6 +42,9 @@
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{81de123d-a914-4366-8ba5-8bf07cc51ff8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object\InvisibleObject">
+      <UniqueIdentifier>{6ebb9be3-519b-4ab5-835f-424e4ed7b3e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp">
@@ -103,17 +106,20 @@
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Background.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="SwitchScenePoint.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
     <ClInclude Include="PlayScene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchScenePoint.h">
+      <Filter>Header Files\Object\InvisibleObject</Filter>
+    </ClInclude>
+    <ClInclude Include="InvisibleObject.h">
+      <Filter>Header Files\Object\InvisibleObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
