@@ -5,6 +5,6 @@
 void Background::Render()
 {
     LPANIMATION ani = AnimationManager::GetInstance()->Get(ID_ANI_BACKGROUND_LEVEL1_1);
-    if (ani != NULL)
+    if (ani != nullptr)
         ani->Render(x, y, z);
 }
