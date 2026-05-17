@@ -14,4 +14,6 @@ public:
 
     bool IsCollidable() override { return false; }
     bool IsBlocking() override { return false; }
+
+    int WorldRender();
 };

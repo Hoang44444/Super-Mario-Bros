@@ -189,6 +189,7 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new Mario(x, y, z);
 		player = obj;
+		fixedCameraY = y;
 		break;
 
 	case OBJECT::BRICK:
@@ -244,8 +245,6 @@ void PlayScene::Update(DWORD dt)
 	// Update camera to follow mario
 	float cx, cy, cz;
 	player->GetPosition(cx, cy, cz);
-
-	static float fixedCameraY = cy;
 
 	Camera::GetInstance()->Follow(cx, fixedCameraY);
 

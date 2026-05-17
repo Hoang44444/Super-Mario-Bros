@@ -6,6 +6,21 @@ namespace SCENE
     constexpr int SECTION_ASSETS = 1;
     constexpr int SECTION_OBJECTS = 2;
     constexpr int SECTION_MAP = 3;
+
+    constexpr int MENU = 0;
+    constexpr int WORLD_1_1 = 1;
+    constexpr int WORLD_1_2 = 2;
+    constexpr int WORLD_1_3 = 3;
+    constexpr int WORLD_1_4 = 4;
+    constexpr int WORLD_2_1 = 5;
+    constexpr int WORLD_2_2 = 6;
+    constexpr int WORLD_2_3 = 7;
+    constexpr int WORLD_2_4 = 8;
+    constexpr int WORLD_3_1 = 9;
+    constexpr int WORLD_3_2 = 10;
+    constexpr int WORLD_3_3 = 11;
+    constexpr int WORLD_3_4 = 12;
+    constexpr int END = 13;
 }
 
 namespace GAME
@@ -51,6 +66,7 @@ namespace ANIMATION
     // Background
     constexpr int MENU_BACKGROUND = 300;
     constexpr int BACKGROUND_LEVEL1_1 = 3000;
+	constexpr int BACKGROUND_LEVEL1_2 = 3001;
 
     // BIG MARIO
     constexpr int MARIO_BIG_IDLE_RIGHT = 400;
