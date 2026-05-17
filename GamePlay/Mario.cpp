@@ -3,9 +3,9 @@
 #include "../Resource/AssetID.h"
 #include "debug.h"
 #include "Bullet.h"
-#include "Brick.h"
-#include "Pipe.h"
-
+#include "StaticObject.h"
+#include "Enemy.h"
+#include "Item.h"
 void Mario::MovementUpdate(DWORD dt) {
 	// Simple movement for testing
 	this->x += this->vx * dt;
@@ -123,34 +123,39 @@ void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 	}
 }
 
-void Mario::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
+void Mario::OnCollisionWithStaticObject(LPCOLLISIONEVENT e)
+{
 	if (e->ny < 0) {
 		isOnGround = true;
 		vy = 0;
 	}
-	if (e->nx != 0) {
+	else if (e->nx != 0) {
 		vx = 0;
 	}
-	DebugOut(L"[MARIO POSITION] x=%f y=%f z=%f\n", x, y, z);
 }
 
-void Mario::OnCollisionWithPipe(LPCOLLISIONEVENT e) {
-	if (e->ny < 0) {
-		isOnGround = true;
-		vy = 0;
-	}
-	if (e->nx != 0) {
-		vx = 0;
-	}
+void Mario::OnCollisionWithEnemy(LPCOLLISIONEVENT e)
+{
+	auto enemy = dynamic_cast<Enemy*>(e->obj);
+	enemy->OnMarioCollison(this);
+}
+
+void Mario::OnCollisionWithItem(LPCOLLISIONEVENT e)
+{
+	auto item = dynamic_cast<Item*>(e->obj);
+	item->OnMarioCollision(this);
 }
 
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<Brick*>(e->obj)) {
-		OnCollisionWithBrick(e);
+	if (dynamic_cast<StaticObject*>(e->obj)) {
+		OnCollisionWithStaticObject(e);
 	}
-	else if (dynamic_cast<Pipe*>(e->obj)) {
-		OnCollisionWithBrick(e);
+	else if (dynamic_cast<Enemy*>(e->obj)) {
+		OnCollisionWithEnemy(e);
+	}
+	else if (dynamic_cast<Item*>(e->obj)) {
+		OnCollisionWithItem(e);
 	}
 }
 

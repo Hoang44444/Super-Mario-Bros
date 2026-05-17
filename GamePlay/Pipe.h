@@ -1,12 +1,13 @@
 #pragma once
-#include "GameObject.h"
+#include "StaticObject.h"
 
 constexpr float PIPE_BBOX_WIDTH = 32.0f;
 constexpr float PIPE_BBOX_HEIGHT = 32.0f;
 
-class Pipe : public GameObject {
+class Pipe : public StaticObject {
 public:
-	Pipe(float x, float y, float z) : GameObject(x, y, z) {}
+	Pipe(float x, float y, float z) : StaticObject(x, y, z) {}
+	virtual ~Pipe() {};
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) override {}
 	virtual void Render() override {};
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) override

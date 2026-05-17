@@ -61,7 +61,8 @@ public:
 	void OnNoCollision(DWORD dt);
 
 	// COLISION WITH
-	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
-	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
+	void OnCollisionWithStaticObject(LPCOLLISIONEVENT e);
+	void OnCollisionWithEnemy(LPCOLLISIONEVENT e);
+	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 };
 
