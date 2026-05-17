@@ -81,10 +81,10 @@ void GameManager::LoadSettings(LPCWSTR gameFile)
 		string line(str);
 		if (line.empty() || line[0] == '#') continue;
 
-		if (line == "[SETTINGS]") { section = GAME_SECTION_SETTINGS; continue; }
+		if (line == "[SETTINGS]") { section = GAME::SECTION_SETTINGS; continue; }
 		if (line[0] == '[') { section = -1; continue; }
 
-		if (section == GAME_SECTION_SETTINGS)
+		if (section == GAME::SECTION_SETTINGS)
 			_ParseSection_SETTINGS(line);
 	}
 	f.close();
@@ -114,15 +114,15 @@ void GameManager::Load(LPCWSTR gameFile)
 		string line(str);
 		if (line.empty() || line[0] == '#') continue;
 
-		if (line == "[SETTINGS]") { section = GAME_SECTION_SETTINGS; continue; }
-		if (line == "[SCENES]") { section = GAME_SECTION_SCENES; continue; }
-		if (line == "[TEXTURES]") { section = GAME_SECTION_TEXTURES; continue; }
+		if (line == "[SETTINGS]") { section = GAME::SECTION_SETTINGS; continue; }
+		if (line == "[SCENES]") { section = GAME::SECTION_SCENES; continue; }
+		if (line == "[TEXTURES]") { section = GAME::SECTION_TEXTURES; continue; }
 
 		switch (section)
 		{
-		case GAME_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
-		case GAME_SECTION_SCENES: _ParseSection_SCENES(line); break;
-		case GAME_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
+		case GAME::SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
+		case GAME::SECTION_SCENES: _ParseSection_SCENES(line); break;
+		case GAME::SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
 		}
 	}
 	f.close();
