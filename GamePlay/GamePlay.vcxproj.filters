@@ -124,6 +124,9 @@
     <ClInclude Include="Background.h">
       <Filter>Header Files\Object</Filter>
     </ClInclude>
+    <ClInclude Include="BrickTest.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

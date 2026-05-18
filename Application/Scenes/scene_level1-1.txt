@@ -13,6 +13,7 @@ Objects/pipe.txt
 ########## BACKGROUND ##########
 # type x y z
 3 0 240 0.9
+
 ########## BRICK PLATFORM ##########
 # type x y z
 1 0 448 0.5

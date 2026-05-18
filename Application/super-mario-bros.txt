@@ -1,10 +1,10 @@
 [SETTINGS]
-start    1
+start    3
 screen_width 1920
 screen_height 1080
 
 [SCENES]
--1  Scenes/scene_test.txt
+3  Scenes/scene_test.txt
 0  Scenes/menu_scene.txt
 1  Scenes/scene_level1-1.txt
 2  Scenes/scene_level1-2.txt
@@ -17,4 +17,4 @@ screen_height 1080
 3   Texture/Scene/menu_scene.png
 4   Texture/Scene/Level1/level1-1.png
 5   Texture/Scene/Level1/level1-2.png
--100 Texture/bbox.png
+# -100 Texture/bbox.png

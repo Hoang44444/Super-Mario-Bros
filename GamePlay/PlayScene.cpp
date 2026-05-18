@@ -17,7 +17,7 @@
 #include "Brick.h"
 #include "Pipe.h"
 #include "SwitchScenePoint.h"
-
+#include "BrickTest.h"
 using namespace std;
 
 void PlayScene::Load()
@@ -194,6 +194,10 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT::BRICK:
 		obj = new Brick(x, y, z);
+		break;
+
+	case OBJECT::BRICK_TEST:
+		obj = new BrickTest(x, y, z);
 		break;
 
 	case OBJECT::BACKGROUND:
