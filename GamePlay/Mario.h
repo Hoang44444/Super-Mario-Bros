@@ -40,7 +40,7 @@ private:
 
 	bool isOnGround = false; 
 public:
-	Mario(float x, float y) : GameObject(x, y) {
+	Mario(float x, float y, float z) : GameObject(x, y, z) {
 		level = MARIO_LEVEL_SMALL;
 	};
 	~Mario() {};
@@ -59,5 +59,15 @@ public:
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnNoCollision(DWORD dt);
+
+	// COLISION WITH
+	void OnCollisionWithStaticObject(LPCOLLISIONEVENT e);
+	void OnCollisionWithEnemy(LPCOLLISIONEVENT e);
+	void OnCollisionWithItem(LPCOLLISIONEVENT e);
+	void OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e);
+
+	// RENDER WITH MARIO LEVEL
+	void MarioSmallRender(int& aniId);
+	void MarioBigRender(int& andId);
 };
 

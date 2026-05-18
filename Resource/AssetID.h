@@ -1,78 +1,108 @@
 #pragma once
-	//
-	// SCENE SECTION
-	//
-	constexpr int SCENE_SECTION_UNKNOWN = -1;
-	constexpr int SCENE_SECTION_ASSETS = 1;
-	constexpr int SCENE_SECTION_OBJECTS = 2;
-	constexpr int SCENE_SECTION_MAP = 3;
 
-	//
-	// GAME SECTION
-	//
-	constexpr int GAME_SECTION_SETTINGS = 1;
-	constexpr int GAME_SECTION_SCENES = 2;
-	constexpr int GAME_SECTION_TEXTURES = 3;
+namespace SCENE
+{
+    constexpr int SECTION_UNKNOWN = -1;
+    constexpr int SECTION_ASSETS = 1;
+    constexpr int SECTION_OBJECTS = 2;
+    constexpr int SECTION_MAP = 3;
 
-	//
-	// ASSET SECTION
-	//
-	constexpr int ASSET_SECTION_UNKNOWN = -1;
-	constexpr int ASSET_SECTION_SPRITES = 1;
-	constexpr int ASSET_SECTION_ANIMATIONS = 3;
+    constexpr int MENU = 0;
+    constexpr int WORLD_1_1 = 1;
+    constexpr int WORLD_1_2 = 2;
+    constexpr int WORLD_1_3 = 3;
+    constexpr int WORLD_1_4 = 4;
+    constexpr int WORLD_2_1 = 5;
+    constexpr int WORLD_2_2 = 6;
+    constexpr int WORLD_2_3 = 7;
+    constexpr int WORLD_2_4 = 8;
+    constexpr int WORLD_3_1 = 9;
+    constexpr int WORLD_3_2 = 10;
+    constexpr int WORLD_3_3 = 11;
+    constexpr int WORLD_3_4 = 12;
+    constexpr int END = 13;
+}
 
-	//
-	// OBJECT TYPES
-	//
-	constexpr int OBJECT_TYPE_MENU_BACKGROUND = -1;
-	constexpr int OBJECT_TYPE_MARIO = 0;
-	constexpr int OBJECT_TYPE_BRICK = 1;
-	constexpr int OBJECT_TYPE_BULLET = 2;
+namespace GAME
+{
+    constexpr int SECTION_SETTINGS = 1;
+    constexpr int SECTION_SCENES = 2;
+    constexpr int SECTION_TEXTURES = 3;
+}
 
-	//
-	// TEXTURE IDs
-	//
-	constexpr int ID_TEX_BRICK = 0;
-	constexpr int ID_TEX_MARIO = 1;
-	constexpr int ID_TEX_MISC = 2;
-	constexpr int ID_TEX_MENUBACKGROUND = 3;
-	constexpr int ID_TEX_BBOX = -100;
+namespace ASSET
+{
+    constexpr int SECTION_UNKNOWN = -1;
+    constexpr int SECTION_SPRITES = 1;
+    constexpr int SECTION_ANIMATIONS = 3;
+}
 
-	//
-	// ANIMATION IDs
-	//
-	constexpr int ID_ANI_BRICK = 100;
-	constexpr int ID_ANI_BULLET = 200;
-	constexpr int ID_ANI_MENU_BACKGROUND = 300;
+namespace OBJECT
+{
+    constexpr int MARIO = 0;
+    constexpr int BRICK = 1;
+    constexpr int BULLET = 2;
+    constexpr int BACKGROUND = 3;
+    constexpr int PIPE = 4;
+    constexpr int SWITCH_SCENE_POINT = 5;
+	constexpr int BRICK_TEST = 6;
+}
 
-	// BIG MARIO
-	constexpr int ID_ANI_MARIO_BIG_IDLE_RIGHT = 400;
-	constexpr int ID_ANI_MARIO_BIG_IDLE_LEFT = 401;
-	constexpr int ID_ANI_MARIO_BIG_WALKING_RIGHT = 500;
-	constexpr int ID_ANI_MARIO_BIG_WALKING_LEFT = 501;
-	constexpr int ID_ANI_MARIO_BIG_RUNNING_RIGHT = 600;
-	constexpr int ID_ANI_MARIO_BIG_RUNNING_LEFT = 601;
-	constexpr int ID_ANI_MARIO_BIG_JUMP_WALK_RIGHT = 700;
-	constexpr int ID_ANI_MARIO_BIG_JUMP_WALK_LEFT = 701;
-	constexpr int ID_ANI_MARIO_BIG_JUMP_RUN_RIGHT = 800;
-	constexpr int ID_ANI_MARIO_BIG_JUMP_RUN_LEFT = 801;
-	constexpr int ID_ANI_MARIO_BIG_SIT_RIGHT = 900;
-	constexpr int ID_ANI_MARIO_BIG_SIT_LEFT = 901;
-	constexpr int ID_ANI_MARIO_BIG_BRACE_RIGHT = 1000;
-	constexpr int ID_ANI_MARIO_BIG_BRACE_LEFT = 1001;
+namespace TEXTURE
+{
+    constexpr int BRICK = 0;
+    constexpr int MARIO = 1;
+    constexpr int MISC = 2;
+    constexpr int MENUBACKGROUND = 3;
+    constexpr int LEVEL1_1 = 4;
+    constexpr int BBOX = -100;
+}
 
-	// SMALL MARIO
-	constexpr int ID_ANI_MARIO_SMALL_IDLE_RIGHT = 1100;
-	constexpr int ID_ANI_MARIO_SMALL_IDLE_LEFT = 1102;
-	constexpr int ID_ANI_MARIO_SMALL_WALKING_RIGHT = 1200;
-	constexpr int ID_ANI_MARIO_SMALL_WALKING_LEFT = 1201;
-	constexpr int ID_ANI_MARIO_SMALL_RUNNING_RIGHT = 1300;
-	constexpr int ID_ANI_MARIO_SMALL_RUNNING_LEFT = 1301;
-	constexpr int ID_ANI_MARIO_SMALL_BRACE_RIGHT = 1400;
-	constexpr int ID_ANI_MARIO_SMALL_BRACE_LEFT = 1401;
-	constexpr int ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT = 1500;
-	constexpr int ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT = 1501;
-	constexpr int ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT = 1600;
-	constexpr int ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT = 1601;
+namespace ANIMATION
+{
+    constexpr int BRICK = 100;
+    constexpr int BRICK_TEST = 101;
+    constexpr int BULLET = 200;
+    constexpr int CRACKED_BRICK = 300;
+    
+    // Background
+    constexpr int MENU_BACKGROUND = 300;
+    constexpr int BACKGROUND_LEVEL1_1 = 3000;
+	constexpr int BACKGROUND_LEVEL1_2 = 3001;
 
-	constexpr int ID_ANI_MARIO_DIE = 999;
+    // BIG MARIO
+    constexpr int MARIO_BIG_IDLE_RIGHT = 400;
+    constexpr int MARIO_BIG_IDLE_LEFT = 401;
+    constexpr int MARIO_BIG_WALKING_RIGHT = 500;
+    constexpr int MARIO_BIG_WALKING_LEFT = 501;
+    constexpr int MARIO_BIG_RUNNING_RIGHT = 600;
+    constexpr int MARIO_BIG_RUNNING_LEFT = 601;
+    constexpr int MARIO_BIG_JUMP_WALK_RIGHT = 700;
+    constexpr int MARIO_BIG_JUMP_WALK_LEFT = 701;
+    constexpr int MARIO_BIG_JUMP_RUN_RIGHT = 800;
+    constexpr int MARIO_BIG_JUMP_RUN_LEFT = 801;
+    constexpr int MARIO_BIG_SIT_RIGHT = 900;
+    constexpr int MARIO_BIG_SIT_LEFT = 901;
+    constexpr int MARIO_BIG_BRACE_RIGHT = 1000;
+    constexpr int MARIO_BIG_BRACE_LEFT = 1001;
+
+    // SMALL MARIO
+    constexpr int MARIO_SMALL_IDLE_RIGHT = 1100;
+    constexpr int MARIO_SMALL_IDLE_LEFT = 1102;
+    constexpr int MARIO_SMALL_WALKING_RIGHT = 1200;
+    constexpr int MARIO_SMALL_WALKING_LEFT = 1201;
+    constexpr int MARIO_SMALL_RUNNING_RIGHT = 1300;
+    constexpr int MARIO_SMALL_RUNNING_LEFT = 1301;
+    constexpr int MARIO_SMALL_BRACE_RIGHT = 1400;
+    constexpr int MARIO_SMALL_BRACE_LEFT = 1401;
+    constexpr int MARIO_SMALL_JUMP_WALK_RIGHT = 1500;
+    constexpr int MARIO_SMALL_JUMP_WALK_LEFT = 1501;
+    constexpr int MARIO_SMALL_JUMP_RUN_RIGHT = 1600;
+    constexpr int MARIO_SMALL_JUMP_RUN_LEFT = 1601;
+
+    constexpr int MARIO_DIE = 999;
+
+    // PIPE
+    constexpr int PIPE_HEAD = 3100;
+    constexpr int PIPE_BODY = 3101;
+}

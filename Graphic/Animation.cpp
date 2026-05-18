@@ -5,7 +5,7 @@ void Animation::Add(LPSPRITE sprite, DWORD time)
 {
     frames.push_back(new AnimationFrame(sprite, time));
 }
-void Animation::Render(float x, float y)
+void Animation::Render(float x, float y, float z)
 {
     if (frames.size() == 0) return;
 
@@ -30,10 +30,13 @@ void Animation::Render(float x, float y)
     }
 
     LPSPRITE sprite = frames[currentFrame]->GetSprite();
+    if (sprite == nullptr) return;
+
     RECT rect = sprite->GetRect();
+    if (sprite->GetTexture() == nullptr) return;
 
     Renderer::GetInstance()->Draw(
-        x, y,
+        x, y, z,
         sprite->GetTexture(),
         &rect
     );

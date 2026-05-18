@@ -6,7 +6,7 @@
 #include "PlayScene.h"
 #include "Mario.h"
 #include "MarioKeyHandler.h"
-#include "BrickTest.h"
+#include "Background.h"
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
@@ -14,7 +14,10 @@
 #include "debug.h"
 #include "GameManager.h"
 #include "Camera.h"
-
+#include "Brick.h"
+#include "Pipe.h"
+#include "SwitchScenePoint.h"
+#include "BrickTest.h"
 using namespace std;
 
 void PlayScene::Load()
@@ -36,7 +39,7 @@ void PlayScene::Load()
 		return;
 	}
 
-	int section = SCENE_SECTION_UNKNOWN;
+	int section = SCENE::SECTION_UNKNOWN;
 
 	char str[1024];
 	while (f.getline(str, 1024))
@@ -44,16 +47,16 @@ void PlayScene::Load()
 		string line(str);
 		if (line.empty() || line[0] == '#') continue;
 
-		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; }
-		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; }
-		if (line == "[MAP]") { section = SCENE_SECTION_MAP; continue; }
-		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
+		if (line == "[ASSETS]") { section = SCENE::SECTION_ASSETS; continue; }
+		if (line == "[OBJECTS]") { section = SCENE::SECTION_OBJECTS; continue; }
+		if (line == "[MAP]") { section = SCENE::SECTION_MAP; continue; }
+		if (line[0] == '[') { section = SCENE::SECTION_UNKNOWN; continue; }
 
 		switch (section)
 		{
-		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
-		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-		case SCENE_SECTION_MAP: _ParseSection_MAP(line); break;
+		case SCENE::SECTION_ASSETS: _ParseSection_ASSETS(line); break;
+		case SCENE::SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE::SECTION_MAP: _ParseSection_MAP(line); break;
 		}
 	}
 
@@ -87,7 +90,7 @@ void PlayScene::LoadAssets(LPCWSTR assetFile)
 		return;
 	}
 
-	int section = ASSET_SECTION_UNKNOWN;
+	int section = ASSET::SECTION_UNKNOWN;
 
 	char str[1024];
 	while (f.getline(str, 1024))
@@ -95,16 +98,16 @@ void PlayScene::LoadAssets(LPCWSTR assetFile)
 		string line(str);
 		if (line.empty() || line[0] == '#') continue;
 
-		if (line == "[SPRITES]") { section = ASSET_SECTION_SPRITES; continue; }
-		if (line == "[ANIMATIONS]") { section = ASSET_SECTION_ANIMATIONS; continue; }
-		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; }
-		if (line[0] == '[') { section = ASSET_SECTION_UNKNOWN; continue; }
+		if (line == "[SPRITES]") { section = ASSET::SECTION_SPRITES; continue; }
+		if (line == "[ANIMATIONS]") { section = ASSET::SECTION_ANIMATIONS; continue; }
+		if (line == "[OBJECTS]") { section = SCENE::SECTION_OBJECTS; continue; }
+		if (line[0] == '[') { section = ASSET::SECTION_UNKNOWN; continue; }
 
 		switch (section)
 		{
-		case ASSET_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
-		case ASSET_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
-		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case ASSET::SECTION_SPRITES: _ParseSection_SPRITES(line); break;
+		case ASSET::SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
+		case SCENE::SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		}
 	}
 
@@ -150,7 +153,7 @@ void PlayScene::_ParseSection_ANIMATIONS(string line)
 	int ani_id = atoi(tokens[0].c_str());
 	LPANIMATION ani = new Animation();
 
-	for (int i = 1; i < tokens.size(); i += 2)
+	for (size_t i = 1; i < tokens.size(); i += 2)
 	{
 		int sprite_id = atoi(tokens[i].c_str());
 		int frame_time = atoi(tokens[i+1].c_str());
@@ -168,28 +171,43 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	string token;
 	while (ss >> token) tokens.push_back(token);
 
-	if (tokens.size() < 3) return;
+	if (tokens.size() < 4) return;
 
 	int type = atoi(tokens[0].c_str());
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
-
+	float z = (float)atof(tokens[3].c_str());
 	GameObject* obj = NULL;
 
 	switch (type)
 	{
-	case OBJECT_TYPE_MARIO:
-		if (player != NULL) 
+	case OBJECT::MARIO:
+		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before! \n");
 			return;
 		}
-		obj = new Mario(x, y); 
+		obj = new Mario(x, y, z);
 		player = obj;
+		fixedCameraY = y;
 		break;
-	case OBJECT_TYPE_BRICK:
-		// In a real refactor, we would pass more parameters if needed
-		obj = new Brick(x, y, x - 100, x + 100); 
+
+	case OBJECT::BRICK:
+		obj = new Brick(x, y, z);
+		break;
+
+	case OBJECT::BRICK_TEST:
+		obj = new BrickTest(x, y, z);
+		break;
+
+	case OBJECT::BACKGROUND:
+		obj = new Background(x, y, z);
+		break;
+	case OBJECT::PIPE:
+		obj = new Pipe(x, y, z);
+		break;
+	case OBJECT::SWITCH_SCENE_POINT:
+		obj = new SwitchScenePoint(x, y, z);
 		break;
 	}
 
@@ -229,10 +247,10 @@ void PlayScene::Update(DWORD dt)
 	if (player == nullptr) return;
 
 	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
+	float cx, cy, cz;
+	player->GetPosition(cx, cy, cz);
 
-	Camera::GetInstance()->Follow(cx, cy);
+	Camera::GetInstance()->Follow(cx, fixedCameraY);
 
 	// Remove deleted objects
 	for (size_t i = 0; i < objects.size(); i++)

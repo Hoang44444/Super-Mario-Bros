@@ -1,22 +1,25 @@
 #pragma once
-#include "GameObject.h"
-#include "TextureManager.h"
-#include "Renderer.h"
+#include "StaticObject.h"
+#include "AnimationManager.h"
+#include "../Resource/AssetID.h"
 
-class Brick : public GameObject
-{
-private:
-	float leftLimit, rightLimit;
+constexpr float BRICK_TEST_BBOX_WIDTH = 16.0f;
+constexpr float BRICK_TEST_BBOX_HEIGHT = 16.0f;
+
+class BrickTest : public StaticObject {
 public:
-	Brick(float x, float y, float leftLimit, float rightLimit, float vx = 0.1f) : GameObject(x, y) {
-		this->leftLimit = leftLimit;
-		this->rightLimit = rightLimit;
-		this->vx = vx;
-		this->vy = 0;
+	BrickTest(float x, float y, float z) : StaticObject(x, y, z) {
+		this->state = 0;
+	}
+	virtual ~BrickTest() {};
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr) {};
+	virtual void Render() {
+		AnimationManager::GetInstance()->Get(ANIMATION::BRICK_TEST)->Render(x, y, z);
 	};
-
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) override;
-	virtual void Render() override;
-	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) override;
+	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) override{
+		l = x;
+		t = y;
+		r = x + BRICK_TEST_BBOX_WIDTH;
+		b = y + BRICK_TEST_BBOX_HEIGHT;
+	}
 };
-

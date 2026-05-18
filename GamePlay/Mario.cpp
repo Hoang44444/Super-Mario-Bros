@@ -3,8 +3,10 @@
 #include "../Resource/AssetID.h"
 #include "debug.h"
 #include "Bullet.h"
-#include "BrickTest.h"
-
+#include "StaticObject.h"
+#include "Enemy.h"
+#include "Item.h"
+#include "InvisibleObject.h"
 void Mario::MovementUpdate(DWORD dt) {
 	// Simple movement for testing
 	this->x += this->vx * dt;
@@ -65,45 +67,53 @@ void Mario::SetState(int state)
 	}
 }
 
+void Mario::MarioSmallRender(int& aniId) {
+	if (!isOnGround) {
+		if (direction > 0) aniId = ANIMATION::MARIO_SMALL_JUMP_WALK_RIGHT;
+		else aniId = ANIMATION::MARIO_SMALL_JUMP_WALK_LEFT;
+	}
+	else if (vx != 0) {
+		if (direction > 0) aniId = ANIMATION::MARIO_SMALL_WALKING_RIGHT;
+		else aniId = ANIMATION::MARIO_SMALL_WALKING_LEFT;
+	}
+	else {
+		if (direction > 0) aniId = ANIMATION::MARIO_SMALL_IDLE_RIGHT;
+		else aniId = ANIMATION::MARIO_SMALL_IDLE_LEFT;
+	}
+}
+
+void Mario::MarioBigRender(int& aniId) {
+	if (!isOnGround) {
+		if (direction > 0) aniId = ANIMATION::MARIO_BIG_JUMP_WALK_RIGHT;
+		else aniId = ANIMATION::MARIO_BIG_JUMP_WALK_LEFT;
+	}
+	else if (vx != 0) {
+		if (direction > 0) aniId = ANIMATION::MARIO_BIG_WALKING_RIGHT;
+		else aniId = ANIMATION::MARIO_BIG_WALKING_LEFT;
+	}
+	else {
+		if (direction > 0) aniId = ANIMATION::MARIO_BIG_IDLE_RIGHT;
+		else aniId = ANIMATION::MARIO_BIG_IDLE_LEFT;
+	}
+}
+
 void Mario::Render()
 {
 	int aniId = -1;
 
 	if (state == MARIO_STATE_DIE)
-		aniId = ID_ANI_MARIO_DIE;
+		aniId = ANIMATION::MARIO_DIE;
 	else if (level == MARIO_LEVEL_BIG)
 	{
-		if (!isOnGround) {
-			if (direction > 0) aniId = ID_ANI_MARIO_BIG_JUMP_WALK_RIGHT;
-			else aniId = ID_ANI_MARIO_BIG_JUMP_WALK_LEFT;
-		}
-		else if (vx != 0) {
-			if (direction > 0) aniId = ID_ANI_MARIO_BIG_WALKING_RIGHT;
-			else aniId = ID_ANI_MARIO_BIG_WALKING_LEFT;
-		}
-		else {
-			if (direction > 0) aniId = ID_ANI_MARIO_BIG_IDLE_RIGHT;
-			else aniId = ID_ANI_MARIO_BIG_IDLE_LEFT;
-		}
+		MarioBigRender(aniId);
 	}
 	else if (level == MARIO_LEVEL_SMALL)
 	{
-		if (!isOnGround) {
-			if (direction > 0) aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
-			else aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT;
-		}
-		else if (vx != 0) {
-			if (direction > 0) aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
-			else aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
-		}
-		else {
-			if (direction > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
-			else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
-		}
+		MarioSmallRender(aniId);
 	}
 
 	if (aniId != -1)
-		AnimationManager::GetInstance()->Get(aniId)->Render(x, y);
+		AnimationManager::GetInstance()->Get(aniId)->Render(x, y, z);
 }
 
 void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -122,20 +132,48 @@ void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 	}
 }
 
+void Mario::OnCollisionWithStaticObject(LPCOLLISIONEVENT e)
+{
+	if (e->ny < 0) {
+		isOnGround = true;
+		vy = 0;
+	}
+	else if (e->nx != 0) {
+		vx = 0;
+	}
+}
+
+void Mario::OnCollisionWithEnemy(LPCOLLISIONEVENT e)
+{
+	auto enemy = dynamic_cast<Enemy*>(e->obj);
+	enemy->OnMarioCollison(this);
+}
+
+void Mario::OnCollisionWithItem(LPCOLLISIONEVENT e)
+{
+	auto item = dynamic_cast<Item*>(e->obj);
+	item->OnMarioCollision(this);
+}
+
+void Mario::OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e)
+{
+	auto invisibleObject = dynamic_cast<InvisibleObject*>(e->obj);
+	invisibleObject->OnMarioCollision(this);
+}
+
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if(dynamic_cast<Brick*>(e->obj))
-	{
-		DebugOut(L"Collision with Brick\n");
-		if (e->ny < 0) { 
-			y += e->t * vy * e->ny;
-			vy = 0;
-			isOnGround = true;
-		}
-		else if (e->nx != 0) { 
-			x += e->t * vx * e->nx;
-			vx = 0;
-		}
+	if (dynamic_cast<StaticObject*>(e->obj)) {
+		OnCollisionWithStaticObject(e);
+	}
+	else if (dynamic_cast<Enemy*>(e->obj)) {
+		OnCollisionWithEnemy(e);
+	}
+	else if (dynamic_cast<Item*>(e->obj)) {
+		OnCollisionWithItem(e);
+	}
+	else if (dynamic_cast<InvisibleObject*>(e->obj)) {
+		OnCollisionWithInvisibleObject(e);
 	}
 }
 

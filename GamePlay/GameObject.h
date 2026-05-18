@@ -13,7 +13,7 @@ typedef CollisionEvent* LPCOLLISIONEVENT;
 class GameObject
 {
 protected:
-    float x, y;
+    float x, y, z;
     float vx, vy;
     int direction; // -1: left, 1: right
     int state;
@@ -22,20 +22,20 @@ protected:
 
 public:
     GameObject() {
-        this->x = this->y = 0;
+        this->x = this->y = this->z = 0;
         this->vx = this->vy = 0;
         this->direction = 1;
         this->state = -1;
         this->isDeleted = false;
 		scene = nullptr;
     };
-    GameObject(float x, float y) : GameObject() { this->x = x; this->y = y;};
+    GameObject(float x, float y, float z) : GameObject() { this->x = x; this->y = y; this->z = z; };
 
     ~GameObject() {};
 
     // Position
-    void SetPosition(float x, float y) { this->x = x; this->y = y;};
-    void GetPosition(float& x, float& y) { x = this->x; y = this->y; };
+    void SetPosition(float x, float y, float z) { this->x = x; this->y = y; this->z = z; };
+    void GetPosition(float& x, float& y, float& z) { x = this->x; y = this->y; z = this->z; };
 
     // Speed
     void SetSpeed(float vx, float vy) { this->vx = vx; this->vy = vy; };

@@ -1,0 +1,9 @@
+[SPRITES]
+# id l t r b tex_id
+30001 0 0 3376 480 4
+30011 0 0 3584 720 5
+
+[ANIMATIONS]
+# id sprite_id time
+3000 30001 100
+3001 30011 100

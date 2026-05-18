@@ -9,11 +9,12 @@ class PlayScene : public Scene
 {
 	LPGAMEOBJECT player;
 	std::vector<LPGAMEOBJECT> objects;
+	float fixedCameraY;
 
 	void _ParseSection_ASSETS(string line);
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_MAP(string line);
-	
+
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 
@@ -22,15 +23,16 @@ class PlayScene : public Scene
 public:
 	PlayScene(int id, LPCWSTR filePath) : Scene(id, filePath) {
 		player = NULL;
+		fixedCameraY = 0;
 	}
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
 
-	void AddObject(LPGAMEOBJECT obj) { 
+	void AddObject(LPGAMEOBJECT obj) {
 		obj->SetScene(this);
-		objects.push_back(obj); 
+		objects.push_back(obj);
 		DebugOut(L"[SCENE] Added new object. Total objects: %d\n", objects.size());
 	}
 
