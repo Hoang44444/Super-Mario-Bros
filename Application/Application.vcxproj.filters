@@ -9,6 +9,36 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Configuration">
+      <UniqueIdentifier>{b544be9c-f370-4c20-a305-87f2e12434df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration\Scenes">
+      <UniqueIdentifier>{685d83a3-58ad-489a-91e6-38d3d26744cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration\Object">
+      <UniqueIdentifier>{2fd73181-3e35-44f3-8899-725ce17700fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration\Scenes\Chapter 1">
+      <UniqueIdentifier>{74201182-9f44-42b8-86a3-e2841c49ab67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration\Scenes\Chapter 2">
+      <UniqueIdentifier>{1d21fddf-5ff2-457b-81ac-034d3df5266a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration\Scenes\Chapter 3">
+      <UniqueIdentifier>{b2257f01-731f-43c1-8203-ff0d94d1f842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration\Object\Enemy">
+      <UniqueIdentifier>{1c4b3d79-1b0e-4059-89c9-7248f50bb1ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration\Object\Items">
+      <UniqueIdentifier>{001455bd-3ed3-426b-a3fe-a520f75b1432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration\Object\Player">
+      <UniqueIdentifier>{596900b7-5749-45d2-96a9-1e0fc9d6245c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Configuration\Object\StaticObject">
+      <UniqueIdentifier>{28ee8aa5-b4f0-476b-8e76-6d7769e36eed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
@@ -25,5 +55,34 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Objects\mario.txt">
+      <Filter>Configuration\Object\Player</Filter>
+    </Text>
+    <Text Include="Objects\brick.txt">
+      <Filter>Configuration\Object\StaticObject</Filter>
+    </Text>
+    <Text Include="Objects\brick_test.txt">
+      <Filter>Configuration\Object\StaticObject</Filter>
+    </Text>
+    <Text Include="Objects\bullet.txt">
+      <Filter>Configuration\Object\Player</Filter>
+    </Text>
+    <Text Include="Objects\background.txt">
+      <Filter>Configuration\Object</Filter>
+    </Text>
+    <Text Include="Scenes\scene_level1-1.txt">
+      <Filter>Configuration\Scenes\Chapter 1</Filter>
+    </Text>
+    <Text Include="Scenes\scene_level1-2.txt">
+      <Filter>Configuration\Scenes\Chapter 1</Filter>
+    </Text>
+    <Text Include="Scenes\scene_test.txt">
+      <Filter>Configuration\Scenes</Filter>
+    </Text>
+    <Text Include="super-mario-bros.txt">
+      <Filter>Configuration</Filter>
+    </Text>
   </ItemGroup>
 </Project>
