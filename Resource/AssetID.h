@@ -69,6 +69,8 @@ namespace ANIMATION
     constexpr int MENU_BACKGROUND = 300;
     constexpr int BACKGROUND_LEVEL1_1 = 3000;
 	constexpr int BACKGROUND_LEVEL1_2 = 3001;
+	constexpr int BACKGROUND_LEVEL1_3 = 3002;
+	constexpr int BACKGROUND_LEVEL1_4 = 3003;
 
     // BIG MARIO
     constexpr int MARIO_BIG_IDLE_RIGHT = 400;
