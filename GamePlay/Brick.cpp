@@ -14,3 +14,11 @@ void Brick::GetBoundingBox(float& l, float& t, float& r, float& b) {
 	r = x + BRICK_BBOX_WIDTH;
 	b = y + BRICK_BBOX_HEIGHT;
 }
+
+void Brick::OnMarioCollision(Mario* mario, LPCOLLISIONEVENT e) {
+	if (mario->GetLevel() == MARIO_LEVEL::SMALL) return;
+	if (e->ny < 0) {
+		this->Delete();
+	}
+
+}

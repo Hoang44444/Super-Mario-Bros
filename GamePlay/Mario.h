@@ -79,6 +79,6 @@ public:
 	// GETTERS AND SETTERS
 	void SetSpeedY(float vy) { this->vy = vy; }
 	void SetSpeedX(float vx) { this->vx = vx; }
-	int GetLevel(int level) { return level; }
+	int GetLevel() { return level; }
 };
 
