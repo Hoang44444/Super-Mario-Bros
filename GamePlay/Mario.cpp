@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "InvisibleObject.h"
+#include "DynamicPlatform.h"
 void Mario::MovementUpdate(DWORD dt) {
 	// Simple movement for testing
 	this->x += this->vx * dt;
@@ -164,7 +165,7 @@ void Mario::OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e)
 
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<StaticObject*>(e->obj)) {
+	if (dynamic_cast<StaticObject*>(e->obj) || dynamic_cast<DynamicPlatform*>(e->obj)) {
 		OnCollisionWithStaticObject(e);
 	}
 	else if (dynamic_cast<Enemy*>(e->obj)) {
