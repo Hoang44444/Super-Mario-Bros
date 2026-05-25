@@ -40,7 +40,7 @@ namespace ASSET
 namespace OBJECT
 {
     constexpr int MARIO = 0;
-    constexpr int BRICK = 1;
+    constexpr int PLATFORM = 1;
     constexpr int BULLET = 2;
     constexpr int BACKGROUND = 3;
     constexpr int PIPE = 4;

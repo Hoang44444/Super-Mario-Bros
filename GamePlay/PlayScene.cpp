@@ -14,7 +14,7 @@
 #include "debug.h"
 #include "GameManager.h"
 #include "Camera.h"
-#include "Brick.h"
+#include "Platform.h"
 #include "Pipe.h"
 #include "SwitchScenePoint.h"
 #include "BrickTest.h"
@@ -192,8 +192,8 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		fixedCameraY = y;
 		break;
 
-	case OBJECT::BRICK:
-		obj = new Brick(x, y, z);
+	case OBJECT::PLATFORM:
+		obj = new Platform(x, y, z);
 		break;
 
 	case OBJECT::BRICK_TEST:

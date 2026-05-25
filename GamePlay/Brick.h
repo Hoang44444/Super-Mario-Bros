@@ -10,13 +10,8 @@ public:
 		this->state = 0;
 	}
 	virtual ~Brick() {};
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr) {};
-	virtual void Render() {};
-	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) override{
-		l = x;
-		t = y;
-		r = x + BRICK_BBOX_WIDTH;
-		b = y + BRICK_BBOX_HEIGHT;
-	}
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr) override; 
+	void Render() override ;
+	void GetBoundingBox(float& l, float& t, float& r, float& b) override;
 };
 

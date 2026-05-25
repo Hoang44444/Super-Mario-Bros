@@ -144,6 +144,7 @@
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioKeyHandler.h" />
     <ClInclude Include="Pipe.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="StaticObject.h" />
@@ -162,11 +163,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="StaticObject.cpp" />
     <ClCompile Include="SwitchScenePoint.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Mario.h"
 
 class StaticObject : public GameObject{
 public:
@@ -8,5 +9,7 @@ public:
 
 	bool IsColliable() { return true; }
 	bool IsBlocking() { return true; }
+
+	virtual void OnMarioCollision(Mario* mario, LPCOLLISIONEVENT e);
 };
 

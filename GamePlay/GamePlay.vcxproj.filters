@@ -48,6 +48,9 @@
     <Filter Include="Source Files\Object\InvisibleObject">
       <UniqueIdentifier>{7ca4ff27-a279-4eea-bb4f-0d28e7710163}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Object\StaticObject">
+      <UniqueIdentifier>{16c4da6e-4637-4953-a484-a6741dd65951}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collision.cpp">
@@ -70,6 +73,18 @@
     </ClCompile>
     <ClCompile Include="SwitchScenePoint.cpp">
       <Filter>Source Files\Object\InvisibleObject</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticObject.cpp">
+      <Filter>Source Files\Object\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Source Files\Object\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Source Files\Object\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>Source Files\Object\StaticObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +141,9 @@
     </ClInclude>
     <ClInclude Include="BrickTest.h">
       <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Header Files\Object\StaticObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

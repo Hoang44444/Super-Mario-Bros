@@ -33,36 +33,36 @@ void Mario::SetState(int state)
 	GameObject::SetState(state);
 	switch (state)
 	{
-	case MARIO_STATE_WALKING_RIGHT:
-		vx = MARIO_WALK_SPEED;
+	case MARIO_STATE::WALKING_RIGHT:
+		vx = MARIO_PARAMS::WALK_SPEED;
 		direction = 1;
 		break;
-	case MARIO_STATE_WALKING_LEFT:
-		vx = -MARIO_WALK_SPEED;
+	case MARIO_STATE::WALKING_LEFT:
+		vx = -MARIO_PARAMS::WALK_SPEED;
 		direction = -1;
 		break;
-	case MARIO_STATE_JUMP:
+	case MARIO_STATE::JUMP:
 		if (isOnGround) {
-			vy = -MARIO_JUMP_SPEED;
+			vy = -MARIO_PARAMS::JUMP_SPEED;
 			isOnGround = false;
 		}
 		break;
-	case MARIO_STATE_IDLE:
+	case MARIO_STATE::IDLE:
 		vx = 0;
 		break;
-	case MARIO_STATE_DIE:
-		vy = -MARIO_JUMP_SPEED;
+	case MARIO_STATE::DIE:
+		vy = -MARIO_PARAMS::JUMP_SPEED;
 		break;
-	case MARIO_STATE_SHOOT:
+	case MARIO_STATE::SHOOT:
 		ShootBullet();
-		this->state = MARIO_STATE_IDLE; // Revert to idle so Mario doesn't disappear
+		this->state = MARIO_STATE::IDLE;
 		break;
-	case MARIO_STATE_RUNNING_LEFT:
-		vx = -MARIO_RUN_SPEED;
+	case MARIO_STATE::RUNNING_LEFT:
+		vx = -MARIO_PARAMS::RUN_SPEED;
 		direction = -1;
 		break;
-	case MARIO_STATE_RUNNING_RIGHT:
-		vx = MARIO_RUN_SPEED;
+	case MARIO_STATE::RUNNING_RIGHT:
+		vx = MARIO_PARAMS::RUN_SPEED;
 		direction = 1;
 		break;
 	}
@@ -102,13 +102,13 @@ void Mario::Render()
 {
 	int aniId = -1;
 
-	if (state == MARIO_STATE_DIE)
+	if (state == MARIO_STATE::DIE)
 		aniId = ANIMATION::MARIO_DIE;
-	else if (level == MARIO_LEVEL_BIG)
+	else if (level == MARIO_LEVEL::BIG)
 	{
 		MarioBigRender(aniId);
 	}
-	else if (level == MARIO_LEVEL_SMALL)
+	else if (level == MARIO_LEVEL::SMALL)
 	{
 		MarioSmallRender(aniId);
 	}
@@ -121,7 +121,7 @@ void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;
-	if (level == MARIO_LEVEL_BIG)
+	if (level == MARIO_LEVEL::BIG)
 	{
 		r = x + 15;
 		b = y + 27;

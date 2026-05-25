@@ -17,30 +17,30 @@ public:
 		LPGAMEOBJECT mario = scene->GetPlayer();
 		if (mario == NULL) return;
 
-		if (mario->GetState() == MARIO_STATE_DIE) return;
+		if (mario->GetState() == MARIO_STATE::DIE) return;
 
 		if (states[VK_RIGHT] & 0x80)
-			mario->SetState(MARIO_STATE_WALKING_RIGHT);
+			mario->SetState(MARIO_STATE::WALKING_RIGHT);
 		else if (states[VK_LEFT] & 0x80)
-			mario->SetState(MARIO_STATE_WALKING_LEFT);
+			mario->SetState(MARIO_STATE::WALKING_LEFT);
 		else
-			mario->SetState(MARIO_STATE_IDLE);
+			mario->SetState(MARIO_STATE::IDLE);
 	}
 
 	virtual void OnKeyDown(int KeyCode) {
 		LPGAMEOBJECT mario = scene->GetPlayer();
 		if (mario == NULL) return;
 
-		if (mario->GetState() == MARIO_STATE_DIE) return;
+		if (mario->GetState() == MARIO_STATE::DIE) return;
 
 		switch (KeyCode)
 		{
 		case VK_SPACE:
-			mario->SetState(MARIO_STATE_JUMP);
+			mario->SetState(MARIO_STATE::JUMP);
 			break;
 		case 'K':
 			DebugOut(L"[KEYBOARD] Key 'k' pressed: Shooting bullet\n");
-			mario->SetState(MARIO_STATE_SHOOT);
+			mario->SetState(MARIO_STATE::SHOOT);
 			break;
 		}
 	}
