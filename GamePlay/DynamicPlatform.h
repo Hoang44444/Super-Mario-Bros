@@ -27,33 +27,15 @@ private:
 	int type; // 0: horizontal, 1: vertical
 public:
 	DynamicPlatform(float x, float y, float z, int type) : GameObject(x, y, z) {
-		this->minBound = x - 50; // Example bounds
-		this->maxBound = x + 50;
 		this->type = type;
 
 		if (type == DYNAMIC_PLATFORM_TYPE::HORIZONTAL) {
-			if (x < 0) {
-				direction = -1;
-				this->x = abs(x);
-			}
-			else if (x > 0) {
-				direction = 1;
-			}
-			else {
-				direction = 1; // Default to moving right if starting at 0
-			}
+			this->minBound = x - 50;
+			this->maxBound = x + 50;
 		}
-		else if (type == DYNAMIC_PLATFORM_TYPE::VERTICAL) {
-			if (y < 0) {
-				direction = -1;
-				this->y = abs(y);
-			}
-			else if (y > 0) {
-				direction = 1;
-			}
-			else {
-				direction = 1; // Default to moving down if starting at 0
-			}
+		else {
+			this->minBound = y - 50;
+			this->maxBound = y + 50;
 		}
 	};
 

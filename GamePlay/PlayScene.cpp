@@ -18,6 +18,7 @@
 #include "Pipe.h"
 #include "SwitchScenePoint.h"
 #include "BrickTest.h"
+#include "DynamicPlatform.h"
 using namespace std;
 
 void PlayScene::Load()
@@ -209,6 +210,18 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT::SWITCH_SCENE_POINT:
 		obj = new SwitchScenePoint(x, y, z);
 		break;
+
+	case OBJECT::DYNAMIC_PLATFORM:
+	{
+		if (tokens.size() < 5)
+		{
+			DebugOut(L"[ERROR] DYNAMIC_PLATFORM missing objectType field!\n");
+			return;
+		}
+		int objectType = atoi(tokens[4].c_str());
+		obj = new DynamicPlatform(x, y, z, objectType);
+		break;
+	}
 	}
 
 	if (obj != NULL) {

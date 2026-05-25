@@ -46,6 +46,7 @@ namespace OBJECT
     constexpr int PIPE = 4;
     constexpr int SWITCH_SCENE_POINT = 5;
 	constexpr int BRICK_TEST = 6;
+	constexpr int DYNAMIC_PLATFORM = 7;
 }
 
 namespace TEXTURE
