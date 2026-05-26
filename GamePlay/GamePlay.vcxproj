@@ -77,6 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -92,6 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -105,7 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Resource;..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -121,7 +123,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Resource;..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -130,26 +132,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Background.h" />
-    <ClInclude Include="BrickTest.h" />
-    <ClInclude Include="Bullet.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="Brick.h" />
-    <ClInclude Include="DynamicPlatform.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="GameManager.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="InvisibleObject.h" />
-    <ClInclude Include="Item.h" />
-    <ClInclude Include="KeyEventHandler.h" />
-    <ClInclude Include="Mario.h" />
-    <ClInclude Include="MarioKeyHandler.h" />
-    <ClInclude Include="Pipe.h" />
-    <ClInclude Include="Platform.h" />
-    <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="StaticObject.h" />
-    <ClInclude Include="SwitchScenePoint.h" />
+    <ClInclude Include="Core\Scene.h" />
+    <ClInclude Include="Core\GameObject.h" />
+    <ClInclude Include="Core\Collision.h" />
+    <ClInclude Include="Core\KeyEventHandler.h" />
+    <ClInclude Include="Core\GameManager.h" />
+    <ClInclude Include="Scenes\PlayScene.h" />
+    <ClInclude Include="Scenes\Background.h" />
+    <ClInclude Include="Objects\Player\Mario.h" />
+    <ClInclude Include="Objects\Player\MarioKeyHandler.h" />
+    <ClInclude Include="Objects\Player\Bullet.h" />
+    <ClInclude Include="Objects\Player\Enemy.h" />
+    <ClInclude Include="Objects\Player\Item.h" />
+    <ClInclude Include="Objects\Static\StaticObject.h" />
+    <ClInclude Include="Objects\Static\Brick.h" />
+    <ClInclude Include="Objects\Static\BrickTest.h" />
+    <ClInclude Include="Objects\Static\Pipe.h" />
+    <ClInclude Include="Objects\Static\Platform.h" />
+    <ClInclude Include="Objects\Dynamic\DynamicPlatform.h" />
+    <ClInclude Include="Objects\Invisible\InvisibleObject.h" />
+    <ClInclude Include="Objects\Invisible\DeathZone.h" />
+    <ClInclude Include="Objects\Invisible\SwitchScenePoint.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -163,18 +166,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Background.cpp" />
-    <ClCompile Include="Brick.cpp" />
-    <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="DynamicPlatform.cpp" />
-    <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="Mario.cpp" />
-    <ClCompile Include="Pipe.cpp" />
-    <ClCompile Include="Platform.cpp" />
-    <ClCompile Include="PlayScene.cpp" />
-    <ClCompile Include="StaticObject.cpp" />
-    <ClCompile Include="SwitchScenePoint.cpp" />
+    <ClCompile Include="Core\Collision.cpp" />
+    <ClCompile Include="Core\GameManager.cpp" />
+    <ClCompile Include="Scenes\PlayScene.cpp" />
+    <ClCompile Include="Scenes\Background.cpp" />
+    <ClCompile Include="Objects\Player\Mario.cpp" />
+    <ClCompile Include="Objects\Player\Bullet.cpp" />
+    <ClCompile Include="Objects\Static\StaticObject.cpp" />
+    <ClCompile Include="Objects\Static\Brick.cpp" />
+    <ClCompile Include="Objects\Static\Pipe.cpp" />
+    <ClCompile Include="Objects\Static\Platform.cpp" />
+    <ClCompile Include="Objects\Dynamic\DynamicPlatform.cpp" />
+    <ClCompile Include="Objects\Invisible\DeathZone.cpp" />
+    <ClCompile Include="Objects\Invisible\SwitchScenePoint.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

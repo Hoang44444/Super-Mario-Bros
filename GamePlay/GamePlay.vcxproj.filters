@@ -1,156 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
+    <!-- Core -->
+    <Filter Include="Core">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
+    <Filter Include="Core\Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+      <Extensions>h;hh;hpp;hxx</Extensions>
     </Filter>
-    <Filter Include="Header Files\Object">
-      <UniqueIdentifier>{07dc5f03-d366-4633-bc45-70fd28b801f6}</UniqueIdentifier>
+    <Filter Include="Core\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FD}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
-    <Filter Include="Header Files\Object\Player">
-      <UniqueIdentifier>{b1e7ca46-ca53-4979-8499-ce53d5c290f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\StaticObject">
-      <UniqueIdentifier>{61aba161-a8d6-4401-ba79-29782b13c77e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\Bullet">
-      <UniqueIdentifier>{f199c178-8ee0-4be5-bc6a-c1eca98c0c13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\Item">
-      <UniqueIdentifier>{a8419ccb-7851-4360-baf7-424a8cd73940}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\Enemy">
-      <UniqueIdentifier>{c4e21d13-72d4-4fe0-bf7a-9dd9d77121e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Scene">
+    <!-- Scenes -->
+    <Filter Include="Scenes">
       <UniqueIdentifier>{0f77f2fd-788c-408a-8ce7-27e7164e43bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object">
+    <Filter Include="Scenes\Header Files">
+      <UniqueIdentifier>{0f77f2fd-788c-408a-8ce7-27e7164e43be}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Scenes\Source Files">
+      <UniqueIdentifier>{81de123d-a914-4366-8ba5-8bf07cc51ff8}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
+    </Filter>
+    <!-- Objects -->
+    <Filter Include="Objects">
       <UniqueIdentifier>{90f07e24-de63-4db1-a262-98535361f41a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object\Bullet">
-      <UniqueIdentifier>{44bdc7fd-01c4-46cd-ab62-7e23b2e9f77f}</UniqueIdentifier>
+    <!-- Objects\Player -->
+    <Filter Include="Objects\Player">
+      <UniqueIdentifier>{b1e7ca46-ca53-4979-8499-ce53d5c290f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object\Player">
+    <Filter Include="Objects\Player\Header Files">
+      <UniqueIdentifier>{b1e7ca46-ca53-4979-8499-ce53d5c290f5}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Objects\Player\Source Files">
       <UniqueIdentifier>{db9f92e6-6e34-40cf-a094-f053bc2cf061}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
-    <Filter Include="Source Files\Scene">
-      <UniqueIdentifier>{81de123d-a914-4366-8ba5-8bf07cc51ff8}</UniqueIdentifier>
+    <!-- Objects\Static -->
+    <Filter Include="Objects\Static">
+      <UniqueIdentifier>{61aba161-a8d6-4401-ba79-29782b13c77e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Object\InvisibleObject">
+    <Filter Include="Objects\Static\Header Files">
+      <UniqueIdentifier>{61aba161-a8d6-4401-ba79-29782b13c77f}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Objects\Static\Source Files">
+      <UniqueIdentifier>{16c4da6e-4637-4953-a484-a6741dd65951}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
+    </Filter>
+    <!-- Objects\Dynamic -->
+    <Filter Include="Objects\Dynamic">
+      <UniqueIdentifier>{07dc5f03-d366-4633-bc45-70fd28b801f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Dynamic\Header Files">
+      <UniqueIdentifier>{07dc5f03-d366-4633-bc45-70fd28b801f7}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Objects\Dynamic\Source Files">
+      <UniqueIdentifier>{44bdc7fd-01c4-46cd-ab62-7e23b2e9f77f}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
+    </Filter>
+    <!-- Objects\Invisible -->
+    <Filter Include="Objects\Invisible">
       <UniqueIdentifier>{6ebb9be3-519b-4ab5-835f-424e4ed7b3e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Object\InvisibleObject">
+    <Filter Include="Objects\Invisible\Header Files">
+      <UniqueIdentifier>{6ebb9be3-519b-4ab5-835f-424e4ed7b3e8}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Objects\Invisible\Source Files">
       <UniqueIdentifier>{7ca4ff27-a279-4eea-bb4f-0d28e7710163}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Object\StaticObject">
-      <UniqueIdentifier>{16c4da6e-4637-4953-a484-a6741dd65951}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Source Files\Object\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Mario.cpp">
-      <Filter>Source Files\Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Background.cpp">
-      <Filter>Source Files\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScene.cpp">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SwitchScenePoint.cpp">
-      <Filter>Source Files\Object\InvisibleObject</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticObject.cpp">
-      <Filter>Source Files\Object\StaticObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Source Files\Object\StaticObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Pipe.cpp">
-      <Filter>Source Files\Object\StaticObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform.cpp">
-      <Filter>Source Files\Object\StaticObject</Filter>
-    </ClCompile>
-    <ClCompile Include="DynamicPlatform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="Core\Scene.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GameObject.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Collision.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\KeyEventHandler.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GameManager.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\PlayScene.h">
+      <Filter>Scenes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\Background.h">
+      <Filter>Scenes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Player\Mario.h">
+      <Filter>Objects\Player\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Player\MarioKeyHandler.h">
+      <Filter>Objects\Player\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Player\Bullet.h">
+      <Filter>Objects\Player\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Player\Enemy.h">
+      <Filter>Objects\Player\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Player\Item.h">
+      <Filter>Objects\Player\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Static\StaticObject.h">
+      <Filter>Objects\Static\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Static\Brick.h">
+      <Filter>Objects\Static\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Static\BrickTest.h">
+      <Filter>Objects\Static\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Static\Pipe.h">
+      <Filter>Objects\Static\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Static\Platform.h">
+      <Filter>Objects\Static\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Dynamic\DynamicPlatform.h">
+      <Filter>Objects\Dynamic\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Invisible\InvisibleObject.h">
+      <Filter>Objects\Invisible\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Invisible\DeathZone.h">
+      <Filter>Objects\Invisible\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Invisible\SwitchScenePoint.h">
+      <Filter>Objects\Invisible\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Collision.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyEventHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Brick.h">
-      <Filter>Header Files\Object\StaticObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Header Files\Object\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Header Files\Object\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Pipe.h">
-      <Filter>Header Files\Object\StaticObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Mario.h">
-      <Filter>Header Files\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="MarioKeyHandler.h">
-      <Filter>Header Files\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticObject.h">
-      <Filter>Header Files\Object\StaticObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Header Files\Object\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScene.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SwitchScenePoint.h">
-      <Filter>Header Files\Object\InvisibleObject</Filter>
-    </ClInclude>
-    <ClInclude Include="InvisibleObject.h">
-      <Filter>Header Files\Object\InvisibleObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Background.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="BrickTest.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform.h">
-      <Filter>Header Files\Object\StaticObject</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicPlatform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="Core\Collision.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\GameManager.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\PlayScene.cpp">
+      <Filter>Scenes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\Background.cpp">
+      <Filter>Scenes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Player\Mario.cpp">
+      <Filter>Objects\Player\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Player\Bullet.cpp">
+      <Filter>Objects\Player\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Static\StaticObject.cpp">
+      <Filter>Objects\Static\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Static\Brick.cpp">
+      <Filter>Objects\Static\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Static\Pipe.cpp">
+      <Filter>Objects\Static\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Static\Platform.cpp">
+      <Filter>Objects\Static\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Dynamic\DynamicPlatform.cpp">
+      <Filter>Objects\Dynamic\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Invisible\DeathZone.cpp">
+      <Filter>Objects\Invisible\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Invisible\SwitchScenePoint.cpp">
+      <Filter>Objects\Invisible\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
