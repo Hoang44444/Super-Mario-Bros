@@ -86,6 +86,9 @@
     <ClCompile Include="Platform.cpp">
       <Filter>Source Files\Object\StaticObject</Filter>
     </ClCompile>
+    <ClCompile Include="DynamicPlatform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h">
@@ -144,6 +147,9 @@
     </ClInclude>
     <ClInclude Include="Platform.h">
       <Filter>Header Files\Object\StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicPlatform.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
