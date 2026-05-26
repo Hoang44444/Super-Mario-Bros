@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,7 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

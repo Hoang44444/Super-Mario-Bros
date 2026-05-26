@@ -41,6 +41,34 @@
       <UniqueIdentifier>{db9f92e6-6e34-40cf-a094-f053bc2cf061}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
+    <!-- Objects\Bullet -->
+    <Filter Include="Objects\Bullet">
+      <UniqueIdentifier>{f199c178-8ee0-4be5-bc6a-c1eca98c0c13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Bullet\Header Files">
+      <UniqueIdentifier>{f199c178-8ee0-4be5-bc6a-c1eca98c0c14}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Objects\Bullet\Source Files">
+      <UniqueIdentifier>{44bdc7fd-01c4-46cd-ab62-7e23b2e9f77f}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
+    </Filter>
+    <!-- Objects\Enemy -->
+    <Filter Include="Objects\Enemy">
+      <UniqueIdentifier>{c4e21d13-72d4-4fe0-bf7a-9dd9d77121e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Enemy\Header Files">
+      <UniqueIdentifier>{c4e21d13-72d4-4fe0-bf7a-9dd9d77121e1}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <!-- Objects\Item -->
+    <Filter Include="Objects\Item">
+      <UniqueIdentifier>{a8419ccb-7851-4360-baf7-424a8cd73940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Item\Header Files">
+      <UniqueIdentifier>{a8419ccb-7851-4360-baf7-424a8cd73941}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
     <!-- Objects\Static -->
     <Filter Include="Objects\Static">
       <UniqueIdentifier>{61aba161-a8d6-4401-ba79-29782b13c77e}</UniqueIdentifier>
@@ -62,7 +90,7 @@
       <Extensions>h;hh;hpp;hxx</Extensions>
     </Filter>
     <Filter Include="Objects\Dynamic\Source Files">
-      <UniqueIdentifier>{44bdc7fd-01c4-46cd-ab62-7e23b2e9f77f}</UniqueIdentifier>
+      <UniqueIdentifier>{07dc5f03-d366-4633-bc45-70fd28b801f8}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
     <!-- Objects\Invisible -->
@@ -106,14 +134,14 @@
     <ClInclude Include="Objects\Player\MarioKeyHandler.h">
       <Filter>Objects\Player\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Player\Bullet.h">
-      <Filter>Objects\Player\Header Files</Filter>
+    <ClInclude Include="Objects\Bullet\Bullet.h">
+      <Filter>Objects\Bullet\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Player\Enemy.h">
-      <Filter>Objects\Player\Header Files</Filter>
+    <ClInclude Include="Objects\Enemy\Enemy.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Player\Item.h">
-      <Filter>Objects\Player\Header Files</Filter>
+    <ClInclude Include="Objects\Item\Item.h">
+      <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Static\StaticObject.h">
       <Filter>Objects\Static\Header Files</Filter>
@@ -159,8 +187,8 @@
     <ClCompile Include="Objects\Player\Mario.cpp">
       <Filter>Objects\Player\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Player\Bullet.cpp">
-      <Filter>Objects\Player\Source Files</Filter>
+    <ClCompile Include="Objects\Bullet\Bullet.cpp">
+      <Filter>Objects\Bullet\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Static\StaticObject.cpp">
       <Filter>Objects\Static\Source Files</Filter>
