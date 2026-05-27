@@ -18,6 +18,7 @@
 #include "Pipe.h"
 #include "SwitchScenePoint.h"
 #include "BrickTest.h"
+#include "Brick.h"
 #include "DynamicPlatform.h"
 using namespace std;
 
@@ -209,6 +210,10 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT::SWITCH_SCENE_POINT:
 		obj = new SwitchScenePoint(x, y, z);
+		break;
+
+	case OBJECT::BRICK:
+		obj = new Brick(x, y, z);
 		break;
 
 	case OBJECT::DYNAMIC_PLATFORM:

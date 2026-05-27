@@ -149,6 +149,9 @@
     <ClInclude Include="Objects\Static\Brick.h">
       <Filter>Objects\Static\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\Static\BrickFragment.h">
+      <Filter>Objects\Static\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Objects\Static\BrickTest.h">
       <Filter>Objects\Static\Header Files</Filter>
     </ClInclude>
@@ -194,6 +197,9 @@
       <Filter>Objects\Static\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Static\Brick.cpp">
+      <Filter>Objects\Static\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Static\BrickFragment.cpp">
       <Filter>Objects\Static\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Static\Pipe.cpp">

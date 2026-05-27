@@ -47,7 +47,7 @@ private:
 	bool isOnGround = false; 
 public:
 	Mario(float x, float y, float z) : GameObject(x, y, z) {
-		level = MARIO_LEVEL::SMALL;
+		level = MARIO_LEVEL::BIG;
 	};
 	~Mario() {};
 	// ACTIONS

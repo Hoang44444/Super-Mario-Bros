@@ -21,4 +21,6 @@ screen_height 1080
 5   Texture/Scene/Level1/level1-2.png
 6   Texture/Scene/Level1/level1-3.png
 7   Texture/Scene/Level1/level1-4.png
+8   Texture/Items/OverWorld.png
+9   Texture/Items/UnderWorld.png 
 # -100 Texture/bbox.png

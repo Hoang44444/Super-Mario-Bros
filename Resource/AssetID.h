@@ -47,6 +47,8 @@ namespace OBJECT
     constexpr int SWITCH_SCENE_POINT = 5;
 	constexpr int BRICK_TEST = 6;
 	constexpr int DYNAMIC_PLATFORM = 7;
+	constexpr int BRICK = 8;
+	constexpr int DEATH_ZONE = 9;
 }
 
 namespace TEXTURE
@@ -63,6 +65,10 @@ namespace ANIMATION
 {
     constexpr int BRICK = 100;
     constexpr int BRICK_TEST = 101;
+    constexpr int BRICK_FRAGMENT_UP_LEFT = 110;
+    constexpr int BRICK_FRAGMENT_UP_RIGHT = 111;
+    constexpr int BRICK_FRAGMENT_BOTTOM_LEFT = 112;
+    constexpr int BRICK_FRAGMENT_BOTTOM_RIGHT = 113;
     constexpr int BULLET = 200;
     constexpr int CRACKED_BRICK = 300;
     

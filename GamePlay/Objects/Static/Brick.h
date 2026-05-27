@@ -5,6 +5,8 @@ constexpr float BRICK_BBOX_WIDTH = 16.0f;
 constexpr float BRICK_BBOX_HEIGHT = 16.0f;
 
 class Brick : public StaticObject {
+private:
+	void Break();
 public:
 	Brick(float x, float y, float z) : StaticObject(x, y, z) {
 		this->state = 0;

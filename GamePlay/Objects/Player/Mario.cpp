@@ -140,9 +140,15 @@ void Mario::OnCollisionWithStaticObject(LPCOLLISIONEVENT e)
 		isOnGround = true;
 		vy = 0;
 	}
+	else if (e->ny > 0) {
+		vy = 0;
+	}
 	else if (e->nx != 0) {
 		vx = 0;
 	}
+		
+	auto staticObject = dynamic_cast<StaticObject*>(e->obj);
+	staticObject->OnMarioCollision(this, e);
 }
 
 void Mario::OnCollisionWithEnemy(LPCOLLISIONEVENT e)

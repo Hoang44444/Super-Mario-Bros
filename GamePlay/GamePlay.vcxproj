@@ -146,6 +146,7 @@
     <ClInclude Include="Objects\Item\Item.h" />
     <ClInclude Include="Objects\Static\StaticObject.h" />
     <ClInclude Include="Objects\Static\Brick.h" />
+    <ClInclude Include="Objects\Static\BrickFragment.h" />
     <ClInclude Include="Objects\Static\BrickTest.h" />
     <ClInclude Include="Objects\Static\Pipe.h" />
     <ClInclude Include="Objects\Static\Platform.h" />
@@ -174,6 +175,7 @@
     <ClCompile Include="Objects\Bullet\Bullet.cpp" />
     <ClCompile Include="Objects\Static\StaticObject.cpp" />
     <ClCompile Include="Objects\Static\Brick.cpp" />
+    <ClCompile Include="Objects\Static\BrickFragment.cpp" />
     <ClCompile Include="Objects\Static\Pipe.cpp" />
     <ClCompile Include="Objects\Static\Platform.cpp" />
     <ClCompile Include="Objects\Dynamic\DynamicPlatform.cpp" />
