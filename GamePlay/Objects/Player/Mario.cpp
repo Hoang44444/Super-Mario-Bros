@@ -31,6 +31,7 @@ void Mario::ShootBullet() {
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	isOnGround = false;
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
