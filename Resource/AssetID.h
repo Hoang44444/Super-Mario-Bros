@@ -65,6 +65,7 @@ namespace ANIMATION
 {
     constexpr int BRICK = 100;
     constexpr int BRICK_TEST = 101;
+    constexpr int DYNAMIC_PLATFORM = 102;
     constexpr int BRICK_FRAGMENT_UP_LEFT = 110;
     constexpr int BRICK_FRAGMENT_UP_RIGHT = 111;
     constexpr int BRICK_FRAGMENT_BOTTOM_LEFT = 112;

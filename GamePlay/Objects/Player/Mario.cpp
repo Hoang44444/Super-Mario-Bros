@@ -17,7 +17,13 @@ void Mario::MovementUpdate(DWORD dt) {
 	this->vy += this->gravity * dt;
 }
 
-void Mario::ShootBullet() { 
+void Mario::Jump() {
+	if (!isOnGround) return;
+	vy = -MARIO_PARAMS::JUMP_SPEED;
+	isOnGround = false;
+}
+
+void Mario::ShootBullet() {
 	float bulletX = x + (direction > 0 ? 15.0f : -8.0f);
 	float bulletY = y;
 	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
@@ -25,7 +31,6 @@ void Mario::ShootBullet() {
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"[MARIO POSITION] x=%f y=%f\n", x, y);
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -43,10 +48,7 @@ void Mario::SetState(int state)
 		direction = -1;
 		break;
 	case MARIO_STATE::JUMP:
-		if (isOnGround) {
-			vy = -MARIO_PARAMS::JUMP_SPEED;
-			isOnGround = false;
-		}
+		Jump();
 		break;
 	case MARIO_STATE::IDLE:
 		vx = 0;
@@ -169,9 +171,28 @@ void Mario::OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e)
 	invisibleObject->OnMarioCollision(this);
 }
 
+void Mario::OnCollisionWithDynamicPlatform(LPCOLLISIONEVENT e)
+{
+	if (e->ny < 0) {
+		isOnGround = true;
+		auto platform = dynamic_cast<DynamicPlatform*>(e->obj);
+		vy = platform->GetVy();
+	}
+	else if (e->ny > 0) {
+		vy = 0;
+	}
+	else if (e->nx != 0) {
+		vx = 0;
+	}
+	DebugOut(L"[MARIO] Collided with Dynamic Platform");
+}
+
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<StaticObject*>(e->obj) || dynamic_cast<DynamicPlatform*>(e->obj)) {
+	if (dynamic_cast<DynamicPlatform*>(e->obj)) {
+		OnCollisionWithDynamicPlatform(e);
+	}
+	else if (dynamic_cast<StaticObject*>(e->obj)) {
 		OnCollisionWithStaticObject(e);
 	}
 	else if (dynamic_cast<Enemy*>(e->obj)) {
@@ -185,8 +206,6 @@ void Mario::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 }
 
-void Mario::OnNoCollision(DWORD dt)
-{
+void Mario::OnNoCollision(DWORD dt) {
 	MovementUpdate(dt);
 }
-

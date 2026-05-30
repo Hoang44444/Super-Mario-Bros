@@ -255,11 +255,19 @@ void PlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	for (auto obj : objects) coObjects.push_back(obj);
 
+	// Update every object EXCEPT the player first, then update the player last.
+	// The player must run after the moving platforms so its collision resolves
+	// against the platforms' current-frame position. Otherwise Mario lags one
+	// frame behind and falls through / jitters on upward-moving platforms.
 	for (size_t i = 0; i < objects.size(); i++)
 	{
+		if (objects[i] == player) continue;
 		if (!objects[i]->IsDeleted())
 			objects[i]->Update(dt, &coObjects);
 	}
+
+	if (player != nullptr && !player->IsDeleted())
+		player->Update(dt, &coObjects);
 
 	// skip the rest if scene was already unloaded (Mario died)
 	if (player == nullptr) return;

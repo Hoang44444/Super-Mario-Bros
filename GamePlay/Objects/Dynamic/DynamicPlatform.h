@@ -4,7 +4,7 @@
 
 namespace DYNAMIC_PLATFORM_PARAMS
 {
-	constexpr float SPEED = 0.05f;
+	constexpr float SPEED = 0.01f;
 }
 
 namespace DYNAMIC_PLATFORM_TYPE
@@ -16,13 +16,13 @@ namespace DYNAMIC_PLATFORM_TYPE
 namespace DYNAMIC_PLATFORM_BBOX
 {
 	constexpr float WIDTH = 48.0f;
-	constexpr float HEIGHT = 16.0f;
+	constexpr float HEIGHT = 32.0f;
 }
 class DynamicPlatform : public GameObject{
 private: 
 	float speed = DYNAMIC_PLATFORM_PARAMS::SPEED;
 	float minBound, maxBound;
-	float direction = 1; //1: rightn(up), -1: left(down)
+	float direction = 1; //1: rightn(down), -1: left(up)
 
 	int type; // 0: horizontal, 1: vertical
 public:
@@ -41,6 +41,8 @@ public:
 
 	virtual ~DynamicPlatform() {};
 
+	void Movement(DWORD dt);
+
 	bool IsCollidable() { return true; }
 	bool IsBlocking() { return true; }
 
@@ -49,6 +51,9 @@ public:
 	void GetBoundingBox(float& l, float& t, float& r, float& b) override;
 
 	void OnCollisionWith(LPCOLLISIONEVENT e) override;
-	void OnNoCollision(DWORD dt);
+	void OnNoCollision(DWORD dt) override;
+
+	float GetVx() const { return type == DYNAMIC_PLATFORM_TYPE::HORIZONTAL ? speed * direction : 0.0f; }
+	float GetVy() const { return type == DYNAMIC_PLATFORM_TYPE::VERTICAL ? speed * direction : 0.0f; }
 };
 

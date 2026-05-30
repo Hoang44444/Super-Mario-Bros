@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
+class DynamicPlatform;
+
 namespace MARIO_LEVEL
 {
 	constexpr int SMALL = 1;
@@ -44,13 +46,15 @@ private:
 	float accelX = MARIO_PARAMS::ACCEL_X;
 	void MovementUpdate(DWORD dt);
 
-	bool isOnGround = false; 
+	bool isOnGround = false;
 public:
 	Mario(float x, float y, float z) : GameObject(x, y, z) {
 		level = MARIO_LEVEL::BIG;
 	};
 	~Mario() {};
+
 	// ACTIONS
+	void Jump();
 	void ShootBullet();
 
 	// CORE
@@ -68,6 +72,7 @@ public:
 
 	// COLISION WITH
 	void OnCollisionWithStaticObject(LPCOLLISIONEVENT e);
+	void OnCollisionWithDynamicPlatform(LPCOLLISIONEVENT e);
 	void OnCollisionWithEnemy(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 	void OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e);

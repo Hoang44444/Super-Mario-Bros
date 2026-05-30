@@ -157,6 +157,7 @@ Objects/pipe.txt
 
 # ? block after Gap 1
 # 6 1168 288 0.5
+
 ########## PLATFORM ##########
 # type x y z
 1 0 448 0.5
