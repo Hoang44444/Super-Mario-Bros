@@ -45,6 +45,7 @@ private:
 	float gravity = MARIO_PARAMS::GRAVITY;
 	float accelX = MARIO_PARAMS::ACCEL_X;
 	void MovementUpdate(DWORD dt);
+	void ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects);
 
 	bool isOnGround = false;
 public:

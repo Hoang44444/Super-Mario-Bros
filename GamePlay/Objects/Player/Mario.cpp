@@ -29,9 +29,30 @@ void Mario::ShootBullet() {
 	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
 }
 
+void Mario::ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects)
+{
+	if (coObjects == nullptr) return;
+
+	for (auto obj : *coObjects) {
+		auto platform = dynamic_cast<DynamicPlatform*>(obj);
+		if (platform == nullptr || platform->IsDeleted()) continue;
+
+		float pl, pt, pr, pb;
+		platform->GetBoundingBox(pl, pt, pr, pb);
+		float ml, mt, mr, mb;
+		GetBoundingBox(ml, mt, mr, mb);
+
+		if (mr > pl && ml < pr && mt < pt && mb > pt) {
+			y -= (mb - pt) + 0.01f;
+			vy = platform->GetVy();
+			isOnGround = true;
+		}
+	}
+}
+
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	isOnGround = false;
+	ResolveOverlapWithPlatforms(coObjects);
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -176,8 +197,7 @@ void Mario::OnCollisionWithDynamicPlatform(LPCOLLISIONEVENT e)
 {
 	if (e->ny < 0) {
 		isOnGround = true;
-		auto platform = dynamic_cast<DynamicPlatform*>(e->obj);
-		vy = platform->GetVy();
+		vy = dynamic_cast<DynamicPlatform*>(e->obj)->GetVy();
 	}
 	else if (e->ny > 0) {
 		vy = 0;
