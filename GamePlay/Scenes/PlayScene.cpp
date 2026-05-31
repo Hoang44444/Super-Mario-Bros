@@ -19,6 +19,7 @@
 #include "SwitchScenePoint.h"
 #include "BrickTest.h"
 #include "Brick.h"
+#include "QuestionBlock.h"
 #include "DynamicPlatform.h"
 using namespace std;
 
@@ -216,6 +217,10 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Brick(x, y, z);
 		break;
 
+	case OBJECT::QUESTION_BLOCK:
+		obj = new QuestionBlock(x, y, z);
+		break;
+
 	case OBJECT::DYNAMIC_PLATFORM:
 	{
 		if (tokens.size() < 5)
@@ -224,7 +229,8 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		int objectType = atoi(tokens[4].c_str());
-		obj = new DynamicPlatform(x, y, z, objectType);
+		int initialDirection = (tokens.size() >= 6) ? atoi(tokens[5].c_str()) : 1;
+		obj = new DynamicPlatform(x, y, z, objectType, initialDirection);
 		break;
 	}
 	}

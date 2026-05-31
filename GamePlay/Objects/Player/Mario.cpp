@@ -54,6 +54,7 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	ResolveOverlapWithPlatforms(coObjects);
 	Collision::GetInstance()->Process(this, dt, coObjects);
+	DebugOut(L"[MARIO] Update - Position: (%.2f, %.2f), Speed: (%.2f, %.2f)\n", x, y, vx, vy);
 }
 
 void Mario::SetState(int state)

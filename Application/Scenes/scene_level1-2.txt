@@ -5,6 +5,8 @@ Objects/bullet.txt
 Objects/background.txt
 Objects/brick_fragment.txt
 Objects/dynamic_platform.txt
+Objects/pipe.txt
+Objects/question_block.txt
 
 [MAP]
 2810 720
@@ -16,7 +18,7 @@ Objects/dynamic_platform.txt
 
 ########## MARIO ##########
 # type x y z
-0 2200 600 0.2
+0 2600 600 0.2
 
 ########## BRICK BREAK ##########
 # type x y z
@@ -180,10 +182,39 @@ Objects/dynamic_platform.txt
 8 2384 608 0.5
 8 2400 608 0.5
 
+########## QUESTION BLOCK ##########
+# type x y z
+10 160 624 0.5
+10 176 624 0.5
+10 192 624 0.5
+10 208 624 0.5
+10 224 624 0.5
+
+########## PIPE ##########
+# type x y z
+# ---- Pipe 1 ----
+4 1647 640 0.5
+1 1647 656 0.5
+1 1663 656 0.5
+
+# ---- Pipe 2 ----
+4 1743 624 0.5
+1 1743 640 0.5
+1 1759 640 0.5
+1 1743 656 0.5
+1 1759 656 0.5
+
+
+4 1840 656 0.5
+
+########## SWITCH SCENE POINT ##########
+# type x y z
+5 2656 600 0.5
+
 ########## DYNAMIC PLATFORM ##########
-# type x y z objectType (0=horizontal, 1=vertical)
-7 2256 608 0.5 1
-7 2464 608 0.5 1
+# type x y z objectType (0=horizontal, 1=vertical) direction (1=right/down, -1=left/up)
+7 2256 608 0.5 1 1
+7 2464 608 0.5 1 -1
 
 ########## PLATFORM ##########
 # type x y z

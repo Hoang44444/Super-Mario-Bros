@@ -26,8 +26,9 @@ private:
 
 	int type; // 0: horizontal, 1: vertical
 public:
-	DynamicPlatform(float x, float y, float z, int type) : GameObject(x, y, z) {
+	DynamicPlatform(float x, float y, float z, int type, int initialDirection = 1) : GameObject(x, y, z) {
 		this->type = type;
+		this->direction = initialDirection;
 
 		if (type == DYNAMIC_PLATFORM_TYPE::HORIZONTAL) {
 			this->minBound = x - 50;

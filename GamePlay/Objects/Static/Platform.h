@@ -1,8 +1,8 @@
 #pragma once
 #include "StaticObject.h"
 
-constexpr float PLATFORM_BBOX_WIDTH = 15.0f;
-constexpr float PLATFORM_BBOX_HEIGHT = 15.0f;
+constexpr float PLATFORM_BBOX_WIDTH = 16.0f;
+constexpr float PLATFORM_BBOX_HEIGHT = 16.0f;
 
 class Platform : public StaticObject {
 public:

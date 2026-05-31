@@ -49,6 +49,7 @@ namespace OBJECT
 	constexpr int DYNAMIC_PLATFORM = 7;
 	constexpr int BRICK = 8;
 	constexpr int DEATH_ZONE = 9;
+	constexpr int QUESTION_BLOCK = 10;
 }
 
 namespace TEXTURE
@@ -113,6 +114,9 @@ namespace ANIMATION
     constexpr int MARIO_DIE = 999;
 
     // PIPE
-    constexpr int PIPE_HEAD = 3100;
-    constexpr int PIPE_BODY = 3101;
+    constexpr int PIPE = 3100;
+
+    // QUESTION BLOCK
+    constexpr int QUESTION_BLOCK = 3200;
+    constexpr int QUESTION_BLOCK_DELETED = 3201;
 }

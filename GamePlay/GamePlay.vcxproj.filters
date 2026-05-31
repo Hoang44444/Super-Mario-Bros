@@ -173,6 +173,9 @@
     <ClInclude Include="Objects\Invisible\SwitchScenePoint.h">
       <Filter>Objects\Invisible\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\Static\QuestionBlock.h">
+      <Filter>Objects\Static\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Collision.cpp">
@@ -216,6 +219,9 @@
     </ClCompile>
     <ClCompile Include="Objects\Invisible\SwitchScenePoint.cpp">
       <Filter>Objects\Invisible\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Static\QuestionBlock.cpp">
+      <Filter>Objects\Static\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

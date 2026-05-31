@@ -1,11 +1,13 @@
-#include"Pipe.h"
+#include "Pipe.h"
+#include "AnimationManager.h"
+#include "AssetID.h"
 
 void Pipe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	// Pipes are static, so no update logic is needed
 }
 
 void Pipe::Render() {
-	// Render the pipe using its position and state
+	AnimationManager::GetInstance()->Get(ANIMATION::PIPE)->Render(x, y, z);
 }
 
 void Pipe::GetBoundingBox(float& l, float& t, float& r, float& b) {
