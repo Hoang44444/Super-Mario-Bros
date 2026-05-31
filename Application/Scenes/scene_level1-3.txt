@@ -1,8 +1,9 @@
 [ASSETS]
-Objects/brick.txt
 Objects/mario.txt
 Objects/bullet.txt
 Objects/background.txt
+Objects/question_block.txt
+Objects/dynamic_platform.txt
 
 [MAP]
 2624 240
@@ -14,7 +15,12 @@ Objects/background.txt
 
 ########## MARIO ##########
 # type x y z
-0 16 50 0.2
+0 1296 50 0.2
+
+########## QUESTION BLOCK ##########
+# type x y z
+10 944 160 0.5
+
 
 ########## PLATFORM ##########
 # type x y z
@@ -77,6 +83,16 @@ Objects/background.txt
 1 704 64 0.5
 1 720 64 0.5
 1 736 64 0.5
+
+########## DYNAMIC PLATFORM ##########
+# type x y z objectType initialDirection
+# objectType     : 0 = horizontal (left <-> right), 1 = vertical (up <-> down)
+# initialDirection: 1 = right/down, -1 = left/up  |  bound = spawnPos +/- 50px
+7 880 128 0.5 1 1
+7 1360 112 0.5 0 -1
+7 1504 112 0.5 0 1
+7 2080 96 0.5 0 1
+
 
 # ---- Platform 7 ----
 1 800 208 0.5

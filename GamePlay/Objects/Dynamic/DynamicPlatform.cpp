@@ -50,8 +50,10 @@ void DynamicPlatform::GetBoundingBox(float& l, float& t, float& r, float& b) {
 }
 
 void DynamicPlatform::OnCollisionWith(LPCOLLISIONEVENT e) {
-	if (dynamic_cast<StaticObject*>(e->obj)) {
-		direction *= -1; // Reverse direction on collision with static objects
+	if (dynamic_cast<StaticObject*>(e->obj) || dynamic_cast<DynamicPlatform*>(e->obj)) {
+		direction *= -1;
+		vx = GetVx();
+		vy = GetVy();
 	}
 }
 
