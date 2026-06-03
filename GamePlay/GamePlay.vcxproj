@@ -131,11 +131,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
+    <ClInclude Include="Axe.h" />
     <ClInclude Include="BrickTest.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CastleBridge.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="FireFlower.h" />
+    <ClInclude Include="FrogSuit.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InvisibleObject.h" />
@@ -143,10 +147,13 @@
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioKeyHandler.h" />
+    <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="PoisonMushroom.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="StaticObject.h" />
+    <ClInclude Include="SuperStar.h" />
     <ClInclude Include="SwitchScenePoint.h" />
   </ItemGroup>
   <ItemGroup>
@@ -162,11 +169,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Axe.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CastleBridge.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="FireFlower.cpp" />
+    <ClCompile Include="FrogSuit.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="PoisonMushroom.cpp" />
+    <ClCompile Include="SuperStar.cpp" />
     <ClCompile Include="SwitchScenePoint.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

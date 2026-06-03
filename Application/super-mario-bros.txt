@@ -1,5 +1,5 @@
 [SETTINGS]
-start    1
+start    10
 screen_width 1920
 screen_height 1080
 
@@ -10,6 +10,7 @@ screen_height 1080
 3  Scenes/scene_level1-3.txt
 4  Scenes/scene_level1-4.txt
 10 Scenes/scene_test.txt
+13 Scenes/scene_end.txt
 
 
 [TEXTURES]
@@ -21,4 +22,6 @@ screen_height 1080
 5   Texture/Scene/Level1/level1-2.png
 6   Texture/Scene/Level1/level1-3.png
 7   Texture/Scene/Level1/level1-4.png
+8   Texture/Items/items-objects.png
+9   Texture/Items/SMB_Bowser_Bridge.png
 # -100 Texture/bbox.png

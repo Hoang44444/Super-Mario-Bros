@@ -18,6 +18,13 @@
 #include "Pipe.h"
 #include "SwitchScenePoint.h"
 #include "BrickTest.h"
+#include "Mushroom.h"
+#include "FireFlower.h"
+#include "PoisonMushroom.h"
+#include "SuperStar.h"
+#include "FrogSuit.h"
+#include "CastleBridge.h"
+#include "Axe.h"
 using namespace std;
 
 void PlayScene::Load()
@@ -200,6 +207,34 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		obj = new BrickTest(x, y, z);
 		break;
 
+	case OBJECT::MUSHROOM:
+		obj = new Mushroom(x, y, z);
+		break;
+
+	case OBJECT::FIRE_FLOWER:
+		obj = new FireFlower(x, y, z);
+		break;
+
+	case OBJECT::POISON_MUSHROOM:
+		obj = new PoisonMushroom(x, y, z);
+		break;
+
+	case OBJECT::SUPER_STAR:
+		obj = new SuperStar(x, y, z);
+		break;
+
+	case OBJECT::FROG_SUIT:
+		obj = new FrogSuit(x, y, z);
+		break;
+
+	case OBJECT::CASTLE_BRIDGE:
+		obj = new CastleBridge(x, y, z);
+		break;
+
+	case OBJECT::AXE:
+		obj = new Axe(x, y, z);
+		break;
+
 	case OBJECT::BACKGROUND:
 		obj = new Background(x, y, z);
 		break;
@@ -234,6 +269,14 @@ void PlayScene::_ParseSection_MAP(string line)
 
 void PlayScene::Update(DWORD dt)
 {
+	if (castleEndSequenceStarted)
+	{
+		if (castleEndTimer > dt)
+			castleEndTimer -= dt;
+		else
+			GameManager::GetInstance()->InitiateSwitchScene(SCENE::END);
+	}
+
 	vector<LPGAMEOBJECT> coObjects;
 	for (auto obj : objects) coObjects.push_back(obj);
 
@@ -280,4 +323,26 @@ void PlayScene::Unload()
 	}
 	objects.clear();
 	player = NULL;
+}
+
+void PlayScene::StartCastleEndSequence()
+{
+	if (castleEndSequenceStarted) return;
+
+	castleEndSequenceStarted = true;
+	castleEndTimer = 2600;
+
+	DWORD bridgeDelay = 0;
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		CastleBridge* bridge = dynamic_cast<CastleBridge*>(objects[i]);
+		if (bridge != nullptr)
+		{
+			bridge->Collapse(bridgeDelay);
+			bridgeDelay += 120;
+		}
+	}
+
+	if (player != nullptr)
+		player->SetState(MARIO_STATE_WALKING_RIGHT);
 }
