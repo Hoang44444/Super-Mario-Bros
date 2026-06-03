@@ -43,16 +43,9 @@ namespace OBJECT
     constexpr int BRICK = 1;
     constexpr int BULLET = 2;
     constexpr int BACKGROUND = 3;
-	constexpr int PIPE = 4;
-	constexpr int SWITCH_SCENE_POINT = 5;
+    constexpr int PIPE = 4;
+    constexpr int SWITCH_SCENE_POINT = 5;
 	constexpr int BRICK_TEST = 6;
-	constexpr int MUSHROOM = 7;
-	constexpr int FIRE_FLOWER = 8;
-	constexpr int POISON_MUSHROOM = 9;
-	constexpr int SUPER_STAR = 10;
-	constexpr int FROG_SUIT = 11;
-	constexpr int CASTLE_BRIDGE = 12;
-	constexpr int AXE = 13;
 }
 
 namespace TEXTURE
@@ -62,8 +55,6 @@ namespace TEXTURE
     constexpr int MISC = 2;
     constexpr int MENUBACKGROUND = 3;
     constexpr int LEVEL1_1 = 4;
-    constexpr int ITEMS_OBJECTS = 8;
-    constexpr int BOWSER_BRIDGE = 9;
     constexpr int BBOX = -100;
 }
 
@@ -113,32 +104,7 @@ namespace ANIMATION
 
     constexpr int MARIO_DIE = 999;
 
-    // FIRE MARIO
-    constexpr int MARIO_FIRE_IDLE_RIGHT = 1700;
-    constexpr int MARIO_FIRE_IDLE_LEFT = 1701;
-    constexpr int MARIO_FIRE_WALKING_RIGHT = 1710;
-    constexpr int MARIO_FIRE_WALKING_LEFT = 1711;
-    constexpr int MARIO_FIRE_JUMP_WALK_RIGHT = 1720;
-    constexpr int MARIO_FIRE_JUMP_WALK_LEFT = 1721;
-
-    // FROG MARIO
-    constexpr int MARIO_FROG_IDLE_RIGHT = 1800;
-    constexpr int MARIO_FROG_IDLE_LEFT = 1801;
-    constexpr int MARIO_FROG_WALKING_RIGHT = 1810;
-    constexpr int MARIO_FROG_WALKING_LEFT = 1811;
-    constexpr int MARIO_FROG_JUMP_RIGHT = 1820;
-    constexpr int MARIO_FROG_JUMP_LEFT = 1821;
-
     // PIPE
     constexpr int PIPE_HEAD = 3100;
     constexpr int PIPE_BODY = 3101;
-
-    // ITEMS
-    constexpr int MUSHROOM = 3200;
-    constexpr int FIRE_FLOWER = 3210;
-    constexpr int POISON_MUSHROOM = 3220;
-    constexpr int SUPER_STAR = 3230;
-    constexpr int FROG_SUIT = 3240;
-    constexpr int CASTLE_BRIDGE = 3250;
-    constexpr int AXE = 3260;
 }

@@ -4,7 +4,7 @@
 class Item : public GameObject{
 public: 
 	Item(float x, float y, float z) : GameObject(x, y, z) {}
-	virtual ~Item() {}
+	~Item() {}
 
 	bool IsCollidable() { return true; }
 	bool IsBlocking() { return false; }
