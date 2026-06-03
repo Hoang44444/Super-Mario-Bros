@@ -10,8 +10,6 @@ class PlayScene : public Scene
 	LPGAMEOBJECT player;
 	std::vector<LPGAMEOBJECT> objects;
 	float fixedCameraY;
-	bool castleEndSequenceStarted = false;
-	DWORD castleEndTimer = 0;
 
 	void _ParseSection_ASSETS(string line);
 	void _ParseSection_OBJECTS(string line);
@@ -39,6 +37,5 @@ public:
 	}
 
 	LPGAMEOBJECT GetPlayer() { return player; }
-	void StartCastleEndSequence();
 };
 
