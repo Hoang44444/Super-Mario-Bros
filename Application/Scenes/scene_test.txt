@@ -8,6 +8,7 @@ Objects/poison_mushroom.txt
 Objects/super_star.txt
 Objects/frog_suit.txt
 Objects/castle_end.txt
+#### Objects/axe.txt
 
 [MAP]
 2000 240
