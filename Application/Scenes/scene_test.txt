@@ -2,6 +2,12 @@
 Objects/brick_test.txt
 Objects/mario.txt
 Objects/bullet.txt
+Objects/mushroom.txt
+Objects/fire_flower.txt
+Objects/poison_mushroom.txt
+Objects/super_star.txt
+Objects/frog_suit.txt
+Objects/castle_end.txt
 
 [MAP]
 2000 240
@@ -11,16 +17,44 @@ Objects/bullet.txt
 # type 	x 	y   z
 0 	50 	150 0.5
 
+########## MUSHROOM ##########
+7 	120 	150 0.5
+
+########## FIRE FLOWER ##########
+8 	180 	184 0.5
+
+########## POISON MUSHROOM ##########
+9 	260 	150 0.5
+
+########## SUPER STAR ##########
+10 	340 	150 0.5
+
+########## FROG SUIT ##########
+11 	420 	184 0.5
+
+########## CASTLE END TEST ##########
+12 	520 	184 0.5
+12 	536 	184 0.5
+12 	552 	184 0.5
+12 	568 	184 0.5
+12 	584 	184 0.5
+12 	600 	184 0.5
+13 	624 	168 0.5
+
 ########## BRICK ##########
 6 0 200 0.5
 6 16 200 0.5
 6 32 200 0.5
+6 32 168 0.5
+6 32 184 0.5
 6 48 200 0.5
 6 64 200 0.5
 6 80 200 0.5
 6 96 200 0.5
 6 112 200 0.5
-6 128 200 0.5
+6 208 200 0.5
+6 208 180 0.5
+6 128 168 0.5
 6 144 200 0.5
 6 160 200 0.5
 6 176 200 0.5

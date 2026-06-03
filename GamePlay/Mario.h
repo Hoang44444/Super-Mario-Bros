@@ -4,6 +4,8 @@
 // MARIO LEVELS
 #define MARIO_LEVEL_SMALL	1
 #define MARIO_LEVEL_BIG		2
+#define MARIO_LEVEL_FIRE	3
+#define MARIO_LEVEL_FROG	4
 
 // MARIO STATES
 #define MARIO_STATE_DIE				-10
@@ -29,6 +31,9 @@
 #define MARIO_RUN_SPEED				0.15f
 #define MARIO_WALK_SPEED			0.1f
 #define MARIO_JUMP_SPEED			0.5f
+#define MARIO_FROG_JUMP_SPEED		0.7f
+#define MARIO_FROG_JUMP_SPEED_X		0.12f
+#define MARIO_STAR_POWER_TIME		7000
 
 class Mario : public GameObject
 {
@@ -39,6 +44,9 @@ private:
 	void MovementUpdate(DWORD dt);
 
 	bool isOnGround = false; 
+	bool canShoot = false;
+	bool isInvincible = false;
+	DWORD invincibleTime = 0;
 public:
 	Mario(float x, float y, float z) : GameObject(x, y, z) {
 		level = MARIO_LEVEL_SMALL;
@@ -46,6 +54,12 @@ public:
 	~Mario() {};
 	// ACTIONS
 	void ShootBullet();
+	void SetLevel(int level);
+	int GetLevel() { return this->level; }
+	void SetCanShoot(bool canShoot) { this->canShoot = canShoot; }
+	bool CanShoot() { return this->canShoot; }
+	void SetInvincible(DWORD duration) { isInvincible = true; invincibleTime = duration; }
+	bool IsInvincible() { return this->isInvincible; }
 
 	// CORE
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
@@ -69,5 +83,7 @@ public:
 	// RENDER WITH MARIO LEVEL
 	void MarioSmallRender(int& aniId);
 	void MarioBigRender(int& andId);
+	void MarioFireRender(int& aniId);
+	void MarioFrogRender(int& aniId);
 };
 
