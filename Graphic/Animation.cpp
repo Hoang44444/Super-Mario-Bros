@@ -9,14 +9,14 @@ void Animation::Render(float x, float y, float z)
 {
     if (frames.size() == 0) return;
 
-    DWORD now = GetTickCount();
+    DWORD now = GetTickCount64();
 
     if (currentFrame == -1)
     {
         currentFrame = 0;
         lastFrameTime = now;
     }
-    else
+    else if (frames.size() > 1) 
     {
         DWORD t = frames[currentFrame]->GetTime();
         if (now - lastFrameTime > t)

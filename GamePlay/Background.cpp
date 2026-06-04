@@ -42,4 +42,5 @@ int Background::WorldRender()
 		return ANIMATION::BACKGROUND_LEVEL1_1;
 	if (currentScene == SCENE::WORLD_1_2)
 		return ANIMATION::BACKGROUND_LEVEL1_2;
+	return -1;
 }

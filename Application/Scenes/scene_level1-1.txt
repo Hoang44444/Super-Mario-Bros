@@ -1,9 +1,11 @@
 [ASSETS]
 Objects/brick.txt
 Objects/mario.txt
+Objects/state.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
+Objects/item2.txt
 
 [MAP]
 3376 480
@@ -411,6 +413,14 @@ Objects/pipe.txt
 ########## MARIO ##########
 # type x y z
 0 0 420 0.2
+
+########## ITEMS ##########
+# type x y z
+7 120 424 0.4
+8 160 424 0.4
+9 200 424 0.4
+10 240 424 0.4
+11 280 424 0.4
 
 ########## END SCENE POINT ##########
 # type x y z

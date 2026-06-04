@@ -1,7 +1,9 @@
 [ASSETS]
 Objects/brick_test.txt
 Objects/mario.txt
+Objects/state.txt
 Objects/bullet.txt
+Objects/item2.txt
 
 [MAP]
 2000 240
@@ -132,3 +134,11 @@ Objects/bullet.txt
 6 1872 200 0.5
 6 1888 200 0.5
 6 1904 200 0.5
+
+########## TEST ITEMS ##########
+# type x    y    z
+7      80   180  0.5   # Đồng xu COIN (id 7)
+8      100  180  0.5   # Nấm 1Up (id 8)
+9      120  180  0.5   # Lá SuperLeaf (id 9)
+10     140  180  0.5   # Tanooki Suit (id 10)
+11     160  180  0.5   # Hammer Suit (id 11)
