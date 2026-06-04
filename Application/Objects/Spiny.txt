@@ -1,0 +1,26 @@
+[SPRITES]
+# ID    Left  Top   Right Bottom TexID
+
+# WALK LEFT
+80001   86    152   108   172    8
+80002   116   152   138   172    8
+
+# WALK RIGHT
+80011   146   152   168   172    8
+80012   176   152   198   172    8
+
+# SPINY EGG
+80021	208	  152	226	  172    8
+80022	238	  152	256	  172    8
+
+[ANIMATIONS]
+# ani_id  sprite1_id  time1  sprite2_id  time2...
+
+# 8000 WALK LEFT
+8000    80001   150   80002   150
+
+# 8001 WALK RIGHT	
+8001    80011   150   80012   150
+
+# 8002 EGG SPINNING
+8002	80021	100	  80022   100

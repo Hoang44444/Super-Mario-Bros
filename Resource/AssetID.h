@@ -46,6 +46,14 @@ namespace OBJECT
     constexpr int PIPE = 4;
     constexpr int SWITCH_SCENE_POINT = 5;
 	constexpr int BRICK_TEST = 6;
+    constexpr int GOOMBA = 7;
+    constexpr int KOOPA = 8;
+    constexpr int BUZZY = 9;
+    constexpr int PODOBOO = 10;
+    constexpr int SPINY = 11;
+    constexpr int LAKITU = 12;
+    constexpr int BOWSER = 13;
+    constexpr int BOWSER_FIRE = 14;
 }
 
 namespace TEXTURE
@@ -56,6 +64,7 @@ namespace TEXTURE
     constexpr int MENUBACKGROUND = 3;
     constexpr int LEVEL1_1 = 4;
     constexpr int BBOX = -100;
+    constexpr int ENEMIES = 8;
 }
 
 namespace ANIMATION
@@ -107,4 +116,42 @@ namespace ANIMATION
     // PIPE
     constexpr int PIPE_HEAD = 3100;
     constexpr int PIPE_BODY = 3101;
+
+    //GOOMBA
+    constexpr int GOOMBA_WALK = 4000;
+    constexpr int GOOMBA_DIE = 4001;
+
+	// KOOPA TROOPA
+    constexpr int KOOPA_WALK_LEFT = 5000;
+    constexpr int KOOPA_WALK_RIGHT = 5001;
+    constexpr int KOOPA_SHELL = 5002;
+    constexpr int KOOPA_SPINNING = 5003;
+
+	// BUZZY BEETLE
+    constexpr int BUZZY_WALK_LEFT = 6000;
+    constexpr int BUZZY_WALK_RIGHT = 6001;
+    constexpr int BUZZY_SHELL = 6002;
+    constexpr int BUZZY_SPINNING = 6003;
+
+	// PODOBOO
+    constexpr int PODOBOO_UP = 7000;
+    constexpr int PODOBOO_DOWN = 7001;
+
+	// SPINY
+    constexpr int SPINY_WALK_LEFT = 8000;
+    constexpr int SPINY_WALK_RIGHT = 8001;
+    constexpr int SPINY_EGG_SPIN = 8002;
+
+	// LAKITU
+    constexpr int LAKITU_FLY_LEFT = 9000;
+    constexpr int LAKITU_FLY_RIGHT = 9001;
+
+	// BOWSER
+    constexpr int BOWSER_WALK_LEFT = 10000;
+    constexpr int BOWSER_WALK_RIGHT = 10001;
+    constexpr int BOWSER_ATTACK_LEFT = 10002;
+    constexpr int BOWSER_ATTACK_RIGHT = 10003;
+
+    constexpr int BOWSER_FIRE_LEFT = 10004;
+    constexpr int BOWSER_FIRE_RIGHT = 10005;
 }

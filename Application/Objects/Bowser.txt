@@ -1,0 +1,34 @@
+[SPRITES]
+# ID      Left  Top   Right Bottom TexID
+
+# WALKING LEFT
+100001    78    208     118   244	8
+100002    118	208     156   244   8
+
+# WALKING RIGHT
+100011    160    208    194    244     8
+100012    200    208    234	   244     8
+
+# ATTACKING LEFT
+100021    0    208      36    244     8
+100022    38   208		76	  244     8
+
+# ATTACKING RIGHT
+100031    238   208     276   244     8
+100032    278   208     316   244     8
+
+
+[ANIMATIONS]
+# ani_id  sprite1_id  time1  sprite2_id  time2...
+
+# 10000 WALK LEFT
+10000     100001  150   100002  150
+
+# 10001 WALK RIGHT
+10001     100011  150   100012  150
+
+# 10002 ATTACK LEFT
+10002     100021  150   100022  150
+
+# 10003 ATTACK RIGHT
+10003     100031  150   100032  150
