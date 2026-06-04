@@ -18,29 +18,10 @@ int Background::WorldRender()
 		return ANIMATION::BACKGROUND_LEVEL1_1;
 	if (currentScene == SCENE::WORLD_1_2)
 		return ANIMATION::BACKGROUND_LEVEL1_2;
-	if (currentScene == SCENE::WORLD_1_1)
-		return ANIMATION::BACKGROUND_LEVEL1_1;
-	if (currentScene == SCENE::WORLD_1_2)
-		return ANIMATION::BACKGROUND_LEVEL1_2;
-	if (currentScene == SCENE::WORLD_1_1)
-		return ANIMATION::BACKGROUND_LEVEL1_1;
-	if (currentScene == SCENE::WORLD_1_2)
-		return ANIMATION::BACKGROUND_LEVEL1_2;
-	if (currentScene == SCENE::WORLD_1_1)
-		return ANIMATION::BACKGROUND_LEVEL1_1;
-	if (currentScene == SCENE::WORLD_1_2)
-		return ANIMATION::BACKGROUND_LEVEL1_2;
-	if (currentScene == SCENE::WORLD_1_1)
-		return ANIMATION::BACKGROUND_LEVEL1_1;
-	if (currentScene == SCENE::WORLD_1_2)
-		return ANIMATION::BACKGROUND_LEVEL1_2;
-	if (currentScene == SCENE::WORLD_1_1)
-		return ANIMATION::BACKGROUND_LEVEL1_1;
-	if (currentScene == SCENE::WORLD_1_2)
-		return ANIMATION::BACKGROUND_LEVEL1_2;
-	if (currentScene == SCENE::WORLD_1_1)
-		return ANIMATION::BACKGROUND_LEVEL1_1;
-	if (currentScene == SCENE::WORLD_1_2)
-		return ANIMATION::BACKGROUND_LEVEL1_2;
-	return -1;
+	if (currentScene == SCENE::WORLD_1_3)
+		return ANIMATION::BACKGROUND_LEVEL1_3;
+	if (currentScene == SCENE::WORLD_1_4)
+		return ANIMATION::BACKGROUND_LEVEL1_4;
+ 
+  return 0;
 }

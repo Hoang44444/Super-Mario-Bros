@@ -31,7 +31,7 @@ void Mario::MovementUpdate(DWORD dt) {
 	this->vy += this->gravity * dt;
 }
 
-void Mario::ShootBullet() {
+void Mario::ShootBullet() { 
 	float bulletX = x + (direction > 0 ? 15.0f : -8.0f);
 	float bulletY = y;
 	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
@@ -39,6 +39,7 @@ void Mario::ShootBullet() {
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	DebugOut(L"[MARIO POSITION] x=%f y=%f\n", x, y);
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
