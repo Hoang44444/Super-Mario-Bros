@@ -169,17 +169,17 @@ void Renderer::BeginRender()
     spriteObject->Begin(D3DX10_SPRITE_SORT_DEPTH_BACK_TO_FRONT);
 }
 
-void Renderer::Draw(float x, float y, float z, LPTEXTURE tex, RECT* rect, float alpha)
+void Renderer::Draw(float x, float y, float z, LPTEXTURE tex, RECT* rect, float alpha, bool flipX)
 {
 	if (tex == nullptr) return;
 
 	float width = (rect != NULL) ? (float)(rect->right - rect->left) : (float)tex->getWidth();
 	float height = (rect != NULL) ? (float)(rect->bottom - rect->top) : (float)tex->getHeight();
 
-	DrawScaled(x, y, z, tex, width, height, rect, alpha);
+	DrawScaled(x, y, z, tex, width, height, rect, alpha, flipX);
 }
 
-void Renderer::DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_width, float dest_height, RECT* rect, float alpha)
+void Renderer::DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_width, float dest_height, RECT* rect, float alpha, bool flipX)
 {
 	if (tex == NULL) {
 		DebugOut(L"[ERROR] DrawScaled called with NULL texture\n");
@@ -220,7 +220,7 @@ void Renderer::DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_w
 	float draw_y = logicalHeight - (screen_y + dest_height / 2.0f);
 
 	D3DXMatrixTranslation(&matTranslation, draw_x, draw_y, z);
-	D3DXMatrixScaling(&matScale, dest_width, dest_height, 1.0f);
+	D3DXMatrixScaling(&matScale, flipX ? -dest_width : dest_width, dest_height, 1.0f);
 
 	matWorld = matScale * matTranslation;
 	sprite.matWorld = matWorld;

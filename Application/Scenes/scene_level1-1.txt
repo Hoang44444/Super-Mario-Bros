@@ -4,6 +4,14 @@ Objects/mario.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
+Objects/piranha_plant.txt
+Objects/blooper.txt
+Objects/bulletbill.txt
+Objects/cannon.txt
+Objects/hammerbro.txt
+Objects/hammer.txt
+Objects/bowser.txt
+Objects/bowserfireball.txt
 
 [MAP]
 3376 480
@@ -17,6 +25,11 @@ Objects/pipe.txt
 ########## MARIO ##########
 # type x y z
 0 0 420 0.2
+########ENEMY###########
+7 240 420 0.2
+8 360 420 0.2
+14 128 420 0.2
+
 
 ########## END SCENE POINT ##########
 # type x y z

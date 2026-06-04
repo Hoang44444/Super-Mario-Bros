@@ -18,6 +18,15 @@
 #include "Pipe.h"
 #include "SwitchScenePoint.h"
 #include "BrickTest.h"
+#include "PiranhaPlant.h"
+#include "Blooper.h"
+#include "BulletBill.h"
+#include "Cannon.h"
+#include "HammerBro.h"
+#include "Hammer.h"
+#include "Bowser.h"
+#include "BowserFireball.h"
+
 using namespace std;
 
 void PlayScene::Load()
@@ -179,7 +188,7 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	float z = (float)atof(tokens[3].c_str());
 	GameObject* obj = NULL;
 
-	switch (type)
+		switch (type)
 	{
 	case OBJECT::MARIO:
 		if (player != NULL)
@@ -208,6 +217,32 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT::SWITCH_SCENE_POINT:
 		obj = new SwitchScenePoint(x, y, z);
+		break;
+
+	// --- ENEMY & PROJECTILE & SPAWNER ---
+	case OBJECT::PIRANHA_PLANT:
+		obj = new PiranhaPlant(x, y, z);
+		break;
+	case OBJECT::BLOOPER:
+		obj = new Blooper(x, y, z);
+		break;
+	case OBJECT::BULLET_BILL:
+		obj = new BulletBill(x, y, z);
+		break;
+	case OBJECT::HAMMER_BRO:
+		obj = new HammerBro(x, y, z);
+		break;
+	case OBJECT::BOWSER:
+		obj = new Bowser(x, y, z);
+		break;
+	case OBJECT::HAMMER:
+		obj = new Hammer(x, y, z, 1); // default direction right
+		break;
+	case OBJECT::BOWSER_FIREBALL:
+		obj = new BowserFireball(x, y, z, 1); // default direction right
+		break;
+	case OBJECT::CANNON:
+		obj = new Cannon(x, y, z, 1); // default direction right
 		break;
 	}
 

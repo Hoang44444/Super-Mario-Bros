@@ -30,26 +30,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -148,6 +148,15 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="SwitchScenePoint.h" />
+    <ClInclude Include="PiranhaPlant.h" />
+    <ClInclude Include="Blooper.h" />
+    <ClInclude Include="BulletBill.h" />
+    <ClInclude Include="Cannon.h" />
+    <ClInclude Include="HammerBro.h" />
+    <ClInclude Include="Hammer.h" />
+    <ClInclude Include="Bowser.h" />
+    <ClInclude Include="BowserFireball.h" />
+    <ClInclude Include="MenuScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -168,6 +177,14 @@
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="SwitchScenePoint.cpp" />
+    <ClCompile Include="PiranhaPlant.cpp" />
+    <ClCompile Include="Blooper.cpp" />
+    <ClCompile Include="BulletBill.cpp" />
+    <ClCompile Include="Cannon.cpp" />
+    <ClCompile Include="HammerBro.cpp" />
+    <ClCompile Include="Hammer.cpp" />
+    <ClCompile Include="Bowser.cpp" />
+    <ClCompile Include="BowserFireball.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

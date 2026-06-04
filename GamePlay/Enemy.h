@@ -4,7 +4,7 @@
 class Enemy : public GameObject{
 public:
 	Enemy(float x, float y, float z) : GameObject(x, y, z) {};
-	~Enemy() {};
+	virtual ~Enemy() {};
 
 	bool IsCollidable() { return  true; }
 	bool IsBlocking() { return false; }
