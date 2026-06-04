@@ -26,6 +26,7 @@ class Bowser : public Enemy
 
 public:
     Bowser(float x, float y, float z = 0);
+	virtual ~Bowser() {}
 
     virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
     virtual void Render();

@@ -10,6 +10,8 @@ class BowserFire : public Enemy
     float startX;
 public:
     BowserFire(float x, float y, float z, int direction);
+	virtual ~BowserFire() {}
+
     virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
     virtual void Render();
     virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
