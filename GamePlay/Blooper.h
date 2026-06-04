@@ -2,7 +2,7 @@
 #include "Enemy.h"
 
 #define BLOOPER_WIDTH 16.0f
-#define BLOOPER_HEIGHT 24.0f
+#define BLOOPER_HEIGHT 48.0f
 
 #define BLOOPER_STATE_RISING 0
 #define BLOOPER_STATE_SINKING 1

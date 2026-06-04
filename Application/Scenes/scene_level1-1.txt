@@ -26,9 +26,9 @@ Objects/bowserfireball.txt
 # type x y z
 0 0 420 0.2
 ########ENEMY###########
-7 240 420 0.2
-8 360 420 0.2
-14 128 420 0.2
+
+8 360 320 0.2
+
 
 
 ########## END SCENE POINT ##########

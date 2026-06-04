@@ -42,20 +42,25 @@ void Blooper::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         if (playScene && playScene->GetPlayer())
         {
             float dist = abs(marioX - x);
-            if (dist < chaseDistance)
+            if (dist < chaseDistance && marioY > y)
             {
                 state = BLOOPER_STATE_SINKING;
                 timer = now;
             }
+            else 
+                {
+                state = BLOOPER_STATE_RISING;
+                timer = now;
+			}
         }
         break;
 
     case BLOOPER_STATE_RISING:
         // Move upward
-        y -= 0.02f * dt;
+        y -= 0.04f * dt;
         // Horizontal adjustment towards Mario while rising
-        if (marioX < x) x -= 0.02f * dt;
-        else if (marioX > x) x += 0.02f * dt;
+        if (marioX < x) x -= 0.04f * dt;
+        else if (marioX > x) x += 0.04f * dt;
         if (now - timer > BLOOPER_RISE_TIME)
         {
             state = BLOOPER_STATE_SINKING;
@@ -65,10 +70,10 @@ void Blooper::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
     case BLOOPER_STATE_SINKING:
         // Move downward
-        y += 0.012f * dt;
+        y += 0.04f * dt;
         // Horizontal chase towards Mario
-        if (marioX < x) x -= 0.02f * dt;
-        else if (marioX > x) x += 0.02f * dt;
+        if (marioX < x) x -= 0.04f * dt;
+        else if (marioX > x) x += 0.04 * dt;
         if (now - timer > BLOOPER_SINK_TIME)
         {
             state = BLOOPER_STATE_RISING;
