@@ -131,21 +131,29 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
+    <ClInclude Include="Bowser.h" />
+    <ClInclude Include="BowserFire.h" />
     <ClInclude Include="BrickTest.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="BuzzyBeetle.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Goomba.h" />
     <ClInclude Include="InvisibleObject.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="Koopa.h" />
+    <ClInclude Include="Lakitu.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="MarioKeyHandler.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="Podoboo.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Spiny.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="SwitchScenePoint.h" />
     <ClInclude Include="PiranhaPlant.h" />
@@ -171,11 +179,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Bowser.cpp" />
+    <ClCompile Include="BowserFire.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="BuzzyBeetle.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="Koopa.cpp" />
+    <ClCompile Include="Lakitu.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="Podoboo.cpp" />
+    <ClCompile Include="Spiny.cpp" />
     <ClCompile Include="SwitchScenePoint.cpp" />
     <ClCompile Include="PiranhaPlant.cpp" />
     <ClCompile Include="Blooper.cpp" />

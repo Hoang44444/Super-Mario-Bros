@@ -24,9 +24,14 @@
 #include "Cannon.h"
 #include "HammerBro.h"
 #include "Hammer.h"
+#include "Goomba.h"
+#include "Koopa.h"
+#include "Podoboo.h"
+#include "BuzzyBeetle.h"
+#include "Spiny.h"
+#include "Lakitu.h"
 #include "Bowser.h"
-#include "BowserFireball.h"
-
+#include "BowserFire.h"
 using namespace std;
 
 void PlayScene::Load()
@@ -232,17 +237,34 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT::HAMMER_BRO:
 		obj = new HammerBro(x, y, z);
 		break;
-	case OBJECT::BOWSER:
-		obj = new Bowser(x, y, z);
-		break;
 	case OBJECT::HAMMER:
 		obj = new Hammer(x, y, z, 1); // default direction right
 		break;
-	case OBJECT::BOWSER_FIREBALL:
-		obj = new BowserFireball(x, y, z, 1); // default direction right
-		break;
 	case OBJECT::CANNON:
 		obj = new Cannon(x, y, z, 1); // default direction right
+	case OBJECT::GOOMBA:
+		obj = new Goomba(x, y, z);
+		break;
+	case OBJECT::KOOPA:
+		obj = new Koopa(x, y, z);
+		break;
+	case OBJECT::BUZZY:
+		obj = new BuzzyBeetle(x, y, z);
+		break;
+	case OBJECT::PODOBOO:
+		obj = new Podoboo(x, y, z);
+		break;
+	case OBJECT::SPINY:
+		obj = new Spiny(x, y, z);
+		break;
+	case OBJECT::LAKITU:
+		obj = new Lakitu(x, y, z);
+		break;
+	case OBJECT::BOWSER:
+		obj = new Bowser(x, y, z);
+		break;
+	case OBJECT::BOWSER_FIRE:
+		obj = new BowserFire(x, y, z, -1);
 		break;
 	}
 

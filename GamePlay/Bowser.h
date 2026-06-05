@@ -1,43 +1,41 @@
 #pragma once
 #include "Enemy.h"
 
-#define BOWSER_WIDTH 32.0f
-#define BOWSER_HEIGHT 32.0f
-
-#define BOWSER_WALK_SPEED 0.02f
-#define BOWSER_JUMP_SPEED 0.12f
+#define BOWSER_WALK_SPEED 0.03f
+#define BOWSER_JUMP_SPEED 0.3f
 #define BOWSER_GRAVITY 0.001f
 
-#define BOWSER_WALK_RANGE 48.0f
-#define BOWSER_SHOOT_INTERVAL 3000
-#define BOWSER_JUMP_INTERVAL 4000
+#define BOWSER_BBOX_WIDTH 34
+#define BOWSER_BBOX_HEIGHT 34
+
+#define BOWSER_STATE_WALKING 100
+#define BOWSER_STATE_ATTACKING 200
+#define BOWSER_STATE_DIE 300
 
 class Bowser : public Enemy
 {
-private:
-	float startX;
-	float startY;
-	int hp;
-	DWORD lastShootTime;
-	DWORD lastJumpTime;
-	bool isJumping;
+    float startX;
+    bool isOnGround = false;
+
+    ULONGLONG jump_timer = 0;
+    ULONGLONG fire_timer = 0;
+    ULONGLONG attack_duration = 0;
+    ULONGLONG current_fire_cooldown = 4000;
+
+    int hp = 5;
 
 public:
-	Bowser(float x, float y, float z);
+    Bowser(float x, float y, float z = 0);
 	virtual ~Bowser() {}
 
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) override;
-	virtual void Render() override;
-	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) override;
+    virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+    virtual void Render();
+    virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
+    virtual void SetState(int state);
 
-	virtual void OnMarioCollison(Mario* mario) override;
+    virtual void OnNoCollision(DWORD dt);
+    virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+    virtual void OnMarioCollison(Mario* mario, float ny) override;
 
-	virtual void OnNoCollision(DWORD dt) override;
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e) override;
-
-	void TakeDamage(int damage);
-
-private:
-	void ShootFire();
-	void Jump();
+    virtual bool IsCollidable() override { return state != BOWSER_STATE_DIE; }
 };
