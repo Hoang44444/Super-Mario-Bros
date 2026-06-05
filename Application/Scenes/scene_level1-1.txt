@@ -4,6 +4,12 @@ Objects/mario.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
+Objects/piranha_plant.txt
+Objects/blooper.txt
+Objects/bulletbill.txt
+Objects/cannon.txt
+Objects/hammerbro.txt
+Objects/hammer.txt
 Objects/Goomba.txt
 Objects/Koopa.txt
 Objects/BuzzyBeetle.txt
@@ -25,6 +31,11 @@ Objects/BowserFire.txt
 ########## MARIO ##########
 # type x y z
 0 0 420 0.2
+########ENEMY###########
+
+8 360 320 0.2
+
+
 
 ########## END SCENE POINT ##########
 # type x y z
