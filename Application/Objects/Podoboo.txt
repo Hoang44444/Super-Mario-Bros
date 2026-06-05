@@ -1,0 +1,19 @@
+[SPRITES]
+# ID    Left  Top   Right Bottom TexID
+
+# JUMPING UP
+70001   57     152    76    171     8
+70002   57     152    76    171     8
+
+# FALLING DOWN
+70011   0	   152    16     171     8
+70012   0	   152    16     171     8
+
+[ANIMATIONS]
+# ani_id  sprite1_id  time1  sprite2_id  time2...
+
+# 7000 JUMPING UP
+7000    70001   100   70002   100
+
+# 7001 FALLING DOWN
+7001    70011   100   70012   100
