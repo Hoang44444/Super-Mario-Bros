@@ -3,6 +3,14 @@ Objects/brick.txt
 Objects/mario.txt
 Objects/bullet.txt
 Objects/background.txt
+Objects/piranha_plant.txt
+Objects/blooper.txt
+Objects/bulletbill.txt
+Objects/cannon.txt
+Objects/hammerbro.txt
+Objects/hammer.txt
+Objects/bowser.txt
+Objects/bowserfireball.txt
 
 [MAP]
 4866 480

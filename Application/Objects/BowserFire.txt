@@ -1,0 +1,19 @@
+[SPRITES]
+# ID      Left  Top   Right Bottom TexID
+
+# IRE FLYING LEFT
+100041    98    250   126   260    8
+100042    128   250   156   260    8
+
+# FIRE FLYING RIGHT
+100051    158    250    186  260      8
+100052    188    250    216  260      8
+
+[ANIMATIONS]
+# ani_id  sprite1_id  time1  sprite2_id  time2...
+
+# 10004 FIRE LEFT
+10004     100041  100   100042  100
+
+# 10005 FIRE RIGHT
+10005     100051  100   100052  100

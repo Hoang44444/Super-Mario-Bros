@@ -22,6 +22,20 @@
 #include "SuperLeaf.h"
 #include "TanookiSuit.h"
 #include "HammerSuit.h"
+#include "PiranhaPlant.h"
+#include "Blooper.h"
+#include "BulletBill.h"
+#include "Cannon.h"
+#include "HammerBro.h"
+#include "Hammer.h"
+#include "Goomba.h"
+#include "Koopa.h"
+#include "Podoboo.h"
+#include "BuzzyBeetle.h"
+#include "Spiny.h"
+#include "Lakitu.h"
+#include "Bowser.h"
+#include "BowserFire.h"
 using namespace std;
 
 void PlayScene::Load()
@@ -200,7 +214,7 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	float z = (float)atof(tokens[3].c_str());
 	GameObject* obj = NULL;
 
-	switch (type)
+		switch (type)
 	{
 	case OBJECT::MARIO:
 		if (player != NULL)
@@ -244,6 +258,48 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT::HAMMER_SUIT:
 		obj = new HammerSuit(x, y, z);
+
+	// --- ENEMY & PROJECTILE & SPAWNER ---
+	case OBJECT::PIRANHA_PLANT:
+		obj = new PiranhaPlant(x, y, z);
+		break;
+	case OBJECT::BLOOPER:
+		obj = new Blooper(x, y, z);
+		break;
+	case OBJECT::BULLET_BILL:
+		obj = new BulletBill(x, y, z);
+		break;
+	case OBJECT::HAMMER_BRO:
+		obj = new HammerBro(x, y, z);
+		break;
+	case OBJECT::HAMMER:
+		obj = new Hammer(x, y, z, 1); // default direction right
+		break;
+	case OBJECT::CANNON:
+		obj = new Cannon(x, y, z, 1); // default direction right
+	case OBJECT::GOOMBA:
+		obj = new Goomba(x, y, z);
+		break;
+	case OBJECT::KOOPA:
+		obj = new Koopa(x, y, z);
+		break;
+	case OBJECT::BUZZY:
+		obj = new BuzzyBeetle(x, y, z);
+		break;
+	case OBJECT::PODOBOO:
+		obj = new Podoboo(x, y, z);
+		break;
+	case OBJECT::SPINY:
+		obj = new Spiny(x, y, z);
+		break;
+	case OBJECT::LAKITU:
+		obj = new Lakitu(x, y, z);
+		break;
+	case OBJECT::BOWSER:
+		obj = new Bowser(x, y, z);
+		break;
+	case OBJECT::BOWSER_FIRE:
+		obj = new BowserFire(x, y, z, -1);
 		break;
 	}
 

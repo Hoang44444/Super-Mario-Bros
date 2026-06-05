@@ -1,0 +1,10 @@
+[SPRITES]
+# id   left  top  right  bottom  tex_id
+33001  389     2    406     20      8
+33002  419     0    435     24      8
+[ANIMATIONS]
+# id   sprite1_id  time1  sprite2_id  time2  
+3300   33002	    100
+3301   33001       100    33002       100
+3302   33002       100
+3303   33001       100
