@@ -15,7 +15,6 @@ public:
 	Item(float x, float y, float z, int animationId = -1) : GameObject(x, y, z) {
 		this->animationId = animationId;
 	}
-	Item(float x, float y, float z) : GameObject(x, y, z) {}
 	virtual ~Item() {}
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {

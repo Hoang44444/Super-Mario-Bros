@@ -53,18 +53,20 @@ namespace OBJECT
 	constexpr int HAMMER_SUIT = 11;
 
     // Enemies
-    constexpr int PIRANHA_PLANT = 7;
-    constexpr int BLOOPER = 8;
-    constexpr int BULLET_BILL = 9;
-    constexpr int CANNON = 10;
-    constexpr int GOOMBA = 11;
-    constexpr int KOOPA = 12;
-    constexpr int BUZZY = 13;
-    constexpr int PODOBOO = 14;
-    constexpr int SPINY = 15;
-    constexpr int LAKITU = 16;
-    constexpr int BOWSER = 17;
-    constexpr int BOWSER_FIRE = 18;
+    constexpr int PIRANHA_PLANT = 20;
+    constexpr int BLOOPER = 21;
+    constexpr int BULLET_BILL = 22;
+    constexpr int CANNON = 23;
+    constexpr int GOOMBA = 24;
+    constexpr int KOOPA = 25;
+    constexpr int BUZZY = 26;
+    constexpr int PODOBOO = 27;
+    constexpr int SPINY = 28;
+    constexpr int LAKITU = 29;
+    constexpr int BOWSER = 30;
+    constexpr int BOWSER_FIRE = 31;
+    constexpr int HAMMER_BRO = 32;
+    constexpr int HAMMER = 33;
 }
 
 namespace TEXTURE

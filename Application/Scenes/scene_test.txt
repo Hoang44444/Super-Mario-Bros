@@ -2,7 +2,6 @@
 Objects/brick.txt
 Objects/brick_test.txt
 Objects/mario.txt
-Objects/state.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/Goomba.txt
@@ -13,7 +12,6 @@ Objects/Spiny.txt
 Objects/Lakitu.txt
 Objects/Bowser.txt
 Objects/BowserFire.txt
-Objects/item2.txt
 
 [MAP]
 2000 480
@@ -22,7 +20,7 @@ Objects/item2.txt
 
 ########## BACKGROUND ##########
 # type x y z
-3 0 240 0.9
+3 0 440 0.9
 
 ########## MARIO ##########
 # type x y z
