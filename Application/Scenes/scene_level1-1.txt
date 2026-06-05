@@ -4,6 +4,20 @@ Objects/mario.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
+Objects/piranha_plant.txt
+Objects/blooper.txt
+Objects/bulletbill.txt
+Objects/cannon.txt
+Objects/hammerbro.txt
+Objects/hammer.txt
+Objects/Goomba.txt
+Objects/Koopa.txt
+Objects/BuzzyBeetle.txt
+Objects/Podoboo.txt
+Objects/Spiny.txt
+Objects/Lakitu.txt
+Objects/Bowser.txt
+Objects/BowserFire.txt
 
 [MAP]
 3376 480
@@ -17,6 +31,11 @@ Objects/pipe.txt
 ########## MARIO ##########
 # type x y z
 0 0 420 0.2
+########ENEMY###########
+
+8 360 320 0.2
+
+
 
 ########## END SCENE POINT ##########
 # type x y z
@@ -351,5 +370,11 @@ Objects/pipe.txt
 1 3008 320 0.5
 1 3024 320 0.5
 1 3168 432 0.5
+
+########## LAKITU ##########
+10 616 400 0.6
+10 672 448 0.5
+10 744 384 0.6
+10 2616 416 0.6
 
 

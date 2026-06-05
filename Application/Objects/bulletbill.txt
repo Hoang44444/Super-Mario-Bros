@@ -1,0 +1,7 @@
+[SPRITES]
+# id   left  top  right  bottom  tex_id
+34001  58    123    76     139      8
+
+[ANIMATIONS]
+# id   sprite1_id  time1
+3400   34001       100

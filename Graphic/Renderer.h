@@ -32,8 +32,8 @@ public:
     // Các hàm vẽ
     void BeginRender();
     void EndRender();
-    void Draw(float x, float y, float z, LPTEXTURE tex, RECT* rect = nullptr, float alpha = 1.0f);
-    void DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_width, float dest_height, RECT* rect = nullptr, float alpha = 1.0f);
+    void Draw(float x, float y, float z, LPTEXTURE tex, RECT* rect = nullptr, float alpha = 1.0f, bool flipX = false);
+    void DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_width, float dest_height, RECT* rect = nullptr, float alpha = 1.0f, bool flipX = false);
 
     // Getters
     ID3D10Device* GetDevice() { return pD3DDevice; }
