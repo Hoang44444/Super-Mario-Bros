@@ -1,5 +1,7 @@
 #pragma once
 #include "StaticObject.h"
+#include "AnimationManager.h"
+#include "../Resource/AssetID.h"
 
 constexpr float BRICK_BBOX_WIDTH = 16.0f;
 constexpr float BRICK_BBOX_HEIGHT = 16.0f;
@@ -11,7 +13,11 @@ public:
 	}
 	virtual ~Brick() {};
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr) {};
-	virtual void Render() {};
+	virtual void Render() {
+		LPANIMATION ani = AnimationManager::GetInstance()->Get(ANIMATION::BRICK);
+		if (ani != nullptr)
+			ani->Render(x, y, z);
+	};
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) override{
 		l = x;
 		t = y;
