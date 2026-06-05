@@ -7,7 +7,7 @@
 using namespace std;
 
 
-class CollisionEvent;
+struct CollisionEvent;
 typedef CollisionEvent* LPCOLLISIONEVENT;
 
 class GameObject

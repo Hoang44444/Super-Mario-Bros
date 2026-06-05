@@ -1,9 +1,11 @@
 [ASSETS]
 Objects/brick.txt
 Objects/mario.txt
+Objects/state.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
+Objects/item2.txt
 Objects/piranha_plant.txt
 Objects/blooper.txt
 Objects/bulletbill.txt
@@ -371,10 +373,5 @@ Objects/BowserFire.txt
 1 3024 320 0.5
 1 3168 432 0.5
 
-########## LAKITU ##########
-10 616 400 0.6
-10 672 448 0.5
-10 744 384 0.6
-10 2616 416 0.6
 
 

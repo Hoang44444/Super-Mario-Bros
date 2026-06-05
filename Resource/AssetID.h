@@ -46,6 +46,11 @@ namespace OBJECT
     constexpr int PIPE = 4;
     constexpr int SWITCH_SCENE_POINT = 5;
 	constexpr int BRICK_TEST = 6;
+	constexpr int COIN = 7;
+	constexpr int MUSHROOM_1UP = 8;
+	constexpr int SUPER_LEAF = 9;
+	constexpr int TANOOKI_SUIT = 10;
+	constexpr int HAMMER_SUIT = 11;
 
     // Enemies
     constexpr int PIRANHA_PLANT = 7;
@@ -103,6 +108,54 @@ namespace ANIMATION
     constexpr int MARIO_BIG_BRACE_RIGHT = 1000;
     constexpr int MARIO_BIG_BRACE_LEFT = 1001;
 
+    // RACCOON MARIO
+    constexpr int MARIO_RACCOON_IDLE_RIGHT = 2400;
+    constexpr int MARIO_RACCOON_IDLE_LEFT = 2401;
+    constexpr int MARIO_RACCOON_WALKING_RIGHT = 2500;
+    constexpr int MARIO_RACCOON_WALKING_LEFT = 2501;
+    constexpr int MARIO_RACCOON_RUNNING_RIGHT = 2600;
+    constexpr int MARIO_RACCOON_RUNNING_LEFT = 2601;
+    constexpr int MARIO_RACCOON_JUMP_WALK_RIGHT = 2700;
+    constexpr int MARIO_RACCOON_JUMP_WALK_LEFT = 2701;
+    constexpr int MARIO_RACCOON_JUMP_RUN_RIGHT = 2800;
+    constexpr int MARIO_RACCOON_JUMP_RUN_LEFT = 2801;
+    constexpr int MARIO_RACCOON_SIT_RIGHT = 2900;
+    constexpr int MARIO_RACCOON_SIT_LEFT = 2901;
+    constexpr int MARIO_RACCOON_BRACE_RIGHT = 3000;
+    constexpr int MARIO_RACCOON_BRACE_LEFT = 3001;
+
+    // TANOOKI MARIO
+    constexpr int MARIO_TANOOKI_IDLE_RIGHT = 3400;
+    constexpr int MARIO_TANOOKI_IDLE_LEFT = 3401;
+    constexpr int MARIO_TANOOKI_WALKING_RIGHT = 3500;
+    constexpr int MARIO_TANOOKI_WALKING_LEFT = 3501;
+    constexpr int MARIO_TANOOKI_RUNNING_RIGHT = 3600;
+    constexpr int MARIO_TANOOKI_RUNNING_LEFT = 3601;
+    constexpr int MARIO_TANOOKI_JUMP_WALK_RIGHT = 3700;
+    constexpr int MARIO_TANOOKI_JUMP_WALK_LEFT = 3701;
+    constexpr int MARIO_TANOOKI_JUMP_RUN_RIGHT = 3800;
+    constexpr int MARIO_TANOOKI_JUMP_RUN_LEFT = 3801;
+    constexpr int MARIO_TANOOKI_SIT_RIGHT = 3900;
+    constexpr int MARIO_TANOOKI_SIT_LEFT = 3901;
+    constexpr int MARIO_TANOOKI_BRACE_RIGHT = 4000;
+    constexpr int MARIO_TANOOKI_BRACE_LEFT = 4001;
+
+    // HAMMER MARIO
+    constexpr int MARIO_HAMMER_IDLE_RIGHT = 4400;
+    constexpr int MARIO_HAMMER_IDLE_LEFT = 4401;
+    constexpr int MARIO_HAMMER_WALKING_RIGHT = 4500;
+    constexpr int MARIO_HAMMER_WALKING_LEFT = 4501;
+    constexpr int MARIO_HAMMER_RUNNING_RIGHT = 4600;
+    constexpr int MARIO_HAMMER_RUNNING_LEFT = 4601;
+    constexpr int MARIO_HAMMER_JUMP_WALK_RIGHT = 4700;
+    constexpr int MARIO_HAMMER_JUMP_WALK_LEFT = 4701;
+    constexpr int MARIO_HAMMER_JUMP_RUN_RIGHT = 4800;
+    constexpr int MARIO_HAMMER_JUMP_RUN_LEFT = 4801;
+    constexpr int MARIO_HAMMER_SIT_RIGHT = 4900;
+    constexpr int MARIO_HAMMER_SIT_LEFT = 4901;
+    constexpr int MARIO_HAMMER_BRACE_RIGHT = 5000;
+    constexpr int MARIO_HAMMER_BRACE_LEFT = 5001;
+
     // SMALL MARIO
     constexpr int MARIO_SMALL_IDLE_RIGHT = 1100;
     constexpr int MARIO_SMALL_IDLE_LEFT = 1102;
@@ -122,6 +175,13 @@ namespace ANIMATION
     // PIPE
     constexpr int PIPE_HEAD = 3100;
     constexpr int PIPE_BODY = 3101;
+    
+    // ITEMS
+    constexpr int ITEM_COIN = 8000;
+    constexpr int ITEM_MUSHROOM_1UP = 8001;
+    constexpr int ITEM_SUPER_LEAF = 8002;
+    constexpr int ITEM_TANOOKI_SUIT = 8003;
+    constexpr int ITEM_HAMMER_SUIT = 8004;
 
     // PIRANHA PLANT
     constexpr int PIRANHA_PLANT_IDLE = 3200;

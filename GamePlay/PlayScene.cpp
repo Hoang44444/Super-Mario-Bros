@@ -10,7 +10,6 @@
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
 #include "debug.h"
 #include "GameManager.h"
 #include "Camera.h"
@@ -18,6 +17,11 @@
 #include "Pipe.h"
 #include "SwitchScenePoint.h"
 #include "BrickTest.h"
+#include "Coin.h"
+#include "Mushroom1Up.h"
+#include "SuperLeaf.h"
+#include "TanookiSuit.h"
+#include "HammerSuit.h"
 #include "PiranhaPlant.h"
 #include "Blooper.h"
 #include "BulletBill.h"
@@ -160,22 +164,39 @@ void PlayScene::_ParseSection_ANIMATIONS(string line)
 	vector<string> tokens;
 	stringstream ss(line);
 	string token;
-	while (ss >> token) tokens.push_back(token);
+	
+	// Cắt token cẩn thận, loại bỏ phần comment (bắt đầu bằng '#')
+	while (ss >> token) 
+	{
+		if (token.empty() || token[0] == '#') break; // Bỏ qua comment inline
+		tokens.push_back(token);
+	}
 
-	if (tokens.size() < 3) return; // 1 ID + at least 1 frame (sprite + time)
+	if (tokens.size() < 3) return; 
 
 	int ani_id = atoi(tokens[0].c_str());
 	LPANIMATION ani = new Animation();
 
-	for (size_t i = 1; i < tokens.size(); i += 2)
+	// Token[0] là ID animation
+	// Token[i] là sprite_id, Token[i+1] là frame_time
+	for (size_t i = 1; i + 1 < tokens.size(); i += 2)
 	{
 		int sprite_id = atoi(tokens[i].c_str());
 		int frame_time = atoi(tokens[i+1].c_str());
+		
 		LPSPRITE sprite = SpriteManager::GetInstance()->Get(sprite_id);
+		
+		if (sprite == nullptr)
+		{
+			DebugOut(L"[ERROR] Sprite ID %d not found in animation %d\n", sprite_id, ani_id);
+			continue;
+		}
+		
 		ani->Add(sprite, frame_time);
 	}
 
 	AnimationManager::GetInstance()->Add(ani_id, ani);
+	DebugOut(L"[INFO] Animation ID %d added\n", ani_id);
 }
 
 void PlayScene::_ParseSection_OBJECTS(string line)
@@ -223,6 +244,20 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT::SWITCH_SCENE_POINT:
 		obj = new SwitchScenePoint(x, y, z);
 		break;
+	case OBJECT::COIN:
+		obj = new Coin(x, y, z);
+		break;
+	case OBJECT::MUSHROOM_1UP:
+		obj = new Mushroom1Up(x, y, z);
+		break;
+	case OBJECT::SUPER_LEAF:
+		obj = new SuperLeaf(x, y, z);
+		break;
+	case OBJECT::TANOOKI_SUIT:
+		obj = new TanookiSuit(x, y, z);
+		break;
+	case OBJECT::HAMMER_SUIT:
+		obj = new HammerSuit(x, y, z);
 
 	// --- ENEMY & PROJECTILE & SPAWNER ---
 	case OBJECT::PIRANHA_PLANT:
