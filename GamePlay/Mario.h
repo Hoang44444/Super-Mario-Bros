@@ -4,6 +4,9 @@
 // MARIO LEVELS
 #define MARIO_LEVEL_SMALL	1
 #define MARIO_LEVEL_BIG		2
+#define MARIO_LEVEL_RACCOON	3
+#define MARIO_LEVEL_TANOOKI	4
+#define MARIO_LEVEL_HAMMER	5
 
 // MARIO STATES
 #define MARIO_STATE_DIE				-10
@@ -39,11 +42,18 @@ private:
 	void MovementUpdate(DWORD dt);
 
 	bool isOnGround = false; 
+	int coin = 0;
+	int life = 3; // Default 3 mạng
 public:
 	Mario(float x, float y, float z) : GameObject(x, y, z) {
 		level = MARIO_LEVEL_SMALL;
 	};
 	~Mario() {};
+
+	void AddCoin(int amount = 1);
+	void AddLife(int amount = 1);
+	void SetLevel(int l) { level = l; }
+
 	// ACTIONS
 	void ShootBullet();
 
@@ -69,5 +79,8 @@ public:
 	// RENDER WITH MARIO LEVEL
 	void MarioSmallRender(int& aniId);
 	void MarioBigRender(int& andId);
+	void MarioRaccoonRender(int& aniId);
+	void MarioTanookiRender(int& aniId);
+	void MarioHammerRender(int& aniId);
 };
 

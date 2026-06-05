@@ -2,6 +2,7 @@
 Objects/brick.txt
 Objects/brick_test.txt
 Objects/mario.txt
+Objects/state.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/Goomba.txt
@@ -12,6 +13,7 @@ Objects/Spiny.txt
 Objects/Lakitu.txt
 Objects/Bowser.txt
 Objects/BowserFire.txt
+Objects/item2.txt
 
 [MAP]
 2000 480

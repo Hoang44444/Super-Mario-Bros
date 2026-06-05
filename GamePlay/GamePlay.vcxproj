@@ -30,26 +30,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -77,6 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\Resource;..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -92,6 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\Resource;..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -156,6 +158,14 @@
     <ClInclude Include="Spiny.h" />
     <ClInclude Include="StaticObject.h" />
     <ClInclude Include="SwitchScenePoint.h" />
+    <ClInclude Include="PiranhaPlant.h" />
+    <ClInclude Include="Blooper.h" />
+    <ClInclude Include="BulletBill.h" />
+    <ClInclude Include="Cannon.h" />
+    <ClInclude Include="HammerBro.h" />
+    <ClInclude Include="Hammer.h" />
+    <ClInclude Include="BowserFireball.h" />
+    <ClInclude Include="MenuScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -184,6 +194,20 @@
     <ClCompile Include="Podoboo.cpp" />
     <ClCompile Include="Spiny.cpp" />
     <ClCompile Include="SwitchScenePoint.cpp" />
+    <ClCompile Include="PiranhaPlant.cpp" />
+    <ClCompile Include="Blooper.cpp" />
+    <ClCompile Include="BulletBill.cpp" />
+    <ClCompile Include="Cannon.cpp" />
+    <ClCompile Include="HammerBro.cpp" />
+    <ClCompile Include="Hammer.cpp" />
+    <ClCompile Include="BowserFireball.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="Mushroom.cpp" />
+    <ClCompile Include="Mushroom1Up.cpp" />
+    <ClCompile Include="SuperLeaf.cpp" />
+    <ClCompile Include="TanookiSuit.cpp" />
+    <ClCompile Include="HammerSuit.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

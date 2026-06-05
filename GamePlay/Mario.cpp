@@ -7,6 +7,21 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "InvisibleObject.h"
+
+void Mario::AddCoin(int amount) {
+	coin += amount;
+	while (coin >= 100) {
+		coin -= 100;
+		DebugOut(L"[MARIO] 100 coins collected. Awarding 1 life.\n");
+		AddLife();
+	}
+}
+
+void Mario::AddLife(int amount) {
+	life += amount;
+	DebugOut(L"[MARIO] Life +%d. Current life: %d\n", amount, life);
+}
+
 void Mario::MovementUpdate(DWORD dt) {
 	// Simple movement for testing
 	this->x += this->vx * dt;
@@ -98,30 +113,91 @@ void Mario::MarioBigRender(int& aniId) {
 	}
 }
 
+void Mario::MarioRaccoonRender(int& aniId)
+{
+	if (!isOnGround) {
+		if (direction > 0) aniId = ANIMATION::MARIO_RACCOON_JUMP_WALK_RIGHT;
+		else aniId = ANIMATION::MARIO_RACCOON_JUMP_WALK_LEFT;
+	}
+	else if (vx != 0) {
+		if (direction > 0) aniId = ANIMATION::MARIO_RACCOON_WALKING_RIGHT;
+		else aniId = ANIMATION::MARIO_RACCOON_WALKING_LEFT;
+	}
+	else {
+		if (direction > 0) aniId = ANIMATION::MARIO_RACCOON_IDLE_RIGHT;
+		else aniId = ANIMATION::MARIO_RACCOON_IDLE_LEFT;
+	}
+}
+
+void Mario::MarioTanookiRender(int& aniId)
+{
+	if (!isOnGround) {
+		if (direction > 0) aniId = ANIMATION::MARIO_TANOOKI_JUMP_WALK_RIGHT;
+		else aniId = ANIMATION::MARIO_TANOOKI_JUMP_WALK_LEFT;
+	}
+	else if (vx != 0) {
+		if (direction > 0) aniId = ANIMATION::MARIO_TANOOKI_WALKING_RIGHT;
+		else aniId = ANIMATION::MARIO_TANOOKI_WALKING_LEFT;
+	}
+	else {
+		if (direction > 0) aniId = ANIMATION::MARIO_TANOOKI_IDLE_RIGHT;
+		else aniId = ANIMATION::MARIO_TANOOKI_IDLE_LEFT;
+	}
+}
+
+void Mario::MarioHammerRender(int& aniId)
+{
+	if (!isOnGround) {
+		if (direction > 0) aniId = ANIMATION::MARIO_HAMMER_JUMP_WALK_RIGHT;
+		else aniId = ANIMATION::MARIO_HAMMER_JUMP_WALK_LEFT;
+	}
+	else if (vx != 0) {
+		if (direction > 0) aniId = ANIMATION::MARIO_HAMMER_WALKING_RIGHT;
+		else aniId = ANIMATION::MARIO_HAMMER_WALKING_LEFT;
+	}
+	else {
+		if (direction > 0) aniId = ANIMATION::MARIO_HAMMER_IDLE_RIGHT;
+		else aniId = ANIMATION::MARIO_HAMMER_IDLE_LEFT;
+	}
+}
+
 void Mario::Render()
 {
 	int aniId = -1;
-
-	if (state == MARIO_STATE_DIE)
-		aniId = ANIMATION::MARIO_DIE;
-	else if (level == MARIO_LEVEL_BIG)
-	{
+	// Calculate animation ID 
+	if (level == MARIO_LEVEL_BIG) {
 		MarioBigRender(aniId);
 	}
-	else if (level == MARIO_LEVEL_SMALL)
-	{
+	else if (level == MARIO_LEVEL_SMALL) {
 		MarioSmallRender(aniId);
 	}
+	else if (level == MARIO_LEVEL_RACCOON) {
+		MarioRaccoonRender(aniId);
+	}
+	else if (level == MARIO_LEVEL_TANOOKI) {
+		MarioTanookiRender(aniId);
+	}
+	else if (level == MARIO_LEVEL_HAMMER) {
+		MarioHammerRender(aniId);
+	}
 
-	if (aniId != -1)
-		AnimationManager::GetInstance()->Get(aniId)->Render(x, y, z);
+	if (aniId == -1) // Placeholder handling for new levels if not animated yet
+	{
+		aniId = ANIMATION::MARIO_SMALL_IDLE_RIGHT; // Safely default
+	}
+
+	LPANIMATION ani = AnimationManager::GetInstance()->Get(aniId);
+	if (ani != nullptr)
+		ani->Render(x, y, z);
+
+	// RenderBoundingBox();
 }
 
 void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;
-	if (level == MARIO_LEVEL_BIG)
+	if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_RACCOON || level == MARIO_LEVEL_TANOOKI || level == MARIO_LEVEL_HAMMER)
 	{
 		r = x + 15;
 		b = y + 27;
