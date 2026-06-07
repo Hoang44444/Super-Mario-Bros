@@ -15,7 +15,7 @@ Objects/dynamic_platform.txt
 
 ########## MARIO ##########
 # type x y z
-0 1296 50 0.2
+0 2288 50 0.2
 
 ########## QUESTION BLOCK ##########
 # type x y z
@@ -241,3 +241,7 @@ Objects/dynamic_platform.txt
 1 2272 80 0.5
 1 2288 80 0.5
 
+
+########## SWITCH SCENE POINT ##########
+# type x y z
+5 2560 176 0.5

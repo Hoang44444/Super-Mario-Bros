@@ -18,7 +18,7 @@ Objects/question_block.txt
 
 ########## MARIO ##########
 # type x y z
-0 2600 600 0.2
+0 0 600 0.2
 
 ########## BRICK BREAK ##########
 # type x y z

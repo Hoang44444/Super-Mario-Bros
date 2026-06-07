@@ -48,6 +48,18 @@ void PlayScene::Load()
 	while (f.getline(str, 1024))
 	{
 		string line(str);
+
+		// Strip UTF-8 BOM (EF BB BF) nếu có ở đầu dòng
+		if (line.size() >= 3 &&
+			(unsigned char)line[0] == 0xEF &&
+			(unsigned char)line[1] == 0xBB &&
+			(unsigned char)line[2] == 0xBF)
+			line = line.substr(3);
+
+		// Strip carriage return '\r' cuối dòng (Windows CRLF)
+		if (!line.empty() && line.back() == '\r')
+			line.pop_back();
+
 		if (line.empty() || line[0] == '#') continue;
 
 		if (line == "[ASSETS]") { section = SCENE::SECTION_ASSETS; continue; }
@@ -99,6 +111,18 @@ void PlayScene::LoadAssets(LPCWSTR assetFile)
 	while (f.getline(str, 1024))
 	{
 		string line(str);
+
+		// Strip UTF-8 BOM
+		if (line.size() >= 3 &&
+			(unsigned char)line[0] == 0xEF &&
+			(unsigned char)line[1] == 0xBB &&
+			(unsigned char)line[2] == 0xBF)
+			line = line.substr(3);
+
+		// Strip carriage return '\r' cuối dòng
+		if (!line.empty() && line.back() == '\r')
+			line.pop_back();
+
 		if (line.empty() || line[0] == '#') continue;
 
 		if (line == "[SPRITES]") { section = ASSET::SECTION_SPRITES; continue; }

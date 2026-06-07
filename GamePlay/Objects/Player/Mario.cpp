@@ -140,7 +140,11 @@ void Mario::Render()
 	}
 
 	if (aniId != -1)
-		AnimationManager::GetInstance()->Get(aniId)->Render(x, y, z);
+	{
+		LPANIMATION ani = AnimationManager::GetInstance()->Get(aniId);
+		if (ani != nullptr)
+			ani->Render(x, y, z);
+	}
 }
 
 void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
