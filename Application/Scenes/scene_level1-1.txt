@@ -6,6 +6,7 @@ Objects/mario.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
+Objects/question_block.txt
 
 [MAP]
 3376 480
@@ -18,7 +19,7 @@ Objects/pipe.txt
 
 ########## MARIO ##########
 # type x y z
-0 0 420 0.2
+0 0 400 0.2
 
 ########## END SCENE POINT ##########
 # type x y z
@@ -104,59 +105,20 @@ Objects/pipe.txt
 8 2736 384 0.5
 
 
-########## BRICKTEST (type=6, ? block) ##########
+########## QUESTION BLOCK ##########
 # type x y z
-
-# --- Row thap (y=352) ---
-# Group 1
-# 6 256 352 0.5
-# 6 352 352 0.5
-
-# Group 2
-# 6 608 352 0.5
-# 6 656 352 0.5
-
-# Group 3
-# 6 784 352 0.5
-# 6 864 352 0.5
-
-# Group 4 (after Gap 1)
-# 6 1152 352 0.5
-# 6 1216 352 0.5
-
-# Group 5 (after Gap 2)
-# 6 1504 352 0.5
-# 6 1536 352 0.5
-# 6 1552 352 0.5
-# 6 1584 352 0.5
-# 6 1696 352 0.5
-
-# Group 6
-# 6 1744 352 0.5
-# 6 1792 352 0.5
-# 6 1840 352 0.5
-# 6 1968 352 0.5
-# 6 2016 352 0.5
-# 6 2064 352 0.5
-# 6 2112 352 0.5
-# 6 2160 352 0.5
-# 6 2272 352 0.5
-# 6 2336 352 0.5
-
-# --- Row cao (y=288) ---
-# Hidden mushroom block (above brick group 1)
-# 6 320 288 0.5
-
-# Three ? blocks (after Pipe 1, famous group)
-# 6 496 288 0.5
-# 6 512 288 0.5
-# 6 528 288 0.5
-
-# ? block above Pipe 3 area
-# 6 720 288 0.5
-
-# ? block after Gap 1
-# 6 1168 288 0.5
+10 256 384 0.5
+10 336 384 0.5
+10 368 384 0.5
+10 352 320 0.5
+10 1248 384 0.5
+10 1506 320 0.5
+10 1678 384 0.5
+10 1726 384 0.5
+10 1774 384 0.5
+10 2064 320 0.5
+10 2080 320 0.5
+10 2720 384 0.5
 
 ########## PLATFORM ##########
 # type x y z
