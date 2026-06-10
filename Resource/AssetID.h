@@ -67,6 +67,7 @@ namespace TEXTURE
     constexpr int MENUBACKGROUND = 3;
     constexpr int LEVEL1_1 = 4;
     constexpr int BBOX = -100;
+    constexpr int ENEMIES = 8;
 }
 
 namespace ANIMATION
@@ -108,6 +109,54 @@ namespace ANIMATION
     constexpr int MARIO_BIG_BRACE_RIGHT = 1000;
     constexpr int MARIO_BIG_BRACE_LEFT = 1001;
 
+    // RACCOON MARIO
+    constexpr int MARIO_RACCOON_IDLE_RIGHT = 2400;
+    constexpr int MARIO_RACCOON_IDLE_LEFT = 2401;
+    constexpr int MARIO_RACCOON_WALKING_RIGHT = 2500;
+    constexpr int MARIO_RACCOON_WALKING_LEFT = 2501;
+    constexpr int MARIO_RACCOON_RUNNING_RIGHT = 2600;
+    constexpr int MARIO_RACCOON_RUNNING_LEFT = 2601;
+    constexpr int MARIO_RACCOON_JUMP_WALK_RIGHT = 2700;
+    constexpr int MARIO_RACCOON_JUMP_WALK_LEFT = 2701;
+    constexpr int MARIO_RACCOON_JUMP_RUN_RIGHT = 2800;
+    constexpr int MARIO_RACCOON_JUMP_RUN_LEFT = 2801;
+    constexpr int MARIO_RACCOON_SIT_RIGHT = 2900;
+    constexpr int MARIO_RACCOON_SIT_LEFT = 2901;
+    constexpr int MARIO_RACCOON_BRACE_RIGHT = 3000;
+    constexpr int MARIO_RACCOON_BRACE_LEFT = 3001;
+
+    // TANOOKI MARIO
+    constexpr int MARIO_TANOOKI_IDLE_RIGHT = 3400;
+    constexpr int MARIO_TANOOKI_IDLE_LEFT = 3401;
+    constexpr int MARIO_TANOOKI_WALKING_RIGHT = 3500;
+    constexpr int MARIO_TANOOKI_WALKING_LEFT = 3501;
+    constexpr int MARIO_TANOOKI_RUNNING_RIGHT = 3600;
+    constexpr int MARIO_TANOOKI_RUNNING_LEFT = 3601;
+    constexpr int MARIO_TANOOKI_JUMP_WALK_RIGHT = 3700;
+    constexpr int MARIO_TANOOKI_JUMP_WALK_LEFT = 3701;
+    constexpr int MARIO_TANOOKI_JUMP_RUN_RIGHT = 3800;
+    constexpr int MARIO_TANOOKI_JUMP_RUN_LEFT = 3801;
+    constexpr int MARIO_TANOOKI_SIT_RIGHT = 3900;
+    constexpr int MARIO_TANOOKI_SIT_LEFT = 3901;
+    constexpr int MARIO_TANOOKI_BRACE_RIGHT = 4000;
+    constexpr int MARIO_TANOOKI_BRACE_LEFT = 4001;
+
+    // HAMMER MARIO
+    constexpr int MARIO_HAMMER_IDLE_RIGHT = 4400;
+    constexpr int MARIO_HAMMER_IDLE_LEFT = 4401;
+    constexpr int MARIO_HAMMER_WALKING_RIGHT = 4500;
+    constexpr int MARIO_HAMMER_WALKING_LEFT = 4501;
+    constexpr int MARIO_HAMMER_RUNNING_RIGHT = 4600;
+    constexpr int MARIO_HAMMER_RUNNING_LEFT = 4601;
+    constexpr int MARIO_HAMMER_JUMP_WALK_RIGHT = 4700;
+    constexpr int MARIO_HAMMER_JUMP_WALK_LEFT = 4701;
+    constexpr int MARIO_HAMMER_JUMP_RUN_RIGHT = 4800;
+    constexpr int MARIO_HAMMER_JUMP_RUN_LEFT = 4801;
+    constexpr int MARIO_HAMMER_SIT_RIGHT = 4900;
+    constexpr int MARIO_HAMMER_SIT_LEFT = 4901;
+    constexpr int MARIO_HAMMER_BRACE_RIGHT = 5000;
+    constexpr int MARIO_HAMMER_BRACE_LEFT = 5001;
+
     // SMALL MARIO
     constexpr int MARIO_SMALL_IDLE_RIGHT = 1100;
     constexpr int MARIO_SMALL_IDLE_LEFT = 1102;
@@ -133,16 +182,16 @@ namespace ANIMATION
     constexpr int QUESTION_BLOCK = 3200;
     constexpr int QUESTION_BLOCK_DELETED = 3201;
 
-    // ITEMS
-    constexpr int MUSHROOM = 4000;
-    constexpr int FIRE_FLOWER = 4001;
-    constexpr int POISON_MUSHROOM = 4002;
-    constexpr int SUPER_STAR = 4003;
-    constexpr int FROG_SUIT = 4004;
-    constexpr int CASTLE_BRIDGE = 4005;
-    constexpr int AXE = 4006;
+    // ITEMS (5002-5008 để tránh clash với TANOOKI 4000-4001 và HAMMER 4400-5001)
+    constexpr int MUSHROOM = 5002;
+    constexpr int FIRE_FLOWER = 5003;
+    constexpr int POISON_MUSHROOM = 5004;
+    constexpr int SUPER_STAR = 5005;
+    constexpr int FROG_SUIT = 5006;
+    constexpr int CASTLE_BRIDGE = 5007;
+    constexpr int AXE = 5008;
 
-    // FIRE MARIO
+    // FIRE MARIO (2100-2301, safe)
     constexpr int MARIO_FIRE_IDLE_RIGHT = 2100;
     constexpr int MARIO_FIRE_IDLE_LEFT = 2101;
     constexpr int MARIO_FIRE_WALKING_RIGHT = 2200;
@@ -150,11 +199,11 @@ namespace ANIMATION
     constexpr int MARIO_FIRE_JUMP_WALK_RIGHT = 2300;
     constexpr int MARIO_FIRE_JUMP_WALK_LEFT = 2301;
 
-    // FROG MARIO
-    constexpr int MARIO_FROG_IDLE_RIGHT = 2400;
-    constexpr int MARIO_FROG_IDLE_LEFT = 2401;
-    constexpr int MARIO_FROG_WALKING_RIGHT = 2500;
-    constexpr int MARIO_FROG_WALKING_LEFT = 2501;
-    constexpr int MARIO_FROG_JUMP_RIGHT = 2600;
-    constexpr int MARIO_FROG_JUMP_LEFT = 2601;
+    // FROG MARIO (5400-5601, safe — tránh RACCOON 2400-3001)
+    constexpr int MARIO_FROG_IDLE_RIGHT = 5400;
+    constexpr int MARIO_FROG_IDLE_LEFT = 5401;
+    constexpr int MARIO_FROG_WALKING_RIGHT = 5500;
+    constexpr int MARIO_FROG_WALKING_LEFT = 5501;
+    constexpr int MARIO_FROG_JUMP_RIGHT = 5600;
+    constexpr int MARIO_FROG_JUMP_LEFT = 5601;
 }

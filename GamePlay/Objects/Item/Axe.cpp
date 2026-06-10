@@ -1,7 +1,7 @@
 #include "Axe.h"
 #include "AnimationManager.h"
 #include "PlayScene.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 void Axe::Render()
 {

@@ -1,6 +1,7 @@
 #include "SuperStar.h"
+#include "Mario.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "StaticObject.h"
 
 void SuperStar::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

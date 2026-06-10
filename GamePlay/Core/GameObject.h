@@ -7,7 +7,7 @@
 using namespace std;
 
 
-class CollisionEvent;
+struct CollisionEvent;
 typedef CollisionEvent* LPCOLLISIONEVENT;
 
 class GameObject
@@ -31,7 +31,7 @@ public:
     };
     GameObject(float x, float y, float z) : GameObject() { this->x = x; this->y = y; this->z = z; };
 
-    ~GameObject() {};
+    virtual ~GameObject() {};
 
     // Position
     void SetPosition(float x, float y, float z) { this->x = x; this->y = y; this->z = z; };

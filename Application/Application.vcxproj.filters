@@ -29,4 +29,18 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+<<<<<<< HEAD
 </Project>
+=======
+  <ItemGroup>
+    <Text Include="Objects\Goomba.txt" />
+    <Text Include="Objects\Koopa.txt" />
+    <Text Include="Objects\BuzzyBeetle.txt" />
+    <Text Include="Objects\Podoboo.txt" />
+    <Text Include="Objects\Spiny.txt" />
+    <Text Include="Objects\Lakitu.txt" />
+    <Text Include="Objects\Bowser.txt" />
+    <Text Include="Objects\BowserFire.txt" />
+  </ItemGroup>
+</Project>
+>>>>>>> b641a6d4978f51e41794dac50869383be3f171c7

@@ -1,6 +1,7 @@
 #include "FireFlower.h"
+#include "Mario.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 void FireFlower::Render()
 {

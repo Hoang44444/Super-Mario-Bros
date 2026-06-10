@@ -1,6 +1,7 @@
 #include "Mushroom.h"
+#include "Mario.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "StaticObject.h"
 
 void Mushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

@@ -3,8 +3,19 @@ Objects/brick_test.txt
 Objects/mario.txt
 Objects/bullet.txt
 Objects/background.txt
+<<<<<<< HEAD
 Objects/pipe.txt
 Objects/dynamic_platform.txt
+=======
+Objects/piranha_plant.txt
+Objects/blooper.txt
+Objects/bulletbill.txt
+Objects/cannon.txt
+Objects/hammerbro.txt
+Objects/hammer.txt
+Objects/bowser.txt
+Objects/bowserfireball.txt
+>>>>>>> b641a6d4978f51e41794dac50869383be3f171c7
 
 [MAP]
 5120 480

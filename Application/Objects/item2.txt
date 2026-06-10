@@ -1,0 +1,17 @@
+[SPRITES]
+# id     l    t    r    b    tex_id
+80001    300  98   316  114  2       # Coin (Đồng xu vàng - Nằm ngay phía trên cục Nấm 1-Up)
+80002    316  98   332  114  2       # Coin (Đồng xu vàng - Nằm ngay phía trên cục Nấm 1-Up)
+80003    331  98   347  114  2       # Coin (Đồng xu vàng - Nằm ngay phía trên cục Nấm 1-Up)
+80011    317  190  333  207  2       # 1-Up mushroom (Cục Nấm Xanh chuẩn của bạn)
+80021    318  208  335  225  2       # Lá Super Leaf (Nằm ngay phía dưới cục Nấm 1-Up)
+80031    317  224  334  241  2       # Bộ đồ Tanooki (Nằm dưới chiếc Lá)
+80041    335  224  352  241  2       # Bộ đồ Hammer (Nằm ngay cạnh bộ đồ Tanooki)
+
+[ANIMATIONS]
+# anim_id   sprite_id time
+8000        80001     100      80002     100	 80003     100 # ANIMATION::ITEM_COIN (8001)
+8001        80011     100      # ANIMATION::ITEM_1_UP_MUSHROOM (8001)
+8002        80021     100      # ANIMATION::ITEM_SUPER_LEAF (8002)
+8003        80031     100      # ANIMATION::ITEM_TANOOKI_SUIT (8003)
+8004        80041     100      # ANIMATION::ITEM_HAMMER_SUIT (8004)

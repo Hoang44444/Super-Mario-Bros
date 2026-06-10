@@ -109,6 +109,9 @@
       <UniqueIdentifier>{7ca4ff27-a279-4eea-bb4f-0d28e7710163}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
+    <Filter Include="Source Files\Enemy">
+      <UniqueIdentifier>{6c359dd6-200c-4282-835a-5b0fe09c8cf0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Scene.h">

@@ -227,7 +227,7 @@ void Mario::OnCollisionWithStaticObject(LPCOLLISIONEVENT e)
 void Mario::OnCollisionWithEnemy(LPCOLLISIONEVENT e)
 {
 	auto enemy = dynamic_cast<Enemy*>(e->obj);
-	enemy->OnMarioCollison(this);
+	enemy->OnMarioCollison(this, e->ny);
 }
 
 void Mario::OnCollisionWithItem(LPCOLLISIONEVENT e)

@@ -5,18 +5,24 @@ void Animation::Add(LPSPRITE sprite, DWORD time)
 {
     frames.push_back(new AnimationFrame(sprite, time));
 }
+
 void Animation::Render(float x, float y, float z)
+{
+    Render(x, y, z, false);
+}
+
+void Animation::Render(float x, float y, float z, bool flipX)
 {
     if (frames.size() == 0) return;
 
-    DWORD now = GetTickCount();
+    DWORD now = GetTickCount64();
 
     if (currentFrame == -1)
     {
         currentFrame = 0;
         lastFrameTime = now;
     }
-    else
+    else if (frames.size() > 1) 
     {
         DWORD t = frames[currentFrame]->GetTime();
         if (now - lastFrameTime > t)
@@ -38,6 +44,8 @@ void Animation::Render(float x, float y, float z)
     Renderer::GetInstance()->Draw(
         x, y, z,
         sprite->GetTexture(),
-        &rect
+        &rect,
+        1.0f,
+        flipX
     );
 }
