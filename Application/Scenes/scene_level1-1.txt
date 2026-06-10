@@ -3,29 +3,10 @@ Objects/brick.txt
 Objects/brick_fragment.txt
 Objects/brick_test.txt
 Objects/mario.txt
-Objects/state.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
-<<<<<<< HEAD
 Objects/question_block.txt
-=======
-Objects/item2.txt
-Objects/piranha_plant.txt
-Objects/blooper.txt
-Objects/bulletbill.txt
-Objects/cannon.txt
-Objects/hammerbro.txt
-Objects/hammer.txt
-Objects/Goomba.txt
-Objects/Koopa.txt
-Objects/BuzzyBeetle.txt
-Objects/Podoboo.txt
-Objects/Spiny.txt
-Objects/Lakitu.txt
-Objects/Bowser.txt
-Objects/BowserFire.txt
->>>>>>> b641a6d4978f51e41794dac50869383be3f171c7
 
 [MAP]
 3376 480
@@ -37,16 +18,13 @@ Objects/BowserFire.txt
 
 ########## MARIO ##########
 # type x y z
-<<<<<<< HEAD
 0 0 400 0.2
-=======
-0 0 420 0.2
-########ENEMY###########
 
-8 360 320 0.2
+########## ENEMY ##########
+#---- Goomba ----
 
 
->>>>>>> b641a6d4978f51e41794dac50869383be3f171c7
+
 
 ########## END SCENE POINT ##########
 # type x y z
@@ -455,9 +433,3 @@ Objects/BowserFire.txt
 1 3008 320 0.5
 1 3024 320 0.5
 1 3168 432 0.5
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> b641a6d4978f51e41794dac50869383be3f171c7
