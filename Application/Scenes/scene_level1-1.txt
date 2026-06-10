@@ -12,7 +12,6 @@ Objects/question_block.txt
 3376 480
 
 [OBJECTS]
-
 ########## BACKGROUND ##########
 # type x y z
 3 0 240 0.9
@@ -55,9 +54,8 @@ Objects/question_block.txt
 # Pipe 6
 4 2864 416 0.5 3100
 
-########## BRICK (type=8, breakable by big Mario) ##########
+########## BRICK ##########
 # type x y z
-
 # --- Group 1 (before Pipe 1) ---
 8 320 384 0.5 100
 8 352 384 0.5 100
@@ -117,7 +115,7 @@ Objects/question_block.txt
 10 367 383 0.5
 10 351 319 0.5
 10 1247 383 0.5
-10 1505 319 0.5
+10 1503 319 0.5
 10 1677 383 0.5
 10 1725 383 0.5
 10 1773 383 0.5
