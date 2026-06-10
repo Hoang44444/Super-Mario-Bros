@@ -146,16 +146,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="Objects\Bowser.txt" />
-    <Text Include="Objects\BowserFire.txt" />
-    <Text Include="Objects\BuzzyBeetle.txt" />
-    <Text Include="Objects\Goomba.txt" />
-    <Text Include="Objects\Koopa.txt" />
-    <Text Include="Objects\Lakitu.txt" />
-    <Text Include="Objects\Podoboo.txt" />
-    <Text Include="Objects\Spiny.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets" Condition="Exists('..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" />

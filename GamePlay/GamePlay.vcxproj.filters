@@ -61,6 +61,10 @@
       <UniqueIdentifier>{c4e21d13-72d4-4fe0-bf7a-9dd9d77121e1}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx</Extensions>
     </Filter>
+    <Filter Include="Objects\Enemy\Source Files">
+      <UniqueIdentifier>{c4e21d13-72d4-4fe0-bf7a-9dd9d77121e2}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
+    </Filter>
     <!-- Objects\Item -->
     <Filter Include="Objects\Item">
       <UniqueIdentifier>{a8419ccb-7851-4360-baf7-424a8cd73940}</UniqueIdentifier>
@@ -147,6 +151,51 @@
     <ClInclude Include="Objects\Enemy\Enemy.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Blooper.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bowser.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BowserFire.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BowserFireball.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletBill.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BuzzyBeetle.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cannon.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Goomba.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hammer.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HammerBro.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopa.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lakitu.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PiranhaPlant.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Podoboo.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Spiny.h">
+      <Filter>Objects\Enemy\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Objects\Item\Item.h">
       <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
@@ -203,6 +252,21 @@
     </ClInclude>
     <ClInclude Include="Objects\Static\CastleBridge.h">
       <Filter>Objects\Static\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HammerSuit.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom1Up.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperLeaf.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TanookiSuit.h">
+      <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +335,66 @@
     </ClCompile>
     <ClCompile Include="Objects\Static\CastleBridge.cpp">
       <Filter>Objects\Static\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blooper.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bowser.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BowserFire.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BowserFireball.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletBill.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BuzzyBeetle.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cannon.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Goomba.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hammer.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HammerBro.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Koopa.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lakitu.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PiranhaPlant.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Podoboo.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Spiny.cpp">
+      <Filter>Objects\Enemy\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Objects\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HammerSuit.cpp">
+      <Filter>Objects\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mushroom1Up.cpp">
+      <Filter>Objects\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperLeaf.cpp">
+      <Filter>Objects\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TanookiSuit.cpp">
+      <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
