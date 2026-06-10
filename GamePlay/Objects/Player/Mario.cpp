@@ -17,6 +17,12 @@ void Mario::MovementUpdate(DWORD dt) {
 	this->vy += this->gravity * dt;
 }
 
+void Mario::SetLevel(int level)
+{
+	this->level = level;
+	this->canShoot = (level == MARIO_LEVEL::FIRE);
+}
+
 void Mario::Jump() {
 	if (!isOnGround) return;
 	vy = -MARIO_PARAMS::JUMP_SPEED;
@@ -52,6 +58,12 @@ void Mario::ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects)
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (isInvincible)
+	{
+		if (invincibleTime > dt) invincibleTime -= dt;
+		else { invincibleTime = 0; isInvincible = false; }
+	}
+
 	ResolveOverlapWithPlatforms(coObjects);
 	Collision::GetInstance()->Process(this, dt, coObjects);
 	DebugOut(L"[MARIO] Update - Position: (%.2f, %.2f), Speed: (%.2f, %.2f)\n", x, y, vx, vy);
@@ -63,15 +75,21 @@ void Mario::SetState(int state)
 	switch (state)
 	{
 	case MARIO_STATE::WALKING_RIGHT:
-		vx = MARIO_PARAMS::WALK_SPEED;
 		direction = 1;
+		vx = (level == MARIO_LEVEL::FROG && isOnGround) ? 0 : MARIO_PARAMS::WALK_SPEED;
 		break;
 	case MARIO_STATE::WALKING_LEFT:
-		vx = -MARIO_PARAMS::WALK_SPEED;
 		direction = -1;
+		vx = (level == MARIO_LEVEL::FROG && isOnGround) ? 0 : -MARIO_PARAMS::WALK_SPEED;
 		break;
 	case MARIO_STATE::JUMP:
-		Jump();
+		if (level == MARIO_LEVEL::FROG && isOnGround)
+		{
+			vy = -MARIO_PARAMS::FROG_JUMP_SPEED;
+			vx = MARIO_PARAMS::FROG_JUMP_SPEED_X * direction;
+			isOnGround = false;
+		}
+		else Jump();
 		break;
 	case MARIO_STATE::IDLE:
 		vx = 0;
@@ -80,7 +98,7 @@ void Mario::SetState(int state)
 		vy = -MARIO_PARAMS::JUMP_SPEED;
 		break;
 	case MARIO_STATE::SHOOT:
-		ShootBullet();
+		if (canShoot) ShootBullet();
 		this->state = MARIO_STATE::IDLE;
 		break;
 	case MARIO_STATE::RUNNING_LEFT:
@@ -124,20 +142,46 @@ void Mario::MarioBigRender(int& aniId) {
 	}
 }
 
+void Mario::MarioFireRender(int& aniId)
+{
+	if (!isOnGround) {
+		aniId = (direction > 0) ? ANIMATION::MARIO_FIRE_JUMP_WALK_RIGHT : ANIMATION::MARIO_FIRE_JUMP_WALK_LEFT;
+	}
+	else if (vx != 0) {
+		aniId = (direction > 0) ? ANIMATION::MARIO_FIRE_WALKING_RIGHT : ANIMATION::MARIO_FIRE_WALKING_LEFT;
+	}
+	else {
+		aniId = (direction > 0) ? ANIMATION::MARIO_FIRE_IDLE_RIGHT : ANIMATION::MARIO_FIRE_IDLE_LEFT;
+	}
+}
+
+void Mario::MarioFrogRender(int& aniId)
+{
+	if (!isOnGround) {
+		aniId = (direction > 0) ? ANIMATION::MARIO_FROG_JUMP_RIGHT : ANIMATION::MARIO_FROG_JUMP_LEFT;
+	}
+	else if (vx != 0) {
+		aniId = (direction > 0) ? ANIMATION::MARIO_FROG_WALKING_RIGHT : ANIMATION::MARIO_FROG_WALKING_LEFT;
+	}
+	else {
+		aniId = (direction > 0) ? ANIMATION::MARIO_FROG_IDLE_RIGHT : ANIMATION::MARIO_FROG_IDLE_LEFT;
+	}
+}
+
 void Mario::Render()
 {
 	int aniId = -1;
 
 	if (state == MARIO_STATE::DIE)
 		aniId = ANIMATION::MARIO_DIE;
+	else if (level == MARIO_LEVEL::FIRE)
+		MarioFireRender(aniId);
+	else if (level == MARIO_LEVEL::FROG)
+		MarioFrogRender(aniId);
 	else if (level == MARIO_LEVEL::BIG)
-	{
 		MarioBigRender(aniId);
-	}
 	else if (level == MARIO_LEVEL::SMALL)
-	{
 		MarioSmallRender(aniId);
-	}
 
 	if (aniId != -1)
 	{

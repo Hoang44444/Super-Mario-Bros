@@ -155,6 +155,13 @@
     <ClInclude Include="Objects\Invisible\InvisibleObject.h" />
     <ClInclude Include="Objects\Invisible\DeathZone.h" />
     <ClInclude Include="Objects\Invisible\SwitchScenePoint.h" />
+    <ClInclude Include="Objects\Item\Mushroom.h" />
+    <ClInclude Include="Objects\Item\FireFlower.h" />
+    <ClInclude Include="Objects\Item\PoisonMushroom.h" />
+    <ClInclude Include="Objects\Item\SuperStar.h" />
+    <ClInclude Include="Objects\Item\FrogSuit.h" />
+    <ClInclude Include="Objects\Item\Axe.h" />
+    <ClInclude Include="Objects\Static\CastleBridge.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -183,6 +190,13 @@
     <ClCompile Include="Objects\Dynamic\DynamicPlatform.cpp" />
     <ClCompile Include="Objects\Invisible\DeathZone.cpp" />
     <ClCompile Include="Objects\Invisible\SwitchScenePoint.cpp" />
+    <ClCompile Include="Objects\Item\Mushroom.cpp" />
+    <ClCompile Include="Objects\Item\FireFlower.cpp" />
+    <ClCompile Include="Objects\Item\PoisonMushroom.cpp" />
+    <ClCompile Include="Objects\Item\SuperStar.cpp" />
+    <ClCompile Include="Objects\Item\FrogSuit.cpp" />
+    <ClCompile Include="Objects\Item\Axe.cpp" />
+    <ClCompile Include="Objects\Static\CastleBridge.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

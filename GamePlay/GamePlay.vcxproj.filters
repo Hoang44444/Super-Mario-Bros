@@ -69,6 +69,10 @@
       <UniqueIdentifier>{a8419ccb-7851-4360-baf7-424a8cd73941}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx</Extensions>
     </Filter>
+    <Filter Include="Objects\Item\Source Files">
+      <UniqueIdentifier>{a8419ccb-7851-4360-baf7-424a8cd73942}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
+    </Filter>
     <!-- Objects\Static -->
     <Filter Include="Objects\Static">
       <UniqueIdentifier>{61aba161-a8d6-4401-ba79-29782b13c77e}</UniqueIdentifier>
@@ -176,6 +180,27 @@
     <ClInclude Include="Objects\Static\QuestionBlock.h">
       <Filter>Objects\Static\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\Item\Mushroom.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Item\FireFlower.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Item\PoisonMushroom.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Item\SuperStar.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Item\FrogSuit.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Item\Axe.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Static\CastleBridge.h">
+      <Filter>Objects\Static\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Collision.cpp">
@@ -221,6 +246,27 @@
       <Filter>Objects\Invisible\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Static\QuestionBlock.cpp">
+      <Filter>Objects\Static\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Item\Mushroom.cpp">
+      <Filter>Objects\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Item\FireFlower.cpp">
+      <Filter>Objects\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Item\PoisonMushroom.cpp">
+      <Filter>Objects\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Item\SuperStar.cpp">
+      <Filter>Objects\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Item\FrogSuit.cpp">
+      <Filter>Objects\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Item\Axe.cpp">
+      <Filter>Objects\Item\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Static\CastleBridge.cpp">
       <Filter>Objects\Static\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

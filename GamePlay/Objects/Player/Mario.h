@@ -7,6 +7,8 @@ namespace MARIO_LEVEL
 {
 	constexpr int SMALL = 1;
 	constexpr int BIG   = 2;
+	constexpr int FIRE  = 3;
+	constexpr int FROG  = 4;
 }
 
 namespace MARIO_STATE
@@ -31,11 +33,14 @@ namespace MARIO_STATE
 
 namespace MARIO_PARAMS
 {
-	constexpr float GRAVITY    = 0.002f;
-	constexpr float ACCEL_X    = 0.0f;
-	constexpr float RUN_SPEED  = 0.15f;
-	constexpr float WALK_SPEED = 0.1f;
-	constexpr float JUMP_SPEED = 0.5f;
+	constexpr float GRAVITY         = 0.002f;
+	constexpr float ACCEL_X         = 0.0f;
+	constexpr float RUN_SPEED       = 0.15f;
+	constexpr float WALK_SPEED      = 0.1f;
+	constexpr float JUMP_SPEED      = 0.5f;
+	constexpr float FROG_JUMP_SPEED   = 0.7f;
+	constexpr float FROG_JUMP_SPEED_X = 0.12f;
+	constexpr DWORD STAR_POWER_TIME = 7000;
 }
 
 class Mario : public GameObject
@@ -48,6 +53,9 @@ private:
 	void ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects);
 
 	bool isOnGround = false;
+	bool canShoot = false;
+	bool isInvincible = false;
+	DWORD invincibleTime = 0;
 public:
 	Mario(float x, float y, float z) : GameObject(x, y, z) {
 		level = MARIO_LEVEL::BIG;
@@ -81,10 +89,17 @@ public:
 	// RENDER WITH MARIO LEVEL
 	void MarioSmallRender(int& aniId);
 	void MarioBigRender(int& andId);
+	void MarioFireRender(int& aniId);
+	void MarioFrogRender(int& aniId);
 
 	// GETTERS AND SETTERS
 	void SetSpeedY(float vy) { this->vy = vy; }
 	void SetSpeedX(float vx) { this->vx = vx; }
 	int GetLevel() { return level; }
+	void SetLevel(int level);
+	void SetInvincible(DWORD duration) { isInvincible = true; invincibleTime = duration; }
+	bool IsInvincible() { return isInvincible; }
+	bool CanShoot() { return canShoot; }
+	void SetCanShoot(bool v) { canShoot = v; }
 };
 

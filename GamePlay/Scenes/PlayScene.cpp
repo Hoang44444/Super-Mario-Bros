@@ -21,6 +21,13 @@
 #include "Brick.h"
 #include "QuestionBlock.h"
 #include "DynamicPlatform.h"
+#include "Mushroom.h"
+#include "FireFlower.h"
+#include "PoisonMushroom.h"
+#include "SuperStar.h"
+#include "FrogSuit.h"
+#include "CastleBridge.h"
+#include "Axe.h"
 using namespace std;
 
 void PlayScene::Load()
@@ -231,18 +238,52 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Background(x, y, z);
 		break;
 	case OBJECT::PIPE:
-		obj = new Pipe(x, y, z);
+	{
+		int aniId = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : ANIMATION::PIPE_OVERWORLD;
+		obj = new Pipe(x, y, z, aniId);
 		break;
+	}
 	case OBJECT::SWITCH_SCENE_POINT:
 		obj = new SwitchScenePoint(x, y, z);
 		break;
 
 	case OBJECT::BRICK:
-		obj = new Brick(x, y, z);
+	{
+		int aniId = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : ANIMATION::BRICK_OVERWORLD;
+		obj = new Brick(x, y, z, aniId);
 		break;
+	}
 
 	case OBJECT::QUESTION_BLOCK:
 		obj = new QuestionBlock(x, y, z);
+		break;
+
+	case OBJECT::MUSHROOM:
+		obj = new Mushroom(x, y, z);
+		break;
+
+	case OBJECT::FIRE_FLOWER:
+		obj = new FireFlower(x, y, z);
+		break;
+
+	case OBJECT::POISON_MUSHROOM:
+		obj = new PoisonMushroom(x, y, z);
+		break;
+
+	case OBJECT::SUPER_STAR:
+		obj = new SuperStar(x, y, z);
+		break;
+
+	case OBJECT::FROG_SUIT:
+		obj = new FrogSuit(x, y, z);
+		break;
+
+	case OBJECT::CASTLE_BRIDGE:
+		obj = new CastleBridge(x, y, z);
+		break;
+
+	case OBJECT::AXE:
+		obj = new Axe(x, y, z);
 		break;
 
 	case OBJECT::DYNAMIC_PLATFORM:
@@ -280,8 +321,31 @@ void PlayScene::_ParseSection_MAP(string line)
 	Camera::GetInstance()->SetMapSize(width, height);
 }
 
+void PlayScene::StartCastleEndSequence()
+{
+	if (castleEndSequenceStarted) return;
+	castleEndSequenceStarted = true;
+	castleEndTimer = 2600;
+
+	DWORD bridgeDelay = 0;
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		CastleBridge* bridge = dynamic_cast<CastleBridge*>(objects[i]);
+		if (bridge != nullptr) { bridge->Collapse(bridgeDelay); bridgeDelay += 120; }
+	}
+
+	if (player != nullptr)
+		player->SetState(MARIO_STATE::WALKING_RIGHT);
+}
+
 void PlayScene::Update(DWORD dt)
 {
+	if (castleEndSequenceStarted)
+	{
+		if (castleEndTimer > dt) castleEndTimer -= dt;
+		else GameManager::GetInstance()->InitiateSwitchScene(SCENE::END);
+	}
+
 	vector<LPGAMEOBJECT> coObjects;
 	for (auto obj : objects) coObjects.push_back(obj);
 

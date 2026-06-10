@@ -7,7 +7,7 @@ void Pipe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 }
 
 void Pipe::Render() {
-	AnimationManager::GetInstance()->Get(ANIMATION::PIPE)->Render(x, y, z);
+	AnimationManager::GetInstance()->Get(animationId)->Render(x, y, z);
 }
 
 void Pipe::GetBoundingBox(float& l, float& t, float& r, float& b) {

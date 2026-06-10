@@ -14,7 +14,7 @@ public:
 	virtual ~BrickTest() {};
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr) {};
 	virtual void Render() {
-		AnimationManager::GetInstance()->Get(ANIMATION::BRICK_TEST)->Render(x, y, z);
+		AnimationManager::GetInstance()->Get(ANIMATION::BRICK_UNDERWORLD)->Render(x, y, z);
 	};
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) override{
 		l = x;

@@ -6,7 +6,7 @@
 void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {}
 
 void Brick::Render() {
-	AnimationManager::GetInstance()->Get(ANIMATION::BRICK)->Render(x, y, z);
+	AnimationManager::GetInstance()->Get(animationId)->Render(x, y, z);
 }
 
 void Brick::GetBoundingBox(float& l, float& t, float& r, float& b) {
@@ -24,14 +24,21 @@ void Brick::OnMarioCollision(Mario* mario, LPCOLLISIONEVENT e) {
 }
 
 void Brick::Break() {
-	// Create 4 fragments
 	float fragmentVx[] = { -0.1f, 0.1f, -0.1f, 0.1f };
 	float fragmentVy[] = { -0.2f, -0.2f, -0.1f, -0.1f };
-	int aniIds[] = { ANIMATION::BRICK_FRAGMENT_UP_LEFT, ANIMATION::BRICK_FRAGMENT_UP_RIGHT, ANIMATION::BRICK_FRAGMENT_BOTTOM_LEFT, ANIMATION::BRICK_FRAGMENT_BOTTOM_RIGHT };
+
+	bool isUnderworld = (animationId == ANIMATION::BRICK_UNDERWORLD);
+	int aniIds[] = {
+		isUnderworld ? ANIMATION::BRICK_FRAGMENT_UNDERWORLD_UP_LEFT     : ANIMATION::BRICK_FRAGMENT_OVERWORLD_UP_LEFT,
+		isUnderworld ? ANIMATION::BRICK_FRAGMENT_UNDERWORLD_UP_RIGHT    : ANIMATION::BRICK_FRAGMENT_OVERWORLD_UP_RIGHT,
+		isUnderworld ? ANIMATION::BRICK_FRAGMENT_UNDERWORLD_BOTTOM_LEFT : ANIMATION::BRICK_FRAGMENT_OVERWORLD_BOTTOM_LEFT,
+		isUnderworld ? ANIMATION::BRICK_FRAGMENT_UNDERWORLD_BOTTOM_RIGHT: ANIMATION::BRICK_FRAGMENT_OVERWORLD_BOTTOM_RIGHT,
+	};
+
 	for (int i = 0; i < 4; i++) {
 		float fragmentX = x + (i % 2) * (BRICK_BBOX_WIDTH / 2);
 		float fragmentY = y + (i / 2) * (BRICK_BBOX_HEIGHT / 2);
 		scene->AddObject(new BrickFragment(fragmentX, fragmentY, this->z, fragmentVx[i], fragmentVy[i], aniIds[i]));
 	}
-	this->Delete(); // Remove the brick after breaking
+	this->Delete();
 }

@@ -50,6 +50,13 @@ namespace OBJECT
 	constexpr int BRICK = 8;
 	constexpr int DEATH_ZONE = 9;
 	constexpr int QUESTION_BLOCK = 10;
+	constexpr int MUSHROOM = 11;
+	constexpr int FIRE_FLOWER = 12;
+	constexpr int POISON_MUSHROOM = 13;
+	constexpr int SUPER_STAR = 14;
+	constexpr int FROG_SUIT = 15;
+	constexpr int CASTLE_BRIDGE = 16;
+	constexpr int AXE = 17;
 }
 
 namespace TEXTURE
@@ -64,13 +71,17 @@ namespace TEXTURE
 
 namespace ANIMATION
 {
-    constexpr int BRICK = 100;
-    constexpr int BRICK_TEST = 101;
+    constexpr int BRICK_OVERWORLD = 100;
+    constexpr int BRICK_UNDERWORLD = 101;
     constexpr int DYNAMIC_PLATFORM = 102;
-    constexpr int BRICK_FRAGMENT_UP_LEFT = 110;
-    constexpr int BRICK_FRAGMENT_UP_RIGHT = 111;
-    constexpr int BRICK_FRAGMENT_BOTTOM_LEFT = 112;
-    constexpr int BRICK_FRAGMENT_BOTTOM_RIGHT = 113;
+    constexpr int BRICK_FRAGMENT_OVERWORLD_UP_LEFT = 110;
+    constexpr int BRICK_FRAGMENT_OVERWORLD_UP_RIGHT = 111;
+    constexpr int BRICK_FRAGMENT_OVERWORLD_BOTTOM_LEFT = 112;
+    constexpr int BRICK_FRAGMENT_OVERWORLD_BOTTOM_RIGHT = 113;
+    constexpr int BRICK_FRAGMENT_UNDERWORLD_UP_LEFT = 120;
+    constexpr int BRICK_FRAGMENT_UNDERWORLD_UP_RIGHT = 121;
+    constexpr int BRICK_FRAGMENT_UNDERWORLD_BOTTOM_LEFT = 122;
+    constexpr int BRICK_FRAGMENT_UNDERWORLD_BOTTOM_RIGHT = 123;
     constexpr int BULLET = 200;
     constexpr int CRACKED_BRICK = 300;
     
@@ -114,9 +125,36 @@ namespace ANIMATION
     constexpr int MARIO_DIE = 999;
 
     // PIPE
-    constexpr int PIPE = 3100;
+    constexpr int PIPE_OVERWORLD = 3100;
+    constexpr int PIPE_UNDERWORLD = 3101;
+    constexpr int PIPE_CASTLE = 3102;
 
     // QUESTION BLOCK
     constexpr int QUESTION_BLOCK = 3200;
     constexpr int QUESTION_BLOCK_DELETED = 3201;
+
+    // ITEMS
+    constexpr int MUSHROOM = 4000;
+    constexpr int FIRE_FLOWER = 4001;
+    constexpr int POISON_MUSHROOM = 4002;
+    constexpr int SUPER_STAR = 4003;
+    constexpr int FROG_SUIT = 4004;
+    constexpr int CASTLE_BRIDGE = 4005;
+    constexpr int AXE = 4006;
+
+    // FIRE MARIO
+    constexpr int MARIO_FIRE_IDLE_RIGHT = 2100;
+    constexpr int MARIO_FIRE_IDLE_LEFT = 2101;
+    constexpr int MARIO_FIRE_WALKING_RIGHT = 2200;
+    constexpr int MARIO_FIRE_WALKING_LEFT = 2201;
+    constexpr int MARIO_FIRE_JUMP_WALK_RIGHT = 2300;
+    constexpr int MARIO_FIRE_JUMP_WALK_LEFT = 2301;
+
+    // FROG MARIO
+    constexpr int MARIO_FROG_IDLE_RIGHT = 2400;
+    constexpr int MARIO_FROG_IDLE_LEFT = 2401;
+    constexpr int MARIO_FROG_WALKING_RIGHT = 2500;
+    constexpr int MARIO_FROG_WALKING_LEFT = 2501;
+    constexpr int MARIO_FROG_JUMP_RIGHT = 2600;
+    constexpr int MARIO_FROG_JUMP_LEFT = 2601;
 }
