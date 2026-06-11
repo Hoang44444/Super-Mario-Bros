@@ -27,6 +27,28 @@
 #include "FrogSuit.h"
 #include "CastleBridge.h"
 #include "Axe.h"
+// Items
+#include "Coin.h"
+#include "Mushroom1Up.h"
+#include "SuperLeaf.h"
+#include "HammerSuit.h"
+#include "TanookiSuit.h"
+#include "Hammer.h"
+// Enemies
+#include "Goomba.h"
+#include "Koopa.h"
+#include "BuzzyBeetle.h"
+#include "HammerBro.h"
+#include "Blooper.h"
+#include "Bowser.h"
+#include "BowserFire.h"
+#include "BowserFireball.h"
+#include "BulletBill.h"
+#include "Cannon.h"
+#include "Lakitu.h"
+#include "Podoboo.h"
+#include "Spiny.h"
+#include "PiranhaPlant.h"
 using namespace std;
 
 void PlayScene::Load()
@@ -314,6 +336,88 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		obj = new DynamicPlatform(x, y, z, objectType, initialDirection);
 		break;
 	}
+
+	// ---- ITEMS ----
+	case OBJECT::COIN:
+		obj = new Coin(x, y, z);
+		break;
+
+	case OBJECT::MUSHROOM_1UP:
+		obj = new Mushroom1Up(x, y, z);
+		break;
+
+	case OBJECT::SUPER_LEAF:
+		obj = new SuperLeaf(x, y, z);
+		break;
+
+	case OBJECT::HAMMER_SUIT:
+		obj = new HammerSuit(x, y, z);
+		break;
+
+	case OBJECT::TANOOKI_SUIT:
+		obj = new TanookiSuit(x, y, z);
+		break;
+
+	case OBJECT::HAMMER:
+		obj = new Hammer(x, y, z);
+		break;
+
+	// ---- ENEMIES ----
+	case OBJECT::GOOMBA:
+		obj = new Goomba(x, y, z);
+		break;
+
+	case OBJECT::KOOPA:
+		obj = new Koopa(x, y, z);
+		break;
+
+	case OBJECT::BUZZY_BEETLE:
+		obj = new BuzzyBeetle(x, y, z);
+		break;
+
+	case OBJECT::HAMMER_BRO:
+		obj = new HammerBro(x, y, z);
+		break;
+
+	case OBJECT::BLOOPER:
+		obj = new Blooper(x, y, z);
+		break;
+
+	case OBJECT::BOWSER:
+		obj = new Bowser(x, y, z);
+		break;
+
+	case OBJECT::BOWSER_FIRE:
+		obj = new BowserFire(x, y, z);
+		break;
+
+	case OBJECT::BOWSER_FIREBALL:
+		obj = new BowserFireball(x, y, z);
+		break;
+
+	case OBJECT::BULLET_BILL:
+		obj = new BulletBill(x, y, z);
+		break;
+
+	case OBJECT::CANNON:
+		obj = new Cannon(x, y, z);
+		break;
+
+	case OBJECT::LAKITU:
+		obj = new Lakitu(x, y, z);
+		break;
+
+	case OBJECT::PODOBOO:
+		obj = new Podoboo(x, y, z);
+		break;
+
+	case OBJECT::SPINY:
+		obj = new Spiny(x, y, z);
+		break;
+
+	case OBJECT::PIRANHA_PLANT:
+		obj = new PiranhaPlant(x, y, z);
+		break;
 	}
 
 	if (obj != NULL) {

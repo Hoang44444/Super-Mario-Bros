@@ -57,6 +57,30 @@ namespace OBJECT
 	constexpr int FROG_SUIT = 15;
 	constexpr int CASTLE_BRIDGE = 16;
 	constexpr int AXE = 17;
+
+	// ---- ITEMS ----
+	constexpr int COIN = 18;
+	constexpr int MUSHROOM_1UP = 19;
+	constexpr int SUPER_LEAF = 20;
+	constexpr int HAMMER_SUIT = 21;
+	constexpr int TANOOKI_SUIT = 22;
+	constexpr int HAMMER = 23;
+
+	// ---- ENEMIES ----
+	constexpr int GOOMBA = 30;
+	constexpr int KOOPA = 31;
+	constexpr int BUZZY_BEETLE = 32;
+	constexpr int HAMMER_BRO = 33;
+	constexpr int BLOOPER = 34;
+	constexpr int BOWSER = 35;
+	constexpr int BOWSER_FIRE = 36;
+	constexpr int BOWSER_FIREBALL = 37;
+	constexpr int BULLET_BILL = 38;
+	constexpr int CANNON = 39;
+	constexpr int LAKITU = 40;
+	constexpr int PODOBOO = 41;
+	constexpr int SPINY = 42;
+	constexpr int PIRANHA_PLANT = 43;
 }
 
 namespace TEXTURE
