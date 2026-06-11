@@ -7,6 +7,10 @@ Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
 Objects/question_block.txt
+Objects/Koopa.txt
+
+#### Enemy
+Objects/Goomba.txt
 
 [MAP]
 3376 480
@@ -18,13 +22,27 @@ Objects/question_block.txt
 
 ########## MARIO ##########
 # type x y z
-0 0 400 0.2
+0 1300 400 0.2
 
 ########## ENEMY ##########
-#---- Goomba ----
+# type x y z
+#---- Goomba (30)----
+30 430 428 0.5
+30 720 428 0.5
+30 890 428 0.5
+30 826 428 0.5
+30 1247 367 0.5
+30 1328 300 0.5 
+30 1580 428 0.5
+30 1620 428 0.5
+30 1660 428 0.5
+30 1700 428 0.5
+30 2630 428 0.5 
+30 2850 428 0.5 
 
 
-
+#---- Koopa (31)----
+31 1530 406 0.5
 
 ########## END SCENE POINT ##########
 # type x y z

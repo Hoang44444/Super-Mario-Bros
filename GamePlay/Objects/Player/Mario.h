@@ -101,5 +101,13 @@ public:
 	bool IsInvincible() { return isInvincible; }
 	bool CanShoot() { return canShoot; }
 	void SetCanShoot(bool v) { canShoot = v; }
+	void AddCoin(int amount = 1) { coin += amount; }
+	void AddLife(int amount = 1) { life += amount; }
+	int GetCoin() { return coin; }
+	int GetLife() { return life; }
+
+private:
+	int coin = 0;
+	int life  = 3;
 };
 

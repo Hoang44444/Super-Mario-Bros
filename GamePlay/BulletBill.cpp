@@ -39,7 +39,7 @@ void BulletBill::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = y + BULLET_BILL_HEIGHT;
 }
 
-void BulletBill::OnMarioCollison(Mario* mario)
+void BulletBill::OnMarioCollison(Mario* mario, float ny)
 {
 	mario->SetState(MARIO_STATE_DIE);
 }

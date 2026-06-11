@@ -5,6 +5,11 @@ Objects/background.txt
 Objects/question_block.txt
 Objects/dynamic_platform.txt
 
+#### Enemy
+Objects/Goomba.txt
+Objects/Koopa.txt
+Objects/bulletbill.txt
+
 [MAP]
 2624 240
 

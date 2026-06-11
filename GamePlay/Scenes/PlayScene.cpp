@@ -28,27 +28,24 @@
 #include "CastleBridge.h"
 #include "Axe.h"
 // Items
-#include "Coin.h"
-#include "Mushroom1Up.h"
-#include "SuperLeaf.h"
-#include "HammerSuit.h"
-#include "TanookiSuit.h"
-#include "Hammer.h"
+#include "../Coin.h"
+#include "../Mushroom1Up.h"
+#include "../SuperLeaf.h"
+#include "../HammerSuit.h"
+#include "../TanookiSuit.h"
 // Enemies
-#include "Goomba.h"
-#include "Koopa.h"
-#include "BuzzyBeetle.h"
-#include "HammerBro.h"
-#include "Blooper.h"
-#include "Bowser.h"
-#include "BowserFire.h"
-#include "BowserFireball.h"
-#include "BulletBill.h"
-#include "Cannon.h"
-#include "Lakitu.h"
-#include "Podoboo.h"
-#include "Spiny.h"
-#include "PiranhaPlant.h"
+#include "../Goomba.h"
+#include "../Koopa.h"
+#include "../BuzzyBeetle.h"
+#include "../HammerBro.h"
+#include "../Blooper.h"
+#include "../Bowser.h"
+#include "../BulletBill.h"
+#include "../Cannon.h"
+#include "../Lakitu.h"
+#include "../Podoboo.h"
+#include "../Spiny.h"
+#include "../PiranhaPlant.h"
 using namespace std;
 
 void PlayScene::Load()
@@ -358,10 +355,6 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		obj = new TanookiSuit(x, y, z);
 		break;
 
-	case OBJECT::HAMMER:
-		obj = new Hammer(x, y, z);
-		break;
-
 	// ---- ENEMIES ----
 	case OBJECT::GOOMBA:
 		obj = new Goomba(x, y, z);
@@ -387,21 +380,20 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Bowser(x, y, z);
 		break;
 
-	case OBJECT::BOWSER_FIRE:
-		obj = new BowserFire(x, y, z);
-		break;
-
-	case OBJECT::BOWSER_FIREBALL:
-		obj = new BowserFireball(x, y, z);
-		break;
-
 	case OBJECT::BULLET_BILL:
+	{
+		int dir = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : -1;
 		obj = new BulletBill(x, y, z);
+		if (obj) static_cast<BulletBill*>(obj)->SetMovement(dir);
 		break;
+	}
 
 	case OBJECT::CANNON:
-		obj = new Cannon(x, y, z);
+	{
+		int dir = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : 1;
+		obj = new Cannon(x, y, z, dir);
 		break;
+	}
 
 	case OBJECT::LAKITU:
 		obj = new Lakitu(x, y, z);

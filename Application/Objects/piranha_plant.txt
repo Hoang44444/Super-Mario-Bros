@@ -1,7 +1,7 @@
 [SPRITES]
 # id   left  top  right  bottom  tex_id
-32001  389     29    407     53      8
-32002  418     28    436     52      8
+32001  389     29    407     53      11
+32002  418     28    436     52      11
 [ANIMATIONS]
 # id   sprite1_id  time1  sprite2_id  time2  
 3200   32001       100    32002       100

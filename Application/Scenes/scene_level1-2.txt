@@ -8,6 +8,11 @@ Objects/dynamic_platform.txt
 Objects/pipe.txt
 Objects/question_block.txt
 
+#### Enemy
+Objects/Goomba.txt
+Objects/Koopa.txt
+Objects/piranha_plant.txt
+
 [MAP]
 2810 720
 

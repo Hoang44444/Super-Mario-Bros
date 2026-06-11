@@ -91,7 +91,7 @@ namespace TEXTURE
     constexpr int MENUBACKGROUND = 3;
     constexpr int LEVEL1_1 = 4;
     constexpr int BBOX = -100;
-    constexpr int ENEMIES = 8;
+    constexpr int ENEMIES = 11;
 }
 
 namespace ANIMATION
@@ -230,4 +230,76 @@ namespace ANIMATION
     constexpr int MARIO_FROG_WALKING_LEFT = 5501;
     constexpr int MARIO_FROG_JUMP_RIGHT = 5600;
     constexpr int MARIO_FROG_JUMP_LEFT = 5601;
+
+    // ============================================================
+    //  CÁC ID DƯỚI ĐÂY PHẢI KHỚP VỚI FILE .txt TRONG Application/Objects/
+    //  (đừng đổi số nếu không sửa luôn file .txt tương ứng)
+    // ============================================================
+
+    // ---- ITEMS ---- (item2.txt)
+    constexpr int ITEM_COIN          = 8000;
+    constexpr int ITEM_MUSHROOM_1UP  = 8001;
+    constexpr int ITEM_SUPER_LEAF    = 8002;
+    constexpr int ITEM_TANOOKI_SUIT  = 8003;
+    constexpr int ITEM_HAMMER_SUIT   = 8004;
+
+    // ---- ENEMIES ----
+
+    // Goomba (Goomba.txt: 4000-4001)
+    constexpr int GOOMBA_WALK        = 4000;
+    constexpr int GOOMBA_DIE         = 4001;
+
+    // Koopa (Koopa.txt: 5000-5003)
+    constexpr int KOOPA_WALK_LEFT    = 5000;
+    constexpr int KOOPA_WALK_RIGHT   = 5001;
+    constexpr int KOOPA_SHELL        = 5002;
+    constexpr int KOOPA_SPINNING     = 5003;
+
+    // BuzzyBeetle (BuzzyBeetle.txt: 6000-6003)
+    constexpr int BUZZY_WALK_LEFT    = 6000;
+    constexpr int BUZZY_WALK_RIGHT   = 6001;
+    constexpr int BUZZY_SHELL        = 6002;
+    constexpr int BUZZY_SPINNING     = 6003;
+
+    // Podoboo (Podoboo.txt: 7000-7001)
+    constexpr int PODOBOO_UP         = 7000;
+    constexpr int PODOBOO_DOWN       = 7001;
+
+    // Spiny (Spiny.txt: 8000-8002)  *** trùng ID với ITEMS ở trên, xem ghi chú ***
+    constexpr int SPINY_WALK_LEFT    = 8000;
+    constexpr int SPINY_WALK_RIGHT   = 8001;
+    constexpr int SPINY_EGG_SPIN     = 8002;
+
+    // Lakitu (Lakitu.txt: 9000-9001)
+    constexpr int LAKITU_FLY_LEFT    = 9000;
+    constexpr int LAKITU_FLY_RIGHT   = 9001;
+
+    // PiranhaPlant (piranha_plant.txt: 3200)
+    constexpr int PIRANHA_PLANT_IDLE = 3200;
+
+    // Blooper (blooper.txt: 3300-3303)
+    constexpr int BLOOPER_IDLE       = 3300;
+    constexpr int BLOOPER_RISING     = 3301;
+    constexpr int BLOOPER_SINKING    = 3302;
+
+    // BulletBill (bulletbill.txt: 3400)
+    constexpr int BULLET_BILL        = 3400;
+
+    // HammerBro (hammerbro.txt: 3500-3501) + Hammer projectile (hammer.txt: 3550)
+    constexpr int HAMMER_BRO_WALK    = 3500;
+    constexpr int HAMMER             = 3550;
+
+    // Bowser (bowser.txt: 3600-3602)
+    constexpr int BOWSER_WALK_RIGHT  = 3600;
+    constexpr int BOWSER_WALK_LEFT   = 3601;
+    constexpr int BOWSER_ATTACK_RIGHT = 3602;
+    constexpr int BOWSER_ATTACK_LEFT  = 3602;
+    constexpr int BOWSER_FIRE_RIGHT  = 3602;
+    constexpr int BOWSER_FIRE_LEFT   = 3602;
+
+    // BowserFire projectile (BowserFire.txt: 3650)
+    constexpr int BOWSER_FIRE        = 3650;
+
+    // Cannon (cannon.txt: 3700)
+    constexpr int CANNON             = 3700;
 }

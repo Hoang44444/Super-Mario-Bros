@@ -69,7 +69,7 @@ void PiranhaPlant::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = y + PIRANHA_PLANT_HEIGHT;
 }
 
-void PiranhaPlant::OnMarioCollison(Mario* mario)
+void PiranhaPlant::OnMarioCollison(Mario* mario, float ny)
 {
 	if (state != PIRANHA_STATE_HIDING)
 	{
