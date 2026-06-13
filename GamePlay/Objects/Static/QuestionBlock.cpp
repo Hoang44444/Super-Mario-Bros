@@ -11,7 +11,7 @@ void QuestionBlock::Render() {
 
 void QuestionBlock::GetBoundingBox(float& l, float& t, float& r, float& b) {
 	l = x;
-	t = y + 1;
+	t = y;
 	r = x + QUESTION_BLOCK_BBOX_SIZE;
 	b = y + QUESTION_BLOCK_BBOX_SIZE;
 }
