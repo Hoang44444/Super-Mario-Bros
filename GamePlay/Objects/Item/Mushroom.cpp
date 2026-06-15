@@ -6,6 +6,7 @@
 
 void Mushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (UpdateEmerge(dt)) return;
 	vy += MUSHROOM_GRAVITY * dt;
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }

@@ -21,4 +21,7 @@ public:
 	virtual void OnNoCollision(DWORD dt) override;
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e) override;
 	virtual void OnMarioCollision(Mario* mario) override;
+
+protected:
+	void OnEmergeComplete() override { vx = POISON_MUSHROOM_SPEED * direction; }
 };

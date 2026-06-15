@@ -4,4 +4,4 @@
 32002  418     28    436     52      11
 [ANIMATIONS]
 # id   sprite1_id  time1  sprite2_id  time2  
-3200   32001       100    32002       100
+3250   32001       100    32002       100

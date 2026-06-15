@@ -7,6 +7,7 @@ Objects/brick_fragment.txt
 Objects/dynamic_platform.txt
 Objects/pipe.txt
 Objects/question_block.txt
+Objects/item2.txt
 
 #### Enemy
 Objects/Goomba.txt
@@ -23,9 +24,34 @@ Objects/piranha_plant.txt
 
 ########## MARIO ##########
 # type x y z
-0 16 600 0.2
+0 1650 600 0.2
 
-########## BRICK BREAK ##########
+########## ENEMY ##########
+#---- Goomba(30) ----#
+30 236 660 0.5
+30 271 645 0.5
+30 481 660 0.5
+30 979 660 0.5
+30 1027 660 0.5
+30 1148 533 0.5
+30 1226 567 0.5
+30 1267 567 0.5
+30 1536 660 0.5
+30 1584 660 0.5
+30 1632 660 0.5
+
+#---- Koopa Troopa (31) ----
+31 800 660 0.5
+31 750 660 0.5
+31 931 660 0.5
+31 2340 581 0.5
+
+#---- PIRANHA PLANT (43) ----
+43 1655 617 0.7
+43 1750 602 0.7
+43 1847 633 0.7
+ 
+########## BRICK  ##########
 # type x y z
 #------ Block 1 ------
 8 464 608 0.5 101
@@ -188,12 +214,12 @@ Objects/piranha_plant.txt
 8 2400 608 0.5 101
 
 ########## QUESTION BLOCK ##########
-# type x y z
-10 160 624 0.5
-10 176 624 0.5
-10 192 624 0.5
-10 208 624 0.5
-10 224 624 0.5
+# type x y z itemType   (18=coin 11=mushroom)
+10 160 624 0.5 18
+10 176 624 0.5 11
+10 192 624 0.5 18
+10 208 624 0.5 18
+10 224 624 0.5 18
 
 ########## PIPE ##########
 # type x y z
@@ -218,7 +244,7 @@ Objects/piranha_plant.txt
 
 ########## DYNAMIC PLATFORM ##########
 # type x y z objectType (0=horizontal, 1=vertical) direction (1=right/down, -1=left/up)
-7 2256 608 0.5 1 1
+7 2240 608 0.5 1 1
 7 2464 608 0.5 1 -1
 
 ########## PLATFORM ##########

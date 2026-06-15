@@ -274,8 +274,8 @@ namespace ANIMATION
     constexpr int LAKITU_FLY_LEFT    = 9000;
     constexpr int LAKITU_FLY_RIGHT   = 9001;
 
-    // PiranhaPlant (piranha_plant.txt: 3200)
-    constexpr int PIRANHA_PLANT_IDLE = 3200;
+    // PiranhaPlant (piranha_plant.txt: 3250)
+    constexpr int PIRANHA_PLANT_IDLE = 3250;
 
     // Blooper (blooper.txt: 3300-3303)
     constexpr int BLOOPER_IDLE       = 3300;

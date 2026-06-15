@@ -25,5 +25,7 @@ screen_height 1080
 9   Texture/Items/UnderWorld.png
 10  Texture/Items/items.png
 11  Texture/Character/enemies3.png
+12  Texture/Items/Bridge.png
+13  Texture/Items/axe.png
 
 # -100 Texture/bbox.png

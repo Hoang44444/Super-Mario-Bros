@@ -2,6 +2,8 @@
 #include "AnimationManager.h"
 #include "PlayScene.h"
 #include "AssetID.h"
+#include "CastleBridge.h"
+#include "Mario.h"
 
 void Axe::Render()
 {
@@ -19,6 +21,18 @@ void Axe::OnMarioCollision(Mario* mario)
 {
 	PlayScene* playScene = dynamic_cast<PlayScene*>(scene);
 	if (playScene != nullptr)
-		playScene->StartCastleEndSequence();
+	{
+		// Collapse every castle bridge in the scene, staggered so they fall in sequence.
+		DWORD bridgeDelay = 0;
+		for (LPGAMEOBJECT obj : playScene->GetObjects())
+		{
+			CastleBridge* bridge = dynamic_cast<CastleBridge*>(obj);
+			if (bridge != nullptr) { bridge->Collapse(bridgeDelay); bridgeDelay += 120; }
+		}
+	}
+
+	if (mario != nullptr)
+		mario->SetState(MARIO_STATE::WALKING_RIGHT);
+
 	Delete();
 }

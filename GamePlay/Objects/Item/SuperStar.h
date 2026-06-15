@@ -22,4 +22,7 @@ public:
 	virtual void OnNoCollision(DWORD dt) override;
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e) override;
 	virtual void OnMarioCollision(Mario* mario) override;
+
+protected:
+	void OnEmergeComplete() override { vx = SUPER_STAR_SPEED * direction; vy = -SUPER_STAR_BOUNCE_SPEED; }
 };

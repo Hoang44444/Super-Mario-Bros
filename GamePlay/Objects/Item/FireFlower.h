@@ -9,7 +9,7 @@ public:
 	FireFlower(float x, float y, float z) : Item(x, y, z) {}
 	virtual ~FireFlower() {}
 
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr) override {}
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = nullptr) override { UpdateEmerge(dt); }
 	virtual void Render() override;
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) override;
 	virtual void OnMarioCollision(Mario* mario) override;

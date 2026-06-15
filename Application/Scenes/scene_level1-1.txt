@@ -7,6 +7,7 @@ Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
 Objects/question_block.txt
+Objects/item2.txt
 Objects/Koopa.txt
 
 #### Enemy
@@ -133,19 +134,19 @@ Objects/Goomba.txt
 
 
 ########## QUESTION BLOCK ##########
-# type x y z
-10 256 384 0.5
-10 336 384 0.5
-10 368 384 0.5
-10 352 320 0.5
-10 1248 384 0.5
-10 1504 320 0.5
-10 1678 384 0.5
-10 1726 384 0.5
-10 1774 384 0.5
-10 2064 320 0.5
-10 2080 320 0.5
-10 2720 384 0.5
+# type x y z itemType   (18=coin 11=mushroom 12=fire_flower)
+10 256 384 0.5 18
+10 336 384 0.5 18
+10 368 384 0.5 18
+10 352 320 0.5 11
+10 1248 384 0.5 18
+10 1504 320 0.5 12
+10 1678 384 0.5 18
+10 1726 384 0.5 18
+10 1774 384 0.5 18
+10 2064 320 0.5 18
+10 2080 320 0.5 18
+10 2720 384 0.5 18
 
 ########## PLATFORM ##########
 # type x y z

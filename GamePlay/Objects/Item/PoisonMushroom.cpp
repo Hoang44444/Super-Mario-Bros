@@ -6,6 +6,7 @@
 
 void PoisonMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (UpdateEmerge(dt)) return;
 	vy += POISON_MUSHROOM_GRAVITY * dt;
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }

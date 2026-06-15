@@ -248,7 +248,7 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	float z = (float)atof(tokens[3].c_str());
 	GameObject* obj = NULL;
 
-		switch (type)
+	switch (type)
 	{
 	case OBJECT::MARIO:
 		if (player != NULL)
@@ -290,27 +290,18 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	}
 
 	case OBJECT::QUESTION_BLOCK:
-		obj = new QuestionBlock(x, y, z);
+	{
+		int itemType = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : OBJECT::COIN;
+		obj = new QuestionBlock(x, y, z, itemType);
 		break;
+	}
 
 	case OBJECT::MUSHROOM:
-		obj = new Mushroom(x, y, z);
-		break;
-
 	case OBJECT::FIRE_FLOWER:
-		obj = new FireFlower(x, y, z);
-		break;
-
 	case OBJECT::POISON_MUSHROOM:
-		obj = new PoisonMushroom(x, y, z);
-		break;
-
 	case OBJECT::SUPER_STAR:
-		obj = new SuperStar(x, y, z);
-		break;
-
 	case OBJECT::FROG_SUIT:
-		obj = new FrogSuit(x, y, z);
+		obj = CreateItem(type, x, y, z);
 		break;
 
 	case OBJECT::CASTLE_BRIDGE:
@@ -336,23 +327,11 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 
 	// ---- ITEMS ----
 	case OBJECT::COIN:
-		obj = new Coin(x, y, z);
-		break;
-
 	case OBJECT::MUSHROOM_1UP:
-		obj = new Mushroom1Up(x, y, z);
-		break;
-
 	case OBJECT::SUPER_LEAF:
-		obj = new SuperLeaf(x, y, z);
-		break;
-
 	case OBJECT::HAMMER_SUIT:
-		obj = new HammerSuit(x, y, z);
-		break;
-
 	case OBJECT::TANOOKI_SUIT:
-		obj = new TanookiSuit(x, y, z);
+		obj = CreateItem(type, x, y, z);
 		break;
 
 	// ---- ENEMIES ----
@@ -418,6 +397,24 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	}
 }
 
+LPGAMEOBJECT PlayScene::CreateItem(int type, float x, float y, float z)
+{
+	switch (type)
+	{
+	case OBJECT::COIN:            return new Coin(x, y, z);
+	case OBJECT::MUSHROOM:        return new Mushroom(x, y, z);
+	case OBJECT::FIRE_FLOWER:     return new FireFlower(x, y, z);
+	case OBJECT::POISON_MUSHROOM: return new PoisonMushroom(x, y, z);
+	case OBJECT::SUPER_STAR:      return new SuperStar(x, y, z);
+	case OBJECT::FROG_SUIT:       return new FrogSuit(x, y, z);
+	case OBJECT::MUSHROOM_1UP:    return new Mushroom1Up(x, y, z);
+	case OBJECT::SUPER_LEAF:      return new SuperLeaf(x, y, z);
+	case OBJECT::HAMMER_SUIT:     return new HammerSuit(x, y, z);
+	case OBJECT::TANOOKI_SUIT:    return new TanookiSuit(x, y, z);
+	}
+	return nullptr;
+}
+
 void PlayScene::_ParseSection_MAP(string line)
 {
 	vector<string> tokens;
@@ -433,31 +430,8 @@ void PlayScene::_ParseSection_MAP(string line)
 	Camera::GetInstance()->SetMapSize(width, height);
 }
 
-void PlayScene::StartCastleEndSequence()
-{
-	if (castleEndSequenceStarted) return;
-	castleEndSequenceStarted = true;
-	castleEndTimer = 2600;
-
-	DWORD bridgeDelay = 0;
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		CastleBridge* bridge = dynamic_cast<CastleBridge*>(objects[i]);
-		if (bridge != nullptr) { bridge->Collapse(bridgeDelay); bridgeDelay += 120; }
-	}
-
-	if (player != nullptr)
-		player->SetState(MARIO_STATE::WALKING_RIGHT);
-}
-
 void PlayScene::Update(DWORD dt)
 {
-	if (castleEndSequenceStarted)
-	{
-		if (castleEndTimer > dt) castleEndTimer -= dt;
-		else GameManager::GetInstance()->InitiateSwitchScene(SCENE::END);
-	}
-
 	vector<LPGAMEOBJECT> coObjects;
 	for (auto obj : objects) coObjects.push_back(obj);
 

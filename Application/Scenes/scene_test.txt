@@ -5,6 +5,11 @@ Objects/state.txt
 Objects/bullet.txt
 Objects/item2.txt
 Objects/Koopa.txt
+Objects/BuzzyBeetle.txt
+Objects/Podoboo.txt
+Objects/cannon.txt
+Objects/bulletbill.txt
+Objects/axe.txt
 
 [MAP]
 2000 240
@@ -13,6 +18,10 @@ Objects/Koopa.txt
 ########## MARIO ##########
 # type 	x 	y   z
 0 	50 	150 0.5
+
+########## AXE ##########
+# type 	x 	y   z
+17 	960 	184 0.5
 
 ########## BRICK ##########
 6 0 200 0.5
@@ -136,8 +145,3 @@ Objects/Koopa.txt
 6 1888 200 0.5
 6 1904 200 0.5
 
-########## TEST ENEMY ##########
-# type x    y    z
-#---- Koopa (31) ----
-31     300  172  0.5
-31     500  172  0.5

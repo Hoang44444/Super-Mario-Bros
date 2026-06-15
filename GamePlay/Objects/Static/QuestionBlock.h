@@ -1,5 +1,6 @@
 #pragma once
 #include "StaticObject.h"
+#include "AssetID.h"
 
 constexpr float QUESTION_BLOCK_BBOX_SIZE = 16.0f;
 
@@ -11,10 +12,13 @@ namespace QUESTION_BLOCK_STATE
 
 class QuestionBlock : public StaticObject {
 private:
+	int itemType;        // OBJECT type id of the item released when hit
 	void Break();
+	void SpawnItem();
 public:
-	QuestionBlock(float x, float y, float z) : StaticObject(x, y, z) {
-		this->state = 0;
+	QuestionBlock(float x, float y, float z, int itemType = OBJECT::COIN) : StaticObject(x, y, z) {
+		this->state = QUESTION_BLOCK_STATE::ACTIVE;
+		this->itemType = itemType;
 	}
 	virtual ~QuestionBlock() {}
 

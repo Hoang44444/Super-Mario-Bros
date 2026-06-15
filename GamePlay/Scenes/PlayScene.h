@@ -10,8 +10,6 @@ class PlayScene : public Scene
 	LPGAMEOBJECT player;
 	std::vector<LPGAMEOBJECT> objects;
 	float fixedCameraY;
-	bool castleEndSequenceStarted = false;
-	DWORD castleEndTimer = 0;
 
 	void _ParseSection_ASSETS(string line);
 	void _ParseSection_OBJECTS(string line);
@@ -39,6 +37,9 @@ public:
 	}
 
 	LPGAMEOBJECT GetPlayer() { return player; }
-	void StartCastleEndSequence();
+	std::vector<LPGAMEOBJECT>& GetObjects() { return objects; }
+
+	// Build an item object by its OBJECT type id (returns nullptr if not an item).
+	LPGAMEOBJECT CreateItem(int type, float x, float y, float z);
 };
 

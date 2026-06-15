@@ -4,11 +4,11 @@ Objects/bullet.txt
 Objects/background.txt
 Objects/question_block.txt
 Objects/dynamic_platform.txt
+Objects/item2.txt
 
 #### Enemy
-Objects/Goomba.txt
 Objects/Koopa.txt
-Objects/bulletbill.txt
+Objects/Goomba.txt
 
 [MAP]
 2624 240
@@ -20,12 +20,23 @@ Objects/bulletbill.txt
 
 ########## MARIO ##########
 # type x y z
-0 2288 50 0.2
+0 2175 50 0.2
+
+########## ENEMY ##########
+# type x y z
+#---- Goomba -----#
+30 730 36 0.5
+30 682 36 0.5
+30 1288 68 0.5
+
+#---- Koopa -----#
+31 435 52 0.5
+31 1763 84 0.5
+31 2175 180 0.5
 
 ########## QUESTION BLOCK ##########
-# type x y z
-10 944 160 0.5
-
+# type x y z itemType   (11=mushroom)
+10 944 160 0.5 11
 
 ########## PLATFORM ##########
 # type x y z
@@ -95,7 +106,7 @@ Objects/bulletbill.txt
 # initialDirection: 1 = right/down, -1 = left/up  |  bound = spawnPos +/- 50px
 7 880 128 0.5 1 1
 7 1360 112 0.5 0 -1
-7 1504 112 0.5 0 1
+7 1504 128 0.5 0 1
 7 2080 96 0.5 0 1
 
 

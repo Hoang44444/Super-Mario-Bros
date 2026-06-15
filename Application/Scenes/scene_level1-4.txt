@@ -5,18 +5,16 @@ Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
 Objects/dynamic_platform.txt
+Objects/axe.txt
+Objects/castle_end.txt
 
 #### Enemy
-Objects/Goomba.txt
-Objects/Koopa.txt
-Objects/BuzzyBeetle.txt
 Objects/piranha_plant.txt
-Objects/hammerbro.txt
-Objects/hammer.txt
-Objects/blooper.txt
+Objects/BuzzyBeetle.txt
+Objects/cannon.txt
+Objects/bulletbill.txt
 Objects/Podoboo.txt
-Objects/bowser.txt
-Objects/bowserfireball.txt
+Objects/axe.txt
 
 [MAP]
 5120 480
@@ -27,7 +25,33 @@ Objects/bowserfireball.txt
 3 0 0 0.9
 ########## MARIO ##########
 # type x y z
-0 3152 50 0.2
+0 4780 50 0.2
+
+########## ENEMY(43) ##########
+#---- PIRANHA PLANT -----#
+43 308 147 0.7
+43 825 147 0.7
+43 1444 84 0.7
+43 1961 132 0.7
+43 3129 148 0.7
+
+#---- Buzzy Beetl(32) ----#
+32 288 180 0.5
+32 1823 180 0.5
+32 1775 180 0.5
+32 2096 180 0.5
+32 3376 132 0.5
+
+#---- CANNON(39) ----#
+39 720 172 0.5 -1
+39 2979 172 0.5 -1
+
+#---- PODOBOO ----#
+41 2310 200 0.5
+41 2325 200 0.5
+41 3523 200 0.5
+41 3543 200 0.5
+41 3563 200 0.5
 
 ########## PIPE ##########
 # type x y z
@@ -116,10 +140,9 @@ Objects/bowserfireball.txt
 1 944 207 0.5
 1 960 207 0.5
 1 976 207 0.5
-1 976 191 0.5
-1 976 175 0.5
-1 976 159 0.5
 1 992 207 0.5
+1 992 191 0.5
+1 992 175 0.5
 1 992 159 0.5
 1 1008 207 0.5
 1 1008 159 0.5
@@ -396,7 +419,7 @@ Objects/bowserfireball.txt
 1 4080 191 0.5
 1 4080 175 0.5
 1 4080 159 0.5
-1 4096 207 0.
+1 4096 207 0.5
 1 4112 207 0.5
 1 4128 207 0.5
 1 4144 207 0.5
@@ -439,19 +462,6 @@ Objects/bowserfireball.txt
 1 4560 63 0.5
 1 4576 63 0.5
 1 4592 63 0.5
-1 4608 207 0.5
-1 4624 207 0.5
-1 4640 207 0.5
-1 4656 207 0.5
-1 4672 207 0.5
-1 4688 207 0.5
-1 4704 207 0.5
-1 4720 207 0.5
-1 4736 207 0.5
-1 4752 207 0.5
-1 4768 207 0.5
-1 4784 207 0.5
-1 4800 207 0.5
 1 4816 207 0.5
 1 4816 191 0.5
 1 4816 175 0.5
@@ -804,6 +814,24 @@ Objects/bowserfireball.txt
 1 5088 31 0.5
 1 5104 31 0.5
 1 5120 31 0.5
+
+########## BRIDGE(16) ##########
+16 4608 159 0.5
+16 4624 159 0.5
+16 4640 159 0.5
+16 4656 159 0.5
+16 4672 159 0.5
+16 4688 159 0.5
+16 4704 159 0.5
+16 4720 159 0.5
+16 4736 159 0.5
+16 4752 159 0.5
+16 4768 159 0.5
+16 4784 159 0.5
+16 4800 159 0.5
+
+########## AXE(17) ##########
+17 4831 126 0.5
 
 ########## SWITCH SCENE POINT ##########
 # type x y z

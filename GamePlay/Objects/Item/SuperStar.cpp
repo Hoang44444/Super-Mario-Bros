@@ -6,6 +6,7 @@
 
 void SuperStar::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (UpdateEmerge(dt)) return;
 	vy += SUPER_STAR_GRAVITY * dt;
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }
