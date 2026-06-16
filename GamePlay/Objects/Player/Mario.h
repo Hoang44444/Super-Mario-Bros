@@ -1,15 +1,9 @@
 #pragma once
 #include "GameObject.h"
+#include "PlayerData.h"
 
 class DynamicPlatform;
 
-namespace MARIO_LEVEL
-{
-	constexpr int SMALL = 1;
-	constexpr int BIG   = 2;
-	constexpr int FIRE  = 3;
-	constexpr int FROG  = 4;
-}
 
 namespace MARIO_STATE
 {
@@ -58,7 +52,11 @@ private:
 	DWORD invincibleTime = 0;
 public:
 	Mario(float x, float y, float z) : GameObject(x, y, z) {
-		level = MARIO_LEVEL::SMALL;
+		// Khôi phục trạng thái đã giữ qua các màn (level quyết định animation)
+		level = PlayerData::Get().level;
+		coin  = PlayerData::Get().coins;
+		life  = PlayerData::Get().lives;
+		canShoot = (level == MARIO_LEVEL::FIRE);   // khôi phục theo level, nếu không Fire màn mới bấm K không bắn
 	};
 	~Mario() {};
 
@@ -101,8 +99,8 @@ public:
 	bool IsInvincible() { return isInvincible; }
 	bool CanShoot() { return canShoot; }
 	void SetCanShoot(bool v) { canShoot = v; }
-	void AddCoin(int amount = 1) { coin += amount; }
-	void AddLife(int amount = 1) { life += amount; }
+	void AddCoin(int amount = 1) { coin += amount; PlayerData::Get().coins = coin; }
+	void AddLife(int amount = 1) { life += amount; PlayerData::Get().lives = life; }
 	int GetCoin() { return coin; }
 	int GetLife() { return life; }
 

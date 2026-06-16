@@ -10,9 +10,10 @@
 class Bullet : public GameObject
 {
 protected:
-	LPGAMEOBJECT owner; // The object that fired the bullet
+	LPGAMEOBJECT owner; // The object that fired the bullet	
 public:
 	Bullet(float x, float y, int direction, LPGAMEOBJECT owner) : GameObject(x, y, z) {
+		this->z = 0.5f;
 		this->direction = direction;
 		this->vx = BULLET_SPEED * direction; // Speed of the bullet
 		this->owner = owner;

@@ -22,12 +22,14 @@ void Mario::SetLevel(int level)
 	// (x,y) là góc trên-trái, bbox nở xuống dưới. Khi đổi level mà giữ nguyên y thì
 	// phần cao thêm sẽ lòi xuống lòng platform -> Mario lọt/đứng lệch.
 	// Giữ nguyên ĐÁY (chân) bằng cách dời y theo chênh lệch chiều cao bbox.
-	// Chiều cao phải khớp với GetBoundingBox: BIG = 27, còn lại = 15.
-	auto bboxHeight = [](int lv) -> float { return lv == MARIO_LEVEL::BIG ? 27.0f : 15.0f; };
+	// Chiều cao phải khớp với GetBoundingBox: SMALL = 15, còn lại (BIG/FIRE/FROG) = 27.
+	auto bboxHeight = [](int lv) -> float { return lv == MARIO_LEVEL::SMALL ? 15.0f : 27.0f; };
 	this->y -= (bboxHeight(level) - bboxHeight(this->level));
 
 	this->level = level;
 	this->canShoot = (level == MARIO_LEVEL::FIRE);
+
+	PlayerData::Get().level = level;   // lưu lại để giữ qua các màn
 }
 
 void Mario::Jump() {
@@ -202,15 +204,15 @@ void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;
-	if (level == MARIO_LEVEL::BIG)
-	{
-		r = x + 15;
-		b = y + 27;
-	}
-	else
+	if (level == MARIO_LEVEL::SMALL)
 	{
 		r = x + 13;
 		b = y + 15;
+	}
+	else // BIG / FIRE / FROG đều cỡ lớn
+	{
+		r = x + 15;
+		b = y + 27;
 	}
 }
 

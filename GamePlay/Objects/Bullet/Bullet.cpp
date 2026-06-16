@@ -21,8 +21,11 @@ void Bullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Bullet::Render()
 {
-	DebugOut(L"[BULLET] Rendering at x: %f, y: %f\n", x, y);
-	AnimationManager::GetInstance()->Get(ANIMATION::BULLET)->Render(x, y, z);
+	int aniId = ANIMATION::BULLET_RIGHT;
+	if (this->direction < 0) {
+		aniId = ANIMATION::BULLET_LEFT;
+	}
+	AnimationManager::GetInstance()->Get(aniId)->Render(x, y, z);
 }
 
 void Bullet::GetBoundingBox(float& l, float& t, float& r, float& b)

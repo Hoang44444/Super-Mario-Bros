@@ -107,7 +107,8 @@ namespace ANIMATION
     constexpr int BRICK_FRAGMENT_UNDERWORLD_UP_RIGHT = 121;
     constexpr int BRICK_FRAGMENT_UNDERWORLD_BOTTOM_LEFT = 122;
     constexpr int BRICK_FRAGMENT_UNDERWORLD_BOTTOM_RIGHT = 123;
-    constexpr int BULLET = 200;
+    constexpr int BULLET_RIGHT = 200;
+    constexpr int BULLET_LEFT = 201;
     constexpr int CRACKED_BRICK = 300;
     
     // Background
