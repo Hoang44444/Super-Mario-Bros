@@ -175,6 +175,7 @@
     <ClInclude Include="Objects\Invisible\InvisibleObject.h" />
     <ClInclude Include="Objects\Invisible\DeathZone.h" />
     <ClInclude Include="Objects\Invisible\SwitchScenePoint.h" />
+    <ClInclude Include="Objects\Invisible\EnemyTurnBlock.h" />
     <ClInclude Include="Objects\Item\Mushroom.h" />
     <ClInclude Include="Objects\Item\FireFlower.h" />
     <ClInclude Include="Objects\Item\PoisonMushroom.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="Objects\Dynamic\DynamicPlatform.cpp" />
     <ClCompile Include="Objects\Invisible\DeathZone.cpp" />
     <ClCompile Include="Objects\Invisible\SwitchScenePoint.cpp" />
+    <ClCompile Include="Objects\Invisible\EnemyTurnBlock.cpp" />
     <ClCompile Include="Objects\Item\Mushroom.cpp" />
     <ClCompile Include="Objects\Item\FireFlower.cpp" />
     <ClCompile Include="Objects\Item\PoisonMushroom.cpp" />
