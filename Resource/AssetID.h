@@ -81,6 +81,7 @@ namespace OBJECT
 	constexpr int PODOBOO = 41;
 	constexpr int SPINY = 42;
 	constexpr int PIRANHA_PLANT = 43;
+	constexpr int ENEMY_TURN_BLOCK = 44; // invisible block that flips enemy direction
 }
 
 namespace TEXTURE

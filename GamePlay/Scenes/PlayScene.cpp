@@ -16,6 +16,7 @@
 #include "Platform.h"
 #include "Pipe.h"
 #include "SwitchScenePoint.h"
+#include "EnemyTurnBlock.h"
 #include "BrickTest.h"
 #include "Brick.h"
 #include "QuestionBlock.h"
@@ -280,6 +281,10 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT::SWITCH_SCENE_POINT:
 		obj = new SwitchScenePoint(x, y, z);
+		break;
+
+	case OBJECT::ENEMY_TURN_BLOCK:
+		obj = new EnemyTurnBlock(x, y, z);
 		break;
 
 	case OBJECT::BRICK:
