@@ -38,8 +38,8 @@ public:
 		case VK_SPACE:
 			mario->SetState(MARIO_STATE::JUMP);
 			break;
-		case 'K':
-			DebugOut(L"[KEYBOARD] Key 'k' pressed: Shooting bullet\n");
+		case VK_SHIFT:
+			DebugOut(L"[KEYBOARD] Key 'Shift' pressed: Shooting bullet\n");
 			mario->SetState(MARIO_STATE::SHOOT);
 			break;
 		}

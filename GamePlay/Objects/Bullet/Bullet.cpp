@@ -5,18 +5,22 @@
 
 void Bullet::Moving(DWORD dt)
 {
-	// Move the bullet
+	// Move along both axes so the bullet follows a parabolic path
 	this->x += this->vx * dt;
-
-	// Check if the bullet goes off-screen (Temporarily disabled for debugging)
-	if (this->x < 0 || this->x > SCREEN_WIDTH) {
-		this->Delete(); 
-	}
+	this->y += this->vy * dt;
 }
 
 void Bullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	// Gravity makes the trajectory a parabola
+	vy += BULLET_GRAVITY * dt;
+
 	Collision::GetInstance()->Process(this, dt, coObjects);
+
+	// Delete once it has travelled far enough from where it was fired
+	if (abs(this->x - startX) > BULLET_MAX_DISTANCE) {
+		this->Delete();
+	}
 }
 
 void Bullet::Render()
@@ -38,10 +42,21 @@ void Bullet::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->obj == owner) return; // Ignore collision with the owner
-	if (!e->obj->IsBlocking()) return; // Bullet doesn't block, so it can pass through objects
+	if (e->obj == owner) return;        // Ignore collision with the owner
+	if (!e->obj->IsBlocking()) return;  // pass through non-static objects
 
-	this->Delete(); // Mark for deletion on collision
+	// Bounce off static objects instead of disappearing
+	if (e->ny < 0) {                    // hit floor -> bounce up
+		vy = -BULLET_BOUNCE_SPEED;
+	}
+	else if (e->ny > 0) {               // hit ceiling -> push down
+		vy = BULLET_BOUNCE_SPEED;
+	}
+
+	if (e->nx != 0) {                   // hit a wall -> reverse horizontal direction
+		vx = -vx;
+		direction = -direction;
+	}
 }
 
 void Bullet::OnNoCollision(DWORD dt)
