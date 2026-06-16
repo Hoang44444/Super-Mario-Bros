@@ -19,6 +19,13 @@ void Mario::MovementUpdate(DWORD dt) {
 
 void Mario::SetLevel(int level)
 {
+	// (x,y) là góc trên-trái, bbox nở xuống dưới. Khi đổi level mà giữ nguyên y thì
+	// phần cao thêm sẽ lòi xuống lòng platform -> Mario lọt/đứng lệch.
+	// Giữ nguyên ĐÁY (chân) bằng cách dời y theo chênh lệch chiều cao bbox.
+	// Chiều cao phải khớp với GetBoundingBox: BIG = 27, còn lại = 15.
+	auto bboxHeight = [](int lv) -> float { return lv == MARIO_LEVEL::BIG ? 27.0f : 15.0f; };
+	this->y -= (bboxHeight(level) - bboxHeight(this->level));
+
 	this->level = level;
 	this->canShoot = (level == MARIO_LEVEL::FIRE);
 }

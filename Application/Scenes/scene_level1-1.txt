@@ -8,6 +8,8 @@ Objects/background.txt
 Objects/pipe.txt
 Objects/question_block.txt
 Objects/item2.txt
+Objects/mushroom.txt
+Objects/fire_flower.txt
 Objects/Koopa.txt
 
 #### Enemy
@@ -23,7 +25,7 @@ Objects/Goomba.txt
 
 ########## MARIO ##########
 # type x y z
-0 1300 400 0.2
+0 16 400 0.2
 
 ########## ENEMY ##########
 # type x y z
@@ -137,10 +139,10 @@ Objects/Goomba.txt
 # type x y z itemType   (18=coin 11=mushroom 12=fire_flower)
 10 256 384 0.5 18
 10 336 384 0.5 18
-10 368 384 0.5 18
-10 352 320 0.5 11
-10 1248 384 0.5 18
-10 1504 320 0.5 12
+10 368 384 0.5 11
+10 352 320 0.5 18
+10 1248 384 0.5 12	
+10 1504 320 0.5 18
 10 1678 384 0.5 18
 10 1726 384 0.5 18
 10 1774 384 0.5 18

@@ -8,6 +8,7 @@ Objects/dynamic_platform.txt
 Objects/pipe.txt
 Objects/question_block.txt
 Objects/item2.txt
+Objects/mushroom.txt
 
 #### Enemy
 Objects/Goomba.txt

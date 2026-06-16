@@ -50,6 +50,8 @@ namespace OBJECT
 	constexpr int BRICK = 8;
 	constexpr int DEATH_ZONE = 9;
 	constexpr int QUESTION_BLOCK = 10;
+
+    // ---- ITEMS ----
 	constexpr int MUSHROOM = 11;
 	constexpr int FIRE_FLOWER = 12;
 	constexpr int POISON_MUSHROOM = 13;
@@ -57,9 +59,7 @@ namespace OBJECT
 	constexpr int FROG_SUIT = 15;
 	constexpr int CASTLE_BRIDGE = 16;
 	constexpr int AXE = 17;
-
-	// ---- ITEMS ----
-	constexpr int COIN = 18;
+    constexpr int COIN = 18;
 	constexpr int MUSHROOM_1UP = 19;
 	constexpr int SUPER_LEAF = 20;
 	constexpr int HAMMER_SUIT = 21;
@@ -206,12 +206,13 @@ namespace ANIMATION
     constexpr int QUESTION_BLOCK = 3200;
     constexpr int QUESTION_BLOCK_DELETED = 3201;
 
-    // ITEMS (5002-5008 để tránh clash với TANOOKI 4000-4001 và HAMMER 4400-5001)
-    constexpr int MUSHROOM = 5002;
-    constexpr int FIRE_FLOWER = 5003;
-    constexpr int POISON_MUSHROOM = 5004;
-    constexpr int SUPER_STAR = 5005;
-    constexpr int FROG_SUIT = 5006;
+    // ITEMS cơ bản — dời sang 5050-5054 để tránh trùng KOOPA (5000-5003); CASTLE_BRIDGE/AXE giữ 5007/5008
+    // (khớp với mushroom.txt / fire_flower.txt / poison_mushroom.txt / super_star.txt / frog_suit.txt)
+    constexpr int MUSHROOM = 5050;
+    constexpr int FIRE_FLOWER = 5051;
+    constexpr int POISON_MUSHROOM = 5052;
+    constexpr int SUPER_STAR = 5053;
+    constexpr int FROG_SUIT = 5054;
     constexpr int CASTLE_BRIDGE = 5007;
     constexpr int AXE = 5008;
 

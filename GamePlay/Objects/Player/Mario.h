@@ -58,7 +58,7 @@ private:
 	DWORD invincibleTime = 0;
 public:
 	Mario(float x, float y, float z) : GameObject(x, y, z) {
-		level = MARIO_LEVEL::BIG;
+		level = MARIO_LEVEL::SMALL;
 	};
 	~Mario() {};
 

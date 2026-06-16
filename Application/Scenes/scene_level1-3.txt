@@ -5,6 +5,7 @@ Objects/background.txt
 Objects/question_block.txt
 Objects/dynamic_platform.txt
 Objects/item2.txt
+Objects/mushroom.txt
 
 #### Enemy
 Objects/Koopa.txt
