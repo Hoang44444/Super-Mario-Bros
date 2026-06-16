@@ -77,7 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Resource;..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -93,7 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Resource;..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -107,7 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Resource;..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -123,7 +123,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Resource;..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -132,40 +132,57 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Background.h" />
+    <ClInclude Include="Core\Scene.h" />
+    <ClInclude Include="Core\GameObject.h" />
+    <ClInclude Include="Core\Collision.h" />
+    <ClInclude Include="Core\KeyEventHandler.h" />
+    <ClInclude Include="Core\GameManager.h" />
+    <ClInclude Include="Scenes\PlayScene.h" />
+    <ClInclude Include="Scenes\Background.h" />
+    <ClInclude Include="Objects\Player\Mario.h" />
+    <ClInclude Include="Objects\Player\MarioKeyHandler.h" />
+    <ClInclude Include="Objects\Bullet\Bullet.h" />
+    <ClInclude Include="Objects\Enemy\Enemy.h" />
+    <ClInclude Include="Blooper.h" />
     <ClInclude Include="Bowser.h" />
     <ClInclude Include="BowserFire.h" />
-    <ClInclude Include="BrickTest.h" />
-    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="BowserFireball.h" />
+    <ClInclude Include="BulletBill.h" />
     <ClInclude Include="BuzzyBeetle.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="Brick.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="GameManager.h" />
-    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Cannon.h" />
     <ClInclude Include="Goomba.h" />
-    <ClInclude Include="InvisibleObject.h" />
-    <ClInclude Include="Item.h" />
-    <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="Hammer.h" />
+    <ClInclude Include="HammerBro.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="Lakitu.h" />
-    <ClInclude Include="Mario.h" />
-    <ClInclude Include="MarioKeyHandler.h" />
-    <ClInclude Include="Pipe.h" />
-    <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="Podoboo.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="Spiny.h" />
-    <ClInclude Include="StaticObject.h" />
-    <ClInclude Include="SwitchScenePoint.h" />
     <ClInclude Include="PiranhaPlant.h" />
-    <ClInclude Include="Blooper.h" />
-    <ClInclude Include="BulletBill.h" />
-    <ClInclude Include="Cannon.h" />
-    <ClInclude Include="HammerBro.h" />
-    <ClInclude Include="Hammer.h" />
-    <ClInclude Include="BowserFireball.h" />
-    <ClInclude Include="MenuScene.h" />
+    <ClInclude Include="Podoboo.h" />
+    <ClInclude Include="Spiny.h" />
+    <ClInclude Include="Objects\Item\Item.h" />
+    <ClInclude Include="Coin.h" />
+    <ClInclude Include="HammerSuit.h" />
+    <ClInclude Include="Mushroom1Up.h" />
+    <ClInclude Include="SuperLeaf.h" />
+    <ClInclude Include="TanookiSuit.h" />
+    <ClInclude Include="Objects\Static\StaticObject.h" />
+    <ClInclude Include="Objects\Static\Brick.h" />
+    <ClInclude Include="Objects\Static\QuestionBlock.h" />
+    <ClInclude Include="Objects\Static\BrickFragment.h" />
+    <ClInclude Include="Objects\Static\BrickTest.h" />
+    <ClInclude Include="Objects\Static\Pipe.h" />
+    <ClInclude Include="Objects\Static\Platform.h" />
+    <ClInclude Include="Objects\Dynamic\DynamicPlatform.h" />
+    <ClInclude Include="Objects\Invisible\InvisibleObject.h" />
+    <ClInclude Include="Objects\Invisible\DeathZone.h" />
+    <ClInclude Include="Objects\Invisible\SwitchScenePoint.h" />
+    <ClInclude Include="Objects\Invisible\EnemyTurnBlock.h" />
+    <ClInclude Include="Objects\Item\Mushroom.h" />
+    <ClInclude Include="Objects\Item\FireFlower.h" />
+    <ClInclude Include="Objects\Item\PoisonMushroom.h" />
+    <ClInclude Include="Objects\Item\SuperStar.h" />
+    <ClInclude Include="Objects\Item\FrogSuit.h" />
+    <ClInclude Include="Objects\Item\Axe.h" />
+    <ClInclude Include="Objects\Static\CastleBridge.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -179,35 +196,49 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Core\Collision.cpp" />
+    <ClCompile Include="Core\GameManager.cpp" />
+    <ClCompile Include="Scenes\PlayScene.cpp" />
+    <ClCompile Include="Scenes\Background.cpp" />
+    <ClCompile Include="Objects\Player\Mario.cpp" />
+    <ClCompile Include="Objects\Bullet\Bullet.cpp" />
+    <ClCompile Include="Objects\Static\StaticObject.cpp" />
+    <ClCompile Include="Objects\Static\Brick.cpp" />
+    <ClCompile Include="Objects\Static\QuestionBlock.cpp" />
+    <ClCompile Include="Objects\Static\BrickFragment.cpp" />
+    <ClCompile Include="Objects\Static\Pipe.cpp" />
+    <ClCompile Include="Objects\Static\Platform.cpp" />
+    <ClCompile Include="Objects\Dynamic\DynamicPlatform.cpp" />
+    <ClCompile Include="Objects\Invisible\DeathZone.cpp" />
+    <ClCompile Include="Objects\Invisible\SwitchScenePoint.cpp" />
+    <ClCompile Include="Objects\Invisible\EnemyTurnBlock.cpp" />
+    <ClCompile Include="Objects\Item\Mushroom.cpp" />
+    <ClCompile Include="Objects\Item\FireFlower.cpp" />
+    <ClCompile Include="Objects\Item\PoisonMushroom.cpp" />
+    <ClCompile Include="Objects\Item\SuperStar.cpp" />
+    <ClCompile Include="Objects\Item\FrogSuit.cpp" />
+    <ClCompile Include="Objects\Item\Axe.cpp" />
+    <ClCompile Include="Objects\Static\CastleBridge.cpp" />
+    <ClCompile Include="Blooper.cpp" />
     <ClCompile Include="Bowser.cpp" />
     <ClCompile Include="BowserFire.cpp" />
-    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="BowserFireball.cpp" />
+    <ClCompile Include="BulletBill.cpp" />
     <ClCompile Include="BuzzyBeetle.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Cannon.cpp" />
     <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="Hammer.cpp" />
+    <ClCompile Include="HammerBro.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="Lakitu.cpp" />
-    <ClCompile Include="Mario.cpp" />
-    <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="PiranhaPlant.cpp" />
     <ClCompile Include="Podoboo.cpp" />
     <ClCompile Include="Spiny.cpp" />
-    <ClCompile Include="SwitchScenePoint.cpp" />
-    <ClCompile Include="PiranhaPlant.cpp" />
-    <ClCompile Include="Blooper.cpp" />
-    <ClCompile Include="BulletBill.cpp" />
-    <ClCompile Include="Cannon.cpp" />
-    <ClCompile Include="HammerBro.cpp" />
-    <ClCompile Include="Hammer.cpp" />
-    <ClCompile Include="BowserFireball.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Coin.cpp" />
-    <ClCompile Include="Mushroom.cpp" />
+    <ClCompile Include="HammerSuit.cpp" />
     <ClCompile Include="Mushroom1Up.cpp" />
     <ClCompile Include="SuperLeaf.cpp" />
     <ClCompile Include="TanookiSuit.cpp" />
-    <ClCompile Include="HammerSuit.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

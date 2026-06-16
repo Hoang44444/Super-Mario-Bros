@@ -1,0 +1,7 @@
+[SPRITES]
+# id l t r b tex_id
+20001 63 38 111 46 10
+
+[ANIMATIONS]
+# id sprite_id time
+102 20001 100

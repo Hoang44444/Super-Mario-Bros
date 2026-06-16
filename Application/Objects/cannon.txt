@@ -1,6 +1,6 @@
 [SPRITES]
 # id   left  top  right  bottom  tex_id
-37001  28   114    47    148      8
+37001  28   114    47    148      11
 
 [ANIMATIONS]
 # id   sprite1_id  time1

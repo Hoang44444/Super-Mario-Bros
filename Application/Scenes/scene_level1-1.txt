@@ -1,73 +1,154 @@
-[ASSETS]
+﻿[ASSETS]
 Objects/brick.txt
+Objects/brick_fragment.txt
+Objects/brick_test.txt
 Objects/mario.txt
-Objects/state.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
+Objects/question_block.txt
 Objects/item2.txt
-Objects/piranha_plant.txt
-Objects/blooper.txt
-Objects/bulletbill.txt
-Objects/cannon.txt
-Objects/hammerbro.txt
-Objects/hammer.txt
-Objects/Goomba.txt
+Objects/mushroom.txt
+Objects/fire_flower.txt
 Objects/Koopa.txt
-Objects/BuzzyBeetle.txt
-Objects/Podoboo.txt
-Objects/Spiny.txt
-Objects/Lakitu.txt
-Objects/Bowser.txt
-Objects/BowserFire.txt
+
+#### Enemy
+Objects/Goomba.txt
 
 [MAP]
 3376 480
 
 [OBJECTS]
-
 ########## BACKGROUND ##########
 # type x y z
 3 0 240 0.9
 
 ########## MARIO ##########
 # type x y z
-0 0 420 0.2
-########ENEMY###########
+0 16 400 0.2
 
-8 360 320 0.2
+########## ENEMY ##########
+# type x y z
+#---- Goomba (30)----
+30 430 428 0.5
+30 720 428 0.5
+30 890 428 0.5
+30 826 428 0.5
+30 1247 367 0.5
+30 1328 300 0.5 
+30 1580 428 0.5
+30 1620 428 0.5
+30 1660 428 0.5
+30 1700 428 0.5
+30 2630 428 0.5 
+30 2850 428 0.5 
 
 
+#---- Koopa (31)----
+31 1530 406 0.5
 
 ########## END SCENE POINT ##########
 # type x y z
 5 3264 416 0.5
 
 ########## PIPE ##########
-# type x y z
+# type x y z animationId
 # Pipe 1
-4 448 416 0.5
+4 448 416 0.5 3100
 
 # Pipe 2
-4 608 400 0.5
-4 608 416 0.5
+4 608 400 0.5 3100
+1 608 416 0.5 
+1 624 416 0.5 
 
 # Pipe 3
-4 736 384 0.5
-4 736 400 0.5
-4 736 416 0.5
+4 736 384 0.5 3100
+1 736 400 0.5
+1 752 400 0.5
+1 736 416 0.5 
+1 752 416 0.5
 
 # Pipe 4
-4 912 384 0.5
-4 736 400 0.5
-4 912 416 0.5
+4 912 384 0.5 3100
+1 912 400 0.5 
+1 928 400 0.5
+1 912 416 0.5
+1 928 416 0.5 
 
 # Pipe 5
-4 2608 416 0.5
+4 2608 416 0.5 3100
 
 # Pipe 6
-4 2864 416 0.5
+4 2864 416 0.5 3100
 
+########## BRICK ##########
+# type x y z
+# --- Group 1 (before Pipe 1) ---
+8 320 384 0.5 100
+8 352 384 0.5 100
+8 384 384 0.5 100
+
+
+# --- Group 2 (after Gap 1, x=1136) ---
+8 1232 384 0.5 100
+8 1264 384 0.5 100
+
+# --- Group 3 (after Gap 2, x=1424) ---
+8 1280 320 0.5 100
+8 1296 320 0.5 100
+8 1312 320 0.5 100
+8 1328 320 0.5 100
+8 1344 320 0.5 100
+8 1360 320 0.5 100
+8 1376 320 0.5 100
+8 1392 320 0.5 100
+
+# --- Group 4 ---
+8 1456 320 0.5 100
+8 1472 320 0.5 100
+8 1488 320 0.5 100
+
+# --- Group 5 ---
+8 1504 384 0.5 100
+
+# --- Group 6 ---
+8 1600 384 0.5 100
+8 1616 384 0.5 100
+
+# --- Group 7 ---
+8 1888 384 0.5 100
+
+# --- Group 8 ---
+8 1936 320 0.5 100
+8 1952 320 0.5 100
+8 1968 320 0.5 100
+
+# --- Group 9 ---
+8 2048 320 0.5 100
+8 2064 384 0.5 100
+8 2080 384 0.5 100
+8 2096 320 0.5 100
+
+# --- Group 10 ---
+8 2688 384 0.5 100
+8 2704 384 0.5 100
+8 2736 384 0.5 100
+
+
+########## QUESTION BLOCK ##########
+# type x y z itemType   (18=coin 11=mushroom 12=fire_flower)
+10 256 384 0.5 18
+10 336 384 0.5 18
+10 368 384 0.5 11
+10 352 320 0.5 18
+10 1248 384 0.5 12	
+10 1504 320 0.5 18
+10 1678 384 0.5 18
+10 1726 384 0.5 18
+10 1774 384 0.5 18
+10 2064 320 0.5 18
+10 2080 320 0.5 18
+10 2720 384 0.5 18
 
 ########## PLATFORM ##########
 # type x y z
@@ -283,6 +364,7 @@ Objects/BowserFire.txt
 1 3344 448 0.5
 1 3360 448 0.5
 
+# --- Staircase ---
 1 2144 432 0.5
 1 2160 432 0.5
 1 2176 432 0.5
@@ -372,6 +454,3 @@ Objects/BowserFire.txt
 1 3008 320 0.5
 1 3024 320 0.5
 1 3168 432 0.5
-
-
-

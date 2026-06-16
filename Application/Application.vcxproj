@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -90,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -102,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,16 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Objects\Bowser.txt" />
-    <Text Include="Objects\BowserFire.txt" />
-    <Text Include="Objects\BuzzyBeetle.txt" />
-    <Text Include="Objects\Goomba.txt" />
-    <Text Include="Objects\Koopa.txt" />
-    <Text Include="Objects\Lakitu.txt" />
-    <Text Include="Objects\Podoboo.txt" />
-    <Text Include="Objects\Spiny.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -40,33 +40,48 @@ namespace ASSET
 namespace OBJECT
 {
     constexpr int MARIO = 0;
-    constexpr int BRICK = 1;
+    constexpr int PLATFORM = 1;
     constexpr int BULLET = 2;
     constexpr int BACKGROUND = 3;
     constexpr int PIPE = 4;
     constexpr int SWITCH_SCENE_POINT = 5;
 	constexpr int BRICK_TEST = 6;
-	constexpr int COIN = 7;
-	constexpr int MUSHROOM_1UP = 8;
-	constexpr int SUPER_LEAF = 9;
-	constexpr int TANOOKI_SUIT = 10;
-	constexpr int HAMMER_SUIT = 11;
+	constexpr int DYNAMIC_PLATFORM = 7;
+	constexpr int BRICK = 8;
+	constexpr int DEATH_ZONE = 9;
+	constexpr int QUESTION_BLOCK = 10;
 
-    // Enemies
-    constexpr int PIRANHA_PLANT = 20;
-    constexpr int BLOOPER = 21;
-    constexpr int BULLET_BILL = 22;
-    constexpr int CANNON = 23;
-    constexpr int GOOMBA = 24;
-    constexpr int KOOPA = 25;
-    constexpr int BUZZY = 26;
-    constexpr int PODOBOO = 27;
-    constexpr int SPINY = 28;
-    constexpr int LAKITU = 29;
-    constexpr int BOWSER = 30;
-    constexpr int BOWSER_FIRE = 31;
-    constexpr int HAMMER_BRO = 32;
-    constexpr int HAMMER = 33;
+    // ---- ITEMS ----
+	constexpr int MUSHROOM = 11;
+	constexpr int FIRE_FLOWER = 12;
+	constexpr int POISON_MUSHROOM = 13;
+	constexpr int SUPER_STAR = 14;
+	constexpr int FROG_SUIT = 15;
+	constexpr int CASTLE_BRIDGE = 16;
+	constexpr int AXE = 17;
+    constexpr int COIN = 18;
+	constexpr int MUSHROOM_1UP = 19;
+	constexpr int SUPER_LEAF = 20;
+	constexpr int HAMMER_SUIT = 21;
+	constexpr int TANOOKI_SUIT = 22;
+	constexpr int HAMMER = 23;
+
+	// ---- ENEMIES ----
+	constexpr int GOOMBA = 30;
+	constexpr int KOOPA = 31;
+	constexpr int BUZZY_BEETLE = 32;
+	constexpr int HAMMER_BRO = 33;
+	constexpr int BLOOPER = 34;
+	constexpr int BOWSER = 35;
+	constexpr int BOWSER_FIRE = 36;
+	constexpr int BOWSER_FIREBALL = 37;
+	constexpr int BULLET_BILL = 38;
+	constexpr int CANNON = 39;
+	constexpr int LAKITU = 40;
+	constexpr int PODOBOO = 41;
+	constexpr int SPINY = 42;
+	constexpr int PIRANHA_PLANT = 43;
+	constexpr int ENEMY_TURN_BLOCK = 44; // invisible block that flips enemy direction
 }
 
 namespace TEXTURE
@@ -77,14 +92,24 @@ namespace TEXTURE
     constexpr int MENUBACKGROUND = 3;
     constexpr int LEVEL1_1 = 4;
     constexpr int BBOX = -100;
-    constexpr int ENEMIES = 8;
+    constexpr int ENEMIES = 11;
 }
 
 namespace ANIMATION
 {
-    constexpr int BRICK = 100;
-    constexpr int BRICK_TEST = 101;
-    constexpr int BULLET = 200;
+    constexpr int BRICK_OVERWORLD = 100;
+    constexpr int BRICK_UNDERWORLD = 101;
+    constexpr int DYNAMIC_PLATFORM = 102;
+    constexpr int BRICK_FRAGMENT_OVERWORLD_UP_LEFT = 110;
+    constexpr int BRICK_FRAGMENT_OVERWORLD_UP_RIGHT = 111;
+    constexpr int BRICK_FRAGMENT_OVERWORLD_BOTTOM_LEFT = 112;
+    constexpr int BRICK_FRAGMENT_OVERWORLD_BOTTOM_RIGHT = 113;
+    constexpr int BRICK_FRAGMENT_UNDERWORLD_UP_LEFT = 120;
+    constexpr int BRICK_FRAGMENT_UNDERWORLD_UP_RIGHT = 121;
+    constexpr int BRICK_FRAGMENT_UNDERWORLD_BOTTOM_LEFT = 122;
+    constexpr int BRICK_FRAGMENT_UNDERWORLD_BOTTOM_RIGHT = 123;
+    constexpr int BULLET_RIGHT = 200;
+    constexpr int BULLET_LEFT = 201;
     constexpr int CRACKED_BRICK = 300;
     
     // Background
@@ -175,76 +200,109 @@ namespace ANIMATION
     constexpr int MARIO_DIE = 999;
 
     // PIPE
-    constexpr int PIPE_HEAD = 3100;
-    constexpr int PIPE_BODY = 3101;
-    
-    // ITEMS
-    constexpr int ITEM_COIN = 8000;
-    constexpr int ITEM_MUSHROOM_1UP = 8001;
-    constexpr int ITEM_SUPER_LEAF = 8002;
-    constexpr int ITEM_TANOOKI_SUIT = 8003;
-    constexpr int ITEM_HAMMER_SUIT = 8004;
+    constexpr int PIPE_OVERWORLD = 3100;
+    constexpr int PIPE_UNDERWORLD = 3101;
+    constexpr int PIPE_CASTLE = 3102;
 
-    // PIRANHA PLANT
-    constexpr int PIRANHA_PLANT_IDLE = 3200;
+    // QUESTION BLOCK
+    constexpr int QUESTION_BLOCK = 3200;
+    constexpr int QUESTION_BLOCK_DELETED = 3201;
 
-    // BLOOPER
-	constexpr int BLOOPER_IDLE = 3300;
-	constexpr int BLOOPER_SWIM = 3301;
-	constexpr int BLOOPER_RISING = 3302;
-	constexpr int BLOOPER_SINKING = 3303;
+    // ITEMS cơ bản — dời sang 5050-5054 để tránh trùng KOOPA (5000-5003); CASTLE_BRIDGE/AXE giữ 5007/5008
+    // (khớp với mushroom.txt / fire_flower.txt / poison_mushroom.txt / super_star.txt / frog_suit.txt)
+    constexpr int MUSHROOM = 5050;
+    constexpr int FIRE_FLOWER = 5051;
+    constexpr int POISON_MUSHROOM = 5052;
+    constexpr int SUPER_STAR = 5053;
+    constexpr int FROG_SUIT = 5054;
+    constexpr int CASTLE_BRIDGE = 5007;
+    constexpr int AXE = 5008;
 
-    // BULLET BILL
-    constexpr int BULLET_BILL = 3400;
+    // FIRE MARIO (2100-2301, safe)
+    constexpr int MARIO_FIRE_IDLE_RIGHT = 2100;
+    constexpr int MARIO_FIRE_IDLE_LEFT = 2101;
+    constexpr int MARIO_FIRE_WALKING_RIGHT = 2200;
+    constexpr int MARIO_FIRE_WALKING_LEFT = 2201;
+    constexpr int MARIO_FIRE_JUMP_WALK_RIGHT = 2300;
+    constexpr int MARIO_FIRE_JUMP_WALK_LEFT = 2301;
 
-    // HAMMER BRO
-    constexpr int HAMMER_BRO_IDLE = 3500;
-    constexpr int HAMMER_BRO_WALK = 3501;
-    constexpr int HAMMER = 3550;
+    // FROG MARIO (5400-5601, safe — tránh RACCOON 2400-3001)
+    constexpr int MARIO_FROG_IDLE_RIGHT = 5400;
+    constexpr int MARIO_FROG_IDLE_LEFT = 5401;
+    constexpr int MARIO_FROG_WALKING_RIGHT = 5500;
+    constexpr int MARIO_FROG_WALKING_LEFT = 5501;
+    constexpr int MARIO_FROG_JUMP_RIGHT = 5600;
+    constexpr int MARIO_FROG_JUMP_LEFT = 5601;
 
-    // BOWSER
-    constexpr int BOWSER_IDLE = 3600;
-    constexpr int BOWSER_WALK = 3601;
-    constexpr int BOWSER_FIRE = 3602;
-    constexpr int BOWSER_FIREBALL = 3650;
+    // ============================================================
+    //  CÁC ID DƯỚI ĐÂY PHẢI KHỚP VỚI FILE .txt TRONG Application/Objects/
+    //  (đừng đổi số nếu không sửa luôn file .txt tương ứng)
+    // ============================================================
 
-    // CANNON
-    constexpr int CANNON = 3700;
-    //GOOMBA
-    constexpr int GOOMBA_WALK = 4000;
-    constexpr int GOOMBA_DIE = 4001;
+    // ---- ITEMS ---- (item2.txt)
+    constexpr int ITEM_COIN          = 8000;
+    constexpr int ITEM_MUSHROOM_1UP  = 8001;
+    constexpr int ITEM_SUPER_LEAF    = 8002;
+    constexpr int ITEM_TANOOKI_SUIT  = 8003;
+    constexpr int ITEM_HAMMER_SUIT   = 8004;
 
-	// KOOPA TROOPA
-    constexpr int KOOPA_WALK_LEFT = 5000;
-    constexpr int KOOPA_WALK_RIGHT = 5001;
-    constexpr int KOOPA_SHELL = 5002;
-    constexpr int KOOPA_SPINNING = 5003;
+    // ---- ENEMIES ----
 
-	// BUZZY BEETLE
-    constexpr int BUZZY_WALK_LEFT = 6000;
-    constexpr int BUZZY_WALK_RIGHT = 6001;
-    constexpr int BUZZY_SHELL = 6002;
-    constexpr int BUZZY_SPINNING = 6003;
+    // Goomba (Goomba.txt: 4000-4001)
+    constexpr int GOOMBA_WALK        = 4000;
+    constexpr int GOOMBA_DIE         = 4001;
 
-	// PODOBOO
-    constexpr int PODOBOO_UP = 7000;
-    constexpr int PODOBOO_DOWN = 7001;
+    // Koopa (Koopa.txt: 5000-5003)
+    constexpr int KOOPA_WALK_LEFT    = 5000;
+    constexpr int KOOPA_WALK_RIGHT   = 5001;
+    constexpr int KOOPA_SHELL        = 5002;
+    constexpr int KOOPA_SPINNING     = 5003;
 
-	// SPINY
-    constexpr int SPINY_WALK_LEFT = 8000;
-    constexpr int SPINY_WALK_RIGHT = 8001;
-    constexpr int SPINY_EGG_SPIN = 8002;
+    // BuzzyBeetle (BuzzyBeetle.txt: 6000-6003)
+    constexpr int BUZZY_WALK_LEFT    = 6000;
+    constexpr int BUZZY_WALK_RIGHT   = 6001;
+    constexpr int BUZZY_SHELL        = 6002;
+    constexpr int BUZZY_SPINNING     = 6003;
 
-	// LAKITU
-    constexpr int LAKITU_FLY_LEFT = 9000;
-    constexpr int LAKITU_FLY_RIGHT = 9001;
+    // Podoboo (Podoboo.txt: 7000-7001)
+    constexpr int PODOBOO_UP         = 7000;
+    constexpr int PODOBOO_DOWN       = 7001;
 
-	// BOWSER
-    constexpr int BOWSER_WALK_LEFT = 10000;
-    constexpr int BOWSER_WALK_RIGHT = 10001;
-    constexpr int BOWSER_ATTACK_LEFT = 10002;
-    constexpr int BOWSER_ATTACK_RIGHT = 10003;
+    // Spiny (Spiny.txt: 8000-8002)  *** trùng ID với ITEMS ở trên, xem ghi chú ***
+    constexpr int SPINY_WALK_LEFT    = 8000;
+    constexpr int SPINY_WALK_RIGHT   = 8001;
+    constexpr int SPINY_EGG_SPIN     = 8002;
 
-    constexpr int BOWSER_FIRE_LEFT = 10004;
-    constexpr int BOWSER_FIRE_RIGHT = 10005;
+    // Lakitu (Lakitu.txt: 9000-9001)
+    constexpr int LAKITU_FLY_LEFT    = 9000;
+    constexpr int LAKITU_FLY_RIGHT   = 9001;
+
+    // PiranhaPlant (piranha_plant.txt: 3250)
+    constexpr int PIRANHA_PLANT_IDLE = 3250;
+
+    // Blooper (blooper.txt: 3300-3303)
+    constexpr int BLOOPER_IDLE       = 3300;
+    constexpr int BLOOPER_RISING     = 3301;
+    constexpr int BLOOPER_SINKING    = 3302;
+
+    // BulletBill (bulletbill.txt: 3400)
+    constexpr int BULLET_BILL        = 3400;
+
+    // HammerBro (hammerbro.txt: 3500-3501) + Hammer projectile (hammer.txt: 3550)
+    constexpr int HAMMER_BRO_WALK    = 3500;
+    constexpr int HAMMER             = 3550;
+
+    // Bowser (bowser.txt: 3600-3602)
+    constexpr int BOWSER_WALK_RIGHT  = 3600;
+    constexpr int BOWSER_WALK_LEFT   = 3601;
+    constexpr int BOWSER_ATTACK_RIGHT = 3602;
+    constexpr int BOWSER_ATTACK_LEFT  = 3602;
+    constexpr int BOWSER_FIRE_RIGHT  = 3602;
+    constexpr int BOWSER_FIRE_LEFT   = 3602;
+
+    // BowserFire projectile (BowserFire.txt: 3650)
+    constexpr int BOWSER_FIRE        = 3650;
+
+    // Cannon (cannon.txt: 3700)
+    constexpr int CANNON             = 3700;
 }

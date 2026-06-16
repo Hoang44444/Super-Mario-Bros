@@ -38,4 +38,8 @@ public:
 	void OnNoCollision(DWORD dt) override;
 
 	void OnMarioCollision(Mario* mario) override;
+
+	// 1Up already rises out of the block via its own SPAWNING state, so the
+	// generic emerge animation is a no-op here.
+	void StartEmerge() override {}
 };

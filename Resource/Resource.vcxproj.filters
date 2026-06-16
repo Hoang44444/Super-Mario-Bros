@@ -1,47 +1,79 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
+    <Filter Include="Texture">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
+    <Filter Include="Texture\Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Texture\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FD}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
+    </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{0f77f2fd-788c-408a-8ce7-27e7164e43bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprite\Header Files">
+      <UniqueIdentifier>{0f77f2fd-788c-408a-8ce7-27e7164e43be}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Sprite\Source Files">
+      <UniqueIdentifier>{81de123d-a914-4366-8ba5-8bf07cc51ff8}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{b1e7ca46-ca53-4979-8499-ce53d5c290f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Header Files">
+      <UniqueIdentifier>{b1e7ca46-ca53-4979-8499-ce53d5c290f5}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{61aba161-a8d6-4401-ba79-29782b13c77e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug\Header Files">
+      <UniqueIdentifier>{61aba161-a8d6-4401-ba79-29782b13c77f}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Debug\Source Files">
+      <UniqueIdentifier>{16c4da6e-4637-4953-a484-a6741dd65951}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="debug.h">
-      <Filter>Header Files</Filter>
+      <Filter>Texture\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextureManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Texture\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Sprite\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SpriteManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Sprite\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AssetID.h">
-      <Filter>Header Files</Filter>
+      <Filter>Assets\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="debug.h">
+      <Filter>Debug\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Texture\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteManager.cpp">
+      <Filter>Sprite\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="debug.cpp">
+      <Filter>Debug\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
