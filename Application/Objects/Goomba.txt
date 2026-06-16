@@ -1,11 +1,11 @@
 [SPRITES]
 # WALKING
 # ID    Left  Top   Right Bottom TexID
-40001   0     0     16     22     8
-40002   30	  0		48	   22     8
+40001   0     0     16     22     11
+40002   30	  0		48	   22     11
 
 # DIE
-40003   59	  0		76	   22     8
+40003   59	  0		76	   22     11
 
 
 [ANIMATIONS]

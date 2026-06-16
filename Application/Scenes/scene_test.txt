@@ -4,6 +4,12 @@ Objects/mario.txt
 Objects/state.txt
 Objects/bullet.txt
 Objects/item2.txt
+Objects/Koopa.txt
+Objects/BuzzyBeetle.txt
+Objects/Podoboo.txt
+Objects/cannon.txt
+Objects/bulletbill.txt
+Objects/axe.txt
 
 [MAP]
 2000 240
@@ -12,6 +18,10 @@ Objects/item2.txt
 ########## MARIO ##########
 # type 	x 	y   z
 0 	50 	150 0.5
+
+########## AXE ##########
+# type 	x 	y   z
+17 	960 	184 0.5
 
 ########## BRICK ##########
 6 0 200 0.5
@@ -135,10 +145,3 @@ Objects/item2.txt
 6 1888 200 0.5
 6 1904 200 0.5
 
-########## TEST ITEMS ##########
-# type x    y    z
-7      80   180  0.5   # Đồng xu COIN (id 7)
-8      100  180  0.5   # Nấm 1Up (id 8)
-9      120  180  0.5   # Lá SuperLeaf (id 9)
-10     140  180  0.5   # Tanooki Suit (id 10)
-11     160  180  0.5   # Hammer Suit (id 11)

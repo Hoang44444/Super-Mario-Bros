@@ -1,0 +1,35 @@
+#pragma once
+#include "GameObject.h"
+#include "Mario.h"
+class Enemy : public GameObject{
+protected:
+	ULONGLONG lastTurnTime = 0; // last time direction was flipped by a turn block (ms)
+public:
+	Enemy(float x, float y, float z) : GameObject(x, y, z) {};
+	virtual ~Enemy() {};
+
+	bool IsCollidable() { return  true; }
+	bool IsBlocking() { return false; }
+
+	// Flip both facing and horizontal velocity, so enemies that only set their
+	// speed inside SetState() still turn around immediately.
+	void ReverseDirection() {
+		direction = -direction;
+		vx = -vx;
+	}
+
+	// Reverse only if at least cooldownMs has elapsed since the last flip.
+	// Used by EnemyTurnBlock so an enemy overlapping the block flips at most
+	// once per cooldown window (and keeps flipping every cooldown if it stays).
+	// Returns true if it actually reversed this call.
+	bool ReverseDirection(ULONGLONG cooldownMs) {
+		ULONGLONG now = GetTickCount64();
+		if (now - lastTurnTime < cooldownMs) return false;
+		lastTurnTime = now;
+		ReverseDirection();
+		return true;
+	}
+
+	virtual void OnMarioCollison(Mario* mario, float ny) = 0; // Define this in derived classes to specify what happens when Mario collides with the enemy
+};
+

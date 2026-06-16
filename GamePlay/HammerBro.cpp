@@ -71,7 +71,7 @@ void HammerBro::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = y + HAMMER_BRO_HEIGHT;
 }
 
-void HammerBro::OnMarioCollison(Mario* mario)
+void HammerBro::OnMarioCollison(Mario* mario, float ny)
 {
 	mario->SetState(MARIO_STATE_DIE);
 }

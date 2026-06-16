@@ -2,12 +2,12 @@
 # ID      Left  Top   Right Bottom TexID
 
 # IRE FLYING LEFT
-100041    98    250   126   260    8
-100042    128   250   156   260    8
+100041    98    250   126   260    11
+100042    128   250   156   260    11
 
 # FIRE FLYING RIGHT
-100051    158    250    186  260      8
-100052    188    250    216  260      8
+100051    158    250    186  260      11
+100052    188    250    216  260      11
 
 [ANIMATIONS]
 # ani_id  sprite1_id  time1  sprite2_id  time2...

@@ -107,7 +107,7 @@ void Blooper::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = y + BLOOPER_HEIGHT;
 }
 
-void Blooper::OnMarioCollison(Mario* mario)
+void Blooper::OnMarioCollison(Mario* mario, float ny)
 {
 	mario->SetState(MARIO_STATE_DIE);
 }

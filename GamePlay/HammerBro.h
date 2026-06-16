@@ -29,7 +29,7 @@ public:
 	virtual void Render() override;
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) override;
 
-	virtual void OnMarioCollison(Mario* mario) override;
+	virtual void OnMarioCollison(Mario* mario, float ny) override;
 
 	virtual void OnNoCollision(DWORD dt) override;
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e) override;

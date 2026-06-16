@@ -1,7 +1,8 @@
 [SPRITES]
 # id l t r b tex_id
-10001 0 0 16 16 0
-
+10001 48 0 64 16 8
+10002 48 0 64 16 9
 [ANIMATIONS]
 # id sprite_id time
 100 10001 100
+101 10002 100

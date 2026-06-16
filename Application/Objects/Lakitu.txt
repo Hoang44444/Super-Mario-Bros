@@ -2,12 +2,12 @@
 # ID    Left  Top   Right Bottom TexID
 
 # FLYING LEFT
-90001   0     88     16    116     8
-90002   28    88     46    112     8
+90001   0     88     16    116     11
+90002   28    88     46    112     11
 
 # FLYING RIGHT
-90011   58    88     76    116     8
-90012   28    88     46    112     8
+90011   58    88     76    116     11
+90012   28    88     46    112     11
 
 [ANIMATIONS]
 # ani_id  sprite1_id  time1  sprite2_id  time2...
