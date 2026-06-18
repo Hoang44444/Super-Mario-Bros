@@ -36,5 +36,6 @@ void BowserFire::OnMarioCollison(Mario* mario, float ny)
 void BowserFire::Render()
 {
     int aniId = (direction > 0) ? ANIMATION::BOWSER_FIRE_RIGHT : ANIMATION::BOWSER_FIRE_LEFT;
-    AnimationManager::GetInstance()->Get(aniId)->Render(x, y, z);
+    LPANIMATION ani = AnimationManager::GetInstance()->Get(aniId);
+    if (ani != nullptr) ani->Render(x, y, z);
 }

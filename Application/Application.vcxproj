@@ -136,11 +136,11 @@
     <ClCompile Include="WinApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GamePlay\GamePlay.vcxproj">
-      <Project>{7a86bc5b-2992-41a4-9a6b-44ee17a87734}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Graphic\Graphic.vcxproj">
       <Project>{5ac3afb7-6bbf-4fd2-b4e1-c846947ea458}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GamePlay\GamePlay.vcxproj">
+      <Project>{7a86bc5b-2992-41a4-9a6b-44ee17a87734}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

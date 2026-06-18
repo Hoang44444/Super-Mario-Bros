@@ -21,6 +21,9 @@ void EnemyTurnBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		Enemy* enemy = dynamic_cast<Enemy*>(obj);
 		if (enemy == NULL) continue;
 
+		// Skip enemies that are alive but not moving (idle shell, hidden, ...) or dying.
+		if (!enemy->CanBeTurnedByBlock()) continue;
+
 		float el, et, er, eb;
 		enemy->GetBoundingBox(el, et, er, eb);
 

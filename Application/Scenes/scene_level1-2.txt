@@ -25,7 +25,7 @@ Objects/piranha_plant.txt
 
 ########## MARIO ##########
 # type x y z
-0 1650 600 0.2
+0 16 600 0.2
 
 ########## ENEMY ##########
 #---- Goomba(30) ----#
@@ -676,7 +676,12 @@ Objects/piranha_plant.txt
 1 2176 624 0.5
 1 2192 624 0.5
 
-
+########## BLOCK SWITCH DIRECTION ENEMY (44) ##########
+# Guards around the pit at x=1264-1328 (existing)
+44 1266 672 0.5
+44 1328 672 0.5
+# Right guard for the ground Goomba cluster (1536-1632) before the pit at x~1904
+44 1888 672 0.5 
 
 
 

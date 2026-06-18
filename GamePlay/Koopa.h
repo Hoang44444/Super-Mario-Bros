@@ -34,5 +34,8 @@ public:
     virtual void OnNoCollision(DWORD dt);
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
     virtual void OnMarioCollison(Mario* mario, float ny) override;
+    virtual void OnHitByBullet() override { SetState(KOOPA_STATE_DIE); }
+    // Only a normally-walking Koopa is flipped by a turn block; a spinning/sliding shell is not.
+    virtual bool CanBeTurnedByBlock() override { return state == KOOPA_STATE_WALKING; }
     virtual bool IsCollidable() override;
 };

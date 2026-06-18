@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Mario.h"
+
 class Enemy : public GameObject{
 protected:
 	ULONGLONG lastTurnTime = 0; // last time direction was flipped by a turn block (ms)
@@ -31,5 +32,14 @@ public:
 	}
 
 	virtual void OnMarioCollison(Mario* mario, float ny) = 0; // Define this in derived classes to specify what happens when Mario collides with the enemy
+
+	// Called when a bullet hits this enemy. Default: just remove the enemy.
+	// Enemies that have a death animation override this to switch to their die state instead.
+	virtual void OnHitByBullet() { Delete(); }
+
+	// Whether a turn block (id 44) is allowed to flip this enemy. Only enemies that are
+	// alive (IsCollidable() is false in death states) and actually moving (vx != 0) get
+	// turned; enemies that are alive but standing still (idle shell, hidden, ...) are left alone.
+	virtual bool CanBeTurnedByBlock() { return IsCollidable() && vx != 0; }
 };
 

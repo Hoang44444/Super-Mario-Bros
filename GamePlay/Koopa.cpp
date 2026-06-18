@@ -53,6 +53,7 @@ void Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
         y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_SHELL);
     }
+
     Collision::GetInstance()->Process(this, dt, coObjects);
 }
 

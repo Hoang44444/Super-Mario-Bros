@@ -2,6 +2,7 @@
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
 #include "debug.h"
+#include "Enemy.h"
 
 void Bullet::Moving(DWORD dt)
 {
@@ -43,7 +44,13 @@ void Bullet::GetBoundingBox(float& l, float& t, float& r, float& b)
 void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (e->obj == owner) return;        // Ignore collision with the owner
-	if (!e->obj->IsBlocking()) return;  // pass through non-static objects
+
+	if (dynamic_cast<Enemy*>(e->obj)) { // hit an enemy -> handle before the blocking check
+		OnCollisionWithEnemy(e);        // (enemies are non-blocking, so this must come first)
+		return;
+	}
+
+	if (!e->obj->IsBlocking()) return;  // pass through other non-static objects
 
 	// Bounce off static objects instead of disappearing
 	if (e->ny < 0) {                    // hit floor -> bounce up
@@ -57,6 +64,19 @@ void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 		vx = -vx;
 		direction = -direction;
 	}
+}
+
+void Bullet::OnCollisionWithEnemy(LPCOLLISIONEVENT e)
+{
+	if (e->obj == owner) return;        // Ignore collision with the owner
+	if (e->obj->IsDeleted()) return;    // Ignore already deleted objects
+
+	// Put the enemy into its die state (each enemy decides how it dies),
+	// then remove the bullet.
+	if (Enemy* enemy = dynamic_cast<Enemy*>(e->obj)) {
+		enemy->OnHitByBullet();
+	}
+	this->Delete();
 }
 
 void Bullet::OnNoCollision(DWORD dt)

@@ -33,5 +33,6 @@ public:
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
     virtual void OnMarioCollison(Mario* mario, float ny) override;
+    virtual void OnHitByBullet() override { SetState(GOOMBA_STATE_DIE_OTHER); }
     virtual bool IsCollidable() override;
 };

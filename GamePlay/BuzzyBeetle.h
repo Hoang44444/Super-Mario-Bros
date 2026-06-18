@@ -34,5 +34,8 @@ public:
     virtual void OnNoCollision(DWORD dt);
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
     virtual void OnMarioCollison(Mario* mario, float ny) override;
+    virtual void OnHitByBullet() override { SetState(BUZZY_STATE_DIE); }
+    // Only a normally-walking BuzzyBeetle is flipped by a turn block; a spinning shell is not.
+    virtual bool CanBeTurnedByBlock() override { return state == BUZZY_STATE_WALKING; }
     virtual bool IsCollidable() override;
 };

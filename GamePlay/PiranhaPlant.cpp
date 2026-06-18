@@ -57,7 +57,9 @@ void PiranhaPlant::Render()
 {
 	if (state != PIRANHA_STATE_HIDING)
 	{
-		AnimationManager::GetInstance()->Get(ANIMATION::PIRANHA_PLANT_IDLE)->Render(x, y, z);
+		LPANIMATION ani = AnimationManager::GetInstance()->Get(ANIMATION::PIRANHA_PLANT_IDLE);
+		if (ani != nullptr)
+			ani->Render(x, y, z);
 	}
 }
 
