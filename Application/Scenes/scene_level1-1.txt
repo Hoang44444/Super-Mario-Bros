@@ -46,10 +46,18 @@ Objects/Goomba.txt
 
 #---- Koopa (31)----
 31 1530 406 0.5
+31 1038 406 0.5
 
 
-#---- BLOCK SWITCH DIRECTION ENEMY (44)----
-44 1426 390 0.5 
+########## BLOCK SWITCH DIRECTION ENEMY (44) ##########
+# Left guard for the ground Goomba cluster (1580-1700) - turn them back before the pit on the left
+44 1426 432 0.5
+# Bound the Goomba patrolling the raised brick row at y=320 (x=1280-1408)
+44 1280 304 0.5
+44 1392 304 0.5
+44 1132 432 0.5
+44 1090 432 0.5
+44 1360 432 0.5
 
 ########## END SCENE POINT ##########
 # type x y z
@@ -62,22 +70,28 @@ Objects/Goomba.txt
 
 # Pipe 2
 4 608 400 0.5 3100
-1 608 416 0.5 
-1 624 416 0.5 
+1 608 416 0.5
+1 624 416 0.5
+1 608 432 0.5 
+1 624 432 0.5 
 
 # Pipe 3
 4 736 384 0.5 3100
 1 736 400 0.5
 1 752 400 0.5
-1 736 416 0.5 
+1 736 416 0.5
 1 752 416 0.5
+1 736 432 0.5 
+1 752 432 0.5
 
 # Pipe 4
 4 912 384 0.5 3100
 1 912 400 0.5 
 1 928 400 0.5
 1 912 416 0.5
-1 928 416 0.5 
+1 928 416 0.5
+1 912 432 0.5
+1 928 432 0.5 
 
 # Pipe 5
 4 2608 416 0.5 3100

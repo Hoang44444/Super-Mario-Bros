@@ -30,5 +30,7 @@ public:
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
     virtual void OnMarioCollison(Mario* mario, float ny) override;
     virtual void OnHitByBullet() override { SetState(SPINY_STATE_DIE); }
+    // Only a normally-walking Spiny is flipped by a turn block; the falling egg form is not.
+    virtual bool CanBeTurnedByBlock() override { return state == SPINY_STATE_WALKING; }
     virtual bool IsCollidable() override;
 };

@@ -259,6 +259,24 @@ Objects/Goomba.txt
 1 2288 80 0.5
 
 
+########## BLOCK SWITCH DIRECTION ENEMY (44) ##########
+# Keep each enemy patrolling on its own small platform instead of walking off the edge.
+# Block y = platform top - 16 so it overlaps the enemy's body.
+# Platform 3 (upper ledge, top y=80) - Koopa at x=435
+44 416 64 0.5
+44 480 64 0.5
+# Platform 6 (top y=64) - two Goombas at x=682/730
+44 640 48 0.5
+44 736 48 0.5
+# Platform 11 (top y=96) - Goomba at x=1288
+44 1216 80 0.5
+44 1296 80 0.5
+# Platform 13 (top y=112) - Koopa at x=1763
+44 1664 96 0.5
+44 1776 96 0.5
+# Platform 17 (ground, top y=208) - left edge guard for the Koopa near Mario's start
+44 2064 192 0.5
+
 ########## SWITCH SCENE POINT ##########
 # type x y z
 5 2560 176 0.5

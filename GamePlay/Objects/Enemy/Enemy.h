@@ -36,5 +36,10 @@ public:
 	// Called when a bullet hits this enemy. Default: just remove the enemy.
 	// Enemies that have a death animation override this to switch to their die state instead.
 	virtual void OnHitByBullet() { Delete(); }
+
+	// Whether a turn block (id 44) is allowed to flip this enemy. Only enemies that are
+	// alive (IsCollidable() is false in death states) and actually moving (vx != 0) get
+	// turned; enemies that are alive but standing still (idle shell, hidden, ...) are left alone.
+	virtual bool CanBeTurnedByBlock() { return IsCollidable() && vx != 0; }
 };
 

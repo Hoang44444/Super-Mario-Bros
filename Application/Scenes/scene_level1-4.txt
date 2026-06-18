@@ -833,6 +833,15 @@ Objects/axe.txt
 ########## AXE(17) ##########
 17 4831 126 0.5
 
+########## BLOCK SWITCH DIRECTION ENEMY (44) ##########
+# Keep the Buzzy Beetles from walking off the main floor (top y=207) into the pits.
+# Block y = 207 - 16 = 191 so it overlaps the walking Buzzy Beetle's body.
+# Buzzy Beetle at x=288: bound left edge (pit at x=96-160) and right edge (pit at x~1056)
+44 176 191 0.5
+44 1024 191 0.5
+# Buzzy Beetles at x=1775/1823/2096: right guard before the pit at x~2304
+44 2272 191 0.5
+
 ########## SWITCH SCENE POINT ##########
 # type x y z
 5 5088 175 0.5
