@@ -2,6 +2,8 @@
 #include "KeyEventHandler.h"
 #include "PlayScene.h"
 #include "Mario.h"
+#include "GameManager.h"
+#include "../Resource/AssetID.h"
 #include "debug.h"
 
 class MarioKeyHandler : public KeyEventHandler
@@ -28,6 +30,18 @@ public:
 	}
 
 	virtual void OnKeyDown(int KeyCode) {
+		GameManager* gm = GameManager::GetInstance();
+
+		// 'P' toggles pause/resume during play.
+		if (KeyCode == 'P') {
+			if (gm->GetGameState() == GAME_STATE::PLAY)
+				gm->SetGameState(GAME_STATE::PAUSE);
+			else if (gm->GetGameState() == GAME_STATE::PAUSE)
+				gm->SetGameState(GAME_STATE::PLAY);
+			return;
+		}
+		if (gm->GetGameState() == GAME_STATE::PAUSE) return; // ignore gameplay keys while paused
+
 		LPGAMEOBJECT mario = scene->GetPlayer();
 		if (mario == NULL) return;
 

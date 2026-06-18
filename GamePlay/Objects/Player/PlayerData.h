@@ -18,6 +18,7 @@ public:
     int level = MARIO_LEVEL::FIRE;
     int coins = 0;
     int lives = 3;
+    int returnScene = 1;   // level to resume after the death screen (default: world 1-1)
 
     static PlayerData& Get()
     {

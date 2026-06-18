@@ -10,6 +10,10 @@ class PlayScene : public Scene
 	LPGAMEOBJECT player;
 	std::vector<LPGAMEOBJECT> objects;
 	float fixedCameraY;
+	int mapHeight = 0;            // map height (px); used to detect Mario falling off the bottom
+	ULONGLONG marioDieStart = 0;  // tick when Mario entered the DIE state (0 = not dying)
+
+	void OnMarioDeath();          // lose a life -> death screen, or game over -> menu
 
 	void _ParseSection_ASSETS(string line);
 	void _ParseSection_OBJECTS(string line);

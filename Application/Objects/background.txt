@@ -13,7 +13,17 @@
 
 #---- END SCENE ----#
 30016 0 0 960 540 16
- 
+
+#---- DEATH SCENE ----#
+30017 0 0 960 540 18
+
+#---- MENU TEXT (white = not selected, yellow = selected) ----#
+# id  l   t   r   b   tex_id
+30020 93  30  329 81  17    # Bắt đầu  (white)
+30021 93  111 329 162 17    # Bắt đầu  (yellow)
+30022 45  192 379 254 17    # Hướng dẫn (white)
+30023 45  284 379 346 17    # Hướng dẫn (yellow)
+
 [ANIMATIONS]
 # id sprite_id time
 3000 30001 100
@@ -23,3 +33,10 @@
 3004 30014 100
 3005 30015 100
 3006 30016 100
+3007 30017 100
+
+# Menu option text
+3010 30020 100
+3011 30021 100
+3012 30022 100
+3013 30023 100

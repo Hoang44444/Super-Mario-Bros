@@ -13,6 +13,7 @@ class GameManager
 	std::unordered_map<int, LPSCENE> scenes;
 	int current_scene;
 	int next_scene;
+	int game_state;     // one of GAME_STATE::{MENU, PLAY, PAUSE, GAME_OVER}
 
 	LPKEYEVENTHANDLER key_handler;
 
@@ -43,6 +44,9 @@ public:
 
 	void SwitchScene();
 	void InitiateSwitchScene(int scene_id) { next_scene = scene_id; }
+
+	int  GetGameState() { return game_state; }
+	void SetGameState(int s) { game_state = s; }
 
 	void Update(DWORD dt);
 	void Render();

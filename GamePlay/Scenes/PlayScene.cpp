@@ -6,7 +6,11 @@
 #include "PlayScene.h"
 #include "Mario.h"
 #include "MarioKeyHandler.h"
+#include "MenuKeyHandler.h"
 #include "Background.h"
+#include "MenuOptions.h"
+#include "PlayerData.h"
+#include "../Resource/AssetID.h"
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
@@ -53,9 +57,15 @@ void PlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath.c_str());
 
+	marioDieStart = 0; // fresh load -> Mario is alive again
+
 	if (key_handler == NULL)
 	{
-		key_handler = new MarioKeyHandler(this);
+		// Non-gameplay screens (menu / control / end / death) have no player; use the menu handler.
+		if (id == SCENE::MENU || id == SCENE::CONTROL || id == SCENE::END || id == SCENE::DEATH)
+			key_handler = new MenuKeyHandler();
+		else
+			key_handler = new MarioKeyHandler(this);
 		GameManager::GetInstance()->SetKeyHandler(key_handler);
 	}
 		
@@ -394,6 +404,10 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT::PIRANHA_PLANT:
 		obj = new PiranhaPlant(x, y, z);
 		break;
+
+	case OBJECT::MENU_OPTIONS:
+		obj = new MenuOptions(x, y, z);
+		break;
 	}
 
 	if (obj != NULL) {
@@ -432,6 +446,7 @@ void PlayScene::_ParseSection_MAP(string line)
 	int width = atoi(tokens[0].c_str());
 	int height = atoi(tokens[1].c_str());
 
+	this->mapHeight = height;
 	Camera::GetInstance()->SetMapSize(width, height);
 }
 
@@ -457,6 +472,26 @@ void PlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario died)
 	if (player == nullptr) return;
 
+	// Death detection: either Mario fell off the bottom of the map, or his death
+	// animation (DIE state) has played long enough.
+	{
+		float px, py, pz;
+		player->GetPosition(px, py, pz);
+		ULONGLONG now = GetTickCount64();
+
+		if (player->GetState() == MARIO_STATE::DIE && marioDieStart == 0)
+			marioDieStart = now;
+
+		bool fellOff = (mapHeight > 0 && py > mapHeight);
+		bool dieAnimDone = (marioDieStart != 0 && now - marioDieStart > 2000);
+
+		if (fellOff || dieAnimDone)
+		{
+			OnMarioDeath();
+			return;
+		}
+	}
+
 	// Update camera to follow mario
 	float cx, cy, cz;
 	player->GetPosition(cx, cy, cz);
@@ -481,6 +516,17 @@ void PlayScene::Render()
 	{
 		objects[i]->Render();
 	}
+}
+
+void PlayScene::OnMarioDeath()
+{
+	PlayerData& pd = PlayerData::Get();
+	pd.lives--;
+	pd.returnScene = id;   // level to resume if lives remain
+
+	// Always show the death screen. If this was the last life, SwitchScene marks the
+	// state GAME_OVER and the screen acts as a game-over screen (key -> back to menu).
+	GameManager::GetInstance()->InitiateSwitchScene(SCENE::DEATH);
 }
 
 void PlayScene::Unload()

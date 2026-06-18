@@ -8,6 +8,7 @@
 #include "SpriteManager.h"
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
+#include "PlayerData.h"
 #include "debug.h"
 #include "Renderer.h"
 
@@ -17,6 +18,7 @@ GameManager::GameManager()
 {
 	current_scene = -1;
 	next_scene = -1;
+	game_state = GAME_STATE::MENU;
 	hWnd = NULL;
 	screenWidth = 0;
 	screenHeight = 0;
@@ -37,6 +39,8 @@ void GameManager::Init(HWND hWnd, HINSTANCE hInstance)
 
 void GameManager::ProcessKeyboard()
 {
+	if (game_state == GAME_STATE::PAUSE) return; // frozen: ignore held-key movement
+
 	if (key_handler != NULL)
 	{
 		BYTE states[256];
@@ -194,6 +198,15 @@ void GameManager::SwitchScene()
 	AnimationManager::GetInstance()->Clear();
 
 	current_scene = next_scene;
+
+	// Derive the high-level game state from the scene just entered.
+	if (current_scene >= SCENE::WORLD_1_1 && current_scene <= SCENE::WORLD_1_4)
+		game_state = GAME_STATE::PLAY;
+	else if (current_scene == SCENE::DEATH && PlayerData::Get().lives <= 0)
+		game_state = GAME_STATE::GAME_OVER;   // out of lives -> death screen acts as game over
+	else
+		game_state = GAME_STATE::MENU;        // menu / control / end(win) / death-continue
+
 	LPSCENE s = scenes[current_scene];
 	GameManager::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
 	s->Load();
@@ -201,6 +214,8 @@ void GameManager::SwitchScene()
 
 void GameManager::Update(DWORD dt)
 {
+	if (game_state == GAME_STATE::PAUSE) return; // frozen: keep last frame, skip updates
+
 	if (current_scene != -1)
 		scenes[current_scene]->Update(dt);
 

@@ -12,6 +12,7 @@ screen_height 1080
 10 Scenes/scene_test.txt
 13 Scenes/end_scene.txt
 14 Scenes/control_scene.txt
+15 Scenes/death_scene.txt
 
 
 [TEXTURES]
@@ -32,4 +33,6 @@ screen_height 1080
 14  Texture/Scene/menu_scene.png
 15  Texture/Scene/controls.png
 16  Texture/Scene/end_scene.png
+17  Texture/Items/menu_text.png
+18  Texture/Scene/death_scene.png
 # -100 Texture/bbox.png

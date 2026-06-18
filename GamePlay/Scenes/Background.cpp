@@ -17,7 +17,8 @@ void Background::Render()
     // screen instead of drawing at native pixel size (which would show only a corner).
     if (currentScene == SCENE::MENU ||
         currentScene == SCENE::CONTROL ||
-        currentScene == SCENE::END)
+        currentScene == SCENE::END ||
+        currentScene == SCENE::DEATH)
     {
         Renderer* r = Renderer::GetInstance();
         float scale = r->GetGlobalScale();
@@ -53,6 +54,8 @@ int Background::WorldRender()
 		return ANIMATION::BACKGROUND_CONTROL;
 	if (currentScene == SCENE::END)
 		return ANIMATION::BACKGROUND_END;
+	if (currentScene == SCENE::DEATH)
+		return ANIMATION::BACKGROUND_DEATH;
 
   return 0;
 }

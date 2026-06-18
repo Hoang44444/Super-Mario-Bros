@@ -7,3 +7,5 @@ Objects/background.txt
 [OBJECTS]
 # type x y z   (3 = BACKGROUND; picks menu image via scene id)
 3 0 0 0.9
+# 50 = MENU_OPTIONS (draws "Bắt đầu" / "Hướng dẫn"; selected one in yellow)
+50 0 0 0.4
