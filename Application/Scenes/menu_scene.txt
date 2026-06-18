@@ -1,0 +1,9 @@
+[ASSETS]
+Objects/background.txt
+
+[MAP]
+960 540
+
+[OBJECTS]
+# type x y z   (3 = BACKGROUND; picks menu image via scene id)
+3 0 0 0.9

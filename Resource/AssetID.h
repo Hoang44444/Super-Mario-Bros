@@ -20,7 +20,8 @@ namespace SCENE
     constexpr int WORLD_3_2 = 10;
     constexpr int WORLD_3_3 = 11;
     constexpr int WORLD_3_4 = 12;
-    constexpr int END = 13;
+    constexpr int END = 13;      // end / win scene
+    constexpr int CONTROL = 14;  // controls / how-to-play scene
 }
 
 namespace GAME
@@ -93,6 +94,11 @@ namespace TEXTURE
     constexpr int LEVEL1_1 = 4;
     constexpr int BBOX = -100;
     constexpr int ENEMIES = 11;
+
+    // Full-screen scene backgrounds (match [TEXTURES] in super-mario-bros.txt)
+    constexpr int MENU_SCENE = 14;
+    constexpr int CONTROL_SCENE = 15;
+    constexpr int END_SCENE = 16;
 }
 
 namespace ANIMATION
@@ -118,6 +124,9 @@ namespace ANIMATION
 	constexpr int BACKGROUND_LEVEL1_2 = 3001;
 	constexpr int BACKGROUND_LEVEL1_3 = 3002;
 	constexpr int BACKGROUND_LEVEL1_4 = 3003;
+	constexpr int BACKGROUND_MENU     = 3004; // menu_scene.png
+	constexpr int BACKGROUND_CONTROL  = 3005; // controls.png
+	constexpr int BACKGROUND_END      = 3006; // end_scene.png
 
     // BIG MARIO
     constexpr int MARIO_BIG_IDLE_RIGHT = 400;
