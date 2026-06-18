@@ -37,5 +37,8 @@ public:
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
     virtual void OnMarioCollison(Mario* mario, float ny) override;
 
+    // Boss takes several hits: each bullet removes one HP, dies only at 0.
+    virtual void OnHitByBullet() override { if (--hp <= 0) SetState(BOWSER_STATE_DIE); }
+
     virtual bool IsCollidable() override { return state != BOWSER_STATE_DIE; }
 };

@@ -34,5 +34,6 @@ public:
     virtual void OnNoCollision(DWORD dt);
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
     virtual void OnMarioCollison(Mario* mario, float ny) override;
+    virtual void OnHitByBullet() override { SetState(KOOPA_STATE_DIE); }
     virtual bool IsCollidable() override;
 };

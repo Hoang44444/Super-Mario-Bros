@@ -31,5 +31,9 @@ public:
 	}
 
 	virtual void OnMarioCollison(Mario* mario, float ny) = 0; // Define this in derived classes to specify what happens when Mario collides with the enemy
+
+	// Called when a bullet hits this enemy. Default: just remove the enemy.
+	// Enemies that have a death animation override this to switch to their die state instead.
+	virtual void OnHitByBullet() { Delete(); }
 };
 

@@ -34,7 +34,8 @@ public:
 	bool IsBlocking() { return false; }
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnNoCollision(DWORD dt);
-
 	void Moving(DWORD dt);
+	void OnCollisionWithEnemy(LPCOLLISIONEVENT e);
+
 };
 
