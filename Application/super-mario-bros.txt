@@ -1,5 +1,5 @@
 [SETTINGS]
-start    10
+start    1
 screen_width 1920
 screen_height 1080
 
@@ -17,10 +17,10 @@ screen_height 1080
 1   Texture/Character/mario.png
 2   Texture/Items/misc.png
 3   Texture/Scene/menu_scene.png
-4   Texture/Scene/Level1/level1-1.png
-5   Texture/Scene/Level1/level1-2.png
-6   Texture/Scene/Level1/level1-3.png
-7   Texture/Scene/Level1/level1-4.png
+4   Texture/Scene/level1-1.png
+5   Texture/Scene/level1-2.png
+6   Texture/Scene/level1-3.png
+7   Texture/Scene/level1-4.png
 8   Texture/Items/OverWorld.png
 9   Texture/Items/UnderWorld.png
 10  Texture/Items/items.png
