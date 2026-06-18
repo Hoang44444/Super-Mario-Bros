@@ -9,10 +9,16 @@
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
 #include "PlayerData.h"
+#include "PauseKeyHandler.h"
+#include "GameOverHandler.h"
 #include "debug.h"
 #include "Renderer.h"
 
 GameManager* GameManager::__instance = NULL;
+
+// State-specific input handlers (don't belong to any scene file).
+static PauseKeyHandler s_pauseHandler;
+static GameOverHandler s_gameOverHandler;
 
 GameManager::GameManager()
 {
@@ -53,6 +59,10 @@ void GameManager::ProcessKeyboard()
 
 void GameManager::OnKeyDown(int KeyCode)
 {
+	// Route discrete key presses to the handler that matches the current game state.
+	if (game_state == GAME_STATE::PAUSE) { s_pauseHandler.OnKeyDown(KeyCode); return; }
+	if (game_state == GAME_STATE::GAME_OVER) { s_gameOverHandler.OnKeyDown(KeyCode); return; }
+
 	if (key_handler != NULL)
 		key_handler->OnKeyDown(KeyCode);
 }

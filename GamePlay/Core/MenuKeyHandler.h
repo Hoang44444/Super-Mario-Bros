@@ -42,17 +42,10 @@ public:
 			}
 		}
 		else if (sceneId == SCENE::DEATH) {
-			// "Press ENTER to continue"
-			if (KeyCode == VK_RETURN || KeyCode == VK_SPACE) {
-				PlayerData& pd = PlayerData::Get();
-				if (pd.lives > 0) {
-					gm->InitiateSwitchScene(pd.returnScene);   // still alive -> resume the level
-				}
-				else {
-					pd.Reset();                                // game over -> restart from menu
-					gm->InitiateSwitchScene(SCENE::MENU);
-				}
-			}
+			// Death screen while lives remain -> press confirm to resume the level.
+			// (Out-of-lives is GAME_STATE::GAME_OVER, handled by GameOverHandler.)
+			if (KeyCode == VK_RETURN || KeyCode == VK_SPACE)
+				gm->InitiateSwitchScene(PlayerData::Get().returnScene);
 		}
 		else if (sceneId == SCENE::CONTROL || sceneId == SCENE::END) {
 			gm->InitiateSwitchScene(SCENE::MENU);                // any key -> back to menu

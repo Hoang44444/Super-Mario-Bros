@@ -30,17 +30,12 @@ public:
 	}
 
 	virtual void OnKeyDown(int KeyCode) {
-		GameManager* gm = GameManager::GetInstance();
-
-		// 'P' toggles pause/resume during play.
+		// 'P' pauses the game. While paused, input is handled by PauseKeyHandler
+		// (GameManager routes by game state), so we only need to enter PAUSE here.
 		if (KeyCode == 'P') {
-			if (gm->GetGameState() == GAME_STATE::PLAY)
-				gm->SetGameState(GAME_STATE::PAUSE);
-			else if (gm->GetGameState() == GAME_STATE::PAUSE)
-				gm->SetGameState(GAME_STATE::PLAY);
+			GameManager::GetInstance()->SetGameState(GAME_STATE::PAUSE);
 			return;
 		}
-		if (gm->GetGameState() == GAME_STATE::PAUSE) return; // ignore gameplay keys while paused
 
 		LPGAMEOBJECT mario = scene->GetPlayer();
 		if (mario == NULL) return;
