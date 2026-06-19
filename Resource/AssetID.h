@@ -20,7 +20,19 @@ namespace SCENE
     constexpr int WORLD_3_2 = 10;
     constexpr int WORLD_3_3 = 11;
     constexpr int WORLD_3_4 = 12;
-    constexpr int END = 13;
+    constexpr int END = 13;      // end / win scene
+    constexpr int CONTROL = 14;  // controls / how-to-play scene
+    constexpr int DEATH = 15;    // "Mario died / lost a life" screen (lives remain)
+    constexpr int GAME_OVER = 16; // out-of-lives screen (Enter -> replay from the start)
+}
+
+// High-level game state (independent of which scene file is loaded).
+namespace GAME_STATE
+{
+    constexpr int MENU = 0;       // menu / control / death-continue screens
+    constexpr int PLAY = 1;       // actively playing a level
+    constexpr int PAUSE = 2;      // gameplay frozen
+    constexpr int GAME_OVER = 3;  // game finished (reached the end scene)
 }
 
 namespace GAME
@@ -82,6 +94,9 @@ namespace OBJECT
 	constexpr int SPINY = 42;
 	constexpr int PIRANHA_PLANT = 43;
 	constexpr int ENEMY_TURN_BLOCK = 44; // invisible block that flips enemy direction
+
+	// ---- UI ----
+	constexpr int MENU_OPTIONS = 50;     // menu text options ("Bắt đầu" / "Hướng dẫn")
 }
 
 namespace TEXTURE
@@ -93,6 +108,14 @@ namespace TEXTURE
     constexpr int LEVEL1_1 = 4;
     constexpr int BBOX = -100;
     constexpr int ENEMIES = 11;
+
+    // Full-screen scene backgrounds (match [TEXTURES] in super-mario-bros.txt)
+    constexpr int MENU_SCENE = 14;
+    constexpr int CONTROL_SCENE = 15;
+    constexpr int END_SCENE = 16;
+    constexpr int MENU_TEXT = 17;   // menu_text.png: white/yellow "Bắt đầu" & "Hướng dẫn"
+    constexpr int DEATH_SCENE = 18; // death_scene.png
+    constexpr int GAMEOVER_SCENE = 19; // gameover_scene.png
 }
 
 namespace ANIMATION
@@ -118,6 +141,17 @@ namespace ANIMATION
 	constexpr int BACKGROUND_LEVEL1_2 = 3001;
 	constexpr int BACKGROUND_LEVEL1_3 = 3002;
 	constexpr int BACKGROUND_LEVEL1_4 = 3003;
+	constexpr int BACKGROUND_MENU     = 3004; // menu_scene.png
+	constexpr int BACKGROUND_CONTROL  = 3005; // controls.png
+	constexpr int BACKGROUND_END      = 3006; // end_scene.png
+	constexpr int BACKGROUND_DEATH    = 3007; // death_scene.png
+	constexpr int BACKGROUND_GAMEOVER = 3008; // gameover_scene.png
+
+	// Menu option text (white = not selected, yellow = selected)
+	constexpr int MENU_START_WHITE    = 3010; // "Bắt đầu"
+	constexpr int MENU_START_YELLOW   = 3011;
+	constexpr int MENU_GUIDE_WHITE    = 3012; // "Hướng dẫn"
+	constexpr int MENU_GUIDE_YELLOW   = 3013;
 
     // BIG MARIO
     constexpr int MARIO_BIG_IDLE_RIGHT = 400;

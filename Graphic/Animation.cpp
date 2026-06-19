@@ -49,3 +49,25 @@ void Animation::Render(float x, float y, float z, bool flipX)
         flipX
     );
 }
+
+void Animation::RenderScaled(float x, float y, float z, float destWidth, float destHeight)
+{
+    if (frames.size() == 0) return;
+
+    if (currentFrame == -1)
+        currentFrame = 0;
+
+    LPSPRITE sprite = frames[currentFrame]->GetSprite();
+    if (sprite == nullptr || sprite->GetTexture() == nullptr) return;
+
+    RECT rect = sprite->GetRect();
+
+    Renderer::GetInstance()->DrawScaled(
+        x, y, z,
+        sprite->GetTexture(),
+        destWidth, destHeight,
+        &rect,
+        1.0f,
+        false
+    );
+}

@@ -1,0 +1,11 @@
+[ASSETS]
+Objects/background.txt
+
+[MAP]
+960 540
+
+[OBJECTS]
+# type x y z   (3 = BACKGROUND; picks menu image via scene id)
+3 0 0 0.9
+# 50 = MENU_OPTIONS; 5th field = file defining the options (see menu_options.txt)
+50 0 0 0.4 Objects/menu_options.txt

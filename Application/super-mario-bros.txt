@@ -1,5 +1,5 @@
 [SETTINGS]
-start    2
+start    0
 screen_width 1920
 screen_height 1080
 
@@ -10,6 +10,10 @@ screen_height 1080
 3  Scenes/scene_level1-3.txt
 4  Scenes/scene_level1-4.txt
 10 Scenes/scene_test.txt
+13 Scenes/end_scene.txt
+14 Scenes/control_scene.txt
+15 Scenes/death_scene.txt
+16 Scenes/gameover_scene.txt
 
 
 [TEXTURES]
@@ -27,5 +31,10 @@ screen_height 1080
 11  Texture/Character/enemies3.png
 12  Texture/Items/Bridge.png
 13  Texture/Items/axe.png
-
+14  Texture/Scene/menu_scene.png
+15  Texture/Scene/controls.png
+16  Texture/Scene/end_scene.png
+17  Texture/Items/menu_text.png
+18  Texture/Scene/death_scene.png
+19  Texture/Scene/gameover_scene.png
 # -100 Texture/bbox.png
