@@ -31,7 +31,7 @@ namespace MARIO_PARAMS
 	constexpr float ACCEL_X         = 0.0f;
 	constexpr float RUN_SPEED       = 0.15f;
 	constexpr float WALK_SPEED      = 0.1f;
-	constexpr float JUMP_SPEED      = 0.5f;
+	constexpr float JUMP_SPEED      = 0.55f;
 	constexpr float FROG_JUMP_SPEED   = 0.7f;
 	constexpr float FROG_JUMP_SPEED_X = 0.12f;
 	constexpr DWORD STAR_POWER_TIME = 7000;
@@ -97,7 +97,7 @@ public:
 	void SetSpeedX(float vx) { this->vx = vx; }
 	int GetLevel() { return level; }
 	void SetLevel(int level);
-	void SetInvincible(DWORD duration) { isInvincible = true; invincibleTime = duration; }
+	void SetInvincible(DWORD duration) { isInvincible = true; if (duration > invincibleTime) invincibleTime = duration; }
 	bool IsInvincible() { return isInvincible; }
 	bool CanShoot() { return canShoot; }
 	void SetCanShoot(bool v) { canShoot = v; }
