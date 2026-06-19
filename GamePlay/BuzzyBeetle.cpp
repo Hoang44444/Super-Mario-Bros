@@ -121,7 +121,7 @@ void BuzzyBeetle::OnMarioCollison(Mario* mario, float ny)
         }
         else
         {
-            mario->SetState(MARIO_STATE_DIE);
+            mario->TakeDamage();
         }
     }
     else if (state == BUZZY_STATE_SHELL)
@@ -144,7 +144,7 @@ void BuzzyBeetle::OnMarioCollison(Mario* mario, float ny)
         }
         else
         {
-            mario->SetState(MARIO_STATE_DIE);
+            mario->TakeDamage();
         }
     }
 }

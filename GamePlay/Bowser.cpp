@@ -41,7 +41,7 @@ void Bowser::OnMarioCollison(Mario* mario, float ny)
 {
     if (mario->GetState() == MARIO_STATE_DIE) return;
 
-    mario->SetState(MARIO_STATE_DIE);
+    mario->TakeDamage();
 }
 
 void Bowser::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

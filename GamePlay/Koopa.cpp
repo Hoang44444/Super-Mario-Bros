@@ -120,7 +120,7 @@ void Koopa::OnMarioCollison(Mario* mario, float ny)
         }
         else
         {
-            mario->SetState(MARIO_STATE_DIE);
+            mario->TakeDamage();
         }
     }
 
@@ -144,7 +144,7 @@ void Koopa::OnMarioCollison(Mario* mario, float ny)
         }
         else
         {
-            mario->SetState(MARIO_STATE_DIE);
+            mario->TakeDamage();
         }
     }
 }

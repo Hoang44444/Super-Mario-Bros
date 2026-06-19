@@ -32,6 +32,22 @@ void Mario::SetLevel(int level)
 	PlayerData::Get().level = level;   // lưu lại để giữ qua các màn
 }
 
+void Mario::TakeDamage()
+{
+	// Ignore hits while invincible (star power / post-hit grace) or already dying.
+	if (isInvincible || state == MARIO_STATE::DIE) return;
+
+	if (level != MARIO_LEVEL::SMALL)
+	{
+		SetLevel(MARIO_LEVEL::SMALL);              // shrink one tier instead of dying
+		SetInvincible(MARIO_PARAMS::HIT_GRACE_TIME); // short grace so the same enemy can't re-hit
+	}
+	else
+	{
+		SetState(MARIO_STATE::DIE);                // already small -> lose a life
+	}
+}
+
 void Mario::Jump() {
 	if (!isOnGround) return;
 	vy = -MARIO_PARAMS::JUMP_SPEED;
@@ -39,6 +55,7 @@ void Mario::Jump() {
 }
 
 void Mario::ShootBullet() {
+	if (this->level != MARIO_LEVEL::FIRE) return;
 	float bulletX = x + (direction > 0 ? 15.0f : -8.0f);
 	float bulletY = y;
 	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));

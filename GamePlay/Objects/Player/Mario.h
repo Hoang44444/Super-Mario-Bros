@@ -35,6 +35,7 @@ namespace MARIO_PARAMS
 	constexpr float FROG_JUMP_SPEED   = 0.7f;
 	constexpr float FROG_JUMP_SPEED_X = 0.12f;
 	constexpr DWORD STAR_POWER_TIME = 7000;
+	constexpr DWORD HIT_GRACE_TIME  = 1500;   // brief immunity right after being hurt
 }
 
 class Mario : public GameObject
@@ -56,13 +57,14 @@ public:
 		level = PlayerData::Get().level;
 		coin  = PlayerData::Get().coins;
 		life  = PlayerData::Get().lives;
-		canShoot = (level == MARIO_LEVEL::FIRE);   // khôi phục theo level, nếu không Fire màn mới bấm K không bắn
+		canShoot = (level == MARIO_LEVEL::SMALL);   // khôi phục theo level, nếu không Fire màn mới bấm K không bắn
 	};
 	~Mario() {};
 
 	// ACTIONS
 	void Jump();
 	void ShootBullet();
+	void TakeDamage();   // hurt by an enemy: shrink to Small (with grace) or die if already Small
 
 	// CORE
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
