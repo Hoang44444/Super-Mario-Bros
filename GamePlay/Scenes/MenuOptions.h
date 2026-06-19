@@ -1,19 +1,60 @@
 #pragma once
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+
 #include "GameObject.h"
 #include "AnimationManager.h"
 #include "Renderer.h"
 #include "Camera.h"
-#include "MenuKeyHandler.h"
+#include "debug.h"
 #include "../Resource/AssetID.h"
 
-// On-screen menu text: draws the two options ("Bắt đầu" and "Hướng dẫn").
-// The option currently selected in MenuKeyHandler is drawn in its yellow
-// variant, the other in its white variant.
+// One selectable menu entry. Every field is loaded from the menu options file
+// (e.g. Objects/menu_options.txt) — nothing here is hardcoded.
+struct MenuOptionEntry
+{
+	int   aniWhite;     // animation drawn when the option is NOT selected
+	int   aniYellow;    // animation drawn when the option IS selected
+	float w, h;         // drawn size (logical pixels)
+	float posY;         // logical Y (top); centered horizontally
+	int   targetScene;  // scene to switch to when confirmed
+};
+
+// On-screen menu options. The visual definition lives entirely in a text file;
+// this class only holds that data and the selection logic. MenuKeyHandler drives
+// it via MoveSelection() / GetSelectedTarget(). Adding or removing an option means
+// editing the txt file only, no code change.
 class MenuOptions : public GameObject
 {
-public:
-	MenuOptions(float x, float y, float z) : GameObject(x, y, z) {}
+	std::vector<MenuOptionEntry> options;
+	int selected = 0;
 
+public:
+	MenuOptions(float x, float y, float z, LPCWSTR optionFile) : GameObject(x, y, z)
+	{
+		LoadOptions(optionFile);
+	}
+
+	// ---- selection logic ----
+	int  GetCount() const { return (int)options.size(); }
+	int  GetSelected() const { return selected; }
+
+	void MoveSelection(int delta)
+	{
+		int n = (int)options.size();
+		if (n <= 0) return;
+		selected = ((selected + delta) % n + n) % n;   // wrap around, never negative
+	}
+
+	int  GetSelectedTarget() const
+	{
+		if (selected < 0 || selected >= (int)options.size()) return -1;
+		return options[selected].targetScene;
+	}
+
+	// ---- GameObject overrides ----
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) override {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b) override { l = t = r = b = 0; }
 	bool IsCollidable() override { return false; }
@@ -21,42 +62,65 @@ public:
 
 	void Render() override
 	{
-		// Native sub-rect sizes inside menu_text.png (to keep aspect ratio).
-		const float START_W = 236.0f, START_H = 51.0f;
-		const float GUIDE_W = 334.0f, GUIDE_H = 62.0f;
-		// Drawn height and logical-Y (top) of each option.
-		const float TARGET_H = 24.0f;
-		const float START_Y = 130.0f;
-		const float GUIDE_Y = 165.0f;
-
-		int selected = 0;
-		if (scene != nullptr) {
-			MenuKeyHandler* mh = dynamic_cast<MenuKeyHandler*>(scene->GetKeyEventHandler());
-			if (mh != nullptr) selected = mh->GetSelected();
-		}
-
 		Renderer* r = Renderer::GetInstance();
 		float scale = r->GetGlobalScale();
 		float logicalW = r->GetBackBufferWidth() / scale;
 		float camX = Camera::GetInstance()->GetX();
 		float camY = Camera::GetInstance()->GetY();
 
-		DrawOption(selected == 0 ? ANIMATION::MENU_START_YELLOW : ANIMATION::MENU_START_WHITE,
-			START_W, START_H, TARGET_H, START_Y, camX, camY, logicalW);
-		DrawOption(selected == 1 ? ANIMATION::MENU_GUIDE_YELLOW : ANIMATION::MENU_GUIDE_WHITE,
-			GUIDE_W, GUIDE_H, TARGET_H, GUIDE_Y, camX, camY, logicalW);
+		for (int i = 0; i < (int)options.size(); i++)
+		{
+			const MenuOptionEntry& o = options[i];
+			int aniId = (i == selected) ? o.aniYellow : o.aniWhite;
+
+			LPANIMATION ani = AnimationManager::GetInstance()->Get(aniId);
+			if (ani == nullptr) continue;
+
+			float drawX = camX + (logicalW - o.w) / 2.0f;   // center horizontally
+			float drawY = camY + o.posY;
+			ani->RenderScaled(drawX, drawY, z, o.w, o.h);
+		}
 	}
 
 private:
-	// Draw one option scaled to targetH and centered horizontally on screen.
-	void DrawOption(int aniId, float srcW, float srcH, float targetH, float targetY,
-		float camX, float camY, float logicalW)
+	void LoadOptions(LPCWSTR optionFile)
 	{
-		float w = srcW * (targetH / srcH);
-		float x = camX + (logicalW - w) / 2.0f;   // center horizontally
-		float y = camY + targetY;
-		LPANIMATION ani = AnimationManager::GetInstance()->Get(aniId);
-		if (ani != nullptr)
-			ani->RenderScaled(x, y, z, w, targetH);
+		std::ifstream f;
+		f.open(optionFile);
+		if (!f.is_open())
+		{
+			DebugOut(L"[ERROR] Failed to open menu options file: %s\n", optionFile);
+			return;
+		}
+
+		char str[1024];
+		while (f.getline(str, 1024))
+		{
+			std::string line(str);
+			if (!line.empty() && line.back() == '\r') line.pop_back();   // strip CR
+			if (line.empty() || line[0] == '#') continue;
+
+			std::stringstream ss(line);
+			std::vector<std::string> tk;
+			std::string t;
+			while (ss >> t)
+			{
+				if (!t.empty() && t[0] == '#') break;   // drop inline comment
+				tk.push_back(t);
+			}
+			if (tk.size() < 6) continue;
+
+			MenuOptionEntry o;
+			o.aniWhite    = atoi(tk[0].c_str());
+			o.aniYellow   = atoi(tk[1].c_str());
+			o.w           = (float)atof(tk[2].c_str());
+			o.h           = (float)atof(tk[3].c_str());
+			o.posY        = (float)atof(tk[4].c_str());
+			o.targetScene = atoi(tk[5].c_str());
+			options.push_back(o);
+		}
+		f.close();
+
+		DebugOut(L"[INFO] Loaded %d menu option(s) from %s\n", (int)options.size(), optionFile);
 	}
 };

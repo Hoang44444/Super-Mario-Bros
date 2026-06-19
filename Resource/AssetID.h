@@ -22,7 +22,8 @@ namespace SCENE
     constexpr int WORLD_3_4 = 12;
     constexpr int END = 13;      // end / win scene
     constexpr int CONTROL = 14;  // controls / how-to-play scene
-    constexpr int DEATH = 15;    // "Mario died / lost a life" screen
+    constexpr int DEATH = 15;    // "Mario died / lost a life" screen (lives remain)
+    constexpr int GAME_OVER = 16; // out-of-lives screen (Enter -> replay from the start)
 }
 
 // High-level game state (independent of which scene file is loaded).
@@ -114,6 +115,7 @@ namespace TEXTURE
     constexpr int END_SCENE = 16;
     constexpr int MENU_TEXT = 17;   // menu_text.png: white/yellow "Bắt đầu" & "Hướng dẫn"
     constexpr int DEATH_SCENE = 18; // death_scene.png
+    constexpr int GAMEOVER_SCENE = 19; // gameover_scene.png
 }
 
 namespace ANIMATION
@@ -143,6 +145,7 @@ namespace ANIMATION
 	constexpr int BACKGROUND_CONTROL  = 3005; // controls.png
 	constexpr int BACKGROUND_END      = 3006; // end_scene.png
 	constexpr int BACKGROUND_DEATH    = 3007; // death_scene.png
+	constexpr int BACKGROUND_GAMEOVER = 3008; // gameover_scene.png
 
 	// Menu option text (white = not selected, yellow = selected)
 	constexpr int MENU_START_WHITE    = 3010; // "Bắt đầu"

@@ -17,12 +17,17 @@
 #---- DEATH SCENE ----#
 30017 0 0 960 540 18
 
-#---- MENU TEXT (white = not selected, yellow = selected) ----#
+#---- GAME OVER SCENE ----#
+30018 0 0 960 540 19
+
+#---- MENU TEXT (no ▶ arrow = not selected, with ▶ arrow = selected) ----#
+# Both states are padded to the same left edge (x=27) so the arrow swaps in
+# without shifting the text or distorting the sprite.
 # id  l   t   r   b   tex_id
-30020 93  30  329 81  17    # Bắt đầu  (white)
-30021 93  111 329 162 17    # Bắt đầu  (yellow)
-30022 45  192 379 254 17    # Hướng dẫn (white)
-30023 45  284 379 346 17    # Hướng dẫn (yellow)
+30020 27  28  333 79  17    # Bắt đầu   (not selected — no arrow)
+30021 27  134 333 186 17    # Bắt đầu   (selected — with ▶ arrow)
+30022 27  240 431 302 17    # Hướng dẫn (not selected — no arrow)
+30023 27  346 431 408 17    # Hướng dẫn (selected — with ▶ arrow)
 
 [ANIMATIONS]
 # id sprite_id time
@@ -34,6 +39,7 @@
 3005 30015 100
 3006 30016 100
 3007 30017 100
+3008 30018 100
 
 # Menu option text
 3010 30020 100

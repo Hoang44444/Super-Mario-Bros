@@ -18,7 +18,8 @@ void Background::Render()
     if (currentScene == SCENE::MENU ||
         currentScene == SCENE::CONTROL ||
         currentScene == SCENE::END ||
-        currentScene == SCENE::DEATH)
+        currentScene == SCENE::DEATH ||
+        currentScene == SCENE::GAME_OVER)
     {
         Renderer* r = Renderer::GetInstance();
         float scale = r->GetGlobalScale();
@@ -56,6 +57,8 @@ int Background::WorldRender()
 		return ANIMATION::BACKGROUND_END;
 	if (currentScene == SCENE::DEATH)
 		return ANIMATION::BACKGROUND_DEATH;
+	if (currentScene == SCENE::GAME_OVER)
+		return ANIMATION::BACKGROUND_GAMEOVER;
 
   return 0;
 }

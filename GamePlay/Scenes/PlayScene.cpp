@@ -62,7 +62,7 @@ void PlayScene::Load()
 	if (key_handler == NULL)
 	{
 		// Non-gameplay screens (menu / control / end / death) have no player; use the menu handler.
-		if (id == SCENE::MENU || id == SCENE::CONTROL || id == SCENE::END || id == SCENE::DEATH)
+		if (id == SCENE::MENU || id == SCENE::CONTROL || id == SCENE::END || id == SCENE::DEATH || id == SCENE::GAME_OVER)
 			key_handler = new MenuKeyHandler();
 		else
 			key_handler = new MarioKeyHandler(this);
@@ -406,8 +406,15 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		break;
 
 	case OBJECT::MENU_OPTIONS:
-		obj = new MenuOptions(x, y, z);
+	{
+		// 5th token = path to the option-definition file (defaults if omitted).
+		wstring optFile = L"Objects/menu_options.txt";
+		if (tokens.size() >= 5)
+			optFile = wstring(tokens[4].begin(), tokens[4].end());
+		menuOptions = new MenuOptions(x, y, z, optFile.c_str());
+		obj = menuOptions;
 		break;
+	}
 	}
 
 	if (obj != NULL) {
@@ -524,9 +531,12 @@ void PlayScene::OnMarioDeath()
 	pd.lives--;
 	pd.returnScene = id;   // level to resume if lives remain
 
-	// Always show the death screen. If this was the last life, SwitchScene marks the
-	// state GAME_OVER and the screen acts as a game-over screen (key -> back to menu).
-	GameManager::GetInstance()->InitiateSwitchScene(SCENE::DEATH);
+	// Lives remaining -> death screen (Enter resumes this level).
+	// Out of lives    -> game-over screen (Enter replays from the start).
+	if (pd.lives > 0)
+		GameManager::GetInstance()->InitiateSwitchScene(SCENE::DEATH);
+	else
+		GameManager::GetInstance()->InitiateSwitchScene(SCENE::GAME_OVER);
 }
 
 void PlayScene::Unload()
@@ -537,4 +547,5 @@ void PlayScene::Unload()
 	}
 	objects.clear();
 	player = NULL;
+	menuOptions = NULL;   // was owned by `objects`, already deleted above
 }

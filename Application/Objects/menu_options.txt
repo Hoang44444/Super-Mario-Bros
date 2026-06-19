@@ -1,0 +1,19 @@
+# Menu options (data-driven). One line per option, drawn top-to-bottom.
+# The MenuOptions class only handles logic (selection / navigation / confirm);
+# everything visual is defined here.
+#
+# Columns:
+#   aniWhite    animation id drawn when the option is NOT selected
+#   aniYellow   animation id drawn when the option IS selected
+#   drawW       drawn width  (logical pixels)
+#   drawH       drawn height (logical pixels)
+#   posY        logical Y (top) of the option; it is centered horizontally
+#   target      scene id to switch to when confirmed
+#
+# Scene ids: 1 = World 1-1, 14 = Controls   (see Resource/AssetID.h :: SCENE)
+#
+# Sizes keep the source aspect ratio (menu_text.png: Bắt đầu 306x52, Hướng dẫn 404x62).
+# To make the menu bigger/smaller, scale drawW & drawH together by the same factor.
+# aniWhite aniYellow  drawW drawH  posY  target
+  3010     3011       154   26     128   1     # Bắt đầu  -> World 1-1
+  3012     3013       169   26     162   14    # Hướng dẫn -> Controls

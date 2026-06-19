@@ -212,8 +212,8 @@ void GameManager::SwitchScene()
 	// Derive the high-level game state from the scene just entered.
 	if (current_scene >= SCENE::WORLD_1_1 && current_scene <= SCENE::WORLD_1_4)
 		game_state = GAME_STATE::PLAY;
-	else if (current_scene == SCENE::DEATH && PlayerData::Get().lives <= 0)
-		game_state = GAME_STATE::GAME_OVER;   // out of lives -> death screen acts as game over
+	else if (current_scene == SCENE::GAME_OVER)
+		game_state = GAME_STATE::GAME_OVER;   // out of lives -> game-over screen
 	else
 		game_state = GAME_STATE::MENU;        // menu / control / end(win) / death-continue
 
