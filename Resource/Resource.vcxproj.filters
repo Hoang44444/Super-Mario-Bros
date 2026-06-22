@@ -41,6 +41,15 @@
       <UniqueIdentifier>{16c4da6e-4637-4953-a484-a6741dd65951}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{27f02c8a-c8d8-402f-a1c8-17eb7f66a01e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio\SFX">
+      <UniqueIdentifier>{36c0a88d-b5a4-4b8b-83c4-0975a3586740}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio\BGM">
+      <UniqueIdentifier>{2e119d4d-7cf0-41a5-b34e-ae84f8871b40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
@@ -75,5 +84,79 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="D:\another download\sound\overworld_theme.wav">
+      <Filter>Audio\BGM</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_gameover.wav">
+      <Filter>Audio\BGM</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_mariodie.wav">
+      <Filter>Audio\BGM</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_stage_clear.wav">
+      <Filter>Audio\BGM</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_warning.wav">
+      <Filter>Audio\BGM</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_world_clear.wav">
+      <Filter>Audio\BGM</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\underworld_theme.wav">
+      <Filter>Audio\BGM</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_1-up.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_bowserfalls.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_bowserfire.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_breakblock.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_bump.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_coin.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_fireball.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_fireworks.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_flagpole.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_jump-small.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_jump-super.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_kick.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_pause.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_powerup.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_powerup_appears.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_stomp.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_vine.wav">
+      <Filter>Audio\SFX</Filter>
+    </Media>
   </ItemGroup>
 </Project>

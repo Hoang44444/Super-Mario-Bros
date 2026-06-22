@@ -340,3 +340,52 @@ namespace ANIMATION
     // Cannon (cannon.txt: 3700)
     constexpr int CANNON             = 3700;
 }
+
+// ---- SOUND EFFECTS (SFX) ----
+namespace SFX
+{
+    // Mario sounds
+    constexpr int JUMP               = 1000;
+    constexpr int JUMP_SMALL         = 1001;
+    constexpr int STOMP              = 1002;
+    constexpr int COIN              = 1003;
+    constexpr int POWERUP           = 1004;
+    constexpr int POWERUP_APPEARS    = 1005;
+    constexpr int FIREBALL           = 1006;
+    constexpr int SHRINK             = 1007;
+    constexpr int DIE                = 1008;
+    constexpr int ONE_UP             = 1009;
+
+    // Enemy sounds
+    constexpr int GOOMBA_STOMP       = 2000;
+    constexpr int KOOPA_STOMP        = 2001;
+    constexpr int KOOPA_KICK         = 2002;
+    constexpr int BOWSER_ROAR        = 2003;
+    constexpr int BOWSER_FIRE        = 2004;
+
+    // Environment sounds
+    constexpr int BRICK_BREAK        = 3000;
+    constexpr int BUMP               = 3001;
+    constexpr int QUESTION_BLOCK      = 3002;
+    constexpr int PIPE_WARP           = 3003;
+    constexpr int FLAGPOLE            = 3004;
+    constexpr int CASTLE_CLEAR       = 3005;
+    constexpr int LEVEL_CLEAR        = 3006;
+
+    // UI sounds
+    constexpr int MENU_SELECT        = 4000;
+    constexpr int MENU_MOVE          = 4001;
+    constexpr int PAUSE              = 4002;
+    constexpr int GAME_OVER          = 4003;
+}
+
+// ---- BACKGROUND MUSIC (BGM) ----
+namespace BGM
+{
+    constexpr int MAIN_THEME         = 5000;  // Overworld theme
+    constexpr int UNDERGROUND_THEME  = 5001;
+    constexpr int WATER_THEME        = 5002;
+    constexpr int CASTLE_THEME       = 5003;
+    constexpr int STAR_THEME         = 5004;
+    constexpr int MENU_THEME         = 5005;
+}

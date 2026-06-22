@@ -51,6 +51,7 @@
 #include "../Podoboo.h"
 #include "../Spiny.h"
 #include "../PiranhaPlant.h"
+#include "../../Resource/SoundManager.h"
 using namespace std;
 
 void PlayScene::Load()
@@ -113,6 +114,19 @@ void PlayScene::Load()
 
 	f.close();
 	DebugOut(L"[INFO] Done loading scene from %s\n", sceneFilePath.c_str());
+
+	// Load and play BGM based on scene type
+	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
+	{
+		// Overworld levels - load and play main theme
+		SoundManager::GetInstance()->LoadBGM(BGM::MAIN_THEME, "Resource/audio/bgm/main_theme.wav");
+		SoundManager::GetInstance()->PlayBGM(BGM::MAIN_THEME, true);
+	}
+	else if (id == SCENE::MENU)
+	{
+		SoundManager::GetInstance()->LoadBGM(BGM::MENU_THEME, "Resource/audio/bgm/menu_theme.wav");
+		SoundManager::GetInstance()->PlayBGM(BGM::MENU_THEME, true);
+	}
 }
 
 void PlayScene::_ParseSection_ASSETS(string line)

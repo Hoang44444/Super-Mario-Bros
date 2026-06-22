@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Scene.h"
+#include "../../Resource/SoundManager.h"
 
 class GameManager
 {
