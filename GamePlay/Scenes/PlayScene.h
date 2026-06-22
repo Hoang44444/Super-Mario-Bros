@@ -6,12 +6,14 @@
 #include "debug.h"
 
 class MenuOptions;   // menu-only object; full definition pulled in by PlayScene.cpp
+class HUD;
 
 class PlayScene : public Scene
 {
 	LPGAMEOBJECT player;
 	std::vector<LPGAMEOBJECT> objects;
 	MenuOptions* menuOptions = nullptr;   // the menu's options object (null on non-menu scenes)
+	HUD* hud = nullptr;
 	float fixedCameraY;
 	int mapHeight = 0;            // map height (px); used to detect Mario falling off the bottom
 	ULONGLONG marioDieStart = 0;  // tick when Mario entered the DIE state (0 = not dying)
@@ -30,6 +32,7 @@ class PlayScene : public Scene
 public:
 	PlayScene(int id, LPCWSTR filePath) : Scene(id, filePath) {
 		player = NULL;
+		hud = NULL;
 		fixedCameraY = 0;
 	}
 	virtual void Load();
