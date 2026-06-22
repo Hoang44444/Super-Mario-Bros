@@ -5,6 +5,7 @@
 
 #include "PlayScene.h"
 #include "Mario.h"
+#include "HUD.h"
 #include "MarioKeyHandler.h"
 #include "MenuKeyHandler.h"
 #include "Background.h"
@@ -52,6 +53,7 @@
 #include "../Podoboo.h"
 #include "../Spiny.h"
 #include "../PiranhaPlant.h"
+#include "../../Resource/SoundManager.h"
 using namespace std;
 
 void PlayScene::Load()
@@ -114,6 +116,33 @@ void PlayScene::Load()
 
 	f.close();
 	DebugOut(L"[INFO] Done loading scene from %s\n", sceneFilePath.c_str());
+
+	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4 && player != nullptr)
+	{
+		delete hud;
+		hud = new HUD(static_cast<Mario*>(player), 1, id);
+	}
+
+	// Load SFX
+	SoundManager::GetInstance()->LoadSFX(SFX::JUMP, "../Resource/audio/sfx/smb_jump-super.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::STOMP, "../Resource/audio/sfx/smb_stomp.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::COIN, "../Resource/audio/sfx/smb_coin.wav");
+	SoundManager::GetInstance()->LoadBGM(SFX::DIE, "../Resource/audio/bgm/smb_mariodie.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::POWERUP, "../Resource/audio/sfx/smb_powerup.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::ONE_UP, "../Resource/audio/sfx/smb_1-up.wav");
+
+	// Load and play BGM based on scene type
+	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
+	{
+		// Overworld levels - load and play main theme
+		SoundManager::GetInstance()->LoadBGM(BGM::OVERWORLD_THEME, "../Resource/audio/bgm/overworld_theme.wav");
+		SoundManager::GetInstance()->PlayBGM(BGM::OVERWORLD_THEME, true);
+	}
+	else if (id == SCENE::MENU)
+	{
+		SoundManager::GetInstance()->LoadBGM(BGM::MENU_THEME, "../Resource/audio/bgm/menu_theme.wav");
+		SoundManager::GetInstance()->PlayBGM(BGM::MENU_THEME, true);
+	}
 }
 
 void PlayScene::_ParseSection_ASSETS(string line)
@@ -271,6 +300,7 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Mario(x, y, z);
 		player = obj;
 		fixedCameraY = y;
+		DebugOut(L"Mario spawn Y = %f\n", y);
 		break;
 
 	case OBJECT::PLATFORM:
@@ -486,6 +516,9 @@ void PlayScene::Update(DWORD dt)
 	if (player != nullptr && !player->IsDeleted())
 		player->Update(dt, &coObjects);
 
+	if (hud != nullptr)
+		hud->Update(dt);
+
 	// skip the rest if scene was already unloaded (Mario died)
 	if (player == nullptr) return;
 
@@ -533,6 +566,9 @@ void PlayScene::Render()
 	{
 		objects[i]->Render();
 	}
+
+	if (hud != nullptr)
+		hud->Render();
 }
 
 void PlayScene::OnMarioDeath()
@@ -551,6 +587,9 @@ void PlayScene::OnMarioDeath()
 
 void PlayScene::Unload()
 {
+	delete hud;
+	hud = NULL;
+
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		delete objects[i];

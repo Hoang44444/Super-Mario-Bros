@@ -138,6 +138,7 @@
     <ClInclude Include="Core\KeyEventHandler.h" />
     <ClInclude Include="Core\GameManager.h" />
     <ClInclude Include="Scenes\PlayScene.h" />
+    <ClInclude Include="Scenes\HUD.h" />
     <ClInclude Include="Scenes\Background.h" />
     <ClInclude Include="Objects\Player\Mario.h" />
     <ClInclude Include="Objects\Player\MarioKeyHandler.h" />
@@ -160,6 +161,8 @@
     <ClInclude Include="Spiny.h" />
     <ClInclude Include="Objects\Item\Item.h" />
     <ClInclude Include="Coin.h" />
+    <ClInclude Include="CoinCollectEffect.h" />
+    <ClInclude Include="CoinPopupEffect.h" />
     <ClInclude Include="HammerSuit.h" />
     <ClInclude Include="Mushroom1Up.h" />
     <ClInclude Include="SuperLeaf.h" />
@@ -199,6 +202,7 @@
     <ClCompile Include="Core\Collision.cpp" />
     <ClCompile Include="Core\GameManager.cpp" />
     <ClCompile Include="Scenes\PlayScene.cpp" />
+    <ClCompile Include="Scenes\HUD.cpp" />
     <ClCompile Include="Scenes\Background.cpp" />
     <ClCompile Include="Objects\Player\Mario.cpp" />
     <ClCompile Include="Objects\Bullet\Bullet.cpp" />
@@ -235,6 +239,8 @@
     <ClCompile Include="Podoboo.cpp" />
     <ClCompile Include="Spiny.cpp" />
     <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="CoinCollectEffect.cpp" />
+    <ClCompile Include="CoinPopupEffect.cpp" />
     <ClCompile Include="HammerSuit.cpp" />
     <ClCompile Include="Mushroom1Up.cpp" />
     <ClCompile Include="SuperLeaf.cpp" />

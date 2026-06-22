@@ -41,6 +41,7 @@ void GameManager::Init(HWND hWnd, HINSTANCE hInstance)
 {
 	this->hWnd = hWnd;
 	Renderer::GetInstance()->Init(hWnd, hInstance);
+	SoundManager::GetInstance()->Init(hWnd);
 }
 
 void GameManager::ProcessKeyboard()
@@ -231,6 +232,8 @@ void GameManager::Update(DWORD dt)
 
 	if (next_scene != current_scene && next_scene >= 0)
 		SwitchScene();
+
+	SoundManager::GetInstance()->Update();
 }
 
 void GameManager::Render()
@@ -241,4 +244,5 @@ void GameManager::Render()
 
 GameManager::~GameManager()
 {
+	SoundManager::ReleaseInstance();
 }

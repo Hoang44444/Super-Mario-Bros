@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "GameManager.h"
 #include "Camera.h"
+#include "debug.h"
 
 #define MAX_FRAME_RATE 60
 

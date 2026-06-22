@@ -114,7 +114,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3dx10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx10.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -136,7 +136,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3dx10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3dx10.lib;dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="AssetID.h" />
     <ClInclude Include="debug.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="Texture.h" />
@@ -155,8 +156,35 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="debug.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="D:\another download\sound\overworld_theme.wav" />
+    <Media Include="D:\another download\sound\smb_1-up.wav" />
+    <Media Include="D:\another download\sound\smb_bowserfalls.wav" />
+    <Media Include="D:\another download\sound\smb_bowserfire.wav" />
+    <Media Include="D:\another download\sound\smb_breakblock.wav" />
+    <Media Include="D:\another download\sound\smb_bump.wav" />
+    <Media Include="D:\another download\sound\smb_coin.wav" />
+    <Media Include="D:\another download\sound\smb_fireball.wav" />
+    <Media Include="D:\another download\sound\smb_fireworks.wav" />
+    <Media Include="D:\another download\sound\smb_flagpole.wav" />
+    <Media Include="D:\another download\sound\smb_gameover.wav" />
+    <Media Include="D:\another download\sound\smb_jump-small.wav" />
+    <Media Include="D:\another download\sound\smb_jump-super.wav" />
+    <Media Include="D:\another download\sound\smb_kick.wav" />
+    <Media Include="D:\another download\sound\smb_mariodie.wav" />
+    <Media Include="D:\another download\sound\smb_pause.wav" />
+    <Media Include="D:\another download\sound\smb_powerup.wav" />
+    <Media Include="D:\another download\sound\smb_powerup_appears.wav" />
+    <Media Include="D:\another download\sound\smb_stage_clear.wav" />
+    <Media Include="D:\another download\sound\smb_stomp.wav" />
+    <Media Include="D:\another download\sound\smb_vine.wav" />
+    <Media Include="D:\another download\sound\smb_warning.wav" />
+    <Media Include="D:\another download\sound\smb_world_clear.wav" />
+    <Media Include="D:\another download\sound\underworld_theme.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

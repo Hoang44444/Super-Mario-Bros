@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 #include "PlayerData.h"
+#include "../../../Resource/SoundManager.h"
+#include "../Resource/AssetID.h"
 
 class DynamicPlatform;
 
