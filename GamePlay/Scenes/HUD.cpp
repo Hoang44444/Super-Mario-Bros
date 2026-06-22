@@ -2,8 +2,11 @@
 
 #include <cstdio>
 
+#include "AnimationManager.h"
+#include "Camera.h"
 #include "Mario.h"
 #include "Renderer.h"
+#include "../Resource/AssetID.h"
 
 namespace
 {
@@ -148,6 +151,19 @@ void HUD::Render()
 	D3DXMATRIX oldView;
 	spriteHandler->GetProjectionTransform(&oldProjection);
 	spriteHandler->GetViewTransform(&oldView);
+
+	LPANIMATION coinAnimation = AnimationManager::GetInstance()->Get(ANIMATION::ITEM_COIN);
+	if (coinAnimation != nullptr)
+	{
+		const float scale = Renderer::GetInstance()->GetGlobalScale();
+		const float coinScreenX = 250.0f / scale;
+		const float coinScreenY = 82.0f / scale;
+
+		coinAnimation->Render(
+			Camera::GetInstance()->GetX() + coinScreenX,
+			Camera::GetInstance()->GetY() + coinScreenY,
+			0.0f);
+	}
 
 	UINT oldViewportCount = D3D10_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE;
 	D3D10_VIEWPORT oldViewports[D3D10_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
