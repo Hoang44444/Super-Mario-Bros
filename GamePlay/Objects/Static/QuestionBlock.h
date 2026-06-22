@@ -14,7 +14,7 @@ class QuestionBlock : public StaticObject {
 private:
 	int itemType;        // OBJECT type id of the item released when hit
 	void Break();
-	void SpawnItem();
+	void SpawnItem(Mario* mario);
 public:
 	QuestionBlock(float x, float y, float z, int itemType = OBJECT::COIN) : StaticObject(x, y, z) {
 		this->state = QUESTION_BLOCK_STATE::ACTIVE;

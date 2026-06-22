@@ -41,6 +41,21 @@
       <UniqueIdentifier>{16c4da6e-4637-4953-a484-a6741dd65951}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
+    <Filter Include="audio">
+      <UniqueIdentifier>{27f02c8a-c8d8-402f-a1c8-17eb7f66a01e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio\bgm">
+      <UniqueIdentifier>{2e119d4d-7cf0-41a5-b34e-ae84f8871b40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio\sfx">
+      <UniqueIdentifier>{36c0a88d-b5a4-4b8b-83c4-0975a3586740}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio\Header Files">
+      <UniqueIdentifier>{2869c732-8b1a-4466-bea2-d7a2c2b55923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio\Source Files">
+      <UniqueIdentifier>{5f7ca972-f9b2-470d-9c82-f48ef3f16de8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
@@ -61,6 +76,9 @@
     <ClInclude Include="debug.h">
       <Filter>Debug\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>audio\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TextureManager.cpp">
@@ -72,8 +90,85 @@
     <ClCompile Include="debug.cpp">
       <Filter>Debug\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>audio\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="D:\another download\sound\overworld_theme.wav">
+      <Filter>audio\bgm</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_gameover.wav">
+      <Filter>audio\bgm</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_mariodie.wav">
+      <Filter>audio\bgm</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_stage_clear.wav">
+      <Filter>audio\bgm</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_warning.wav">
+      <Filter>audio\bgm</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_world_clear.wav">
+      <Filter>audio\bgm</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\underworld_theme.wav">
+      <Filter>audio\bgm</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_1-up.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_bowserfalls.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_bowserfire.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_breakblock.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_bump.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_coin.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_fireball.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_fireworks.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_flagpole.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_jump-small.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_jump-super.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_kick.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_pause.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_powerup.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_powerup_appears.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_stomp.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
+    <Media Include="D:\another download\sound\smb_vine.wav">
+      <Filter>audio\sfx</Filter>
+    </Media>
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@
 #include "Item.h"
 #include "InvisibleObject.h"
 #include "DynamicPlatform.h"
+#include "../../../Resource/SoundManager.h"
 void Mario::MovementUpdate(DWORD dt) {
 	// Simple movement for testing
 	this->x += this->vx * dt;
@@ -36,12 +37,19 @@ void Mario::Jump() {
 	if (!isOnGround) return;
 	vy = -MARIO_PARAMS::JUMP_SPEED;
 	isOnGround = false;
+	SoundManager::GetInstance()->PlaySFX(SFX::JUMP);
 }
 
 void Mario::ShootBullet() {
 	float bulletX = x + (direction > 0 ? 15.0f : -8.0f);
 	float bulletY = y;
 	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
+}
+
+void Mario::AddCoin(int amount)
+{
+	coin += amount;
+	PlayerData::Get().coins = coin;
 }
 
 void Mario::ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects)
@@ -105,6 +113,7 @@ void Mario::SetState(int state)
 		break;
 	case MARIO_STATE::DIE:
 		vy = -MARIO_PARAMS::JUMP_SPEED;
+		SoundManager::GetInstance()->PlaySFX(SFX::DIE);
 		break;
 	case MARIO_STATE::SHOOT:
 		if (canShoot) ShootBullet();
@@ -237,6 +246,12 @@ void Mario::OnCollisionWithEnemy(LPCOLLISIONEVENT e)
 {
 	auto enemy = dynamic_cast<Enemy*>(e->obj);
 	enemy->OnMarioCollison(this, e->ny);
+
+	// Play stomp sound if Mario is falling on top of enemy
+	if (e->ny < 0)
+	{
+		SoundManager::GetInstance()->PlaySFX(SFX::STOMP);
+	}
 }
 
 void Mario::OnCollisionWithItem(LPCOLLISIONEVENT e)

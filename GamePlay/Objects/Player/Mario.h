@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 #include "PlayerData.h"
+#include "../../../Resource/SoundManager.h"
+#include "../Resource/AssetID.h"
 
 class DynamicPlatform;
 
@@ -99,7 +101,7 @@ public:
 	bool IsInvincible() { return isInvincible; }
 	bool CanShoot() { return canShoot; }
 	void SetCanShoot(bool v) { canShoot = v; }
-	void AddCoin(int amount = 1) { coin += amount; PlayerData::Get().coins = coin; }
+	void AddCoin(int amount = 1);
 	void AddLife(int amount = 1) { life += amount; PlayerData::Get().lives = life; }
 	int GetCoin() { return coin; }
 	int GetLife() { return life; }
