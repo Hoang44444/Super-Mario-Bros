@@ -119,12 +119,12 @@ void PlayScene::Load()
 	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
 	{
 		// Overworld levels - load and play main theme
-		SoundManager::GetInstance()->LoadBGM(BGM::MAIN_THEME, "Resource/audio/bgm/main_theme.wav");
+		SoundManager::GetInstance()->LoadBGM(BGM::MAIN_THEME, "Resource/audio/bgm/overworld_theme.wav");
 		SoundManager::GetInstance()->PlayBGM(BGM::MAIN_THEME, true);
 	}
 	else if (id == SCENE::MENU)
 	{
-		SoundManager::GetInstance()->LoadBGM(BGM::MENU_THEME, "Resource/audio/bgm/menu_theme.wav");
+		SoundManager::GetInstance()->LoadBGM(BGM::MENU_THEME, "Resource/audio/bgm/overworld_theme.wav");
 		SoundManager::GetInstance()->PlayBGM(BGM::MENU_THEME, true);
 	}
 }
