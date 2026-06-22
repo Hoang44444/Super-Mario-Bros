@@ -6,6 +6,7 @@ Objects/question_block.txt
 Objects/dynamic_platform.txt
 Objects/item2.txt
 Objects/mushroom.txt
+Objects/bullet.txt
 
 #### Enemy
 Objects/Koopa.txt

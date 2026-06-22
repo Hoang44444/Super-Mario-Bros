@@ -37,4 +37,5 @@ screen_height 1080
 17  Texture/Items/menu_text.png
 18  Texture/Scene/death_scene.png
 19  Texture/Scene/gameover_scene.png
+20  Texture/Items/nums_123.png
 # -100 Texture/bbox.png
