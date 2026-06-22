@@ -382,7 +382,7 @@ namespace SFX
 // ---- BACKGROUND MUSIC (BGM) ----
 namespace BGM
 {
-    constexpr int MAIN_THEME         = 5000;  // Overworld theme
+    constexpr int OVERWORLD_THEME    = 5000;  // Overworld theme
     constexpr int UNDERGROUND_THEME  = 5001;
     constexpr int WATER_THEME        = 5002;
     constexpr int CASTLE_THEME       = 5003;

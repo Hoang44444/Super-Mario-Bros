@@ -115,16 +115,24 @@ void PlayScene::Load()
 	f.close();
 	DebugOut(L"[INFO] Done loading scene from %s\n", sceneFilePath.c_str());
 
+	// Load SFX
+	SoundManager::GetInstance()->LoadSFX(SFX::JUMP, "../Resource/audio/sfx/smb_jump-super.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::STOMP, "../Resource/audio/sfx/smb_stomp.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::COIN, "../Resource/audio/sfx/smb_coin.wav");
+	SoundManager::GetInstance()->LoadBGM(SFX::DIE, "../Resource/audio/bgm/smb_mariodie.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::POWERUP, "../Resource/audio/sfx/smb_powerup.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::ONE_UP, "../Resource/audio/sfx/smb_1-up.wav");
+
 	// Load and play BGM based on scene type
 	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
 	{
 		// Overworld levels - load and play main theme
-		SoundManager::GetInstance()->LoadBGM(BGM::MAIN_THEME, "Resource/audio/bgm/overworld_theme.wav");
-		SoundManager::GetInstance()->PlayBGM(BGM::MAIN_THEME, true);
+		SoundManager::GetInstance()->LoadBGM(BGM::OVERWORLD_THEME, "../Resource/audio/bgm/overworld_theme.wav");
+		SoundManager::GetInstance()->PlayBGM(BGM::OVERWORLD_THEME, true);
 	}
 	else if (id == SCENE::MENU)
 	{
-		SoundManager::GetInstance()->LoadBGM(BGM::MENU_THEME, "Resource/audio/bgm/overworld_theme.wav");
+		SoundManager::GetInstance()->LoadBGM(BGM::MENU_THEME, "../Resource/audio/bgm/menu_theme.wav");
 		SoundManager::GetInstance()->PlayBGM(BGM::MENU_THEME, true);
 	}
 }
