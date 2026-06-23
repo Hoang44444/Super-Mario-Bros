@@ -48,7 +48,7 @@ void Podoboo::OnMarioCollison(Mario* mario, float ny)
     if (mario->GetState() == MARIO_STATE_DIE) return;
     if (state == PODOBOO_STATE_HIDDEN) return;
 
-    mario->SetState(MARIO_STATE_DIE);
+    mario->TakeDamage();
 }
 
 void Podoboo::SetState(int state)

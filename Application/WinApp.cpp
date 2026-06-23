@@ -77,6 +77,9 @@ int WinApp::Run() {
         if (dt >= tickPerFrame)
         {
             frameStart = now;
+            // Clamp dt: loading a new scene makes one frame very long; without this the
+            // huge dt is fed into the physics and launches Mario ("JUMP_SPEED tăng").
+            if (dt > tickPerFrame) dt = tickPerFrame;
             GameManager::GetInstance()->ProcessKeyboard();
             Update((float)dt);
             Render();

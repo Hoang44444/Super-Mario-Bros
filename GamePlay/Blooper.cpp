@@ -109,5 +109,5 @@ void Blooper::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void Blooper::OnMarioCollison(Mario* mario, float ny)
 {
-	mario->SetState(MARIO_STATE_DIE);
+	mario->TakeDamage();
 }

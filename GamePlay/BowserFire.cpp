@@ -30,7 +30,7 @@ void BowserFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void BowserFire::OnMarioCollison(Mario* mario, float ny)
 {
     if (mario->GetState() != MARIO_STATE_DIE)
-        mario->SetState(MARIO_STATE_DIE);
+        mario->TakeDamage();
 }
 
 void BowserFire::Render()

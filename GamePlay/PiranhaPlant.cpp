@@ -75,6 +75,6 @@ void PiranhaPlant::OnMarioCollison(Mario* mario, float ny)
 {
 	if (state != PIRANHA_STATE_HIDING)
 	{
-		mario->SetState(MARIO_STATE_DIE);
+		mario->TakeDamage();
 	}
 }

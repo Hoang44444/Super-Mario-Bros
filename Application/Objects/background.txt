@@ -29,6 +29,12 @@
 30022 27  240 431 302 17    # Hướng dẫn (not selected — no arrow)
 30023 27  346 431 408 17    # Hướng dẫn (selected — with ▶ arrow)
 
+#---- LIVES DIGITS (nums_123.png, tex 20) ----#
+# id   l   t   r   b   tex
+30030 42  24  135 175 20    # số 1
+30031 396 24  489 175 20    # số 2
+30032 758 24  854 175 20    # số 3
+
 [ANIMATIONS]
 # id sprite_id time
 3000 30001 100
@@ -46,3 +52,8 @@
 3011 30021 100
 3012 30022 100
 3013 30023 100
+
+# Lives digits (death screen)
+3020 30030 100
+3021 30031 100
+3022 30032 100

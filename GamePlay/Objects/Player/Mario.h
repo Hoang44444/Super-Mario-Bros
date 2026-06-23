@@ -29,14 +29,16 @@ namespace MARIO_STATE
 
 namespace MARIO_PARAMS
 {
-	constexpr float GRAVITY         = 0.002f;
+	constexpr float GRAVITY         = 0.0021f;
 	constexpr float ACCEL_X         = 0.0f;
 	constexpr float RUN_SPEED       = 0.15f;
-	constexpr float WALK_SPEED      = 0.1f;
-	constexpr float JUMP_SPEED      = 0.5f;
+	constexpr float WALK_SPEED      = 0.15f;
+	constexpr float JUMP_SPEED      = 0.55f;
 	constexpr float FROG_JUMP_SPEED   = 0.7f;
 	constexpr float FROG_JUMP_SPEED_X = 0.12f;
 	constexpr DWORD STAR_POWER_TIME = 7000;
+	constexpr DWORD HIT_GRACE_TIME  = 1500;   // brief immunity right after being hurt
+	constexpr int   MAX_LIVES       = 3;      // số mạng tối đa
 }
 
 class Mario : public GameObject
@@ -65,6 +67,7 @@ public:
 	// ACTIONS
 	void Jump();
 	void ShootBullet();
+	void TakeDamage();   // hurt by an enemy: shrink to Small (with grace) or die if already Small
 
 	// CORE
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
@@ -97,12 +100,16 @@ public:
 	void SetSpeedX(float vx) { this->vx = vx; }
 	int GetLevel() { return level; }
 	void SetLevel(int level);
-	void SetInvincible(DWORD duration) { isInvincible = true; invincibleTime = duration; }
+	void SetInvincible(DWORD duration) { isInvincible = true; if (duration > invincibleTime) invincibleTime = duration; }
 	bool IsInvincible() { return isInvincible; }
 	bool CanShoot() { return canShoot; }
 	void SetCanShoot(bool v) { canShoot = v; }
-	void AddCoin(int amount = 1);
-	void AddLife(int amount = 1) { life += amount; PlayerData::Get().lives = life; }
+	void AddCoin(int amount = 1) { coin += amount; PlayerData::Get().coins = coin; }
+	void AddLife(int amount = 1) {
+		life += amount;
+		if (life > MARIO_PARAMS::MAX_LIVES) life = MARIO_PARAMS::MAX_LIVES;   // chặn trần 3 mạng
+		PlayerData::Get().lives = life;
+	}
 	int GetCoin() { return coin; }
 	int GetLife() { return life; }
 

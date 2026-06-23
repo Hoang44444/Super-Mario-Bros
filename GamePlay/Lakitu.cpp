@@ -159,7 +159,7 @@ void Lakitu::OnMarioCollison(Mario* mario, float ny)
         }
         else
         {
-            mario->SetState(MARIO_STATE_DIE);
+            mario->TakeDamage();
         }
     }
 }

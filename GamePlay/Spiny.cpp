@@ -121,7 +121,7 @@ void Spiny::OnMarioCollison(Mario* mario, float ny)
 
     if (state == SPINY_STATE_DIE) return;
 
-    mario->SetState(MARIO_STATE_DIE);
+    mario->TakeDamage();
 }
 
 void Spiny::SetState(int state)

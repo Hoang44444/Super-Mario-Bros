@@ -9,6 +9,7 @@ Objects/pipe.txt
 Objects/question_block.txt
 Objects/item2.txt
 Objects/mushroom.txt
+Objects/bullet.txt
 
 #### Enemy
 Objects/Goomba.txt

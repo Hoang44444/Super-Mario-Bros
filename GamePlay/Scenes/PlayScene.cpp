@@ -10,6 +10,7 @@
 #include "MenuKeyHandler.h"
 #include "Background.h"
 #include "MenuOptions.h"
+#include "LivesNumber.h"
 #include "PlayerData.h"
 #include "../Resource/AssetID.h"
 #include "TextureManager.h"
@@ -443,6 +444,15 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 			optFile = wstring(tokens[4].begin(), tokens[4].end());
 		menuOptions = new MenuOptions(x, y, z, optFile.c_str());
 		obj = menuOptions;
+		break;
+	}
+
+	case OBJECT::LIVES_NUMBER:
+	{
+		// tokens: 51 x y z [w] [h]  — x,y là toạ độ logic; w,h là kích thước vẽ.
+		float w = (tokens.size() >= 5) ? (float)atof(tokens[4].c_str()) : 11.0f;
+		float h = (tokens.size() >= 6) ? (float)atof(tokens[5].c_str()) : 18.0f;
+		obj = new LivesNumber(x, y, z, w, h);
 		break;
 	}
 	}

@@ -97,6 +97,7 @@ namespace OBJECT
 
 	// ---- UI ----
 	constexpr int MENU_OPTIONS = 50;     // menu text options ("Bắt đầu" / "Hướng dẫn")
+	constexpr int LIVES_NUMBER = 51;     // số mạng còn lại cạnh chữ X (death screen)
 }
 
 namespace TEXTURE
@@ -116,6 +117,7 @@ namespace TEXTURE
     constexpr int MENU_TEXT = 17;   // menu_text.png: white/yellow "Bắt đầu" & "Hướng dẫn"
     constexpr int DEATH_SCENE = 18; // death_scene.png
     constexpr int GAMEOVER_SCENE = 19; // gameover_scene.png
+    constexpr int NUMS = 20;           // nums_123.png (chữ số 1,2,3)
 }
 
 namespace ANIMATION
@@ -152,6 +154,11 @@ namespace ANIMATION
 	constexpr int MENU_START_YELLOW   = 3011;
 	constexpr int MENU_GUIDE_WHITE    = 3012; // "Hướng dẫn"
 	constexpr int MENU_GUIDE_YELLOW   = 3013;
+
+	// Lives digits (death screen). Must be consecutive: digit n -> LIVES_DIGIT_1 + (n-1).
+	constexpr int LIVES_DIGIT_1       = 3020;
+	constexpr int LIVES_DIGIT_2       = 3021;
+	constexpr int LIVES_DIGIT_3       = 3022;
 
     // BIG MARIO
     constexpr int MARIO_BIG_IDLE_RIGHT = 400;

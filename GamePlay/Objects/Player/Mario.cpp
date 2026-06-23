@@ -10,12 +10,10 @@
 #include "DynamicPlatform.h"
 #include "../../../Resource/SoundManager.h"
 void Mario::MovementUpdate(DWORD dt) {
-	// Simple movement for testing
+	// Position only. Velocity (gravity) is integrated once per frame in Update(),
+	// so it still accelerates on frames where a collision skips this path.
 	this->x += this->vx * dt;
 	this->y += this->vy * dt;
-
-	this->vx += this->accelX * dt;
-	this->vy += this->gravity * dt;
 }
 
 void Mario::SetLevel(int level)
@@ -31,6 +29,25 @@ void Mario::SetLevel(int level)
 	this->canShoot = (level == MARIO_LEVEL::FIRE);
 
 	PlayerData::Get().level = level;   // lưu lại để giữ qua các màn
+
+	// Đổi cấp (ăn item lên cấp / trúng đòn tụt xuống small) -> bất tử ngắn + nhấp nháy.
+	SetInvincible(MARIO_PARAMS::HIT_GRACE_TIME);
+}
+
+void Mario::TakeDamage()
+{
+	// Ignore hits while invincible (star power / post-hit grace) or already dying.
+	if (isInvincible || state == MARIO_STATE::DIE) return;
+
+	if (level != MARIO_LEVEL::SMALL)
+	{
+		SetLevel(MARIO_LEVEL::SMALL);              // shrink one tier instead of dying
+		SetInvincible(MARIO_PARAMS::HIT_GRACE_TIME); // short grace so the same enemy can't re-hit
+	}
+	else
+	{
+		SetState(MARIO_STATE::DIE);                // already small -> lose a life
+	}
 }
 
 void Mario::Jump() {
@@ -41,15 +58,10 @@ void Mario::Jump() {
 }
 
 void Mario::ShootBullet() {
+	if (this->level != MARIO_LEVEL::FIRE) return;
 	float bulletX = x + (direction > 0 ? 15.0f : -8.0f);
 	float bulletY = y;
 	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
-}
-
-void Mario::AddCoin(int amount)
-{
-	coin += amount;
-	PlayerData::Get().coins = coin;
 }
 
 void Mario::ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects)
@@ -75,11 +87,25 @@ void Mario::ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects)
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	// Death animation: pop up once, then fall straight down ignoring all collisions.
+	if (state == MARIO_STATE::DIE)
+	{
+		vy += gravity * dt;
+		MovementUpdate(dt);
+		return;
+	}
+
 	if (isInvincible)
 	{
 		if (invincibleTime > dt) invincibleTime -= dt;
 		else { invincibleTime = 0; isInvincible = false; }
 	}
+
+	// Integrate gravity every frame — even on collision frames (e.g. pressed against
+	// a wall) so the fall keeps accelerating instead of crawling. Clear the ground
+	// flag; it is re-set below only if we actually land on something this frame.
+	vy += gravity * dt;
+	isOnGround = false;
 
 	ResolveOverlapWithPlatforms(coObjects);
 	Collision::GetInstance()->Process(this, dt, coObjects);
@@ -112,6 +138,7 @@ void Mario::SetState(int state)
 		vx = 0;
 		break;
 	case MARIO_STATE::DIE:
+		vx = 0;                          // fall straight down, no horizontal drift
 		vy = -MARIO_PARAMS::JUMP_SPEED;
 		SoundManager::GetInstance()->PlaySFX(SFX::DIE);
 		break;
@@ -203,6 +230,11 @@ void Mario::Render()
 
 	if (aniId != -1)
 	{
+		// Nhấp nháy khi bất tử (biến hình / ăn item / grace sau khi trúng đòn / ngôi sao):
+		// bỏ vẽ ở các khung ~60ms xen kẽ để sprite chớp tắt.
+		if (isInvincible && (invincibleTime / 60) % 2 == 0)
+			return;
+
 		LPANIMATION ani = AnimationManager::GetInstance()->Get(aniId);
 		if (ani != nullptr)
 			ani->Render(x, y, z);
