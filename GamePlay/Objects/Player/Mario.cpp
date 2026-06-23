@@ -64,12 +64,6 @@ void Mario::ShootBullet() {
 	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
 }
 
-void Mario::AddCoin(int amount)
-{
-	coin += amount;
-	PlayerData::Get().coins = coin;
-}
-
 void Mario::ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects)
 {
 	if (coObjects == nullptr) return;
