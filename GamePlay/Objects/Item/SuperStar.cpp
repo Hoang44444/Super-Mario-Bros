@@ -3,6 +3,7 @@
 #include "AnimationManager.h"
 #include "AssetID.h"
 #include "StaticObject.h"
+#include "SoundManager.h"
 
 void SuperStar::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -45,6 +46,7 @@ void SuperStar::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void SuperStar::OnMarioCollision(Mario* mario)
 {
+	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
 	mario->SetInvincible(MARIO_PARAMS::STAR_POWER_TIME);
 	Delete();
 }

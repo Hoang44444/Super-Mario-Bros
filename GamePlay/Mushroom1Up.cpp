@@ -2,6 +2,7 @@
 #include "Collision.h"
 #include "StaticObject.h" 
 #include "Mario.h"
+#include "SoundManager.h"
 
 void Mushroom1Up::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -47,6 +48,7 @@ void Mushroom1Up::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void Mushroom1Up::OnMarioCollision(Mario* mario)
 {
+    SoundManager::GetInstance()->PlaySFX(SFX::ONE_UP);
     mario->AddLife();
     this->Delete();
 }

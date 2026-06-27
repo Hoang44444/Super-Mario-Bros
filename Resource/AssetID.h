@@ -25,7 +25,14 @@ namespace SCENE
     constexpr int DEATH = 15;    // "Mario died / lost a life" screen (lives remain)
     constexpr int GAME_OVER = 16; // out-of-lives screen (Enter -> replay from the start)
     constexpr int INTRO = 17;     // intro screen (WORLD X-X, Mario x lives) before starting a level
+    constexpr int HELP = 18;      // help / controls and volume UI
+    constexpr int LEVEL_SELECT = 19; // level selection UI
 }
+
+// Compatibility names for UI scene switches. IDs 4 and 5 are already occupied
+// by gameplay scenes in this project, so these intentionally use free scene IDs.
+#define ID_SCENE_HELP   SCENE::HELP
+#define ID_SCENE_LEVEL  SCENE::LEVEL_SELECT
 
 // High-level game state (independent of which scene file is loaded).
 namespace GAME_STATE
@@ -78,6 +85,7 @@ namespace OBJECT
 	constexpr int HAMMER_SUIT = 21;
 	constexpr int TANOOKI_SUIT = 22;
 	constexpr int HAMMER = 23;
+	constexpr int ITEM_COIN2 = 24;
 
 	// ---- ENEMIES ----
 	constexpr int GOOMBA = 30;
@@ -120,6 +128,8 @@ namespace TEXTURE
     constexpr int GAMEOVER_SCENE = 19; // gameover_scene.png
     constexpr int NUMS = 20;           // nums_123.png (chữ số 1,2,3)
     constexpr int INTRO_SCENE = 21;    // intro_scene.png
+    constexpr int HELP_SCENE = 22;     // help_scene.png
+    constexpr int LEVEL_SCENE = 23;    // level_scene.png
 }
 
 namespace ANIMATION
@@ -398,4 +408,5 @@ namespace BGM
     constexpr int CASTLE_THEME       = 5003;
     constexpr int STAR_THEME         = 5004;
     constexpr int MENU_THEME         = 5005;
+    constexpr int GAME_OVER_THEME    = 5006;
 }

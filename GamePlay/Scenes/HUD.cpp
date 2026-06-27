@@ -188,7 +188,7 @@ float HUD::GetMarioLivesStartX() const
 void HUD::RenderMarioLivesIcon(int y)
 {
 	float startX = GetMarioLivesStartX();
-	RECT smallMarioIdleRight = MakeRect(247, 0, 260, 15);
+	RECT smallMarioIdleRight = MakeRect(247, 0, 261, 16);
 	RenderTextureRectAtScreen(TEXTURE::MARIO, smallMarioIdleRight, startX, (float)y);
 }
 
@@ -309,7 +309,7 @@ void HUD::Render()
 	else if (sceneId == SCENE::DEATH)
 		marioLivesY = (int)(screenHeight * 0.5f - 30.0f);
 
-	RenderCoinIcon(col1_X, 82.0f);
+	RenderCoinIcon(col1_X-20, 80.0f);
 	if (marioLivesY != 0)
 		RenderMarioLivesIcon(marioLivesY);
 	spriteHandler->Flush();
@@ -324,13 +324,13 @@ void HUD::Render()
 	// 2. Draw values (Row 2)
 	wchar_t line[128];
 	swprintf_s(line, L"%06d", score);
-	DrawTextLine(line, (int)col0_X, 80, 200, 60);
+	DrawTextLine(line, (int)col0_X-10, 80, 200, 60);
 
 	swprintf_s(line, L"x%02d", coins);
-	DrawTextLine(line, (int)(col1_X + 24.0f * scale), 80, 200, 60);
+	DrawTextLine(line, (int)(col1_X + 40), 80, 200, 60);
 
 	swprintf_s(line, L"%d-%d", world, stage);
-	DrawTextLine(line, (int)col2_X, 80, 200, 60);
+	DrawTextLine(line, (int)col2_X + 25, 80, 200, 60);
 
 	if (isGameplayScene)
 	{
@@ -339,7 +339,7 @@ void HUD::Render()
 	}
 
 	swprintf_s(line, L"x%d", lives);
-	DrawTextLine(line, (int)col4_X, 80, 200, 60);
+	DrawTextLine(line, (int)col4_X + 35, 80, 200, 60);
 
 	// 3. Render Center Screen Content for INTRO / DEATH
 	if (sceneId == SCENE::INTRO)

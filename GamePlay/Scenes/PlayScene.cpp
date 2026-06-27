@@ -37,6 +37,7 @@
 #include "Axe.h"
 // Items
 #include "../Coin.h"
+#include "../ItemCoin2.h"
 #include "../Mushroom1Up.h"
 #include "../SuperLeaf.h"
 #include "../HammerSuit.h"
@@ -60,6 +61,7 @@ using namespace std;
 namespace
 {
 	constexpr ULONGLONG MARIO_DIE_SCENE_DELAY_MS = 3000;
+	constexpr ULONGLONG GAME_OVER_SCENE_DELAY_MS = 4000;
 }
 
 void PlayScene::Load()
@@ -161,6 +163,9 @@ void PlayScene::Load()
 	SoundManager::GetInstance()->LoadSFX(SFX::COIN, "../Resource/audio/sfx/smb_coin.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::DIE, "../Resource/audio/bgm/smb_mariodie.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::POWERUP, "../Resource/audio/sfx/smb_powerup.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::POWERUP_APPEARS, "../Resource/audio/sfx/smb_powerup_appears.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::FIREBALL, "../Resource/audio/sfx/smb_fireball.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::BRICK_BREAK, "../Resource/audio/sfx/smb_breakblock.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::ONE_UP, "../Resource/audio/sfx/smb_1-up.wav");
 
 	// Load and play BGM based on scene type
@@ -175,6 +180,13 @@ void PlayScene::Load()
 		SoundManager::GetInstance()->LoadBGM(BGM::MENU_THEME, "../Resource/audio/bgm/menu_theme.wav");
 		SoundManager::GetInstance()->PlayBGM(BGM::MENU_THEME, true);
 	}
+	else if (id == SCENE::GAME_OVER)
+	{
+		SoundManager::GetInstance()->LoadBGM(BGM::GAME_OVER_THEME, "../Resource/audio/bgm/smb_gameover.wav");
+		SoundManager::GetInstance()->PlayBGM(BGM::GAME_OVER_THEME, false);
+	}
+
+	SoundManager::GetInstance()->ApplyVolumeSettings();
 }
 
 void PlayScene::_ParseSection_ASSETS(string line)
@@ -405,6 +417,7 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 
 	// ---- ITEMS ----
 	case OBJECT::COIN:
+	case OBJECT::ITEM_COIN2:
 	case OBJECT::MUSHROOM_1UP:
 	case OBJECT::SUPER_LEAF:
 	case OBJECT::HAMMER_SUIT:
@@ -500,6 +513,7 @@ LPGAMEOBJECT PlayScene::CreateItem(int type, float x, float y, float z)
 	switch (type)
 	{
 	case OBJECT::COIN:            return new Coin(x, y, z);
+	case OBJECT::ITEM_COIN2:      return new ItemCoin2(x, y, z);
 	case OBJECT::MUSHROOM:        return new Mushroom(x, y, z);
 	case OBJECT::FIRE_FLOWER:     return new FireFlower(x, y, z);
 	case OBJECT::POISON_MUSHROOM: return new PoisonMushroom(x, y, z);
@@ -537,6 +551,17 @@ void PlayScene::Update(DWORD dt)
 		if (now - sceneStart >= 2000)
 		{
 			GameManager::GetInstance()->InitiateSwitchScene(PlayerData::Get().returnScene);
+			return;
+		}
+	}
+
+	if (id == SCENE::GAME_OVER)
+	{
+		ULONGLONG now = GetTickCount64();
+		if (now - sceneStart >= GAME_OVER_SCENE_DELAY_MS)
+		{
+			PlayerData::Get().Reset();
+			GameManager::GetInstance()->InitiateSwitchScene(SCENE::MENU);
 			return;
 		}
 	}

@@ -15,6 +15,8 @@ screen_height 1080
 15 Scenes/death_scene.txt
 16 Scenes/gameover_scene.txt
 17 Scenes/intro_scene.txt
+18 Scenes/help_scene.txt
+19 Scenes/level_scene.txt
 
 
 [TEXTURES]
@@ -40,4 +42,6 @@ screen_height 1080
 19  Texture/Scene/gameover_scene.png
 20  Texture/Items/nums_123.png
 21  Texture/Scene/intro_scene.png
+22  Texture/Scene/help_scene.png
+23  Texture/Scene/level_scene.png
 # -100 Texture/bbox.png

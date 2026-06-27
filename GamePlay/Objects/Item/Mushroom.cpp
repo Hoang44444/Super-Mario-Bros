@@ -3,6 +3,7 @@
 #include "AnimationManager.h"
 #include "AssetID.h"
 #include "StaticObject.h"
+#include "SoundManager.h"
 
 void Mushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -44,6 +45,7 @@ void Mushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void Mushroom::OnMarioCollision(Mario* mario)
 {
+	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
 	mario->SetLevel(MARIO_LEVEL::BIG);
 	Delete();
 }
