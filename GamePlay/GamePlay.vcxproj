@@ -78,7 +78,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -94,7 +95,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -108,7 +110,8 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -124,7 +127,8 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>

@@ -62,6 +62,7 @@ void PlayScene::Load()
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath.c_str());
 
 	marioDieStart = 0; // fresh load -> Mario is alive again
+	sceneStart = GetTickCount64();
 
 	if (key_handler == NULL)
 	{
@@ -525,6 +526,16 @@ void PlayScene::_ParseSection_MAP(string line)
 
 void PlayScene::Update(DWORD dt)
 {
+	if (id == SCENE::INTRO || id == SCENE::DEATH)
+	{
+		ULONGLONG now = GetTickCount64();
+		if (now - sceneStart >= 2000)
+		{
+			GameManager::GetInstance()->InitiateSwitchScene(PlayerData::Get().returnScene);
+			return;
+		}
+	}
+
 	vector<LPGAMEOBJECT> coObjects;
 	for (auto obj : objects) coObjects.push_back(obj);
 

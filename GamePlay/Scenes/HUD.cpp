@@ -206,6 +206,9 @@ void HUD::Update(DWORD dt)
 
 void HUD::Render()
 {
+	int sceneId = GameManager::GetInstance()->GetCurrentSceneID();
+	if (sceneId == SCENE::GAME_OVER) return;
+
 	CreateFontIfNeeded();
 	if (font == nullptr) return;
 
@@ -253,7 +256,7 @@ void HUD::Render()
 	float col3_X = screenWidth * 0.65f;
 	float col4_X = screenWidth * 0.85f;
 
-	int sceneId = GameManager::GetInstance()->GetCurrentSceneID();
+	sceneId = GameManager::GetInstance()->GetCurrentSceneID();
 	bool isGameplayScene = (sceneId != SCENE::MENU && 
 	                        sceneId != SCENE::CONTROL && 
 	                        sceneId != SCENE::DEATH && 
@@ -265,8 +268,7 @@ void HUD::Render()
 	DrawTextLine(L"SCORE", (int)col0_X, 20, 200, 60);
 	DrawTextLine(L"COINS", (int)col1_X, 20, 200, 60);
 	DrawTextLine(L"WORLD", (int)col2_X, 20, 200, 60);
-	if (isGameplayScene)
-		DrawTextLine(L"TIME", (int)col3_X, 20, 200, 60);
+	DrawTextLine(L"TIME", (int)col3_X, 20, 200, 60);
 	DrawTextLine(L"LIVES", (int)col4_X, 20, 200, 60);
 
 	// 2. Draw values (Row 2)
@@ -286,7 +288,7 @@ void HUD::Render()
 			0.0f);
 	}
 	swprintf_s(line, L"x%02d", coins);
-	DrawTextLine(line, (int)(col1_X + 30.0f), 80, 200, 60);
+	DrawTextLine(line, (int)(col1_X + 24.0f * scale), 80, 200, 60);
 
 	swprintf_s(line, L"%d-%d", world, stage);
 	DrawTextLine(line, (int)col2_X, 80, 200, 60);

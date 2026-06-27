@@ -1,6 +1,7 @@
-﻿[ASSETS]
+[ASSETS]
 Objects/brick_test.txt
 Objects/mario.txt
+Objects/item2.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt

@@ -77,7 +77,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -93,7 +94,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -107,7 +109,8 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -129,7 +132,8 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>

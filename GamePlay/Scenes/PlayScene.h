@@ -19,6 +19,7 @@ class PlayScene : public Scene
 	float fixedCameraY;
 	int mapHeight = 0;            // map height (px); used to detect Mario falling off the bottom
 	ULONGLONG marioDieStart = 0;  // tick when Mario entered the DIE state (0 = not dying)
+	ULONGLONG sceneStart = 0;     // tick when the scene started loading
 
 	void OnMarioDeath();          // lose a life -> death screen, or game over -> menu
 

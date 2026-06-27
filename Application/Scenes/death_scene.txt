@@ -1,5 +1,7 @@
 [ASSETS]
 Objects/background.txt
+Objects/mario.txt
+Objects/item2.txt
 
 [MAP]
 960 540
@@ -7,5 +9,3 @@ Objects/background.txt
 [OBJECTS]
 # type x y z   (3 = BACKGROUND; picks death image via scene id)
 3 0 0 0.9
-# 51 = LIVES_NUMBER: hiện số mạng còn lại cạnh chữ X.  type x y z w h  (x,y = toạ độ logic)
-51 257 105 0.4 11 18
