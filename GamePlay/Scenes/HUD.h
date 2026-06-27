@@ -19,6 +19,12 @@ private:
 
 	void CreateFontIfNeeded();
 	void DrawTextLine(const wchar_t* text, int x, int y, int width, int height);
+	void DrawCenteredTextLine(const wchar_t* text, int y, int height);
+	void RenderTextureRectAtScreen(int textureId, const RECT& rect, float screenX, float screenY, float z = 0.9f);
+	void RenderCoinIcon(float screenX, float screenY);
+	float GetMarioLivesStartX() const;
+	void RenderMarioLivesIcon(int y);
+	void DrawMarioLivesText(int lives, int y);
 
 public:
 	HUD(Mario* mario, int world = 1, int stage = 1);

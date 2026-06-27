@@ -8,12 +8,15 @@
 #   drawW       drawn width  (logical pixels)
 #   drawH       drawn height (logical pixels)
 #   posY        logical Y (top) of the option; it is centered horizontally
-#   target      scene id to switch to when confirmed
+#   target      scene id to switch to when confirmed (use -1 for custom handling)
 #
 # Scene ids: 1 = World 1-1, 14 = Controls   (see Resource/AssetID.h :: SCENE)
+# Use -1 for custom handling in MenuKeyHandler (LEVEL, HELP, QUIT)
 #
 # Sizes keep the source aspect ratio (menu_text.png: Bắt đầu 306x52, Hướng dẫn 404x62).
 # To make the menu bigger/smaller, scale drawW & drawH together by the same factor.
 # aniWhite aniYellow  drawW drawH  posY  target
-  3010     3011       154   26     128   1     # Bắt đầu  -> World 1-1
-  3012     3013       169   26     162   14    # Hướng dẫn -> Controls
+  3010     3011       154   26     120   -1    # START -> Custom handling (WORLD_1_1)
+  3012     3013       169   26     160   -1    # LEVEL -> Custom handling (TODO)
+  3012     3013       169   26     200   -1    # HELP  -> Custom handling (TODO)
+  3012     3013       169   26     240   -1    # QUIT  -> Custom handling (exit game)

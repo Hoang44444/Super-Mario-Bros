@@ -140,6 +140,7 @@ void Mario::SetState(int state)
 	case MARIO_STATE::DIE:
 		vx = 0;                          // fall straight down, no horizontal drift
 		vy = -MARIO_PARAMS::JUMP_SPEED;
+		SoundManager::GetInstance()->StopBGM();
 		SoundManager::GetInstance()->PlaySFX(SFX::DIE);
 		break;
 	case MARIO_STATE::SHOOT:

@@ -77,7 +77,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -93,7 +94,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -107,7 +109,8 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -123,7 +126,8 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>

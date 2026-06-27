@@ -1,6 +1,7 @@
 [ASSETS]
 Objects/brick_test.txt
 Objects/mario.txt
+Objects/item2.txt
 
 [MAP]
 1920 1080

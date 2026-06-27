@@ -6,6 +6,7 @@
 #include "PlayScene.h"
 #include "Mario.h"
 #include "HUD.h"
+#include "MenuHUD.h"
 #include "MarioKeyHandler.h"
 #include "MenuKeyHandler.h"
 #include "Background.h"
@@ -56,16 +57,22 @@
 #include "../../Resource/SoundManager.h"
 using namespace std;
 
+namespace
+{
+	constexpr ULONGLONG MARIO_DIE_SCENE_DELAY_MS = 3000;
+}
+
 void PlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath.c_str());
 
 	marioDieStart = 0; // fresh load -> Mario is alive again
+	sceneStart = GetTickCount64();
 
 	if (key_handler == NULL)
 	{
 		// Non-gameplay screens (menu / control / end / death) have no player; use the menu handler.
-		if (id == SCENE::MENU || id == SCENE::CONTROL || id == SCENE::END || id == SCENE::DEATH || id == SCENE::GAME_OVER)
+		if (id == SCENE::MENU || id == SCENE::CONTROL || id == SCENE::END || id == SCENE::DEATH || id == SCENE::GAME_OVER || id == SCENE::INTRO)
 			key_handler = new MenuKeyHandler();
 		else
 			key_handler = new MarioKeyHandler(this);
@@ -117,17 +124,42 @@ void PlayScene::Load()
 	f.close();
 	DebugOut(L"[INFO] Done loading scene from %s\n", sceneFilePath.c_str());
 
+	// Determine world and stage for HUD based on current scene or returnScene
+	int hudWorld = 1;
+	int hudStage = 1;
+	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
+	{
+		hudWorld = 1;
+		hudStage = id;
+	}
+	else if (id == SCENE::INTRO || id == SCENE::DEATH)
+	{
+		int levelId = PlayerData::Get().returnScene;
+		hudWorld = 1;
+		hudStage = levelId;
+	}
+
+	delete hud;
 	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4 && player != nullptr)
 	{
-		delete hud;
-		hud = new HUD(static_cast<Mario*>(player), 1, id);
+		hud = new HUD(static_cast<Mario*>(player), hudWorld, hudStage);
+	}
+	else
+	{
+		hud = new HUD(nullptr, hudWorld, hudStage);
+	}
+
+	if (id == SCENE::MENU)
+	{
+		delete menuHUD;
+		menuHUD = new MenuHUD();
 	}
 
 	// Load SFX
 	SoundManager::GetInstance()->LoadSFX(SFX::JUMP, "../Resource/audio/sfx/smb_jump-super.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::STOMP, "../Resource/audio/sfx/smb_stomp.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::COIN, "../Resource/audio/sfx/smb_coin.wav");
-	SoundManager::GetInstance()->LoadBGM(SFX::DIE, "../Resource/audio/bgm/smb_mariodie.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::DIE, "../Resource/audio/bgm/smb_mariodie.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::POWERUP, "../Resource/audio/sfx/smb_powerup.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::ONE_UP, "../Resource/audio/sfx/smb_1-up.wav");
 
@@ -499,6 +531,16 @@ void PlayScene::_ParseSection_MAP(string line)
 
 void PlayScene::Update(DWORD dt)
 {
+	if (id == SCENE::INTRO || id == SCENE::DEATH)
+	{
+		ULONGLONG now = GetTickCount64();
+		if (now - sceneStart >= 2000)
+		{
+			GameManager::GetInstance()->InitiateSwitchScene(PlayerData::Get().returnScene);
+			return;
+		}
+	}
+
 	vector<LPGAMEOBJECT> coObjects;
 	for (auto obj : objects) coObjects.push_back(obj);
 
@@ -519,6 +561,9 @@ void PlayScene::Update(DWORD dt)
 	if (hud != nullptr)
 		hud->Update(dt);
 
+	if (menuHUD != nullptr)
+		menuHUD->Update();
+
 	// skip the rest if scene was already unloaded (Mario died)
 	if (player == nullptr) return;
 
@@ -533,9 +578,16 @@ void PlayScene::Update(DWORD dt)
 			marioDieStart = now;
 
 		bool fellOff = (mapHeight > 0 && py > mapHeight);
-		bool dieAnimDone = (marioDieStart != 0 && now - marioDieStart > 2000);
+		if (fellOff && marioDieStart == 0)
+		{
+			marioDieStart = now;
+			SoundManager::GetInstance()->StopBGM();
+			SoundManager::GetInstance()->PlaySFX(SFX::DIE);
+		}
 
-		if (fellOff || dieAnimDone)
+		bool dieSoundDone = (marioDieStart != 0 && now - marioDieStart >= MARIO_DIE_SCENE_DELAY_MS);
+
+		if (dieSoundDone)
 		{
 			OnMarioDeath();
 			return;
@@ -569,6 +621,9 @@ void PlayScene::Render()
 
 	if (hud != nullptr)
 		hud->Render();
+
+	if (menuHUD != nullptr)
+		menuHUD->Render();
 }
 
 void PlayScene::OnMarioDeath()
@@ -589,6 +644,9 @@ void PlayScene::Unload()
 {
 	delete hud;
 	hud = NULL;
+
+	delete menuHUD;
+	menuHUD = NULL;
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{

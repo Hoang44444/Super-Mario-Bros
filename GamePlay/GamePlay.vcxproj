@@ -78,7 +78,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -94,7 +95,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -108,7 +110,8 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -124,7 +127,8 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+      </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -137,9 +141,14 @@
     <ClInclude Include="Core\Collision.h" />
     <ClInclude Include="Core\KeyEventHandler.h" />
     <ClInclude Include="Core\GameManager.h" />
+    <ClInclude Include="Core\MenuKeyHandler.h" />
+    <ClInclude Include="Core\PauseKeyHandler.h" />
+    <ClInclude Include="Core\GameOverHandler.h" />
     <ClInclude Include="Scenes\PlayScene.h" />
     <ClInclude Include="Scenes\HUD.h" />
+    <ClInclude Include="Scenes\MenuHUD.h" />
     <ClInclude Include="Scenes\Background.h" />
+    <ClInclude Include="Scenes\MenuOptions.h" />
     <ClInclude Include="Objects\Player\Mario.h" />
     <ClInclude Include="Objects\Player\MarioKeyHandler.h" />
     <ClInclude Include="Objects\Bullet\Bullet.h" />
@@ -203,6 +212,7 @@
     <ClCompile Include="Core\GameManager.cpp" />
     <ClCompile Include="Scenes\PlayScene.cpp" />
     <ClCompile Include="Scenes\HUD.cpp" />
+    <ClCompile Include="Scenes\MenuHUD.cpp" />
     <ClCompile Include="Scenes\Background.cpp" />
     <ClCompile Include="Objects\Player\Mario.cpp" />
     <ClCompile Include="Objects\Bullet\Bullet.cpp" />

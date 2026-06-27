@@ -4,6 +4,7 @@
 #include "PlayerData.h"
 #include "PlayScene.h"
 #include "MenuOptions.h"
+#include "../Scenes/MenuHUD.h"
 #include "../Resource/AssetID.h"
 
 // Keyboard handler for the non-gameplay screens (menu / control / end / death).
@@ -24,25 +25,43 @@ public:
 
 		if (sceneId == SCENE::MENU) {
 			PlayScene* ps = dynamic_cast<PlayScene*>(gm->GetCurrentScene());
-			MenuOptions* mo = (ps != nullptr) ? ps->GetMenuOptions() : nullptr;
-			if (mo == nullptr) return;
+			MenuHUD* mh = (ps != nullptr) ? ps->GetMenuHUD() : nullptr;
+			if (mh == nullptr) return;
 
 			switch (KeyCode) {
 			case VK_UP:
-				mo->MoveSelection(-1);
+				mh->MoveSelection(-1);
 				break;
 			case VK_DOWN:
-				mo->MoveSelection(+1);
+				mh->MoveSelection(+1);
 				break;
 			case VK_RETURN:
 			case VK_SPACE:
-				gm->InitiateSwitchScene(mo->GetSelectedTarget());   // target defined in txt
+				{
+					int selected = mh->GetSelectedOption();
+					switch (selected) {
+					case 0: // START
+						PlayerData::Get().Reset();
+						PlayerData::Get().returnScene = SCENE::WORLD_1_1;
+						gm->InitiateSwitchScene(SCENE::INTRO);
+						break;
+					case 1: // LEVEL
+						// TODO: Implement level selection
+						break;
+					case 2: // HELP
+						// TODO: Implement help screen
+						break;
+					case 3: // QUIT
+						// Exit game using existing mechanism
+						PostQuitMessage(0);
+						break;
+					}
+				}
 				break;
 			}
 		}
-		else if (sceneId == SCENE::DEATH) {
-			// Death screen while lives remain -> press confirm to resume the level.
-			// (Out-of-lives is GAME_STATE::GAME_OVER, handled by GameOverHandler.)
+		else if (sceneId == SCENE::DEATH || sceneId == SCENE::INTRO) {
+			// Death screen or Intro screen -> press confirm to load/resume the level.
 			if (KeyCode == VK_RETURN || KeyCode == VK_SPACE)
 				gm->InitiateSwitchScene(PlayerData::Get().returnScene);
 		}
