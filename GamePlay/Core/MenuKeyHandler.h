@@ -41,9 +41,9 @@ public:
 					int selected = mh->GetSelectedOption();
 					switch (selected) {
 					case 0: // START
-						// TODO: Switch to IntroScene then gameplay
-						// For now, go directly to WORLD_1_1
-						gm->InitiateSwitchScene(SCENE::WORLD_1_1);
+						PlayerData::Get().Reset();
+						PlayerData::Get().returnScene = SCENE::WORLD_1_1;
+						gm->InitiateSwitchScene(SCENE::INTRO);
 						break;
 					case 1: // LEVEL
 						// TODO: Implement level selection
@@ -60,9 +60,8 @@ public:
 				break;
 			}
 		}
-		else if (sceneId == SCENE::DEATH) {
-			// Death screen while lives remain -> press confirm to resume the level.
-			// (Out-of-lives is GAME_STATE::GAME_OVER, handled by GameOverHandler.)
+		else if (sceneId == SCENE::DEATH || sceneId == SCENE::INTRO) {
+			// Death screen or Intro screen -> press confirm to load/resume the level.
 			if (KeyCode == VK_RETURN || KeyCode == VK_SPACE)
 				gm->InitiateSwitchScene(PlayerData::Get().returnScene);
 		}

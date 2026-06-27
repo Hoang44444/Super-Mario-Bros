@@ -1,0 +1,11 @@
+[ASSETS]
+Objects/background.txt
+Objects/mario.txt
+
+[MAP]
+1920 1080
+
+[OBJECTS]
+# type x y z   (3 = BACKGROUND; picks menu image via scene id)
+3 0 0 0.9
+

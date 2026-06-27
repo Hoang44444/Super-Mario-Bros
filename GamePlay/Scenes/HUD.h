@@ -19,6 +19,8 @@ private:
 
 	void CreateFontIfNeeded();
 	void DrawTextLine(const wchar_t* text, int x, int y, int width, int height);
+	void DrawCenteredTextLine(const wchar_t* text, int y, int height);
+	void RenderMarioAndLives(int lives, int y);
 
 public:
 	HUD(Mario* mario, int world = 1, int stage = 1);

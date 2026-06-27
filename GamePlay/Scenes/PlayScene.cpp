@@ -66,7 +66,7 @@ void PlayScene::Load()
 	if (key_handler == NULL)
 	{
 		// Non-gameplay screens (menu / control / end / death) have no player; use the menu handler.
-		if (id == SCENE::MENU || id == SCENE::CONTROL || id == SCENE::END || id == SCENE::DEATH || id == SCENE::GAME_OVER)
+		if (id == SCENE::MENU || id == SCENE::CONTROL || id == SCENE::END || id == SCENE::DEATH || id == SCENE::GAME_OVER || id == SCENE::INTRO)
 			key_handler = new MenuKeyHandler();
 		else
 			key_handler = new MarioKeyHandler(this);
@@ -118,18 +118,35 @@ void PlayScene::Load()
 	f.close();
 	DebugOut(L"[INFO] Done loading scene from %s\n", sceneFilePath.c_str());
 
+	// Determine world and stage for HUD based on current scene or returnScene
+	int hudWorld = 1;
+	int hudStage = 1;
+	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
+	{
+		hudWorld = 1;
+		hudStage = id;
+	}
+	else if (id == SCENE::INTRO || id == SCENE::DEATH)
+	{
+		int levelId = PlayerData::Get().returnScene;
+		hudWorld = 1;
+		hudStage = levelId;
+	}
+
+	delete hud;
 	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4 && player != nullptr)
 	{
-		delete hud;
-		hud = new HUD(static_cast<Mario*>(player), 1, id);
+		hud = new HUD(static_cast<Mario*>(player), hudWorld, hudStage);
 	}
-	else if (id == SCENE::MENU)
+	else
+	{
+		hud = new HUD(nullptr, hudWorld, hudStage);
+	}
+
+	if (id == SCENE::MENU)
 	{
 		delete menuHUD;
 		menuHUD = new MenuHUD();
-
-		delete hud;
-		hud = new HUD(nullptr, 1, 1);
 	}
 
 	// Load SFX

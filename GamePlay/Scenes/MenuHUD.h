@@ -10,6 +10,12 @@ private:
 	int selectedOption;  // 0=START, 1=LEVEL, 2=HELP, 3=QUIT
 	float cursorX, cursorY;  // Cursor position (mushroom icon)
 
+	// Menu layout variables computed in Update and shared with Render
+	float menuStartX;
+	float menuStartY;
+	float menuSpacing;
+	float fontHeight;
+
 	void CreateFontIfNeeded();
 	void DrawTextLine(const wchar_t* text, int x, int y, int width, int height, D3DXCOLOR color);
 	void DrawCursor();

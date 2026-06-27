@@ -17,6 +17,11 @@ MenuHUD::MenuHUD()
 	// Cursor initial position (will be updated in Update)
 	this->cursorX = 150.0f;
 	this->cursorY = 200.0f;
+
+	this->menuStartX = 0.0f;
+	this->menuStartY = 0.0f;
+	this->menuSpacing = 0.0f;
+	this->fontHeight = 0.0f;
 }
 
 MenuHUD::~MenuHUD()
@@ -37,7 +42,7 @@ void MenuHUD::CreateFontIfNeeded()
 
 	D3DX10CreateFont(
 		device,
-		60,  // Height
+		80,  // Height (changed from 60 to 80 for bigger buttons)
 		0,
 		FW_BOLD,
 		1,
@@ -98,11 +103,25 @@ void MenuHUD::Update()
 	int screenHeight = r->GetBackBufferHeight();
 	float scale = r->GetGlobalScale();
 
-	float startY = screenHeight * 0.45f;
-	float spacing = 80.0f;
+	menuStartX = screenWidth * 0.70f;
+	menuStartY = screenHeight * 0.30f;
+	menuSpacing = 100.0f;
+	fontHeight = 80.0f;
 
-	cursorX = screenWidth * 0.65f - 70.0f;
-	cursorY = startY + selectedOption * spacing + (60.0f - 16.0f * scale) / 2.0f;
+	LPSPRITE cursorSprite = SpriteManager::GetInstance()->Get(11);
+	float cursorWidth = 16.0f;
+	float cursorHeight = 16.0f;
+	if (cursorSprite != nullptr)
+	{
+		RECT rect = cursorSprite->GetRect();
+		cursorWidth = (float)(rect.right - rect.left);
+		cursorHeight = (float)(rect.bottom - rect.top);
+	}
+
+	// Position the cursor to the left of the menu starting position
+	cursorX = menuStartX - (cursorWidth * scale) - 20.0f;
+	// Vertically center the cursor relative to the text line
+	cursorY = menuStartY + selectedOption * menuSpacing + (fontHeight - cursorHeight * scale) / 2.0f;
 }
 
 void MenuHUD::Render()
@@ -145,11 +164,11 @@ void MenuHUD::Render()
 	float camY = Camera::GetInstance()->GetY();
 
 	// 2. Render Mario decoration (world-space)
-	LPANIMATION marioAni = AnimationManager::GetInstance()->Get(400); // MARIO_BIG_IDLE_RIGHT
+	LPANIMATION marioAni = AnimationManager::GetInstance()->Get(1100); // MARIO_SMALL_IDLE_RIGHT
 	if (marioAni != nullptr)
 	{
-		float marioX = screenWidth * 0.25f;
-		float marioY = screenHeight * 0.55f;
+		float marioX = screenWidth * 0.15f;
+		float marioY = screenHeight * 0.80f;
 		marioAni->Render(
 			camX + marioX / scale,
 			camY + marioY / scale,
@@ -164,10 +183,6 @@ void MenuHUD::Render()
 	spriteHandler->Flush();
 
 	// 5. Draw menu items (screen-space)
-	float startX = screenWidth * 0.65f;
-	float startY = screenHeight * 0.45f;
-	float spacing = 80.0f;
-	
 	const wchar_t* menuItems[] = { L"START", L"LEVEL", L"HELP", L"QUIT" };
 	
 	for (int i = 0; i < 4; i++)
@@ -176,7 +191,7 @@ void MenuHUD::Render()
 			D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f) :  // Yellow for selected
 			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);   // White for unselected
 		
-		DrawTextLine(menuItems[i], (int)startX, (int)(startY + i * spacing), 300, 60, color);
+		DrawTextLine(menuItems[i], (int)menuStartX, (int)(menuStartY + i * menuSpacing), 400, (int)fontHeight, color);
 	}
 
 	// 6. Flush text drawings

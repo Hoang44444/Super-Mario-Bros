@@ -20,6 +20,7 @@
 
 #---- GAME OVER SCENE ----#
 30018 0 0 960 540 19
+30019 0 0 960 540 21
 
 #---- MENU TEXT (no ▶ arrow = not selected, with ▶ arrow = selected) ----#
 # Both states are padded to the same left edge (x=27) so the arrow swaps in
@@ -47,6 +48,7 @@
 3006 30016 100
 3007 30017 100
 3008 30018 100
+3009 30019 100
 
 # Menu option text
 3010 30020 100

@@ -7,6 +7,8 @@
 #include "Mario.h"
 #include "Renderer.h"
 #include "../Resource/AssetID.h"
+#include "GameManager.h"
+#include "PlayerData.h"
 
 namespace
 {
@@ -110,6 +112,59 @@ void HUD::DrawTextLine(const wchar_t* text, int x, int y, int width, int height)
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
+void HUD::DrawCenteredTextLine(const wchar_t* text, int y, int height)
+{
+	if (font == nullptr) return;
+
+	int screenWidth = Renderer::GetInstance()->GetBackBufferWidth();
+	RECT rect;
+	rect.left = 0;
+	rect.top = y;
+	rect.right = screenWidth;
+	rect.bottom = y + height;
+
+	font->DrawText(
+		Renderer::GetInstance()->GetSpriteHandler(),
+		text,
+		-1,
+		&rect,
+		DT_CENTER | DT_TOP | DT_NOCLIP,
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+}
+
+void HUD::RenderMarioAndLives(int lives, int y)
+{
+	Renderer* r = Renderer::GetInstance();
+	float scale = r->GetGlobalScale();
+	int screenWidth = r->GetBackBufferWidth();
+
+	float marioWidth = 16.0f * scale; // Small Mario width on screen
+	float spacing = 15.0f;
+	float textWidth = 60.0f; // Approx width of "x3"
+	float totalWidth = marioWidth + spacing + textWidth;
+
+	float startX = (screenWidth - totalWidth) / 2.0f;
+
+	// Render Mario animation (world-space)
+	LPANIMATION marioAni = AnimationManager::GetInstance()->Get(1100); // MARIO_SMALL_IDLE_RIGHT
+	if (marioAni != nullptr)
+	{
+		float camX = Camera::GetInstance()->GetX();
+		float camY = Camera::GetInstance()->GetY();
+		
+		marioAni->Render(
+			camX + (startX + marioWidth / 2.0f) / scale,
+			camY + (y + marioWidth / 2.0f) / scale,
+			0.0f
+		);
+	}
+
+	// Render text
+	wchar_t line[16];
+	swprintf_s(line, L"x%d", lives);
+	DrawTextLine(line, (int)(startX + marioWidth + spacing), y, 200, 60);
+}
+
 void HUD::ResetTimer()
 {
 	remainingTime = START_TIME;
@@ -118,6 +173,19 @@ void HUD::ResetTimer()
 
 void HUD::Update(DWORD dt)
 {
+	int sceneId = GameManager::GetInstance()->GetCurrentSceneID();
+	bool isGameplayScene = (sceneId != SCENE::MENU && 
+	                        sceneId != SCENE::CONTROL && 
+	                        sceneId != SCENE::DEATH && 
+	                        sceneId != SCENE::GAME_OVER && 
+	                        sceneId != SCENE::END &&
+	                        sceneId != SCENE::INTRO);
+
+	if (!isGameplayScene)
+	{
+		return;
+	}
+
 	if (remainingTime <= 0)
 	{
 		remainingTime = 0;
@@ -153,18 +221,7 @@ void HUD::Render()
 	spriteHandler->GetViewTransform(&oldView);
 
 	LPANIMATION coinAnimation = AnimationManager::GetInstance()->Get(ANIMATION::ITEM_COIN);
-	if (coinAnimation != nullptr)
-	{
-		const float scale = Renderer::GetInstance()->GetGlobalScale();
-		const float coinScreenX = 250.0f / scale;
-		const float coinScreenY = 82.0f / scale;
-
-		coinAnimation->Render(
-			Camera::GetInstance()->GetX() + coinScreenX,
-			Camera::GetInstance()->GetY() + coinScreenY,
-			0.0f);
-	}
-
+	
 	UINT oldViewportCount = D3D10_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE;
 	D3D10_VIEWPORT oldViewports[D3D10_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
 	device->RSGetViewports(&oldViewportCount, oldViewports);
@@ -182,28 +239,82 @@ void HUD::Render()
 	spriteHandler->Flush();
 
 	const int score = ReadScore(mario, 0);
-	const int coins = ReadCoin(mario, 0);
-	const int lives = ReadLives(mario, 0);
+	const int coins = (mario != nullptr) ? ReadCoin(mario, 0) : PlayerData::Get().coins;
+	const int lives = (mario != nullptr) ? ReadLives(mario, 0) : PlayerData::Get().lives;
 
+	Renderer* r = Renderer::GetInstance();
+	int screenWidth = r->GetBackBufferWidth();
+	int screenHeight = r->GetBackBufferHeight();
+	float scale = r->GetGlobalScale();
+
+	float col0_X = screenWidth * 0.05f;
+	float col1_X = screenWidth * 0.25f;
+	float col2_X = screenWidth * 0.45f;
+	float col3_X = screenWidth * 0.65f;
+	float col4_X = screenWidth * 0.85f;
+
+	int sceneId = GameManager::GetInstance()->GetCurrentSceneID();
+	bool isGameplayScene = (sceneId != SCENE::MENU && 
+	                        sceneId != SCENE::CONTROL && 
+	                        sceneId != SCENE::DEATH && 
+	                        sceneId != SCENE::GAME_OVER && 
+	                        sceneId != SCENE::END &&
+	                        sceneId != SCENE::INTRO);
+
+	// 1. Draw top row (Labels)
+	DrawTextLine(L"SCORE", (int)col0_X, 20, 200, 60);
+	DrawTextLine(L"COINS", (int)col1_X, 20, 200, 60);
+	DrawTextLine(L"WORLD", (int)col2_X, 20, 200, 60);
+	if (isGameplayScene)
+		DrawTextLine(L"TIME", (int)col3_X, 20, 200, 60);
+	DrawTextLine(L"LIVES", (int)col4_X, 20, 200, 60);
+
+	// 2. Draw values (Row 2)
 	wchar_t line[128];
-	DrawTextLine(L"MARIO", 30, 20, 300, 60);
-	DrawTextLine(L"WORLD", 500, 20, 300, 60);
-	DrawTextLine(L"TIME", 700, 20, 300, 60);
-
 	swprintf_s(line, L"%06d", score);
-	DrawTextLine(line, 30, 80, 300, 60);
+	DrawTextLine(line, (int)col0_X, 80, 200, 60);
 
+	// Coin Animation
+	if (coinAnimation != nullptr)
+	{
+		const float coinScreenX = col1_X / scale;
+		const float coinScreenY = 82.0f / scale;
+
+		coinAnimation->Render(
+			Camera::GetInstance()->GetX() + coinScreenX,
+			Camera::GetInstance()->GetY() + coinScreenY,
+			0.0f);
+	}
 	swprintf_s(line, L"x%02d", coins);
-	DrawTextLine(line, 280, 80, 200, 60);
+	DrawTextLine(line, (int)(col1_X + 30.0f), 80, 200, 60);
 
 	swprintf_s(line, L"%d-%d", world, stage);
-	DrawTextLine(line, 500, 80, 200, 60);
+	DrawTextLine(line, (int)col2_X, 80, 200, 60);
 
-	swprintf_s(line, L"%03d", remainingTime);
-	DrawTextLine(line, 700, 80, 200, 60);
+	if (isGameplayScene)
+	{
+		swprintf_s(line, L"%03d", remainingTime);
+		DrawTextLine(line, (int)col3_X, 80, 200, 60);
+	}
 
-	//swprintf_s(line, L"LIVES %02d", lives);
-	//DrawTextLine(line, 30, 140, 400, 60);
+	swprintf_s(line, L"x%d", lives);
+	DrawTextLine(line, (int)col4_X, 80, 200, 60);
+
+	// 3. Render Center Screen Content for INTRO / DEATH
+	if (sceneId == SCENE::INTRO)
+	{
+		// Render WORLD <world>-<stage>
+		swprintf_s(line, L"WORLD %d-%d", world, stage);
+		DrawCenteredTextLine(line, (int)(screenHeight * 0.5f - 80.0f), 60);
+
+		// Render Mario small and x<lives>
+		RenderMarioAndLives(lives, (int)(screenHeight * 0.5f + 20.0f));
+	}
+	else if (sceneId == SCENE::DEATH)
+	{
+		// Render Mario small and x<lives> centered
+		RenderMarioAndLives(lives, (int)(screenHeight * 0.5f - 30.0f));
+	}
 
 	spriteHandler->Flush();
 	spriteHandler->SetProjectionTransform(&oldProjection);
