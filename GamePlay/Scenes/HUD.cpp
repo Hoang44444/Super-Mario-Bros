@@ -2,10 +2,10 @@
 
 #include <cstdio>
 
-#include "AnimationManager.h"
 #include "Camera.h"
 #include "Mario.h"
 #include "Renderer.h"
+#include "TextureManager.h"
 #include "../Resource/AssetID.h"
 #include "GameManager.h"
 #include "PlayerData.h"
@@ -49,6 +49,16 @@ namespace
 	int ReadLives(...)
 	{
 		return 0;
+	}
+
+	RECT MakeRect(int left, int top, int right, int bottom)
+	{
+		RECT rect;
+		rect.left = left;
+		rect.top = top;
+		rect.right = right;
+		rect.bottom = bottom;
+		return rect;
 	}
 }
 
@@ -132,34 +142,65 @@ void HUD::DrawCenteredTextLine(const wchar_t* text, int y, int height)
 		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
-void HUD::RenderMarioAndLives(int lives, int y)
+void HUD::RenderTextureRectAtScreen(int textureId, const RECT& rect, float screenX, float screenY, float z)
+{
+	Renderer* r = Renderer::GetInstance();
+	float scale = r->GetGlobalScale();
+	if (scale <= 0.0f) return;
+
+	LPTEXTURE texture = TextureManager::GetInstance()->Get(textureId);
+	if (texture == nullptr) return;
+
+	RECT drawRect = rect;
+	r->Draw(
+		Camera::GetInstance()->GetX() + screenX / scale,
+		Camera::GetInstance()->GetY() + screenY / scale,
+		z,
+		texture,
+		&drawRect);
+}
+
+void HUD::RenderCoinIcon(float screenX, float screenY)
+{
+	const RECT coinFrames[] = {
+		MakeRect(300, 98, 316, 114),
+		MakeRect(316, 98, 332, 114),
+		MakeRect(331, 98, 347, 114)
+	};
+	int frame = (int)((GetTickCount64() / 100) % 3);
+	RenderTextureRectAtScreen(TEXTURE::MISC, coinFrames[frame], screenX, screenY);
+}
+
+float HUD::GetMarioLivesStartX() const
 {
 	Renderer* r = Renderer::GetInstance();
 	float scale = r->GetGlobalScale();
 	int screenWidth = r->GetBackBufferWidth();
 
-	float marioWidth = 16.0f * scale; // Small Mario width on screen
+	float marioWidth = 13.0f * scale;
 	float spacing = 15.0f;
 	float textWidth = 60.0f; // Approx width of "x3"
 	float totalWidth = marioWidth + spacing + textWidth;
 
-	float startX = (screenWidth - totalWidth) / 2.0f;
+	return (screenWidth - totalWidth) / 2.0f;
+}
 
-	// Render Mario animation (world-space)
-	LPANIMATION marioAni = AnimationManager::GetInstance()->Get(1100); // MARIO_SMALL_IDLE_RIGHT
-	if (marioAni != nullptr)
-	{
-		float camX = Camera::GetInstance()->GetX();
-		float camY = Camera::GetInstance()->GetY();
-		
-		marioAni->Render(
-			camX + (startX + marioWidth / 2.0f) / scale,
-			camY + (y + marioWidth / 2.0f) / scale,
-			0.0f
-		);
-	}
+void HUD::RenderMarioLivesIcon(int y)
+{
+	float startX = GetMarioLivesStartX();
+	RECT smallMarioIdleRight = MakeRect(247, 0, 260, 15);
+	RenderTextureRectAtScreen(TEXTURE::MARIO, smallMarioIdleRight, startX, (float)y);
+}
 
-	// Render text
+void HUD::DrawMarioLivesText(int lives, int y)
+{
+	Renderer* r = Renderer::GetInstance();
+	float scale = r->GetGlobalScale();
+
+	float marioWidth = 13.0f * scale;
+	float spacing = 15.0f;
+	float startX = GetMarioLivesStartX();
+
 	wchar_t line[16];
 	swprintf_s(line, L"x%d", lives);
 	DrawTextLine(line, (int)(startX + marioWidth + spacing), y, 200, 60);
@@ -223,8 +264,6 @@ void HUD::Render()
 	spriteHandler->GetProjectionTransform(&oldProjection);
 	spriteHandler->GetViewTransform(&oldView);
 
-	LPANIMATION coinAnimation = AnimationManager::GetInstance()->Get(ANIMATION::ITEM_COIN);
-	
 	UINT oldViewportCount = D3D10_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE;
 	D3D10_VIEWPORT oldViewports[D3D10_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
 	device->RSGetViewports(&oldViewportCount, oldViewports);
@@ -264,6 +303,17 @@ void HUD::Render()
 	                        sceneId != SCENE::END &&
 	                        sceneId != SCENE::INTRO);
 
+	int marioLivesY = 0;
+	if (sceneId == SCENE::INTRO)
+		marioLivesY = (int)(screenHeight * 0.5f + 20.0f);
+	else if (sceneId == SCENE::DEATH)
+		marioLivesY = (int)(screenHeight * 0.5f - 30.0f);
+
+	RenderCoinIcon(col1_X, 82.0f);
+	if (marioLivesY != 0)
+		RenderMarioLivesIcon(marioLivesY);
+	spriteHandler->Flush();
+
 	// 1. Draw top row (Labels)
 	DrawTextLine(L"SCORE", (int)col0_X, 20, 200, 60);
 	DrawTextLine(L"COINS", (int)col1_X, 20, 200, 60);
@@ -276,17 +326,6 @@ void HUD::Render()
 	swprintf_s(line, L"%06d", score);
 	DrawTextLine(line, (int)col0_X, 80, 200, 60);
 
-	// Coin Animation
-	if (coinAnimation != nullptr)
-	{
-		const float coinScreenX = col1_X / scale;
-		const float coinScreenY = 82.0f / scale;
-
-		coinAnimation->Render(
-			Camera::GetInstance()->GetX() + coinScreenX,
-			Camera::GetInstance()->GetY() + coinScreenY,
-			0.0f);
-	}
 	swprintf_s(line, L"x%02d", coins);
 	DrawTextLine(line, (int)(col1_X + 24.0f * scale), 80, 200, 60);
 
@@ -310,12 +349,12 @@ void HUD::Render()
 		DrawCenteredTextLine(line, (int)(screenHeight * 0.5f - 80.0f), 60);
 
 		// Render Mario small and x<lives>
-		RenderMarioAndLives(lives, (int)(screenHeight * 0.5f + 20.0f));
+		DrawMarioLivesText(lives, marioLivesY);
 	}
 	else if (sceneId == SCENE::DEATH)
 	{
 		// Render Mario small and x<lives> centered
-		RenderMarioAndLives(lives, (int)(screenHeight * 0.5f - 30.0f));
+		DrawMarioLivesText(lives, marioLivesY);
 	}
 
 	spriteHandler->Flush();

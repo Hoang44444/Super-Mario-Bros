@@ -154,7 +154,7 @@ void PlayScene::Load()
 	SoundManager::GetInstance()->LoadSFX(SFX::JUMP, "../Resource/audio/sfx/smb_jump-super.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::STOMP, "../Resource/audio/sfx/smb_stomp.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::COIN, "../Resource/audio/sfx/smb_coin.wav");
-	SoundManager::GetInstance()->LoadBGM(SFX::DIE, "../Resource/audio/bgm/smb_mariodie.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::DIE, "../Resource/audio/bgm/smb_mariodie.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::POWERUP, "../Resource/audio/sfx/smb_powerup.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::ONE_UP, "../Resource/audio/sfx/smb_1-up.wav");
 
@@ -577,6 +577,12 @@ void PlayScene::Update(DWORD dt)
 
 		if (fellOff || dieAnimDone)
 		{
+			if (fellOff && marioDieStart == 0)
+			{
+				marioDieStart = now;
+				SoundManager::GetInstance()->StopBGM();
+				SoundManager::GetInstance()->PlaySFX(SFX::DIE);
+			}
 			OnMarioDeath();
 			return;
 		}
