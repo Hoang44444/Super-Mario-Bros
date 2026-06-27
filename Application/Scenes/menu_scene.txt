@@ -1,5 +1,6 @@
 [ASSETS]
 Objects/background.txt
+Objects/mario.txt
 
 [MAP]
 1920 1080

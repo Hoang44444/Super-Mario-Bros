@@ -127,6 +127,9 @@ void PlayScene::Load()
 	{
 		delete menuHUD;
 		menuHUD = new MenuHUD();
+
+		delete hud;
+		hud = new HUD(nullptr, 1, 1);
 	}
 
 	// Load SFX
