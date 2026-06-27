@@ -3,6 +3,7 @@
 #include "AnimationManager.h"
 #include "AssetID.h"
 #include "StaticObject.h"
+#include "SoundManager.h"
 
 void PoisonMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -45,6 +46,8 @@ void PoisonMushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 void PoisonMushroom::OnMarioCollision(Mario* mario)
 {
 	if (mario->IsInvincible()) { Delete(); return; }
+
+	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
 
 	if (mario->CanShoot())
 		mario->SetCanShoot(false);

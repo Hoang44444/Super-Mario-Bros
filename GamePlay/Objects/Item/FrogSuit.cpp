@@ -2,6 +2,7 @@
 #include "Mario.h"
 #include "AnimationManager.h"
 #include "AssetID.h"
+#include "SoundManager.h"
 
 void FrogSuit::Render()
 {
@@ -17,6 +18,7 @@ void FrogSuit::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void FrogSuit::OnMarioCollision(Mario* mario)
 {
+	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
 	mario->SetLevel(MARIO_LEVEL::FROG);
 	Delete();
 }

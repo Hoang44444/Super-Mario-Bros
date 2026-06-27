@@ -58,6 +58,9 @@ void QuestionBlock::SpawnItem(Mario* mario) {
 	LPGAMEOBJECT item = playScene->CreateItem(itemType, x, y, z);
 	if (item == nullptr) return;
 
+	if (itemType != OBJECT::ITEM_COIN2)
+		SoundManager::GetInstance()->PlaySFX(SFX::POWERUP_APPEARS);
+
 	Item* it = dynamic_cast<Item*>(item);
 	if (it != nullptr) it->StartEmerge();   // rise out of the block
 

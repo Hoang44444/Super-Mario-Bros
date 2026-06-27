@@ -170,6 +170,7 @@
     <ClInclude Include="Spiny.h" />
     <ClInclude Include="Objects\Item\Item.h" />
     <ClInclude Include="Coin.h" />
+    <ClInclude Include="ItemCoin2.h" />
     <ClInclude Include="CoinCollectEffect.h" />
     <ClInclude Include="CoinPopupEffect.h" />
     <ClInclude Include="HammerSuit.h" />
@@ -249,6 +250,7 @@
     <ClCompile Include="Podoboo.cpp" />
     <ClCompile Include="Spiny.cpp" />
     <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="ItemCoin2.cpp" />
     <ClCompile Include="CoinCollectEffect.cpp" />
     <ClCompile Include="CoinPopupEffect.cpp" />
     <ClCompile Include="HammerSuit.cpp" />

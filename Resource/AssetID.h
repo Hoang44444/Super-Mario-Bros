@@ -78,6 +78,7 @@ namespace OBJECT
 	constexpr int HAMMER_SUIT = 21;
 	constexpr int TANOOKI_SUIT = 22;
 	constexpr int HAMMER = 23;
+	constexpr int ITEM_COIN2 = 24;
 
 	// ---- ENEMIES ----
 	constexpr int GOOMBA = 30;

@@ -2,6 +2,7 @@
 #include "AnimationManager.h"
 #include "AssetID.h"
 #include "BrickFragment.h"
+#include "SoundManager.h"
 
 void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {}
 
@@ -24,6 +25,8 @@ void Brick::OnMarioCollision(Mario* mario, LPCOLLISIONEVENT e) {
 }
 
 void Brick::Break() {
+	SoundManager::GetInstance()->PlaySFX(SFX::BRICK_BREAK);
+
 	float fragmentVx[] = { -0.1f, 0.1f, -0.1f, 0.1f };
 	float fragmentVy[] = { -0.2f, -0.2f, -0.1f, -0.1f };
 

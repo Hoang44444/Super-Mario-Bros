@@ -62,6 +62,7 @@ void Mario::ShootBullet() {
 	float bulletX = x + (direction > 0 ? 15.0f : -8.0f);
 	float bulletY = y;
 	scene->AddObject(new Bullet(bulletX, bulletY, direction, this));
+	SoundManager::GetInstance()->PlaySFX(SFX::FIREBALL);
 }
 
 void Mario::ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects)
