@@ -57,6 +57,11 @@
 #include "../../Resource/SoundManager.h"
 using namespace std;
 
+namespace
+{
+	constexpr ULONGLONG MARIO_DIE_SCENE_DELAY_MS = 3000;
+}
+
 void PlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath.c_str());
@@ -573,16 +578,17 @@ void PlayScene::Update(DWORD dt)
 			marioDieStart = now;
 
 		bool fellOff = (mapHeight > 0 && py > mapHeight);
-		bool dieAnimDone = (marioDieStart != 0 && now - marioDieStart > 2000);
-
-		if (fellOff || dieAnimDone)
+		if (fellOff && marioDieStart == 0)
 		{
-			if (fellOff && marioDieStart == 0)
-			{
-				marioDieStart = now;
-				SoundManager::GetInstance()->StopBGM();
-				SoundManager::GetInstance()->PlaySFX(SFX::DIE);
-			}
+			marioDieStart = now;
+			SoundManager::GetInstance()->StopBGM();
+			SoundManager::GetInstance()->PlaySFX(SFX::DIE);
+		}
+
+		bool dieSoundDone = (marioDieStart != 0 && now - marioDieStart >= MARIO_DIE_SCENE_DELAY_MS);
+
+		if (dieSoundDone)
+		{
 			OnMarioDeath();
 			return;
 		}
