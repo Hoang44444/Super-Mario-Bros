@@ -6,6 +6,7 @@
 #include "PlayScene.h"
 #include "Mario.h"
 #include "HUD.h"
+#include "MenuHUD.h"
 #include "MarioKeyHandler.h"
 #include "MenuKeyHandler.h"
 #include "Background.h"
@@ -121,6 +122,11 @@ void PlayScene::Load()
 	{
 		delete hud;
 		hud = new HUD(static_cast<Mario*>(player), 1, id);
+	}
+	else if (id == SCENE::MENU)
+	{
+		delete menuHUD;
+		menuHUD = new MenuHUD();
 	}
 
 	// Load SFX
@@ -519,6 +525,9 @@ void PlayScene::Update(DWORD dt)
 	if (hud != nullptr)
 		hud->Update(dt);
 
+	if (menuHUD != nullptr)
+		menuHUD->Update();
+
 	// skip the rest if scene was already unloaded (Mario died)
 	if (player == nullptr) return;
 
@@ -569,6 +578,9 @@ void PlayScene::Render()
 
 	if (hud != nullptr)
 		hud->Render();
+
+	if (menuHUD != nullptr)
+		menuHUD->Render();
 }
 
 void PlayScene::OnMarioDeath()
@@ -589,6 +601,9 @@ void PlayScene::Unload()
 {
 	delete hud;
 	hud = NULL;
+
+	delete menuHUD;
+	menuHUD = NULL;
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{

@@ -4,6 +4,7 @@
 #include "PlayerData.h"
 #include "PlayScene.h"
 #include "MenuOptions.h"
+#include "../Scenes/MenuHUD.h"
 #include "../Resource/AssetID.h"
 
 // Keyboard handler for the non-gameplay screens (menu / control / end / death).
@@ -24,19 +25,38 @@ public:
 
 		if (sceneId == SCENE::MENU) {
 			PlayScene* ps = dynamic_cast<PlayScene*>(gm->GetCurrentScene());
-			MenuOptions* mo = (ps != nullptr) ? ps->GetMenuOptions() : nullptr;
-			if (mo == nullptr) return;
+			MenuHUD* mh = (ps != nullptr) ? ps->GetMenuHUD() : nullptr;
+			if (mh == nullptr) return;
 
 			switch (KeyCode) {
 			case VK_UP:
-				mo->MoveSelection(-1);
+				mh->MoveSelection(-1);
 				break;
 			case VK_DOWN:
-				mo->MoveSelection(+1);
+				mh->MoveSelection(+1);
 				break;
 			case VK_RETURN:
 			case VK_SPACE:
-				gm->InitiateSwitchScene(mo->GetSelectedTarget());   // target defined in txt
+				{
+					int selected = mh->GetSelectedOption();
+					switch (selected) {
+					case 0: // START
+						// TODO: Switch to IntroScene then gameplay
+						// For now, go directly to WORLD_1_1
+						gm->InitiateSwitchScene(SCENE::WORLD_1_1);
+						break;
+					case 1: // LEVEL
+						// TODO: Implement level selection
+						break;
+					case 2: // HELP
+						// TODO: Implement help screen
+						break;
+					case 3: // QUIT
+						// Exit game using existing mechanism
+						PostQuitMessage(0);
+						break;
+					}
+				}
 				break;
 			}
 		}
