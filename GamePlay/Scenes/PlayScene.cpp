@@ -61,6 +61,7 @@ using namespace std;
 namespace
 {
 	constexpr ULONGLONG MARIO_DIE_SCENE_DELAY_MS = 3000;
+	constexpr ULONGLONG GAME_OVER_SCENE_DELAY_MS = 4000;
 }
 
 void PlayScene::Load()
@@ -179,6 +180,13 @@ void PlayScene::Load()
 		SoundManager::GetInstance()->LoadBGM(BGM::MENU_THEME, "../Resource/audio/bgm/menu_theme.wav");
 		SoundManager::GetInstance()->PlayBGM(BGM::MENU_THEME, true);
 	}
+	else if (id == SCENE::GAME_OVER)
+	{
+		SoundManager::GetInstance()->LoadBGM(BGM::GAME_OVER_THEME, "../Resource/audio/bgm/smb_gameover.wav");
+		SoundManager::GetInstance()->PlayBGM(BGM::GAME_OVER_THEME, false);
+	}
+
+	SoundManager::GetInstance()->ApplyVolumeSettings();
 }
 
 void PlayScene::_ParseSection_ASSETS(string line)
@@ -543,6 +551,17 @@ void PlayScene::Update(DWORD dt)
 		if (now - sceneStart >= 2000)
 		{
 			GameManager::GetInstance()->InitiateSwitchScene(PlayerData::Get().returnScene);
+			return;
+		}
+	}
+
+	if (id == SCENE::GAME_OVER)
+	{
+		ULONGLONG now = GetTickCount64();
+		if (now - sceneStart >= GAME_OVER_SCENE_DELAY_MS)
+		{
+			PlayerData::Get().Reset();
+			GameManager::GetInstance()->InitiateSwitchScene(SCENE::MENU);
 			return;
 		}
 	}

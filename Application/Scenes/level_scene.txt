@@ -1,0 +1,9 @@
+[BACKGROUND]
+Texture/Scene/level_scene.png
+
+[TEXTURES]
+# TODO: adjust according to existing scene format
+
+[SPRITES]
+
+[OBJECTS]

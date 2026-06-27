@@ -14,8 +14,8 @@ public:
 	void OnKeyDown(int KeyCode) override {
 		if (KeyCode == VK_RETURN || KeyCode == VK_SPACE)
 		{
-			PlayerData::Get().Reset();                                       // fresh lives for a new run
-			GameManager::GetInstance()->InitiateSwitchScene(SCENE::WORLD_1_1); // replay from the start
+			PlayerData::Get().Reset();
+			GameManager::GetInstance()->InitiateSwitchScene(SCENE::MENU);
 		}
 	}
 

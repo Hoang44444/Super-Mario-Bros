@@ -4,6 +4,8 @@
 
 #include "GameManager.h"
 #include "PlayScene.h"
+#include "HelpScene.h"
+#include "LevelScene.h"
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
@@ -177,7 +179,12 @@ void GameManager::_ParseSection_SCENES(string line)
 	string path = tokens[1];
 	wstring wpath = wstring(path.begin(), path.end());
 
-	scenes[id] = new PlayScene(id, wpath.c_str());
+	if (id == SCENE::HELP)
+		scenes[id] = new HelpScene(id, wpath.c_str());
+	else if (id == SCENE::LEVEL_SELECT)
+		scenes[id] = new LevelScene(id, wpath.c_str());
+	else
+		scenes[id] = new PlayScene(id, wpath.c_str());
 }
 
 void GameManager::_ParseSection_TEXTURES(string line)

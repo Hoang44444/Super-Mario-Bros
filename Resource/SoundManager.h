@@ -19,11 +19,16 @@ private:
 
 	int currentBGM = -1;
 	bool isBGMPlaying = false;
+	int masterVolume = 70;
+	int musicVolume = 70;
+	int sfxVolume = 70;
 
 	HWND hWnd;
 
 	bool LoadWAV(const std::string& filePath, ComPtr<IDirectSoundBuffer>& buffer, bool isMusic = false);
 	bool CreateBuffer(ComPtr<IDirectSoundBuffer>& buffer, const WAVEFORMATEX& wf, DWORD dataSize, bool isMusic = false);
+	int ClampVolume(int volume);
+	long VolumeToDecibels(int volume);
 
 	SoundManager();
 	~SoundManager();
@@ -47,6 +52,11 @@ public:
 
 	void SetSFXVolume(int id, int volume); // 0-100
 	void SetBGMVolume(int volume); // 0-100
+	void SetVolumeSettings(int master, int music, int sfx);
+	int GetMasterVolume() { return masterVolume; }
+	int GetMusicVolume() { return musicVolume; }
+	int GetSFXVolume() { return sfxVolume; }
+	void ApplyVolumeSettings();
 
 	void Update(); // For BGM looping and other updates
 };

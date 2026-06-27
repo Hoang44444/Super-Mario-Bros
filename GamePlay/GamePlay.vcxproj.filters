@@ -133,6 +133,12 @@
     <ClInclude Include="Scenes\PlayScene.h">
       <Filter>Scenes\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\HelpScene.h">
+      <Filter>Scenes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\LevelScene.h">
+      <Filter>Scenes\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Scenes\HUD.h">
       <Filter>Scenes\Header Files</Filter>
     </ClInclude>
@@ -289,6 +295,12 @@
       <Filter>Core\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\PlayScene.cpp">
+      <Filter>Scenes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\HelpScene.cpp">
+      <Filter>Scenes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\LevelScene.cpp">
       <Filter>Scenes\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\HUD.cpp">

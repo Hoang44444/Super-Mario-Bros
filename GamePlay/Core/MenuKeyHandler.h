@@ -46,10 +46,10 @@ public:
 						gm->InitiateSwitchScene(SCENE::INTRO);
 						break;
 					case 1: // LEVEL
-						// TODO: Implement level selection
+						gm->InitiateSwitchScene(ID_SCENE_LEVEL);
 						break;
 					case 2: // HELP
-						// TODO: Implement help screen
+						gm->InitiateSwitchScene(ID_SCENE_HELP);
 						break;
 					case 3: // QUIT
 						// Exit game using existing mechanism

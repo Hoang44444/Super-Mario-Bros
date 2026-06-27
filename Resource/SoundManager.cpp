@@ -9,6 +9,23 @@
 	{
 	}
 
+	int SoundManager::ClampVolume(int volume)
+	{
+		if (volume < 0) return 0;
+		if (volume > 100) return 100;
+		return volume;
+	}
+
+	long SoundManager::VolumeToDecibels(int volume)
+	{
+		volume = ClampVolume(volume);
+		if (volume == 0) return DSBVOLUME_MIN;
+
+		// Keep the UI's 0-100 values usable: the old linear -10000..0 mapping
+		// made mid-range values like 49 effectively silent.
+		return -3000 + (volume * 30);
+	}
+
 	SoundManager::~SoundManager()
 	{
 		DebugOut(L"[INFO] SoundManager destructor called\n");
@@ -245,6 +262,7 @@
 		}
 
 		sfxBuffers[id] = buffer;
+		ApplyVolumeSettings();
 		DebugOut(L"[INFO] Successfully loaded SFX %d from %s\n", id, std::wstring(filePath.begin(), filePath.end()).c_str());
 		return true;
 	}
@@ -260,6 +278,7 @@
 		}
 
 		bgmBuffers[id] = buffer;
+		ApplyVolumeSettings();
 		DebugOut(L"[INFO] Successfully loaded BGM %d from %s\n", id, std::wstring(filePath.begin(), filePath.end()).c_str());
 		return true;
 	}
@@ -299,6 +318,7 @@
 			currentBGM = id;
 			isBGMPlaying = true;
 			it->second->SetCurrentPosition(0);
+			ApplyVolumeSettings();
 			DWORD flags = loop ? DSBPLAY_LOOPING : 0;
 			HRESULT result = it->second->Play(0, 0, flags);
 			if (FAILED(result))
@@ -384,12 +404,12 @@
 
 	void SoundManager::SetSFXVolume(int id, int volume)
 	{
+		volume = ClampVolume(volume);
 		DebugOut(L"[INFO] SetSFXVolume() called for ID %d, volume: %d\n", id, volume);
 		auto it = sfxBuffers.find(id);
 		if (it != sfxBuffers.end())
 		{
-			// Volume: 0 = -10000dB (silent), 100 = 0dB (max)
-			long decibels = (long)(-10000 + (volume * 100));
+			long decibels = VolumeToDecibels(volume);
 			HRESULT result = it->second->SetVolume(decibels);
 			if (FAILED(result))
 			{
@@ -400,13 +420,14 @@
 
 	void SoundManager::SetBGMVolume(int volume)
 	{
+		volume = ClampVolume(volume);
 		DebugOut(L"[INFO] SetBGMVolume() called with volume: %d\n", volume);
 		if (currentBGM != -1)
 		{
 			auto it = bgmBuffers.find(currentBGM);
 			if (it != bgmBuffers.end())
 			{
-				long decibels = (long)(-10000 + (volume * 100));
+				long decibels = VolumeToDecibels(volume);
 				HRESULT result = it->second->SetVolume(decibels);
 				if (FAILED(result))
 				{
@@ -414,6 +435,28 @@
 				}
 			}
 		}
+	}
+
+	void SoundManager::SetVolumeSettings(int master, int music, int sfx)
+	{
+		masterVolume = ClampVolume(master);
+		musicVolume = ClampVolume(music);
+		sfxVolume = ClampVolume(sfx);
+		ApplyVolumeSettings();
+	}
+
+	void SoundManager::ApplyVolumeSettings()
+	{
+		int effectiveMusic =
+			(masterVolume * musicVolume) / 100;
+
+		int effectiveSfx =
+			(masterVolume * sfxVolume) / 100;
+
+		SetBGMVolume(effectiveMusic);
+
+		for (auto& pair : sfxBuffers)
+			SetSFXVolume(pair.first, effectiveSfx);
 	}
 
 	void SoundManager::Update()

@@ -145,6 +145,8 @@
     <ClInclude Include="Core\PauseKeyHandler.h" />
     <ClInclude Include="Core\GameOverHandler.h" />
     <ClInclude Include="Scenes\PlayScene.h" />
+    <ClInclude Include="Scenes\HelpScene.h" />
+    <ClInclude Include="Scenes\LevelScene.h" />
     <ClInclude Include="Scenes\HUD.h" />
     <ClInclude Include="Scenes\MenuHUD.h" />
     <ClInclude Include="Scenes\Background.h" />
@@ -212,6 +214,8 @@
     <ClCompile Include="Core\Collision.cpp" />
     <ClCompile Include="Core\GameManager.cpp" />
     <ClCompile Include="Scenes\PlayScene.cpp" />
+    <ClCompile Include="Scenes\HelpScene.cpp" />
+    <ClCompile Include="Scenes\LevelScene.cpp" />
     <ClCompile Include="Scenes\HUD.cpp" />
     <ClCompile Include="Scenes\MenuHUD.cpp" />
     <ClCompile Include="Scenes\Background.cpp" />
