@@ -189,6 +189,13 @@ void PlayScene::Load()
 	}
 
 	SoundManager::GetInstance()->ApplyVolumeSettings();
+
+	// Hiệu ứng động đất ở màn cuối (Bowser): camera rung từng đợt cho tới khi
+	// Mario đứng được lên cầu. Các màn khác đảm bảo tắt rung (camera dùng chung).
+	if (id == SCENE::WORLD_1_4)
+		Camera::GetInstance()->StartEarthquake();
+	else
+		Camera::GetInstance()->StopEarthquake();
 }
 
 void PlayScene::_ParseSection_ASSETS(string line)
@@ -633,6 +640,15 @@ void PlayScene::Update(DWORD dt)
 
 	Camera::GetInstance()->Follow(cx, fixedCameraY);
 
+	// Động đất màn cuối: rung camera từng đợt, dừng hẳn khi Mario lên được cầu.
+	if (Camera::GetInstance()->IsEarthquakeActive())
+	{
+		if (IsPlayerOnCastleBridge())
+			Camera::GetInstance()->StopEarthquake();
+		else
+			Camera::GetInstance()->UpdateEarthquake((float)dt);
+	}
+
 	// Remove deleted objects
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -658,6 +674,30 @@ void PlayScene::Render()
 
 	if (menuHUD != nullptr)
 		menuHUD->Render();
+}
+
+bool PlayScene::IsPlayerOnCastleBridge()
+{
+	if (player == nullptr) return false;
+
+	float ml, mt, mr, mb;
+	player->GetBoundingBox(ml, mt, mr, mb);
+
+	for (auto obj : objects)
+	{
+		auto bridge = dynamic_cast<CastleBridge*>(obj);
+		if (bridge == nullptr || bridge->IsDeleted()) continue;
+
+		float bl, bt, br, bb;
+		bridge->GetBoundingBox(bl, bt, br, bb);
+
+		// Mario chồng theo phương ngang và chân (đáy) tì lên mặt trên của cầu.
+		bool overlapX     = (mr > bl) && (ml < br);
+		bool restingOnTop = (mb >= bt - 4.0f) && (mb <= bt + 8.0f);
+		if (overlapX && restingOnTop)
+			return true;
+	}
+	return false;
 }
 
 void PlayScene::OnMarioDeath()
