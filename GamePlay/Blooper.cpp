@@ -42,16 +42,15 @@ void Blooper::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         if (playScene && playScene->GetPlayer())
         {
             float dist = abs(marioX - x);
-            if (dist < chaseDistance && marioY > y)
+            if (dist < chaseDistance)
             {
-                state = BLOOPER_STATE_SINKING;
+                if (marioY > y)
+                    state = BLOOPER_STATE_SINKING;
+                else
+                    state = BLOOPER_STATE_RISING;
+
                 timer = now;
             }
-            else 
-                {
-                state = BLOOPER_STATE_RISING;
-                timer = now;
-			}
         }
         break;
 

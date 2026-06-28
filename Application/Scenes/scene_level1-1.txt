@@ -10,10 +10,11 @@ Objects/question_block.txt
 Objects/item2.txt
 Objects/mushroom.txt
 Objects/fire_flower.txt
-Objects/Koopa.txt
 
 #### Enemy
 Objects/Goomba.txt
+Objects/Koopa.txt
+Objects/blooper.txt
 
 [MAP]
 3376 480
@@ -43,11 +44,12 @@ Objects/Goomba.txt
 30 2630 428 0.5 
 30 2850 428 0.5 
 
-
 #---- Koopa (31)----
 31 1530 406 0.5
 31 1038 406 0.5
 
+#--Blooper(4)
+34 800 300 0.5 
 
 ########## BLOCK SWITCH DIRECTION ENEMY (44) ##########
 # Left guard for the ground Goomba cluster (1580-1700) - turn them back before the pit on the left
