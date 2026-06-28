@@ -78,8 +78,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
-      </ClCompile>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -95,8 +95,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
-      </ClCompile>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -110,8 +110,8 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
-      </ClCompile>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -127,8 +127,8 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
-      </ClCompile>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
@@ -198,6 +198,7 @@
     <ClInclude Include="Objects\Item\FrogSuit.h" />
     <ClInclude Include="Objects\Item\Axe.h" />
     <ClInclude Include="Objects\Static\CastleBridge.h" />
+    <ClInclude Include="WindEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -261,6 +262,7 @@
     <ClCompile Include="Mushroom1Up.cpp" />
     <ClCompile Include="SuperLeaf.cpp" />
     <ClCompile Include="TanookiSuit.cpp" />
+    <ClCompile Include="WindEffect.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

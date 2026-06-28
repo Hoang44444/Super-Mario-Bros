@@ -107,6 +107,9 @@ namespace OBJECT
 	// ---- UI ----
 	constexpr int MENU_OPTIONS = 50;     // menu text options ("Bắt đầu" / "Hướng dẫn")
 	constexpr int LIVES_NUMBER = 51;     // số mạng còn lại cạnh chữ X (death screen)
+
+    //Wind effect
+    constexpr int WIND_PARTICLE = 60;
 }
 
 namespace TEXTURE
@@ -148,6 +151,9 @@ namespace ANIMATION
     constexpr int BULLET_RIGHT = 200;
     constexpr int BULLET_LEFT = 201;
     constexpr int CRACKED_BRICK = 300;
+    
+    // WIND EFFECT
+    constexpr int WIND_EFFECT = 310;
     
     // Background
     constexpr int MENU_BACKGROUND = 300;

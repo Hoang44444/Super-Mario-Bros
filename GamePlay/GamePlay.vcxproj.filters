@@ -286,6 +286,24 @@
     <ClInclude Include="Objects\Invisible\EnemyTurnBlock.h">
       <Filter>Objects\Invisible\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Core\MenuKeyHandler.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PauseKeyHandler.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GameOverHandler.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\MenuHUD.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\MenuOptions.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindEffect.h">
+      <Filter>Objects\Dynamic\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Collision.cpp">
@@ -434,6 +452,12 @@
     </ClCompile>
     <ClCompile Include="Objects\Invisible\EnemyTurnBlock.cpp">
       <Filter>Objects\Invisible\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\MenuHUD.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindEffect.cpp">
+      <Filter>Objects\Dynamic\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
