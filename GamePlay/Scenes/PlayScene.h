@@ -23,6 +23,8 @@ class PlayScene : public Scene
 
 	void OnMarioDeath();          // lose a life -> death screen, or game over -> menu
 
+	bool IsPlayerOnCastleBridge(); // Mario có đang đứng trên cầu cuối màn không
+
 	void _ParseSection_ASSETS(string line);
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_MAP(string line);

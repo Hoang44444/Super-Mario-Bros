@@ -1,4 +1,4 @@
-[ASSETS]
+﻿[ASSETS]
 Objects/brick_test.txt
 Objects/mario.txt
 Objects/item2.txt
@@ -27,7 +27,7 @@ Objects/axe.txt
 3 0 0 0.9
 ########## MARIO ##########
 # type x y z
-0 4780 50 0.2
+0 16 50 0.2
 
 ########## ENEMY(43) ##########
 #---- PIRANHA PLANT -----#
