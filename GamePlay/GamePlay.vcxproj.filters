@@ -277,6 +277,9 @@
     <ClInclude Include="Objects\Invisible\EnemyTurnBlock.h">
       <Filter>Objects\Invisible\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Leveltransition.h">
+      <Filter>Scenes\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Collision.cpp">
@@ -416,6 +419,9 @@
     </ClCompile>
     <ClCompile Include="Objects\Invisible\EnemyTurnBlock.cpp">
       <Filter>Objects\Invisible\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Leveltransition.cpp">
+      <Filter>Scenes\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

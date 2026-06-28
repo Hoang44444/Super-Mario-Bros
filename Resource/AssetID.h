@@ -33,6 +33,7 @@ namespace GAME_STATE
     constexpr int PLAY = 1;       // actively playing a level
     constexpr int PAUSE = 2;      // gameplay frozen
     constexpr int GAME_OVER = 3;  // game finished (reached the end scene)
+    constexpr int TRANSITION = 4; // black "WORLD x-x" card shown between levels
 }
 
 namespace GAME
@@ -57,47 +58,47 @@ namespace OBJECT
     constexpr int BACKGROUND = 3;
     constexpr int PIPE = 4;
     constexpr int SWITCH_SCENE_POINT = 5;
-	constexpr int BRICK_TEST = 6;
-	constexpr int DYNAMIC_PLATFORM = 7;
-	constexpr int BRICK = 8;
-	constexpr int DEATH_ZONE = 9;
-	constexpr int QUESTION_BLOCK = 10;
+    constexpr int BRICK_TEST = 6;
+    constexpr int DYNAMIC_PLATFORM = 7;
+    constexpr int BRICK = 8;
+    constexpr int DEATH_ZONE = 9;
+    constexpr int QUESTION_BLOCK = 10;
 
     // ---- ITEMS ----
-	constexpr int MUSHROOM = 11;
-	constexpr int FIRE_FLOWER = 12;
-	constexpr int POISON_MUSHROOM = 13;
-	constexpr int SUPER_STAR = 14;
-	constexpr int FROG_SUIT = 15;
-	constexpr int CASTLE_BRIDGE = 16;
-	constexpr int AXE = 17;
+    constexpr int MUSHROOM = 11;
+    constexpr int FIRE_FLOWER = 12;
+    constexpr int POISON_MUSHROOM = 13;
+    constexpr int SUPER_STAR = 14;
+    constexpr int FROG_SUIT = 15;
+    constexpr int CASTLE_BRIDGE = 16;
+    constexpr int AXE = 17;
     constexpr int COIN = 18;
-	constexpr int MUSHROOM_1UP = 19;
-	constexpr int SUPER_LEAF = 20;
-	constexpr int HAMMER_SUIT = 21;
-	constexpr int TANOOKI_SUIT = 22;
-	constexpr int HAMMER = 23;
+    constexpr int MUSHROOM_1UP = 19;
+    constexpr int SUPER_LEAF = 20;
+    constexpr int HAMMER_SUIT = 21;
+    constexpr int TANOOKI_SUIT = 22;
+    constexpr int HAMMER = 23;
 
-	// ---- ENEMIES ----
-	constexpr int GOOMBA = 30;
-	constexpr int KOOPA = 31;
-	constexpr int BUZZY_BEETLE = 32;
-	constexpr int HAMMER_BRO = 33;
-	constexpr int BLOOPER = 34;
-	constexpr int BOWSER = 35;
-	constexpr int BOWSER_FIRE = 36;
-	constexpr int BOWSER_FIREBALL = 37;
-	constexpr int BULLET_BILL = 38;
-	constexpr int CANNON = 39;
-	constexpr int LAKITU = 40;
-	constexpr int PODOBOO = 41;
-	constexpr int SPINY = 42;
-	constexpr int PIRANHA_PLANT = 43;
-	constexpr int ENEMY_TURN_BLOCK = 44; // invisible block that flips enemy direction
+    // ---- ENEMIES ----
+    constexpr int GOOMBA = 30;
+    constexpr int KOOPA = 31;
+    constexpr int BUZZY_BEETLE = 32;
+    constexpr int HAMMER_BRO = 33;
+    constexpr int BLOOPER = 34;
+    constexpr int BOWSER = 35;
+    constexpr int BOWSER_FIRE = 36;
+    constexpr int BOWSER_FIREBALL = 37;
+    constexpr int BULLET_BILL = 38;
+    constexpr int CANNON = 39;
+    constexpr int LAKITU = 40;
+    constexpr int PODOBOO = 41;
+    constexpr int SPINY = 42;
+    constexpr int PIRANHA_PLANT = 43;
+    constexpr int ENEMY_TURN_BLOCK = 44; // invisible block that flips enemy direction
 
-	// ---- UI ----
-	constexpr int MENU_OPTIONS = 50;     // menu text options ("Bắt đầu" / "Hướng dẫn")
-	constexpr int LIVES_NUMBER = 51;     // số mạng còn lại cạnh chữ X (death screen)
+    // ---- UI ----
+    constexpr int MENU_OPTIONS = 50;     // menu text options ("Bắt đầu" / "Hướng dẫn")
+    constexpr int LIVES_NUMBER = 51;     // số mạng còn lại cạnh chữ X (death screen)
 }
 
 namespace TEXTURE
@@ -136,29 +137,29 @@ namespace ANIMATION
     constexpr int BULLET_RIGHT = 200;
     constexpr int BULLET_LEFT = 201;
     constexpr int CRACKED_BRICK = 300;
-    
+
     // Background
     constexpr int MENU_BACKGROUND = 300;
     constexpr int BACKGROUND_LEVEL1_1 = 3000;
-	constexpr int BACKGROUND_LEVEL1_2 = 3001;
-	constexpr int BACKGROUND_LEVEL1_3 = 3002;
-	constexpr int BACKGROUND_LEVEL1_4 = 3003;
-	constexpr int BACKGROUND_MENU     = 3004; // menu_scene.png
-	constexpr int BACKGROUND_CONTROL  = 3005; // controls.png
-	constexpr int BACKGROUND_END      = 3006; // end_scene.png
-	constexpr int BACKGROUND_DEATH    = 3007; // death_scene.png
-	constexpr int BACKGROUND_GAMEOVER = 3008; // gameover_scene.png
+    constexpr int BACKGROUND_LEVEL1_2 = 3001;
+    constexpr int BACKGROUND_LEVEL1_3 = 3002;
+    constexpr int BACKGROUND_LEVEL1_4 = 3003;
+    constexpr int BACKGROUND_MENU = 3004; // menu_scene.png
+    constexpr int BACKGROUND_CONTROL = 3005; // controls.png
+    constexpr int BACKGROUND_END = 3006; // end_scene.png
+    constexpr int BACKGROUND_DEATH = 3007; // death_scene.png
+    constexpr int BACKGROUND_GAMEOVER = 3008; // gameover_scene.png
 
-	// Menu option text (white = not selected, yellow = selected)
-	constexpr int MENU_START_WHITE    = 3010; // "Bắt đầu"
-	constexpr int MENU_START_YELLOW   = 3011;
-	constexpr int MENU_GUIDE_WHITE    = 3012; // "Hướng dẫn"
-	constexpr int MENU_GUIDE_YELLOW   = 3013;
+    // Menu option text (white = not selected, yellow = selected)
+    constexpr int MENU_START_WHITE = 3010; // "Bắt đầu"
+    constexpr int MENU_START_YELLOW = 3011;
+    constexpr int MENU_GUIDE_WHITE = 3012; // "Hướng dẫn"
+    constexpr int MENU_GUIDE_YELLOW = 3013;
 
-	// Lives digits (death screen). Must be consecutive: digit n -> LIVES_DIGIT_1 + (n-1).
-	constexpr int LIVES_DIGIT_1       = 3020;
-	constexpr int LIVES_DIGIT_2       = 3021;
-	constexpr int LIVES_DIGIT_3       = 3022;
+    // Lives digits (death screen). Must be consecutive: digit n -> LIVES_DIGIT_1 + (n-1).
+    constexpr int LIVES_DIGIT_1 = 3020;
+    constexpr int LIVES_DIGIT_2 = 3021;
+    constexpr int LIVES_DIGIT_3 = 3022;
 
     // BIG MARIO
     constexpr int MARIO_BIG_IDLE_RIGHT = 400;
@@ -281,118 +282,118 @@ namespace ANIMATION
     // ============================================================
 
     // ---- ITEMS ---- (item2.txt)
-    constexpr int ITEM_COIN          = 8000;
-    constexpr int ITEM_MUSHROOM_1UP  = 8001;
-    constexpr int ITEM_SUPER_LEAF    = 8002;
-    constexpr int ITEM_TANOOKI_SUIT  = 8003;
-    constexpr int ITEM_HAMMER_SUIT   = 8004;
+    constexpr int ITEM_COIN = 8000;
+    constexpr int ITEM_MUSHROOM_1UP = 8001;
+    constexpr int ITEM_SUPER_LEAF = 8002;
+    constexpr int ITEM_TANOOKI_SUIT = 8003;
+    constexpr int ITEM_HAMMER_SUIT = 8004;
 
     // ---- ENEMIES ----
 
     // Goomba (Goomba.txt: 4000-4001)
-    constexpr int GOOMBA_WALK        = 4000;
-    constexpr int GOOMBA_DIE         = 4001;
+    constexpr int GOOMBA_WALK = 4000;
+    constexpr int GOOMBA_DIE = 4001;
 
     // Koopa (Koopa.txt: 5000-5003)
-    constexpr int KOOPA_WALK_LEFT    = 5000;
-    constexpr int KOOPA_WALK_RIGHT   = 5001;
-    constexpr int KOOPA_SHELL        = 5002;
-    constexpr int KOOPA_SPINNING     = 5003;
+    constexpr int KOOPA_WALK_LEFT = 5000;
+    constexpr int KOOPA_WALK_RIGHT = 5001;
+    constexpr int KOOPA_SHELL = 5002;
+    constexpr int KOOPA_SPINNING = 5003;
 
     // BuzzyBeetle (BuzzyBeetle.txt: 6000-6003)
-    constexpr int BUZZY_WALK_LEFT    = 6000;
-    constexpr int BUZZY_WALK_RIGHT   = 6001;
-    constexpr int BUZZY_SHELL        = 6002;
-    constexpr int BUZZY_SPINNING     = 6003;
+    constexpr int BUZZY_WALK_LEFT = 6000;
+    constexpr int BUZZY_WALK_RIGHT = 6001;
+    constexpr int BUZZY_SHELL = 6002;
+    constexpr int BUZZY_SPINNING = 6003;
 
     // Podoboo (Podoboo.txt: 7000-7001)
-    constexpr int PODOBOO_UP         = 7000;
-    constexpr int PODOBOO_DOWN       = 7001;
+    constexpr int PODOBOO_UP = 7000;
+    constexpr int PODOBOO_DOWN = 7001;
 
     // Spiny (Spiny.txt: 8000-8002)  *** trùng ID với ITEMS ở trên, xem ghi chú ***
-    constexpr int SPINY_WALK_LEFT    = 8000;
-    constexpr int SPINY_WALK_RIGHT   = 8001;
-    constexpr int SPINY_EGG_SPIN     = 8002;
+    constexpr int SPINY_WALK_LEFT = 8000;
+    constexpr int SPINY_WALK_RIGHT = 8001;
+    constexpr int SPINY_EGG_SPIN = 8002;
 
     // Lakitu (Lakitu.txt: 9000-9001)
-    constexpr int LAKITU_FLY_LEFT    = 9000;
-    constexpr int LAKITU_FLY_RIGHT   = 9001;
+    constexpr int LAKITU_FLY_LEFT = 9000;
+    constexpr int LAKITU_FLY_RIGHT = 9001;
 
     // PiranhaPlant (piranha_plant.txt: 3250)
     constexpr int PIRANHA_PLANT_IDLE = 3250;
 
     // Blooper (blooper.txt: 3300-3303)
-    constexpr int BLOOPER_IDLE       = 3300;
-    constexpr int BLOOPER_RISING     = 3301;
-    constexpr int BLOOPER_SINKING    = 3302;
+    constexpr int BLOOPER_IDLE = 3300;
+    constexpr int BLOOPER_RISING = 3301;
+    constexpr int BLOOPER_SINKING = 3302;
 
     // BulletBill (bulletbill.txt: 3400)
-    constexpr int BULLET_BILL        = 3400;
+    constexpr int BULLET_BILL = 3400;
 
     // HammerBro (hammerbro.txt: 3500-3501) + Hammer projectile (hammer.txt: 3550)
-    constexpr int HAMMER_BRO_WALK    = 3500;
-    constexpr int HAMMER             = 3550;
+    constexpr int HAMMER_BRO_WALK = 3500;
+    constexpr int HAMMER = 3550;
 
     // Bowser (bowser.txt: 3600-3602)
-    constexpr int BOWSER_WALK_RIGHT  = 3600;
-    constexpr int BOWSER_WALK_LEFT   = 3601;
+    constexpr int BOWSER_WALK_RIGHT = 3600;
+    constexpr int BOWSER_WALK_LEFT = 3601;
     constexpr int BOWSER_ATTACK_RIGHT = 3602;
-    constexpr int BOWSER_ATTACK_LEFT  = 3602;
-    constexpr int BOWSER_FIRE_RIGHT  = 3602;
-    constexpr int BOWSER_FIRE_LEFT   = 3602;
+    constexpr int BOWSER_ATTACK_LEFT = 3602;
+    constexpr int BOWSER_FIRE_RIGHT = 3602;
+    constexpr int BOWSER_FIRE_LEFT = 3602;
 
     // BowserFire projectile (BowserFire.txt: 3650)
-    constexpr int BOWSER_FIRE        = 3650;
+    constexpr int BOWSER_FIRE = 3650;
 
     // Cannon (cannon.txt: 3700)
-    constexpr int CANNON             = 3700;
+    constexpr int CANNON = 3700;
 }
 
 // ---- SOUND EFFECTS (SFX) ----
 namespace SFX
 {
     // Mario sounds
-    constexpr int JUMP               = 1000;
-    constexpr int JUMP_SMALL         = 1001;
-    constexpr int STOMP              = 1002;
-    constexpr int COIN              = 1003;
-    constexpr int POWERUP           = 1004;
-    constexpr int POWERUP_APPEARS    = 1005;
-    constexpr int FIREBALL           = 1006;
-    constexpr int SHRINK             = 1007;
-    constexpr int DIE                = 1008;
-    constexpr int ONE_UP             = 1009;
+    constexpr int JUMP = 1000;
+    constexpr int JUMP_SMALL = 1001;
+    constexpr int STOMP = 1002;
+    constexpr int COIN = 1003;
+    constexpr int POWERUP = 1004;
+    constexpr int POWERUP_APPEARS = 1005;
+    constexpr int FIREBALL = 1006;
+    constexpr int SHRINK = 1007;
+    constexpr int DIE = 1008;
+    constexpr int ONE_UP = 1009;
 
     // Enemy sounds
-    constexpr int GOOMBA_STOMP       = 2000;
-    constexpr int KOOPA_STOMP        = 2001;
-    constexpr int KOOPA_KICK         = 2002;
-    constexpr int BOWSER_ROAR        = 2003;
-    constexpr int BOWSER_FIRE        = 2004;
+    constexpr int GOOMBA_STOMP = 2000;
+    constexpr int KOOPA_STOMP = 2001;
+    constexpr int KOOPA_KICK = 2002;
+    constexpr int BOWSER_ROAR = 2003;
+    constexpr int BOWSER_FIRE = 2004;
 
     // Environment sounds
-    constexpr int BRICK_BREAK        = 3000;
-    constexpr int BUMP               = 3001;
-    constexpr int QUESTION_BLOCK      = 3002;
-    constexpr int PIPE_WARP           = 3003;
-    constexpr int FLAGPOLE            = 3004;
-    constexpr int CASTLE_CLEAR       = 3005;
-    constexpr int LEVEL_CLEAR        = 3006;
+    constexpr int BRICK_BREAK = 3000;
+    constexpr int BUMP = 3001;
+    constexpr int QUESTION_BLOCK = 3002;
+    constexpr int PIPE_WARP = 3003;
+    constexpr int FLAGPOLE = 3004;
+    constexpr int CASTLE_CLEAR = 3005;
+    constexpr int LEVEL_CLEAR = 3006;
 
     // UI sounds
-    constexpr int MENU_SELECT        = 4000;
-    constexpr int MENU_MOVE          = 4001;
-    constexpr int PAUSE              = 4002;
-    constexpr int GAME_OVER          = 4003;
+    constexpr int MENU_SELECT = 4000;
+    constexpr int MENU_MOVE = 4001;
+    constexpr int PAUSE = 4002;
+    constexpr int GAME_OVER = 4003;
 }
 
 // ---- BACKGROUND MUSIC (BGM) ----
 namespace BGM
 {
-    constexpr int OVERWORLD_THEME    = 5000;  // Overworld theme
-    constexpr int UNDERGROUND_THEME  = 5001;
-    constexpr int WATER_THEME        = 5002;
-    constexpr int CASTLE_THEME       = 5003;
-    constexpr int STAR_THEME         = 5004;
-    constexpr int MENU_THEME         = 5005;
+    constexpr int OVERWORLD_THEME = 5000;  // Overworld theme
+    constexpr int UNDERGROUND_THEME = 5001;
+    constexpr int WATER_THEME = 5002;
+    constexpr int CASTLE_THEME = 5003;
+    constexpr int STAR_THEME = 5004;
+    constexpr int MENU_THEME = 5005;
 }

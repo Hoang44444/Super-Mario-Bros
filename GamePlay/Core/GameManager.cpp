@@ -24,6 +24,7 @@ GameManager::GameManager()
 {
 	current_scene = -1;
 	next_scene = -1;
+	pending_scene = -1;
 	game_state = GAME_STATE::MENU;
 	hWnd = NULL;
 	screenWidth = 0;
@@ -196,6 +197,37 @@ void GameManager::_ParseSection_TEXTURES(string line)
 	TextureManager::GetInstance()->Add(id, wpath.c_str());
 }
 
+bool GameManager::IsGameplayScene(int scene_id)
+{
+	return scene_id >= SCENE::WORLD_1_1 && scene_id <= SCENE::WORLD_1_4;
+}
+
+// Classic SMB behaviour: any time we're about to drop the player into a level
+// (level start, pipe/flagpole clear, or continue-after-death), first show the
+// black "WORLD x-x" card, then perform the real scene switch.
+void GameManager::InitiateSwitchScene(int scene_id)
+{
+	if (IsGameplayScene(scene_id))
+	{
+		StartLevelTransition(scene_id);
+		return;
+	}
+
+	next_scene = scene_id;
+}
+
+void GameManager::StartLevelTransition(int scene_id)
+{
+	int zeroBased = scene_id - SCENE::WORLD_1_1;
+	int world = (zeroBased / 4) + 1;
+	int stage = (zeroBased % 4) + 1;
+	int lives = PlayerData::Get().lives;
+
+	pending_scene = scene_id;
+	game_state = GAME_STATE::TRANSITION;
+	levelTransition.Start(world, stage, lives);
+}
+
 void GameManager::SwitchScene()
 {
 	if (next_scene < 0 || next_scene == current_scene) return;
@@ -227,6 +259,19 @@ void GameManager::Update(DWORD dt)
 {
 	if (game_state == GAME_STATE::PAUSE) return; // frozen: keep last frame, skip updates
 
+	if (game_state == GAME_STATE::TRANSITION)
+	{
+		// Gameplay stays frozen behind the card; only the timer advances.
+		if (levelTransition.Update(dt))
+		{
+			next_scene = pending_scene;
+			pending_scene = -1;
+			SwitchScene();
+		}
+		SoundManager::GetInstance()->Update();
+		return;
+	}
+
 	if (current_scene != -1)
 		scenes[current_scene]->Update(dt);
 
@@ -238,6 +283,12 @@ void GameManager::Update(DWORD dt)
 
 void GameManager::Render()
 {
+	if (game_state == GAME_STATE::TRANSITION)
+	{
+		levelTransition.Render();
+		return;
+	}
+
 	if (current_scene != -1)
 		scenes[current_scene]->Render();
 }

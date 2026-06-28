@@ -7,8 +7,8 @@ Renderer* Renderer::__instance = NULL;
 
 Renderer* Renderer::GetInstance()
 {
-    if (__instance == NULL) __instance = new Renderer();
-    return __instance;
+	if (__instance == NULL) __instance = new Renderer();
+	return __instance;
 }
 
 void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
@@ -159,14 +159,14 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	return;
 }
 
-void Renderer::BeginRender()
+void Renderer::BeginRender(float r, float g, float b)
 {
-    float color[4] = { 0.2f, 0.2f, 0.2f, 1.0f }; // Màu nền xám, alpha = 1.0f
-    pD3DDevice->ClearRenderTargetView(pRenderTargetView, color);
+	float color[4] = { r, g, b, 1.0f };
+	pD3DDevice->ClearRenderTargetView(pRenderTargetView, color);
 
-    pD3DDevice->OMSetBlendState(pBlendStateAlpha, NULL, 0xffffffff);
-    pD3DDevice->PSSetSamplers(0, 1, &this->pPointSamplerState);
-    spriteObject->Begin(D3DX10_SPRITE_SORT_DEPTH_BACK_TO_FRONT);
+	pD3DDevice->OMSetBlendState(pBlendStateAlpha, NULL, 0xffffffff);
+	pD3DDevice->PSSetSamplers(0, 1, &this->pPointSamplerState);
+	spriteObject->Begin(D3DX10_SPRITE_SORT_DEPTH_BACK_TO_FRONT);
 }
 
 void Renderer::Draw(float x, float y, float z, LPTEXTURE tex, RECT* rect, float alpha, bool flipX)
@@ -213,7 +213,7 @@ void Renderer::DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_w
 	sprite.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
 
 	D3DXMATRIX matWorld, matTranslation, matScale;
-	
+
 	float draw_x = screen_x + dest_width / 2.0f;
 	// Use Logical Height (BackBufferHeight / globalScale) for the Y calculation
 	float logicalHeight = (float)backBufferHeight / globalScale;
@@ -230,81 +230,81 @@ void Renderer::DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_w
 
 void Renderer::EndRender()
 {
-    spriteObject->End();
-    pSwapChain->Present(0, 0);
+	spriteObject->End();
+	pSwapChain->Present(0, 0);
 }
 
 LPTEXTURE Renderer::GetTexture(LPCWSTR filePath)
 {
-    if (filePath == NULL || pD3DDevice == NULL)
-    {
-        return NULL;
-    }
+	if (filePath == NULL || pD3DDevice == NULL)
+	{
+		return NULL;
+	}
 
-    ID3D10Resource* pD3D10Resource = NULL;
-    ID3D10Texture2D* tex = NULL;
+	ID3D10Resource* pD3D10Resource = NULL;
+	ID3D10Texture2D* tex = NULL;
 
-    D3DX10_IMAGE_INFO imageInfo;
-    HRESULT hr = D3DX10GetImageInfoFromFile(filePath, NULL, &imageInfo, NULL);
-    if (FAILED(hr))
-    {
-        DebugOut(L"[ERROR] D3DX10GetImageInfoFromFile failed for file: %s\n", filePath);
-        return NULL;
-    }
+	D3DX10_IMAGE_INFO imageInfo;
+	HRESULT hr = D3DX10GetImageInfoFromFile(filePath, NULL, &imageInfo, NULL);
+	if (FAILED(hr))
+	{
+		DebugOut(L"[ERROR] D3DX10GetImageInfoFromFile failed for file: %s\n", filePath);
+		return NULL;
+	}
 
-    D3DX10_IMAGE_LOAD_INFO info;
-    ZeroMemory(&info, sizeof(D3DX10_IMAGE_LOAD_INFO));
-    info.Width = imageInfo.Width;
-    info.Height = imageInfo.Height;
-    info.Depth = imageInfo.Depth;
-    info.FirstMipLevel = 0;
-    info.MipLevels = imageInfo.MipLevels;
-    info.Usage = D3D10_USAGE_DEFAULT;
-    info.BindFlags = D3D10_BIND_SHADER_RESOURCE;
-    info.CpuAccessFlags = 0;
-    info.MiscFlags = 0;
+	D3DX10_IMAGE_LOAD_INFO info;
+	ZeroMemory(&info, sizeof(D3DX10_IMAGE_LOAD_INFO));
+	info.Width = imageInfo.Width;
+	info.Height = imageInfo.Height;
+	info.Depth = imageInfo.Depth;
+	info.FirstMipLevel = 0;
+	info.MipLevels = imageInfo.MipLevels;
+	info.Usage = D3D10_USAGE_DEFAULT;
+	info.BindFlags = D3D10_BIND_SHADER_RESOURCE;
+	info.CpuAccessFlags = 0;
+	info.MiscFlags = 0;
 
-    hr = D3DX10CreateTextureFromFile(pD3DDevice, filePath, &info, NULL, &pD3D10Resource, NULL);
-    if (FAILED(hr))
-    {
-        DebugOut(L"[ERROR] D3DX10CreateTextureFromFile failed for file: %s\n", filePath);
-        return NULL;
-    }
+	hr = D3DX10CreateTextureFromFile(pD3DDevice, filePath, &info, NULL, &pD3D10Resource, NULL);
+	if (FAILED(hr))
+	{
+		DebugOut(L"[ERROR] D3DX10CreateTextureFromFile failed for file: %s\n", filePath);
+		return NULL;
+	}
 
-    hr = pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID*)&tex);
-    if (FAILED(hr))
-    {
-        DebugOut(L"[ERROR] QueryInterface failed for texture: %s\n", filePath);
-        pD3D10Resource->Release();
-        return NULL;
-    }
+	hr = pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID*)&tex);
+	if (FAILED(hr))
+	{
+		DebugOut(L"[ERROR] QueryInterface failed for texture: %s\n", filePath);
+		pD3D10Resource->Release();
+		return NULL;
+	}
 
-    ID3D10ShaderResourceView* spriteResourceView = NULL;
-    D3D10_SHADER_RESOURCE_VIEW_DESC SRVDesc;
-    ZeroMemory(&SRVDesc, sizeof(SRVDesc));
-    SRVDesc.Format = imageInfo.Format;
-    SRVDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
-    SRVDesc.Texture2D.MostDetailedMip = 0;
-    SRVDesc.Texture2D.MipLevels = imageInfo.MipLevels;
+	ID3D10ShaderResourceView* spriteResourceView = NULL;
+	D3D10_SHADER_RESOURCE_VIEW_DESC SRVDesc;
+	ZeroMemory(&SRVDesc, sizeof(SRVDesc));
+	SRVDesc.Format = imageInfo.Format;
+	SRVDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
+	SRVDesc.Texture2D.MostDetailedMip = 0;
+	SRVDesc.Texture2D.MipLevels = imageInfo.MipLevels;
 
-    hr = pD3DDevice->CreateShaderResourceView(tex, &SRVDesc, &spriteResourceView);
-    pD3D10Resource->Release();
+	hr = pD3DDevice->CreateShaderResourceView(tex, &SRVDesc, &spriteResourceView);
+	pD3D10Resource->Release();
 
-    if (FAILED(hr))
-    {
-        DebugOut(L"[ERROR] CreateShaderResourceView failed for texture: %s\n", filePath);
-        tex->Release();
-        return NULL;
-    }
+	if (FAILED(hr))
+	{
+		DebugOut(L"[ERROR] CreateShaderResourceView failed for texture: %s\n", filePath);
+		tex->Release();
+		return NULL;
+	}
 
-    LPTEXTURE texture = new Texture(tex, spriteResourceView);
-    return texture;
+	LPTEXTURE texture = new Texture(tex, spriteResourceView);
+	return texture;
 }
 
 Renderer::~Renderer()
 {
-    if (spriteObject) spriteObject->Release();
-    if (pRenderTargetView) pRenderTargetView->Release();
-    if (pSwapChain) pSwapChain->Release();
-    if (pD3DDevice) pD3DDevice->Release();
+	if (spriteObject) spriteObject->Release();
+	if (pRenderTargetView) pRenderTargetView->Release();
+	if (pSwapChain) pSwapChain->Release();
+	if (pD3DDevice) pD3DDevice->Release();
 }

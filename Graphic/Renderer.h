@@ -20,8 +20,8 @@ class Renderer
     float globalScale = 1.0f;
 
 public:
-    static const int INTERNAL_SCREEN_WIDTH = 440; 
-    static const int INTERNAL_SCREEN_HEIGHT = 240; 
+    static const int INTERNAL_SCREEN_WIDTH = 440;
+    static const int INTERNAL_SCREEN_HEIGHT = 240;
 
     static Renderer* GetInstance();
 
@@ -30,7 +30,7 @@ public:
     float GetGlobalScale() { return globalScale; }
 
     // Các hàm vẽ
-    void BeginRender();
+    void BeginRender(float r = 0.2f, float g = 0.2f, float b = 0.2f);
     void EndRender();
     void Draw(float x, float y, float z, LPTEXTURE tex, RECT* rect = nullptr, float alpha = 1.0f, bool flipX = false);
     void DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_width, float dest_height, RECT* rect = nullptr, float alpha = 1.0f, bool flipX = false);

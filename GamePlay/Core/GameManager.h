@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Scene.h"
+#include "../../GamePlay/Leveltransition.h"
 #include "../../Resource/SoundManager.h"
 
 class GameManager
@@ -14,7 +15,13 @@ class GameManager
 	std::unordered_map<int, LPSCENE> scenes;
 	int current_scene;
 	int next_scene;
-	int game_state;     // one of GAME_STATE::{MENU, PLAY, PAUSE, GAME_OVER}
+	int game_state;     // one of GAME_STATE::{MENU, PLAY, PAUSE, GAME_OVER, TRANSITION}
+
+	LevelTransition levelTransition;
+	int pending_scene;        // gameplay scene to enter once the intro card finishes
+
+	bool IsGameplayScene(int scene_id);
+	void StartLevelTransition(int scene_id);
 
 	LPKEYEVENTHANDLER key_handler;
 
@@ -44,7 +51,7 @@ public:
 	int GetCurrentSceneID() { return current_scene; }
 
 	void SwitchScene();
-	void InitiateSwitchScene(int scene_id) { next_scene = scene_id; }
+	void InitiateSwitchScene(int scene_id);
 
 	int  GetGameState() { return game_state; }
 	void SetGameState(int s) { game_state = s; }

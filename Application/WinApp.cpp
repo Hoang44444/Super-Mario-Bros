@@ -3,6 +3,7 @@
 #include "GameManager.h"
 #include "Camera.h"
 #include "debug.h"
+#include "../Resource/AssetID.h"
 
 #define MAX_FRAME_RATE 60
 
@@ -44,7 +45,7 @@ bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
 
     if (!m_hwnd) return false;
 
-    ShowWindow(m_hwnd, SW_SHOW);                  
+    ShowWindow(m_hwnd, SW_SHOW);
     UpdateWindow(m_hwnd);
 
     GameManager::GetInstance()->Init(m_hwnd, hInstance);
@@ -62,7 +63,7 @@ int WinApp::Run() {
     MSG msg = { 0 };
     ULONGLONG frameStart = GetTickCount64();
     ULONGLONG tickPerFrame = 1000 / MAX_FRAME_RATE;
-    
+
     while (m_isRunning) {
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg);
@@ -95,7 +96,11 @@ void WinApp::Update(float deltaTime) {
 }
 
 void WinApp::Render() {
-    Renderer::GetInstance()->BeginRender();
+    bool transitioning = GameManager::GetInstance()->GetGameState() == GAME_STATE::TRANSITION;
+    if (transitioning)
+        Renderer::GetInstance()->BeginRender(0.0f, 0.0f, 0.0f);
+    else
+        Renderer::GetInstance()->BeginRender();
     GameManager::GetInstance()->Render();
     Renderer::GetInstance()->EndRender();
 }
