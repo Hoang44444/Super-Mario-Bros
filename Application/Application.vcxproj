@@ -77,8 +77,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
-      </ClCompile>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -94,8 +94,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
-      </ClCompile>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -109,8 +109,8 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
-      </ClCompile>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -126,8 +126,8 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Graphic;..\GamePlay;..\Resource;..\GamePlay\Core;..\GamePlay\Scenes;..\GamePlay\Objects\Player;..\GamePlay\Objects\Bullet;..\GamePlay\Objects\Enemy;..\GamePlay\Objects\Item;..\GamePlay\Objects\Static;..\GamePlay\Objects\Dynamic;..\GamePlay\Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-          <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
-      </ClCompile>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -151,6 +151,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Objects\WindEffect.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

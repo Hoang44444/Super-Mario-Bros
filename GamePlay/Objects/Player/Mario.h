@@ -53,6 +53,7 @@ private:
 	bool isOnGround = false;
 	bool canShoot = false;
 	bool isInvincible = false;
+	bool isWindyScene = false;
 	DWORD invincibleTime = 0;
 public:
 	Mario(float x, float y, float z) : GameObject(x, y, z) {
@@ -112,6 +113,9 @@ public:
 	}
 	int GetCoin() { return coin; }
 	int GetLife() { return life; }
+
+	// WINDY SCENE
+	void SetWindyScene(bool isWindy) { this->isWindyScene = isWindy; }
 
 private:
 	int coin = 0;

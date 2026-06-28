@@ -88,6 +88,24 @@ void Mario::ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects)
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (this->isWindyScene == true)
+	{
+		ULONGLONG now = GetTickCount64();
+
+		bool isWindActive = (now % 10000) < 5000;
+
+		if (isWindActive)
+		{
+			if (!this->isOnGround)
+			{
+				this->vx += -0.003f * dt;
+			}
+			else
+			{
+				this->vx += -0.003f * dt;
+			}
+		}
+	}
 	// Death animation: pop up once, then fall straight down ignoring all collisions.
 	if (state == MARIO_STATE::DIE)
 	{

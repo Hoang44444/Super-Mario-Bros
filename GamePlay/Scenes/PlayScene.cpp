@@ -56,6 +56,8 @@
 #include "../Spiny.h"
 #include "../PiranhaPlant.h"
 #include "../../Resource/SoundManager.h"
+// Wind Effect
+#include "../WindEffect.h"
 using namespace std;
 
 namespace
@@ -345,6 +347,10 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		player = obj;
 		fixedCameraY = y;
 		DebugOut(L"Mario spawn Y = %f\n", y);
+		if (this->id == SCENE::WORLD_1_3)
+		{
+			static_cast<Mario*>(player)->SetWindyScene(true);
+		}
 		break;
 
 	case OBJECT::PLATFORM:
@@ -480,7 +486,9 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT::PIRANHA_PLANT:
 		obj = new PiranhaPlant(x, y, z);
 		break;
-
+	case OBJECT::WIND_PARTICLE:
+		obj = new WindEffect(x, y, z);
+		break;
 	case OBJECT::MENU_OPTIONS:
 	{
 		// 5th token = path to the option-definition file (defaults if omitted).
@@ -639,6 +647,7 @@ void PlayScene::Update(DWORD dt)
 
 void PlayScene::Render()
 {
+	DebugOut(L"Render loop is active. Objects count: %d\n", objects.size());
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Render();
