@@ -1,7 +1,7 @@
 #pragma once
 #include "StaticObject.h"
 
-#define CANNON_SHOOT_INTERVAL 2000 // ms
+#define CANNON_SHOOT_INTERVAL 10000 // ms
 
 class Cannon : public StaticObject
 {
