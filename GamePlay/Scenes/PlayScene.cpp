@@ -58,6 +58,7 @@
 #include "../../Resource/SoundManager.h"
 // Wind Effect
 #include "../WindEffect.h"
+#include "../WindCycle.h"
 using namespace std;
 
 namespace
@@ -196,6 +197,13 @@ void PlayScene::Load()
 		Camera::GetInstance()->StartEarthquake();
 	else
 		Camera::GetInstance()->StopEarthquake();
+
+	// Gió ở màn 1-3: bật chu kỳ gió dùng chung (đồng bộ lá + lực đẩy Mario).
+	// Các màn khác tắt để không sót trạng thái.
+	if (id == SCENE::WORLD_1_3)
+		WindCycle::GetInstance()->Start();
+	else
+		WindCycle::GetInstance()->Stop();
 }
 
 void PlayScene::_ParseSection_ASSETS(string line)

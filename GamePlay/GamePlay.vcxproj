@@ -198,6 +198,7 @@
     <ClInclude Include="Objects\Item\FrogSuit.h" />
     <ClInclude Include="Objects\Item\Axe.h" />
     <ClInclude Include="Objects\Static\CastleBridge.h" />
+    <ClInclude Include="WindCycle.h" />
     <ClInclude Include="WindEffect.h" />
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +263,7 @@
     <ClCompile Include="Mushroom1Up.cpp" />
     <ClCompile Include="SuperLeaf.cpp" />
     <ClCompile Include="TanookiSuit.cpp" />
+    <ClCompile Include="WindCycle.cpp" />
     <ClCompile Include="WindEffect.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

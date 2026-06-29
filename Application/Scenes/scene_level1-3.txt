@@ -23,7 +23,7 @@ Objects/Goomba.txt
 
 ########## MARIO ##########
 # type x y z
-0 2175 50 0.2
+0 16 176 0.2
 
 ########## ENEMY ##########
 # type x y z

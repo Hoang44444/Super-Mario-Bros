@@ -151,12 +151,14 @@
     <ClInclude Include="AnimationManager.h" />
     <ClInclude Include="AnimationFrame.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="EarthquakeEffect.h" />
     <ClInclude Include="Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationManager.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="EarthquakeEffect.cpp" />
     <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
