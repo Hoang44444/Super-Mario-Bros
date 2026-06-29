@@ -3,6 +3,8 @@
 #include "PlayScene.h"
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
+#include "GameObject.h"
+
 Cannon::Cannon(float x, float y, float z, int dir) : StaticObject(x, y, z)
 {
 	this->direction = dir;
@@ -11,19 +13,39 @@ Cannon::Cannon(float x, float y, float z, int dir) : StaticObject(x, y, z)
 
 void Cannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DWORD now = GetTickCount();
-	if (now - shootTimer >= CANNON_SHOOT_INTERVAL)
-	{
-		// Spawn a new BulletBill
-		PlayScene* playScene = dynamic_cast<PlayScene*>(scene);
-		if (playScene)
-		{
-			BulletBill* bullet = new BulletBill(x, y, z);
-			bullet->SetMovement(direction);
-			playScene->AddObject(bullet);
-		}
-		shootTimer = now;
-	}
+    PlayScene* playScene = dynamic_cast<PlayScene*>(scene);
+    if (!playScene) return;
+
+    Mario* mario = dynamic_cast<Mario*>(playScene->GetPlayer());  
+
+    if (!mario) return;
+
+    // Khoảng cách từ Cannon tới Mario
+    float marioX, marioY, marioZ;
+    mario->GetPosition(marioX, marioY, marioZ);
+
+    float dx = marioX - x;
+
+
+    // Chỉ bắn khi Mario ở gần (300 pixel)
+    if (abs(dx) > 300)
+        return;
+
+    // Chỉ bắn đúng phía nòng pháo
+    if ((direction == 1 && dx < 0) ||
+        (direction == -1 && dx > 0))
+        return;
+
+    DWORD now = GetTickCount64();
+
+    if (now - shootTimer >= CANNON_SHOOT_INTERVAL)
+    {
+        BulletBill* bullet = new BulletBill(x + direction * 16, y, z);
+        bullet->SetMovement(direction);
+        playScene->AddObject(bullet);
+
+        shootTimer = now;
+    }
 }
 
 void Cannon::Render()

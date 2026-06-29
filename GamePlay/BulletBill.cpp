@@ -1,7 +1,6 @@
 #include "BulletBill.h"
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
-
 BulletBill::BulletBill(float x, float y, float z) : Enemy(x, y, z)
 {
 	this->direction = 1;
@@ -18,11 +17,10 @@ void BulletBill::SetMovement(int dir)
 void BulletBill::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	x += vx * dt;
-
-	// Optional: remove if out too far of screen 
-	if (x < -BULLET_BILL_WIDTH || x > 1600 + BULLET_BILL_WIDTH)
+	// remove if out too far of screen 
+	if (x < 0 || x > 5120)
 	{
-		this->Delete();
+		Delete();
 	}
 }
 

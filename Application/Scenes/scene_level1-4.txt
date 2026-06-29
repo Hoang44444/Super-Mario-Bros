@@ -17,6 +17,9 @@ Objects/cannon.txt
 Objects/bulletbill.txt
 Objects/Podoboo.txt
 Objects/axe.txt
+Objects/bowser.txt
+Objects/BowserFire
+Objects/bowserfireball.txt
 
 [MAP]
 5120 480
@@ -45,8 +48,8 @@ Objects/axe.txt
 32 3376 132 0.5
 
 #---- CANNON(39) ----#
-39 720 172 0.5 -1
-39 2979 172 0.5 -1
+39 720 172 0.5 1
+39 2979 172 0.5 1
 
 #---- PODOBOO ----#
 41 2310 200 0.5
@@ -55,6 +58,8 @@ Objects/axe.txt
 41 3543 200 0.5
 41 3563 200 0.5
 
+#Bowser
+35 4800 126 0.5
 ########## PIPE ##########
 # type x y z
 4 303 175 0.5 3102
