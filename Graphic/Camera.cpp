@@ -1,16 +1,5 @@
 ﻿#include "Camera.h"
 #include <algorithm>
-#include <cmath>
-
-namespace
-{
-    constexpr float QUAKE_SHAKE_MS    = 5000.0f;    // mỗi đợt rung kéo dài 5 giây
-    constexpr float QUAKE_INTERVAL_MS = 10000.0f;   // nghỉ 10 giây trước đợt rung kế tiếp
-    constexpr float QUAKE_AMPLITUDE_Y = 4.0f;       // biên độ rung dọc (px)
-    constexpr float QUAKE_AMPLITUDE_X = 2.0f;       // biên độ rung ngang (px)
-    constexpr float QUAKE_OMEGA_Y     = 0.060f;     // tần số góc dọc (rad/ms) ~ 9.5 Hz
-    constexpr float QUAKE_OMEGA_X     = 0.045f;     // tần số góc ngang (rad/ms) ~ 7.2 Hz
-}
 
 Camera* Camera::__instance = NULL;
 
@@ -48,74 +37,12 @@ void Camera::SetMapSize(int width, int height)
 
 float Camera::GetX()
 {
-	return x + shakeOffsetX;
+	return x + earthquake.GetOffsetX();
 }
 
 float Camera::GetY()
 {
-	return y + shakeOffsetY;
-}
-
-void Camera::StartEarthquake()
-{
-	if (quakeEnabled) return;   // đã chạy rồi thì không reset chu kỳ
-	quakeEnabled    = true;
-	quakeShaking    = true;     // rung ngay từ đầu
-	quakePhaseTimer = 0;
-	quakeElapsed    = 0;
-}
-
-void Camera::StopEarthquake()
-{
-	quakeEnabled    = false;
-	quakeShaking    = false;
-	quakePhaseTimer = 0;
-	quakeElapsed    = 0;
-	shakeOffsetX    = 0;
-	shakeOffsetY    = 0;
-}
-
-void Camera::UpdateEarthquake(float dt)
-{
-	if (!quakeEnabled)
-	{
-		shakeOffsetX = shakeOffsetY = 0;
-		return;
-	}
-
-	quakePhaseTimer += dt;
-
-	if (quakeShaking)
-	{
-		quakeElapsed += dt;
-
-		if (quakePhaseTimer >= QUAKE_SHAKE_MS)
-		{
-			// hết 2 giây rung -> chuyển sang nghỉ
-			quakeShaking    = false;
-			quakePhaseTimer = 0;
-			shakeOffsetX = shakeOffsetY = 0;
-		}
-		else
-		{
-			// envelope giảm dần để đợt rung kết thúc êm (không giật về 0 đột ngột)
-			float k = 1.0f - quakePhaseTimer / QUAKE_SHAKE_MS;
-			shakeOffsetY = QUAKE_AMPLITUDE_Y * k * sinf(QUAKE_OMEGA_Y * quakeElapsed);
-			shakeOffsetX = QUAKE_AMPLITUDE_X * k * sinf(QUAKE_OMEGA_X * quakeElapsed);
-		}
-	}
-	else
-	{
-		shakeOffsetX = shakeOffsetY = 0;
-
-		if (quakePhaseTimer >= QUAKE_INTERVAL_MS)
-		{
-			// hết 10 giây nghỉ -> rung tiếp
-			quakeShaking    = true;
-			quakePhaseTimer = 0;
-			quakeElapsed    = 0;
-		}
-	}
+	return y + earthquake.GetOffsetY();
 }
 
 void Camera::Follow(float targetX, float targetY)

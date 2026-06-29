@@ -51,6 +51,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Camera\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EarthquakeEffect.h">
+      <Filter>Camera\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -63,6 +66,9 @@
       <Filter>Rendering\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
+      <Filter>Camera\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EarthquakeEffect.cpp">
       <Filter>Camera\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
