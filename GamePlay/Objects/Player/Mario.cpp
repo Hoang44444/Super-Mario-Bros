@@ -9,6 +9,7 @@
 #include "InvisibleObject.h"
 #include "DynamicPlatform.h"
 #include "../../../Resource/SoundManager.h"
+#include "../../WindCycle.h"
 void Mario::MovementUpdate(DWORD dt) {
 	// Position only. Velocity (gravity) is integrated once per frame in Update(),
 	// so it still accelerates on frames where a collision skips this path.
@@ -88,24 +89,13 @@ void Mario::ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects)
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (this->isWindyScene == true)
+	// Gió kéo Mario lùi về bên trái trong suốt đợt thổi. Dùng chung trạng thái
+	// với hiệu ứng lá (WindCycle) nên lực đẩy và lá luôn đồng pha.
+	if (this->isWindyScene && WindCycle::GetInstance()->IsActive())
 	{
-		ULONGLONG now = GetTickCount64();
-
-		bool isWindActive = (now % 10000) < 5000;
-
-		if (isWindActive)
-		{
-			if (!this->isOnGround)
-			{
-				this->vx += -0.003f * dt;
-			}
-			else
-			{
-				this->vx += -0.003f * dt;
-			}
-		}
+		this->vx += -0.003f * dt;
 	}
+
 	// Death animation: pop up once, then fall straight down ignoring all collisions.
 	if (state == MARIO_STATE::DIE)
 	{
