@@ -241,8 +241,16 @@ void HUD::Update(DWORD dt)
 		elapsedMs -= 1000;
 	}
 
-	if (remainingTime < 0)
+	if (remainingTime <= 0)
+	{
 		remainingTime = 0;
+		elapsedMs = 0;
+
+		// Hết giờ -> Mario chết. Chỉ kích hoạt một lần (frame vừa về 0); các frame
+		// sau bị chặn bởi nhánh remainingTime <= 0 ở đầu hàm.
+		if (mario != nullptr && mario->GetState() != MARIO_STATE::DIE)
+			mario->SetState(MARIO_STATE::DIE);
+	}
 }
 
 void HUD::Render()

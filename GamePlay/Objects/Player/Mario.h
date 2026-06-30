@@ -61,6 +61,7 @@ public:
 		level = PlayerData::Get().level;
 		coin  = PlayerData::Get().coins;
 		life  = PlayerData::Get().lives;
+		score = PlayerData::Get().score;
 		canShoot = (level == MARIO_LEVEL::FIRE);   // khôi phục theo level, nếu không Fire màn mới bấm K không bắn
 	};
 	~Mario() {};
@@ -114,11 +115,17 @@ public:
 	int GetCoin() { return coin; }
 	int GetLife() { return life; }
 
+	// ĐIỂM SỐ: chỉ là hạ tầng lấy/cộng điểm. Cộng bao nhiêu điểm do từng
+	// enemy/item tự quyết và gọi AddScore(...). HUD đọc qua GetScore().
+	void AddScore(int amount) { score += amount; PlayerData::Get().score = score; }
+	int  GetScore() { return score; }
+
 	// WINDY SCENE
 	void SetWindyScene(bool isWindy) { this->isWindyScene = isWindy; }
 
 private:
 	int coin = 0;
 	int life  = 3;
+	int score = 0;
 };
 
