@@ -47,6 +47,6 @@ void SuperStar::OnCollisionWith(LPCOLLISIONEVENT e)
 void SuperStar::OnMarioCollision(Mario* mario)
 {
 	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
-	mario->SetInvincible(MARIO_PARAMS::STAR_POWER_TIME);
+	mario->SetStarPower(MARIO_PARAMS::STAR_POWER_TIME);
 	Delete();
 }

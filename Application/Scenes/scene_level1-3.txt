@@ -6,12 +6,15 @@ Objects/question_block.txt
 Objects/dynamic_platform.txt
 Objects/item2.txt
 Objects/mushroom.txt
+Objects/super_star.txt
 Objects/bullet.txt
 Objects/WindEffect.txt
 
 #### Enemy
 Objects/Koopa.txt
 Objects/Goomba.txt
+Objects/Lakitu.txt
+Objects/Spiny.txt
 
 [MAP]
 2624 240
@@ -37,9 +40,32 @@ Objects/Goomba.txt
 31 1763 84 0.5
 31 2175 180 0.5
 
+#---- Lakitu (40) - bay trên cao ném Spiny, hợp màn trên mây ----
+40 1500 40 0.5
+
 ########## QUESTION BLOCK ##########
-# type x y z itemType   (11=mushroom)
+# type x y z itemType   (11=mushroom 14=star 19=1up)
 10 944 160 0.5 11
+10 1720 64 0.5 14
+10 1072 160 0.5 19
+
+########## COIN (hàng coin thưởng - dẫn đường nhảy) ##########
+# type x y z   (18 = coin)
+18 416 120 0.5
+18 440 120 0.5
+18 464 120 0.5
+18 656 40 0.5
+18 680 40 0.5
+18 704 40 0.5
+18 1232 72 0.5
+18 1256 72 0.5
+18 1280 72 0.5
+18 1696 88 0.5
+18 1720 88 0.5
+18 1744 88 0.5
+18 2100 184 0.5
+18 2124 184 0.5
+18 2148 184 0.5
 
 ########## PLATFORM ##########
 # type x y z

@@ -2,8 +2,8 @@
 #include "StaticObject.h"
 #include "AssetID.h"
 
-constexpr float BRICK_BBOX_WIDTH = 16.0f;
-constexpr float BRICK_BBOX_HEIGHT = 16.0f;
+constexpr float BRICK_BBOX_WIDTH = 14.0f;
+constexpr float BRICK_BBOX_HEIGHT = 14.0f;
 
 class Brick : public StaticObject {
 private:

@@ -39,6 +39,13 @@ namespace MARIO_PARAMS
 	constexpr DWORD STAR_POWER_TIME = 7000;
 	constexpr DWORD HIT_GRACE_TIME  = 1500;   // brief immunity right after being hurt
 	constexpr int   MAX_LIVES       = 3;      // số mạng tối đa
+
+	// Kích thước bounding box theo cấp (neo góc trên-trái). Chiều cao dùng cả ở
+	// GetBoundingBox lẫn SetLevel (bù y khi đổi cấp để giữ nguyên chân Mario).
+	constexpr float SMALL_BBOX_WIDTH  = 14.0f;
+	constexpr float SMALL_BBOX_HEIGHT = 16.0f;
+	constexpr float BIG_BBOX_WIDTH    = 14.0f;
+	constexpr float BIG_BBOX_HEIGHT   = 28.0f;   // BIG / FIRE / FROG
 }
 
 class Mario : public GameObject
@@ -52,7 +59,8 @@ private:
 
 	bool isOnGround = false;
 	bool canShoot = false;
-	bool isInvincible = false;
+	bool isInvincible = false;   // miễn thương (dùng cho cả Star lẫn grace sau khi bị hạ cấp)
+	bool isStarPower = false;    // riêng Star: chạm enemy là giết enemy
 	bool isWindyScene = false;
 	DWORD invincibleTime = 0;
 public:
@@ -104,6 +112,9 @@ public:
 	void SetLevel(int level);
 	void SetInvincible(DWORD duration) { isInvincible = true; if (duration > invincibleTime) invincibleTime = duration; }
 	bool IsInvincible() { return isInvincible; }
+	// Star: vừa miễn thương vừa giết enemy khi chạm. Hết giờ thì cả hai tắt (xem Update).
+	void SetStarPower(DWORD duration) { isStarPower = true; SetInvincible(duration); }
+	bool IsStarPower() { return isStarPower; }
 	bool CanShoot() { return canShoot; }
 	void SetCanShoot(bool v) { canShoot = v; }
 	void AddCoin(int amount = 1) { coin += amount; PlayerData::Get().coins = coin; }
