@@ -32,16 +32,12 @@
 #include "FireFlower.h"
 #include "PoisonMushroom.h"
 #include "SuperStar.h"
-#include "FrogSuit.h"
 #include "CastleBridge.h"
 #include "Axe.h"
 // Items
 #include "../Coin.h"
 #include "../ItemCoin2.h"
 #include "../Mushroom1Up.h"
-#include "../SuperLeaf.h"
-#include "../HammerSuit.h"
-#include "../TanookiSuit.h"
 // Enemies
 #include "../Goomba.h"
 #include "../Koopa.h"
@@ -411,7 +407,6 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT::FIRE_FLOWER:
 	case OBJECT::POISON_MUSHROOM:
 	case OBJECT::SUPER_STAR:
-	case OBJECT::FROG_SUIT:
 		obj = CreateItem(type, x, y, z);
 		break;
 
@@ -440,9 +435,6 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT::COIN:
 	case OBJECT::ITEM_COIN2:
 	case OBJECT::MUSHROOM_1UP:
-	case OBJECT::SUPER_LEAF:
-	case OBJECT::HAMMER_SUIT:
-	case OBJECT::TANOOKI_SUIT:
 		obj = CreateItem(type, x, y, z);
 		break;
 
@@ -541,11 +533,7 @@ LPGAMEOBJECT PlayScene::CreateItem(int type, float x, float y, float z)
 	case OBJECT::FIRE_FLOWER:     return new FireFlower(x, y, z);
 	case OBJECT::POISON_MUSHROOM: return new PoisonMushroom(x, y, z);
 	case OBJECT::SUPER_STAR:      return new SuperStar(x, y, z);
-	case OBJECT::FROG_SUIT:       return new FrogSuit(x, y, z);
 	case OBJECT::MUSHROOM_1UP:    return new Mushroom1Up(x, y, z);
-	case OBJECT::SUPER_LEAF:      return new SuperLeaf(x, y, z);
-	case OBJECT::HAMMER_SUIT:     return new HammerSuit(x, y, z);
-	case OBJECT::TANOOKI_SUIT:    return new TanookiSuit(x, y, z);
 	}
 	return nullptr;
 }

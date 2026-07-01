@@ -2,7 +2,7 @@
 #include "StaticObject.h"
 #include "AssetID.h"
 
-constexpr float QUESTION_BLOCK_BBOX_SIZE = 16.0f;
+constexpr float QUESTION_BLOCK_BBOX_SIZE = 14.0f;
 
 namespace QUESTION_BLOCK_STATE
 {

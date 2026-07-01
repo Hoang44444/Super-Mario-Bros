@@ -10,6 +10,7 @@ Objects/question_block.txt
 Objects/item2.txt
 Objects/mushroom.txt
 Objects/fire_flower.txt
+Objects/super_star.txt
 
 
 #### Enemy
@@ -44,14 +45,14 @@ Objects/blooper.txt
 30 1700 428 0.5
 30 2630 428 0.5 
 30 2850 428 0.5 
+30 800 428 0.5
+30 3100 428 0.5
 
 #---- Koopa (31)----
 31 1530 406 0.5
 31 1038 406 0.5
+31 3150 406 0.5
 
-#--Blooper(4)
-34 800 300 0.5 
-34 1500 300 0.5
 ########## BLOCK SWITCH DIRECTION ENEMY (44) ##########
 # Left guard for the ground Goomba cluster (1580-1700) - turn them back before the pit on the left
 44 1426 432 0.5
@@ -109,7 +110,6 @@ Objects/blooper.txt
 8 352 384 0.5 100
 8 384 384 0.5 100
 
-
 # --- Group 2 (after Gap 1, x=1136) ---
 8 1232 384 0.5 100
 8 1264 384 0.5 100
@@ -157,19 +157,27 @@ Objects/blooper.txt
 
 
 ########## QUESTION BLOCK ##########
-# type x y z itemType   (18=coin 11=mushroom 12=fire_flower)
+# type x y z itemType   (18=coin 11=mushroom 12=fire_flower 14=star 19=1up)
 10 256 384 0.5 18
 10 336 384 0.5 18
 10 368 384 0.5 11
 10 352 320 0.5 18
-10 1248 384 0.5 12	
+10 1248 384 0.5 12
 10 1504 320 0.5 18
 10 1678 384 0.5 18
 10 1726 384 0.5 18
 10 1774 384 0.5 18
 10 2064 320 0.5 18
-10 2080 320 0.5 18
+10 2080 320 0.5 19
+10 2322 368 0.5 14
 10 2720 384 0.5 18
+
+########## COIN (đặt trực tiếp - hàng coin thưởng) ##########
+# type x y z   (18 = coin)
+18 944 360 0.5
+18 968 360 0.5
+18 992 360 0.5
+18 1016 360 0.5
 
 ########## PLATFORM ##########
 # type x y z

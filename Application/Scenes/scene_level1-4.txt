@@ -2,6 +2,7 @@
 Objects/brick_test.txt
 Objects/mario.txt
 Objects/item2.txt
+Objects/fire_flower.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
@@ -16,6 +17,8 @@ Objects/BuzzyBeetle.txt
 Objects/cannon.txt
 Objects/bulletbill.txt
 Objects/Podoboo.txt
+Objects/hammerbro.txt
+Objects/hammer.txt
 Objects/axe.txt
 Objects/bowser.txt
 Objects/BowserFire
@@ -58,8 +61,24 @@ Objects/bowserfireball.txt
 41 3543 200 0.5
 41 3563 200 0.5
 
+#---- Hammer Bro (33) - canh đường trước phòng Bowser ----
+33 4300 180 0.5
+33 4550 180 0.5
+
 #Bowser
 35 4800 126 0.5
+
+########## QUESTION BLOCK ##########
+# type x y z itemType   (12=fire_flower 19=1up)
+10 2600 160 0.5 19
+10 4400 160 0.5 12
+
+########## COIN (thưởng đoạn tiếp cận Bowser) ##########
+# type x y z   (18 = coin)
+18 4180 160 0.5
+18 4204 160 0.5
+18 4228 160 0.5
+
 ########## PIPE ##########
 # type x y z
 4 303 175 0.5 3102

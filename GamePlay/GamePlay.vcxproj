@@ -175,10 +175,7 @@
     <ClInclude Include="ItemCoin2.h" />
     <ClInclude Include="CoinCollectEffect.h" />
     <ClInclude Include="CoinPopupEffect.h" />
-    <ClInclude Include="HammerSuit.h" />
     <ClInclude Include="Mushroom1Up.h" />
-    <ClInclude Include="SuperLeaf.h" />
-    <ClInclude Include="TanookiSuit.h" />
     <ClInclude Include="Objects\Static\StaticObject.h" />
     <ClInclude Include="Objects\Static\Brick.h" />
     <ClInclude Include="Objects\Static\QuestionBlock.h" />
@@ -195,7 +192,6 @@
     <ClInclude Include="Objects\Item\FireFlower.h" />
     <ClInclude Include="Objects\Item\PoisonMushroom.h" />
     <ClInclude Include="Objects\Item\SuperStar.h" />
-    <ClInclude Include="Objects\Item\FrogSuit.h" />
     <ClInclude Include="Objects\Item\Axe.h" />
     <ClInclude Include="Objects\Static\CastleBridge.h" />
     <ClInclude Include="WindCycle.h" />
@@ -237,7 +233,6 @@
     <ClCompile Include="Objects\Item\FireFlower.cpp" />
     <ClCompile Include="Objects\Item\PoisonMushroom.cpp" />
     <ClCompile Include="Objects\Item\SuperStar.cpp" />
-    <ClCompile Include="Objects\Item\FrogSuit.cpp" />
     <ClCompile Include="Objects\Item\Axe.cpp" />
     <ClCompile Include="Objects\Static\CastleBridge.cpp" />
     <ClCompile Include="Blooper.cpp" />
@@ -259,10 +254,7 @@
     <ClCompile Include="ItemCoin2.cpp" />
     <ClCompile Include="CoinCollectEffect.cpp" />
     <ClCompile Include="CoinPopupEffect.cpp" />
-    <ClCompile Include="HammerSuit.cpp" />
     <ClCompile Include="Mushroom1Up.cpp" />
-    <ClCompile Include="SuperLeaf.cpp" />
-    <ClCompile Include="TanookiSuit.cpp" />
     <ClCompile Include="WindCycle.cpp" />
     <ClCompile Include="WindEffect.cpp" />
   </ItemGroup>

@@ -76,14 +76,10 @@ namespace OBJECT
 	constexpr int FIRE_FLOWER = 12;
 	constexpr int POISON_MUSHROOM = 13;
 	constexpr int SUPER_STAR = 14;
-	constexpr int FROG_SUIT = 15;
 	constexpr int CASTLE_BRIDGE = 16;
 	constexpr int AXE = 17;
     constexpr int COIN = 18;
 	constexpr int MUSHROOM_1UP = 19;
-	constexpr int SUPER_LEAF = 20;
-	constexpr int HAMMER_SUIT = 21;
-	constexpr int TANOOKI_SUIT = 22;
 	constexpr int HAMMER = 23;
 	constexpr int ITEM_COIN2 = 24;
 

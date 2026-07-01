@@ -250,9 +250,6 @@
     <ClInclude Include="Objects\Item\SuperStar.h">
       <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Item\FrogSuit.h">
-      <Filter>Objects\Item\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Objects\Item\Axe.h">
       <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
@@ -271,16 +268,7 @@
     <ClInclude Include="CoinPopupEffect.h">
       <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HammerSuit.h">
-      <Filter>Objects\Item\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Mushroom1Up.h">
-      <Filter>Objects\Item\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SuperLeaf.h">
-      <Filter>Objects\Item\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TanookiSuit.h">
       <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Invisible\EnemyTurnBlock.h">
@@ -375,9 +363,6 @@
     <ClCompile Include="Objects\Item\SuperStar.cpp">
       <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Item\FrogSuit.cpp">
-      <Filter>Objects\Item\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Objects\Item\Axe.cpp">
       <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
@@ -441,16 +426,7 @@
     <ClCompile Include="CoinPopupEffect.cpp">
       <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HammerSuit.cpp">
-      <Filter>Objects\Item\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Mushroom1Up.cpp">
-      <Filter>Objects\Item\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SuperLeaf.cpp">
-      <Filter>Objects\Item\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TanookiSuit.cpp">
       <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Invisible\EnemyTurnBlock.cpp">

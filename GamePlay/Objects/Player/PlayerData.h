@@ -18,6 +18,7 @@ public:
     int level = MARIO_LEVEL::SMALL;
     int coins = 0;
     int lives = 3;
+    int score = 0;
     int returnScene = 1;   // level to resume after the death screen (default: world 1-1)
 
     static PlayerData& Get()
@@ -27,5 +28,5 @@ public:
     }
 
     // Gọi khi muốn chơi lại từ đầu (vd: hết mạng / new game)
-    void Reset() { level = MARIO_LEVEL::SMALL; coins = 0; lives = 3; }
+    void Reset() { level = MARIO_LEVEL::SMALL; coins = 0; lives = 3; score = 0; }
 };

@@ -9,12 +9,14 @@ Objects/pipe.txt
 Objects/question_block.txt
 Objects/item2.txt
 Objects/mushroom.txt
+Objects/fire_flower.txt
 Objects/bullet.txt
 
 #### Enemy
 Objects/Goomba.txt
 Objects/Koopa.txt
 Objects/piranha_plant.txt
+Objects/BuzzyBeetle.txt
 
 [MAP]
 2810 720
@@ -47,6 +49,10 @@ Objects/piranha_plant.txt
 31 750 660 0.5
 31 931 660 0.5
 31 2340 581 0.5
+
+#---- Buzzy Beetle (32) - giới thiệu quái có giáp ----
+32 1090 660 0.5
+32 2280 660 0.5
 
 #---- PIRANHA PLANT (43) ----
 43 1655 617 0.7
@@ -216,12 +222,23 @@ Objects/piranha_plant.txt
 8 2400 608 0.5 101
 
 ########## QUESTION BLOCK ##########
-# type x y z itemType   (18=coin 11=mushroom)
+# type x y z itemType   (18=coin 11=mushroom 12=fire_flower 19=1up)
 10 160 624 0.5 18
 10 176 624 0.5 11
 10 192 624 0.5 18
 10 208 624 0.5 18
 10 224 624 0.5 18
+10 980 624 0.5 12
+10 1580 624 0.5 19
+
+########## COIN (hàng coin thưởng) ##########
+# type x y z   (18 = coin)
+18 979 600 0.5
+18 1003 600 0.5
+18 1027 600 0.5
+18 1536 600 0.5
+18 1560 600 0.5
+18 1584 600 0.5
 
 ########## PIPE ##########
 # type x y z

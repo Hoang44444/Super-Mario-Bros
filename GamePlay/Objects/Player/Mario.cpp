@@ -22,8 +22,10 @@ void Mario::SetLevel(int level)
 	// (x,y) là góc trên-trái, bbox nở xuống dưới. Khi đổi level mà giữ nguyên y thì
 	// phần cao thêm sẽ lòi xuống lòng platform -> Mario lọt/đứng lệch.
 	// Giữ nguyên ĐÁY (chân) bằng cách dời y theo chênh lệch chiều cao bbox.
-	// Chiều cao phải khớp với GetBoundingBox: SMALL = 16, còn lại (BIG/FIRE/FROG) = 27.
-	auto bboxHeight = [](int lv) -> float { return lv == MARIO_LEVEL::SMALL ? 16.0f : 27.0f; };
+	// Chiều cao phải khớp với GetBoundingBox (giữ nguyên chân khi đổi cấp).
+	auto bboxHeight = [](int lv) -> float {
+		return lv == MARIO_LEVEL::SMALL ? MARIO_PARAMS::SMALL_BBOX_HEIGHT : MARIO_PARAMS::BIG_BBOX_HEIGHT;
+	};
 	this->y -= (bboxHeight(level) - bboxHeight(this->level));
 
 	this->level = level;
@@ -107,7 +109,7 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (isInvincible)
 	{
 		if (invincibleTime > dt) invincibleTime -= dt;
-		else { invincibleTime = 0; isInvincible = false; }
+		else { invincibleTime = 0; isInvincible = false; isStarPower = false; }
 	}
 
 	// Integrate gravity every frame — even on collision frames (e.g. pressed against
@@ -257,13 +259,13 @@ void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 	t = y;
 	if (level == MARIO_LEVEL::SMALL)
 	{
-		r = x + 16;
-		b = y + 16;
+		r = x + MARIO_PARAMS::SMALL_BBOX_WIDTH;
+		b = y + MARIO_PARAMS::SMALL_BBOX_HEIGHT;
 	}
 	else // BIG / FIRE / FROG đều cỡ lớn
 	{
-		r = x + 15;
-		b = y + 27;
+		r = x + MARIO_PARAMS::BIG_BBOX_WIDTH;
+		b = y + MARIO_PARAMS::BIG_BBOX_HEIGHT;
 	}
 }
 
@@ -287,6 +289,17 @@ void Mario::OnCollisionWithStaticObject(LPCOLLISIONEVENT e)
 void Mario::OnCollisionWithEnemy(LPCOLLISIONEVENT e)
 {
 	auto enemy = dynamic_cast<Enemy*>(e->obj);
+	if (enemy == nullptr) return;
+
+	// Star power: chạm enemy nào là giết enemy đó (dùng cơ chế chết như trúng đạn).
+	// Lúc bị hạ cấp chỉ có grace (isInvincible) chứ không có isStarPower nên enemy không chết.
+	if (isStarPower)
+	{
+		enemy->OnHitByBullet();
+		SoundManager::GetInstance()->PlaySFX(SFX::STOMP);
+		return;
+	}
+
 	enemy->OnMarioCollison(this, e->ny);
 
 	// Play stomp sound if Mario is falling on top of enemy
