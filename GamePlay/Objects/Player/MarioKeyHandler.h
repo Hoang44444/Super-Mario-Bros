@@ -10,7 +10,7 @@ class MarioKeyHandler : public KeyEventHandler
 {
 	PlayScene* scene;
 	
-	// Edge nhảy: chỉ set từ OnKeyDown (event), consume trong KeyState — một nguồn sự thật
+	// A1/A4: một nguồn edge duy nhất — set từ OnKeyDown, consume trong KeyState
 	bool jumpPending = false;
 
 public:
@@ -31,7 +31,7 @@ public:
 		else if (states[VK_LEFT] & 0x80)
 			moveDir = -1;
 
-		// jumpPressed: polling (variable jump height). jumpJustPressed: event từ OnKeyDown.
+		// A4: jumpPressed = polling (variable jump height); jumpJustPressed = event jumpPending
 		bool jumpPressed = (states[VK_SPACE] & 0x80) != 0;
 		bool jumpJustPressed = jumpPending;
 
@@ -47,7 +47,7 @@ public:
 		{
 			marioObj->SetPhysicsInput(moveDir, jumpPressed, jumpJustPressed, runHeld);
 		}
-		jumpPending = false;
+		jumpPending = false; // A1: consume event edge sau khi đẩy sang Mario
 
 		// Set animation state based on movement (for rendering)
 		if (sitPressed)
@@ -88,14 +88,13 @@ public:
 			mario->SetState(MARIO_STATE::SHOOT);
 			break;
 		case VK_SPACE:
-			jumpPending = true;
-			// Frog jump đặc biệt; nhảy thường qua jumpPending -> TryJump() trong Mario::Update
+			jumpPending = true; // A4: bắt tap nhanh (< 1 frame) không phụ thuộc polling
 			mario->SetState(MARIO_STATE::JUMP);
 			break;
 		}
 	}
 
 	virtual void OnKeyUp(int KeyCode) {
-		// jumpPressed lấy từ GetKeyboardState mỗi frame — không reset edge ở đây
+		// A1: không reset edge nhảy ở đây — tránh xung đột với jumpPending
 	}
 };

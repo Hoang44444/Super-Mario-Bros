@@ -24,7 +24,6 @@ void MarioPhysics::Reset()
 	state.runHoldTime = 0;
 	state.maxSpeedCap = config.maxRunSpeed;
 	
-	wasJumpHeld = false;
 	hasReachedPeak = false;
 }
 
@@ -45,11 +44,8 @@ void MarioPhysics::Update(DWORD dt, const MarioPhysicsInput& input)
 	// Xử lý di chuyển ngang
 	UpdateHorizontalMovement(dt, input);
 	
-	// Xử lý nhảy và trọng lực
+	// A2: chỉ trọng lực — nhảy do Mario::Update gọi TryJump() khi biết isOnGround
 	UpdateJumpAndGravity(dt, input);
-	
-	// Cập nhật trạng thái nút nhảy cho frame sau
-	wasJumpHeld = input.jumpPressed;
 }
 
 void MarioPhysics::UpdateHorizontalMovement(DWORD dt, const MarioPhysicsInput& input)
@@ -128,14 +124,14 @@ void MarioPhysics::UpdateHorizontalMovement(DWORD dt, const MarioPhysicsInput& i
 	}
 }
 
-bool MarioPhysics::TryJump()
+bool MarioPhysics::TryJump(bool& jumpRequested)
 {
-	if (!state.isOnGround) return false;
+	if (!jumpRequested || !state.isOnGround) return false;
 
 	state.vy = -GetJumpForce();
 	state.isOnGround = false;
 	hasReachedPeak = false;
-	wasJumpHeld = true;
+	jumpRequested = false; // A2: consume edge ngay khi nhảy thành công
 
 	if (fabsf(state.vx) < config.maxRunSpeed)
 	{
@@ -146,7 +142,7 @@ bool MarioPhysics::TryJump()
 
 void MarioPhysics::UpdateJumpAndGravity(DWORD dt, const MarioPhysicsInput& input)
 {
-	// Xử lý trọng lực (nhảy do Mario::Update gọi TryJump() sau khi collision xác nhận đất)
+	// Xử lý trọng lực (A2: nhảy tách ra TryJump(), không xử lý ở đây)
 	if (!state.isOnGround)
 	{
 		float currentGravity;

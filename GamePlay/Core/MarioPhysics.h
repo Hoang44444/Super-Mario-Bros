@@ -117,7 +117,6 @@ private:
 	MarioPhysicsState state;
 	
 	// Trạng thái nội bộ
-	bool wasJumpHeld;       // Nút nhảy được giữ ở frame trước
 	bool hasReachedPeak;    // Đã đạt đỉnh quỹ đạo chưa
 	
 public:
@@ -127,8 +126,9 @@ public:
 	// Cập nhật vật lý mỗi frame (di chuyển ngang + trọng lực; KHÔNG xử lý nhảy)
 	void Update(DWORD dt, const MarioPhysicsInput& input);
 
-	// Thực hiện nhảy nếu đang trên đất — gọi từ Mario sau khi biết isOnGround chính xác
-	bool TryJump();
+	// Thực hiện nhảy nếu đang trên đất — gọi từ Mario sau khi biết isOnGround chính xác.
+	// A2: consume jumpRequested khi nhảy thành công để chống double-trigger cùng frame.
+	bool TryJump(bool& jumpRequested);
 	
 	// Getter/Setter cho trạng thái
 	const MarioPhysicsState& GetState() const { return state; }

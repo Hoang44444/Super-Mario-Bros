@@ -60,13 +60,12 @@ namespace MARIO_PARAMS
 	constexpr float BIG_BBOX_WIDTH    = 14.0f;
 	constexpr float BIG_BBOX_HEIGHT   = 28.0f;   // BIG / FIRE / FROG
 	
-	// Animation hysteresis — đồng bộ maxWalkSpeed=0.12, maxRunSpeed=0.20, accelWalk=0.005 @ dt~16ms
-	// WALK_START ~0.5 frame accel (0.005*16=0.08); RUN cần physState.isRunning (xem UpdateAnimationState)
-	constexpr float WALK_START_THRESHOLD = 0.03f;   // vx > này -> walk (~1 frame)
+	// Animation hysteresis — B3: ngưỡng thu hẹp giảm nhấp nháy WALK/IDLE khi ma sát
+	constexpr float WALK_START_THRESHOLD = 0.03f;   // vx > này -> walk
 	constexpr float IDLE_START_THRESHOLD = 0.008f;  // vx < này -> idle
 	constexpr float RUN_START_THRESHOLD  = 0.13f;   // vx > này + isRunning -> run
 	constexpr float WALK_BACK_THRESHOLD  = 0.10f;   // vx < này -> walk (từ run)
-	constexpr DWORD ANIM_DEBOUNCE_TIME   = 50;      // ms (~3 frame; 120ms gây cảm giác đứng hình)
+	constexpr DWORD ANIM_DEBOUNCE_TIME   = 50;      // B2: ms debounce animation (120ms gây lag)
 }
 
 class Mario : public GameObject

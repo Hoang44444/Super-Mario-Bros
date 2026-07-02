@@ -45,7 +45,7 @@ void Mario::UpdateAnimationState(DWORD dt)
 	}
 	else
 	{
-		// Idle / Walk / Run — RUN cần cả isRunning (maxSpeed chỉ nới sau runHoldTime)
+		// Idle / Walk / Run — B1: RUN cần cả isRunning, không chỉ absVx
 		if (animState == MarioAnimState::IDLE || animState == MarioAnimState::SITTING || animState == MarioAnimState::JUMPING)
 		{
 			if (physState.isRunning && absVx > MARIO_PARAMS::RUN_START_THRESHOLD)
@@ -80,7 +80,7 @@ void Mario::UpdateAnimationState(DWORD dt)
 		}
 	}
 
-	// 3. Apply DEBOUNCE — SKIDDING ưu tiên để không bị walk/idle đè khi trượt
+	// 3. Apply DEBOUNCE — B2: SKIDDING ưu tiên để không bị walk/idle đè khi trượt
 	bool isPriorityTransition = (nextState == MarioAnimState::JUMPING || nextState == MarioAnimState::DYING
 		|| nextState == MarioAnimState::SITTING || nextState == MarioAnimState::SKIDDING);
 	if (nextState != animState)
@@ -184,7 +184,7 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else { invincibleTime = 0; isInvincible = false; isStarPower = false; }
 	}
 
-	// Đồng bộ vận tốc Mario -> physics (collision frame trước có thể đã sửa vx/vy trực tiếp)
+	// A5: đẩy vx/vy Mario -> physics trước khi tích phân (collision frame trước có thể đã sửa trực tiếp)
 	MarioPhysicsState ps = physics.GetState();
 	ps.vx = vx;
 	ps.vy = vy;
@@ -192,17 +192,17 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	physics.SetOnGround(isOnGround);
 	physics.SetFacing(direction);
 
-	const bool jumpRequested = physicsInput.jumpJustPressed;
+	bool jumpRequested = physicsInput.jumpJustPressed;
 	const bool groundedBeforePhysics = isOnGround;
 	bool jumpedThisFrame = false;
 
 	// Di chuyển ngang + trọng lực (chưa nhảy)
 	physics.Update(dt, physicsInput);
 
-	// Nhảy khi đã trên đất từ frame trước (đứng yên / đi / chạy)
+	// A2: nhảy lần 1 — đã trên đất từ frame trước
 	if (jumpRequested && groundedBeforePhysics && level != MARIO_LEVEL::FROG)
 	{
-		if (physics.TryJump())
+		if (physics.TryJump(jumpRequested))
 		{
 			jumpedThisFrame = true;
 			SoundManager::GetInstance()->PlaySFX(SFX::JUMP);
@@ -229,17 +229,21 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	ResolveOverlapWithPlatforms(coObjects);
 	Collision::GetInstance()->Process(this, dt, coObjects);
 
-	// Nhảy sau collision — sửa "cửa sổ chết" khi vừa chạm đất cùng frame bấm nhảy
-	if (jumpRequested && isOnGround && !jumpedThisFrame && level != MARIO_LEVEL::FROG)
+	// A2: nhảy lần 2 sau collision — sửa cửa sổ chết khi vừa chạm đất cùng frame bấm nhảy.
+	// Giữ phím Space khi tiếp đất (!wasOnGround -> isOnGround) cũng kích hoạt nhảy lại.
+	bool landingIntent = jumpRequested;
+	if (!landingIntent && physicsInput.jumpPressed && !wasOnGround && isOnGround)
+		landingIntent = true;
+	if (!jumpedThisFrame && landingIntent && isOnGround && level != MARIO_LEVEL::FROG)
 	{
 		ps = physics.GetState();
 		ps.vx = vx;
 		ps.vy = vy;
 		physics.SetState(ps);
 		physics.SetOnGround(true);
-		if (physics.TryJump())
+		if (physics.TryJump(landingIntent))
 		{
-			jumpedThisFrame = true;
+			jumpRequested = false;
 			isOnGround = false;
 			ps = physics.GetState();
 			vx = ps.vx;
@@ -248,7 +252,7 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	// Đồng bộ physics <- Mario sau collision (tường có thể zero vx trực tiếp trên Mario)
+	// A5: đẩy vx/vy sau collision ngược vào physics (tường có thể zero vx trên Mario)
 	ps = physics.GetState();
 	ps.vx = vx;
 	ps.vy = vy;
@@ -282,7 +286,7 @@ void Mario::SetState(int state)
 	case MARIO_STATE::JUMP:
 		if (level == MARIO_LEVEL::FROG && isOnGround)
 		{
-			// Frog jump đặc biệt — ghi thẳng vào MarioPhysics state, không qua TryJump()
+			// A3: Frog nhảy riêng — đồng bộ physics state, isOnGround=false tránh vy bị zero
 			vy = -MARIO_PARAMS::FROG_JUMP_SPEED;
 			vx = MARIO_PARAMS::FROG_JUMP_SPEED_X * direction;
 			isOnGround = false;
@@ -293,7 +297,6 @@ void Mario::SetState(int state)
 			physics.SetState(ps);
 			SoundManager::GetInstance()->PlaySFX(SFX::JUMP);
 		}
-		// Nhảy thường xử lý qua physicsInput.jumpJustPressed
 		break;
 	case MARIO_STATE::IDLE:
 		// Physics system handles deceleration
@@ -460,7 +463,7 @@ void Mario::OnCollisionWithStaticObject(LPCOLLISIONEVENT e)
 		vy = 0;
 	}
 	else if (e->nx != 0) {
-		vx = 0;
+		vx = 0; // A5: zero vx trên Mario; cuối Update đồng bộ ngược vào physics.state
 	}
 		
 	auto staticObject = dynamic_cast<StaticObject*>(e->obj);
