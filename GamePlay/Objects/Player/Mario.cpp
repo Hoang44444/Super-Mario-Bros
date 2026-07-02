@@ -10,6 +10,7 @@
 #include "DynamicPlatform.h"
 #include "../../../Resource/SoundManager.h"
 #include "../../WindCycle.h"
+#include "../../Core/ScoreManager.h"
 void Mario::MovementUpdate(DWORD dt) {
 	// Position only. Velocity (gravity) is integrated once per frame in Update(),
 	// so it still accelerates on frames where a collision skips this path.
@@ -116,10 +117,18 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// a wall) so the fall keeps accelerating instead of crawling. Clear the ground
 	// flag; it is re-set below only if we actually land on something this frame.
 	vy += gravity * dt;
+	bool wasOnGround = isOnGround;
 	isOnGround = false;
 
 	ResolveOverlapWithPlatforms(coObjects);
 	Collision::GetInstance()->Process(this, dt, coObjects);
+
+	// Notify ScoreManager of ground state changes for combo system
+	if (isOnGround != wasOnGround)
+	{
+		ScoreManager::Get().SetOnGround(isOnGround);
+	}
+
 	DebugOut(L"[MARIO] Update - Position: (%.2f, %.2f), Speed: (%.2f, %.2f)\n", x, y, vx, vy);
 }
 
@@ -295,7 +304,7 @@ void Mario::OnCollisionWithEnemy(LPCOLLISIONEVENT e)
 	// Lúc bị hạ cấp chỉ có grace (isInvincible) chứ không có isStarPower nên enemy không chết.
 	if (isStarPower)
 	{
-		enemy->OnHitByBullet();
+		enemy->OnHitByStar(this);
 		SoundManager::GetInstance()->PlaySFX(SFX::STOMP);
 		return;
 	}

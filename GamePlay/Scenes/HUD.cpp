@@ -9,48 +9,10 @@
 #include "../Resource/AssetID.h"
 #include "GameManager.h"
 #include "PlayerData.h"
+#include "../Core/ScoreManager.h"
 
 namespace
 {
-	template <typename T>
-	auto ReadScore(T* mario, int) -> decltype(mario->GetScore())
-	{
-		return mario != nullptr ? mario->GetScore() : 0;
-	}
-
-	int ReadScore(...)
-	{
-		return 0;
-	}
-
-	template <typename T>
-	auto ReadCoin(T* mario, int) -> decltype(mario->GetCoin())
-	{
-		return mario != nullptr ? mario->GetCoin() : 0;
-	}
-
-	int ReadCoin(...)
-	{
-		return 0;
-	}
-
-	template <typename T>
-	auto ReadLives(T* mario, int) -> decltype(mario->GetLives())
-	{
-		return mario != nullptr ? mario->GetLives() : 0;
-	}
-
-	template <typename T>
-	auto ReadLives(T* mario, long) -> decltype(mario->GetLife())
-	{
-		return mario != nullptr ? mario->GetLife() : 0;
-	}
-
-	int ReadLives(...)
-	{
-		return 0;
-	}
-
 	RECT MakeRect(int left, int top, int right, int bottom)
 	{
 		RECT rect;
@@ -288,9 +250,9 @@ void HUD::Render()
 	// ID3DX10Font changes sprite transforms/state for screen-space text.
 	spriteHandler->Flush();
 
-	const int score = ReadScore(mario, 0);
-	const int coins = (mario != nullptr) ? ReadCoin(mario, 0) : PlayerData::Get().coins;
-	const int lives = (mario != nullptr) ? ReadLives(mario, 0) : PlayerData::Get().lives;
+	const int score = ScoreManager::Get().GetScore();
+	const int coins = ScoreManager::Get().GetCoins();
+	const int lives = ScoreManager::Get().GetLives();
 
 	Renderer* r = Renderer::GetInstance();
 	int screenWidth = r->GetBackBufferWidth();

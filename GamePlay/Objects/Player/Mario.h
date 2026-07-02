@@ -3,6 +3,7 @@
 #include "PlayerData.h"
 #include "../../../Resource/SoundManager.h"
 #include "../Resource/AssetID.h"
+#include "../../Core/ScoreManager.h"
 
 class DynamicPlatform;
 
@@ -117,19 +118,15 @@ public:
 	bool IsStarPower() { return isStarPower; }
 	bool CanShoot() { return canShoot; }
 	void SetCanShoot(bool v) { canShoot = v; }
-	void AddCoin(int amount = 1) { coin += amount; PlayerData::Get().coins = coin; }
-	void AddLife(int amount = 1) {
-		life += amount;
-		if (life > MARIO_PARAMS::MAX_LIVES) life = MARIO_PARAMS::MAX_LIVES;   // chặn trần 3 mạng
-		PlayerData::Get().lives = life;
-	}
-	int GetCoin() { return coin; }
-	int GetLife() { return life; }
+	void AddCoin(int amount = 1) { ScoreManager::Get().AddCoin(amount); }
+	void AddLife(int amount = 1) { ScoreManager::Get().AddLife(amount); }
+	int GetCoin() { return ScoreManager::Get().GetCoins(); }
+	int GetLife() { return ScoreManager::Get().GetLives(); }
 
 	// ĐIỂM SỐ: chỉ là hạ tầng lấy/cộng điểm. Cộng bao nhiêu điểm do từng
 	// enemy/item tự quyết và gọi AddScore(...). HUD đọc qua GetScore().
-	void AddScore(int amount) { score += amount; PlayerData::Get().score = score; }
-	int  GetScore() { return score; }
+	void AddScore(int amount) { ScoreManager::Get().AddScore(amount); }
+	int  GetScore() { return ScoreManager::Get().GetScore(); }
 
 	// WINDY SCENE
 	void SetWindyScene(bool isWindy) { this->isWindyScene = isWindy; }
