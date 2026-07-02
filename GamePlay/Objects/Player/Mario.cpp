@@ -11,11 +11,89 @@
 #include "../../../Resource/SoundManager.h"
 #include "../../WindCycle.h"
 #include "../../Core/ScoreManager.h"
+#include "../../Core/MarioPhysics.h"
 void Mario::MovementUpdate(DWORD dt) {
 	// Position only. Velocity (gravity) is integrated once per frame in Update(),
 	// so it still accelerates on frames where a collision skips this path.
 	this->x += this->vx * dt;
 	this->y += this->vy * dt;
+}
+
+void Mario::UpdateAnimationState(DWORD dt)
+{
+	if (state == MARIO_STATE::DIE)
+	{
+		animState = MarioAnimState::DYING;
+		return;
+	}
+
+	if (animDebounceTimer > dt) animDebounceTimer -= dt;
+	else animDebounceTimer = 0;
+
+	float absVx = fabsf(vx);
+	MarioAnimState nextState = animState;
+	const MarioPhysicsState& physState = physics.GetState();
+
+	// 1. Determine next state based on physics but with HYSTERESIS
+	if (!isOnGround)
+	{
+		nextState = MarioAnimState::JUMPING;
+	}
+	else if (state == MARIO_STATE::SIT)
+	{
+		nextState = MarioAnimState::SITTING;
+	}
+	else
+	{
+		// Idle / Walk / Run — RUN cần cả isRunning (maxSpeed chỉ nới sau runHoldTime)
+		if (animState == MarioAnimState::IDLE || animState == MarioAnimState::SITTING || animState == MarioAnimState::JUMPING)
+		{
+			if (physState.isRunning && absVx > MARIO_PARAMS::RUN_START_THRESHOLD)
+				nextState = MarioAnimState::RUNNING;
+			else if (absVx > MARIO_PARAMS::WALK_START_THRESHOLD)
+				nextState = MarioAnimState::WALKING;
+			else if (state != MARIO_STATE::SIT)
+				nextState = MarioAnimState::IDLE;
+		}
+		else if (animState == MarioAnimState::WALKING)
+		{
+			if (absVx < MARIO_PARAMS::IDLE_START_THRESHOLD)
+				nextState = MarioAnimState::IDLE;
+			else if (physState.isRunning && absVx > MARIO_PARAMS::RUN_START_THRESHOLD)
+				nextState = MarioAnimState::RUNNING;
+		}
+		else if (animState == MarioAnimState::RUNNING)
+		{
+			if (!physState.isRunning || absVx < MARIO_PARAMS::WALK_BACK_THRESHOLD)
+				nextState = MarioAnimState::WALKING;
+		}
+		
+		// 2. Special case: SKIDDING (Sửa LỖI 2: dùng nguồn chân lý từ MarioPhysics)
+		if (physState.isSkidding && isOnGround)
+		{
+			nextState = MarioAnimState::SKIDDING;
+		}
+		else if (animState == MarioAnimState::SKIDDING)
+		{
+			// Thoát skid khi physics báo không còn skid
+			nextState = (absVx > MARIO_PARAMS::WALK_START_THRESHOLD) ? MarioAnimState::WALKING : MarioAnimState::IDLE;
+		}
+	}
+
+	// 3. Apply DEBOUNCE — SKIDDING ưu tiên để không bị walk/idle đè khi trượt
+	bool isPriorityTransition = (nextState == MarioAnimState::JUMPING || nextState == MarioAnimState::DYING
+		|| nextState == MarioAnimState::SITTING || nextState == MarioAnimState::SKIDDING);
+	if (nextState != animState)
+	{
+		if (animDebounceTimer == 0 || isPriorityTransition)
+		{
+			animState = nextState;
+			animDebounceTimer = MARIO_PARAMS::ANIM_DEBOUNCE_TIME;
+		}
+	}
+
+	// 4. Update FACING (Sửa YÊU CẦU CHUNG: lấy trực tiếp từ physics)
+	animFacing = physState.facing;
 }
 
 void Mario::SetLevel(int level)
@@ -92,13 +170,6 @@ void Mario::ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects)
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	// Gió kéo Mario lùi về bên trái trong suốt đợt thổi. Dùng chung trạng thái
-	// với hiệu ứng lá (WindCycle) nên lực đẩy và lá luôn đồng pha.
-	if (this->isWindyScene && WindCycle::GetInstance()->IsActive())
-	{
-		this->vx += -0.003f * dt;
-	}
-
 	// Death animation: pop up once, then fall straight down ignoring all collisions.
 	if (state == MARIO_STATE::DIE)
 	{
@@ -113,21 +184,84 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else { invincibleTime = 0; isInvincible = false; isStarPower = false; }
 	}
 
-	// Integrate gravity every frame — even on collision frames (e.g. pressed against
-	// a wall) so the fall keeps accelerating instead of crawling. Clear the ground
-	// flag; it is re-set below only if we actually land on something this frame.
-	vy += gravity * dt;
+	// Đồng bộ vận tốc Mario -> physics (collision frame trước có thể đã sửa vx/vy trực tiếp)
+	MarioPhysicsState ps = physics.GetState();
+	ps.vx = vx;
+	ps.vy = vy;
+	physics.SetState(ps);
+	physics.SetOnGround(isOnGround);
+	physics.SetFacing(direction);
+
+	const bool jumpRequested = physicsInput.jumpJustPressed;
+	const bool groundedBeforePhysics = isOnGround;
+	bool jumpedThisFrame = false;
+
+	// Di chuyển ngang + trọng lực (chưa nhảy)
+	physics.Update(dt, physicsInput);
+
+	// Nhảy khi đã trên đất từ frame trước (đứng yên / đi / chạy)
+	if (jumpRequested && groundedBeforePhysics && level != MARIO_LEVEL::FROG)
+	{
+		if (physics.TryJump())
+		{
+			jumpedThisFrame = true;
+			SoundManager::GetInstance()->PlaySFX(SFX::JUMP);
+		}
+	}
+
+	ps = physics.GetState();
+	vx = ps.vx;
+	vy = ps.vy;
+	direction = ps.facing;
+	isOnGround = ps.isOnGround;
+
+	// Gió kéo Mario lùi về bên trái trong suốt đợt thổi. Dùng chung trạng thái
+	// với hiệu ứng lá (WindCycle) nên lực đẩy và lá luôn đồng pha.
+	if (this->isWindyScene && WindCycle::GetInstance()->IsActive())
+	{
+		this->vx += -0.003f * dt;
+	}
+
+	// Clear ground flag before collision processing
 	bool wasOnGround = isOnGround;
 	isOnGround = false;
 
 	ResolveOverlapWithPlatforms(coObjects);
 	Collision::GetInstance()->Process(this, dt, coObjects);
 
+	// Nhảy sau collision — sửa "cửa sổ chết" khi vừa chạm đất cùng frame bấm nhảy
+	if (jumpRequested && isOnGround && !jumpedThisFrame && level != MARIO_LEVEL::FROG)
+	{
+		ps = physics.GetState();
+		ps.vx = vx;
+		ps.vy = vy;
+		physics.SetState(ps);
+		physics.SetOnGround(true);
+		if (physics.TryJump())
+		{
+			jumpedThisFrame = true;
+			isOnGround = false;
+			ps = physics.GetState();
+			vx = ps.vx;
+			vy = ps.vy;
+			SoundManager::GetInstance()->PlaySFX(SFX::JUMP);
+		}
+	}
+
+	// Đồng bộ physics <- Mario sau collision (tường có thể zero vx trực tiếp trên Mario)
+	ps = physics.GetState();
+	ps.vx = vx;
+	ps.vy = vy;
+	physics.SetState(ps);
+	physics.SetOnGround(isOnGround);
+
 	// Notify ScoreManager of ground state changes for combo system
 	if (isOnGround != wasOnGround)
 	{
 		ScoreManager::Get().SetOnGround(isOnGround);
 	}
+
+	UpdateAnimationState(dt);
 
 	DebugOut(L"[MARIO] Update - Position: (%.2f, %.2f), Speed: (%.2f, %.2f)\n", x, y, vx, vy);
 }
@@ -139,23 +273,30 @@ void Mario::SetState(int state)
 	{
 	case MARIO_STATE::WALKING_RIGHT:
 		direction = 1;
-		vx = (level == MARIO_LEVEL::FROG && isOnGround) ? 0 : MARIO_PARAMS::WALK_SPEED;
+		// Physics system handles velocity - don't override
 		break;
 	case MARIO_STATE::WALKING_LEFT:
 		direction = -1;
-		vx = (level == MARIO_LEVEL::FROG && isOnGround) ? 0 : -MARIO_PARAMS::WALK_SPEED;
+		// Physics system handles velocity - don't override
 		break;
 	case MARIO_STATE::JUMP:
 		if (level == MARIO_LEVEL::FROG && isOnGround)
 		{
+			// Frog jump đặc biệt — ghi thẳng vào MarioPhysics state, không qua TryJump()
 			vy = -MARIO_PARAMS::FROG_JUMP_SPEED;
 			vx = MARIO_PARAMS::FROG_JUMP_SPEED_X * direction;
 			isOnGround = false;
+			MarioPhysicsState ps = physics.GetState();
+			ps.vy = vy;
+			ps.vx = vx;
+			ps.isOnGround = false;
+			physics.SetState(ps);
+			SoundManager::GetInstance()->PlaySFX(SFX::JUMP);
 		}
-		else Jump();
+		// Nhảy thường xử lý qua physicsInput.jumpJustPressed
 		break;
 	case MARIO_STATE::IDLE:
-		vx = 0;
+		// Physics system handles deceleration
 		break;
 	case MARIO_STATE::DIE:
 		vx = 0;                          // fall straight down, no horizontal drift
@@ -168,69 +309,100 @@ void Mario::SetState(int state)
 		this->state = MARIO_STATE::IDLE;
 		break;
 	case MARIO_STATE::RUNNING_LEFT:
-		vx = -MARIO_PARAMS::RUN_SPEED;
 		direction = -1;
+		// Physics system handles velocity via runHeld input
 		break;
 	case MARIO_STATE::RUNNING_RIGHT:
-		vx = MARIO_PARAMS::RUN_SPEED;
 		direction = 1;
+		// Physics system handles velocity via runHeld input
 		break;
 	}
 }
 
 void Mario::MarioSmallRender(int& aniId) {
-	if (!isOnGround) {
-		if (direction > 0) aniId = ANIMATION::MARIO_SMALL_JUMP_WALK_RIGHT;
-		else aniId = ANIMATION::MARIO_SMALL_JUMP_WALK_LEFT;
-	}
-	else if (vx != 0) {
-		if (direction > 0) aniId = ANIMATION::MARIO_SMALL_WALKING_RIGHT;
-		else aniId = ANIMATION::MARIO_SMALL_WALKING_LEFT;
-	}
-	else {
-		if (direction > 0) aniId = ANIMATION::MARIO_SMALL_IDLE_RIGHT;
-		else aniId = ANIMATION::MARIO_SMALL_IDLE_LEFT;
+	switch (animState)
+	{
+	case MarioAnimState::JUMPING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_SMALL_JUMP_WALK_RIGHT : ANIMATION::MARIO_SMALL_JUMP_WALK_LEFT;
+		break;
+	case MarioAnimState::RUNNING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_SMALL_RUNNING_RIGHT : ANIMATION::MARIO_SMALL_RUNNING_LEFT;
+		break;
+	case MarioAnimState::WALKING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_SMALL_WALKING_RIGHT : ANIMATION::MARIO_SMALL_WALKING_LEFT;
+		break;
+	case MarioAnimState::SKIDDING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_SMALL_BRACE_RIGHT : ANIMATION::MARIO_SMALL_BRACE_LEFT;
+		break;
+	case MarioAnimState::IDLE:
+	default:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_SMALL_IDLE_RIGHT : ANIMATION::MARIO_SMALL_IDLE_LEFT;
+		break;
 	}
 }
 
 void Mario::MarioBigRender(int& aniId) {
-	if (!isOnGround) {
-		if (direction > 0) aniId = ANIMATION::MARIO_BIG_JUMP_WALK_RIGHT;
-		else aniId = ANIMATION::MARIO_BIG_JUMP_WALK_LEFT;
-	}
-	else if (vx != 0) {
-		if (direction > 0) aniId = ANIMATION::MARIO_BIG_WALKING_RIGHT;
-		else aniId = ANIMATION::MARIO_BIG_WALKING_LEFT;
-	}
-	else {
-		if (direction > 0) aniId = ANIMATION::MARIO_BIG_IDLE_RIGHT;
-		else aniId = ANIMATION::MARIO_BIG_IDLE_LEFT;
+	switch (animState)
+	{
+	case MarioAnimState::JUMPING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_BIG_JUMP_WALK_RIGHT : ANIMATION::MARIO_BIG_JUMP_WALK_LEFT;
+		break;
+	case MarioAnimState::RUNNING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_BIG_RUNNING_RIGHT : ANIMATION::MARIO_BIG_RUNNING_LEFT;
+		break;
+	case MarioAnimState::WALKING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_BIG_WALKING_RIGHT : ANIMATION::MARIO_BIG_WALKING_LEFT;
+		break;
+	case MarioAnimState::SKIDDING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_BIG_BRACE_RIGHT : ANIMATION::MARIO_BIG_BRACE_LEFT;
+		break;
+	case MarioAnimState::SITTING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_BIG_SIT_RIGHT : ANIMATION::MARIO_BIG_SIT_LEFT;
+		break;
+	case MarioAnimState::IDLE:
+	default:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_BIG_IDLE_RIGHT : ANIMATION::MARIO_BIG_IDLE_LEFT;
+		break;
 	}
 }
 
 void Mario::MarioFireRender(int& aniId)
 {
-	if (!isOnGround) {
-		aniId = (direction > 0) ? ANIMATION::MARIO_FIRE_JUMP_WALK_RIGHT : ANIMATION::MARIO_FIRE_JUMP_WALK_LEFT;
-	}
-	else if (vx != 0) {
-		aniId = (direction > 0) ? ANIMATION::MARIO_FIRE_WALKING_RIGHT : ANIMATION::MARIO_FIRE_WALKING_LEFT;
-	}
-	else {
-		aniId = (direction > 0) ? ANIMATION::MARIO_FIRE_IDLE_RIGHT : ANIMATION::MARIO_FIRE_IDLE_LEFT;
+	switch (animState)
+	{
+	case MarioAnimState::JUMPING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_FIRE_JUMP_WALK_RIGHT : ANIMATION::MARIO_FIRE_JUMP_WALK_LEFT;
+		break;
+	case MarioAnimState::RUNNING:
+	case MarioAnimState::WALKING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_FIRE_WALKING_RIGHT : ANIMATION::MARIO_FIRE_WALKING_LEFT;
+		break;
+	case MarioAnimState::SKIDDING:
+		// Fallback to walking if no FIRE_BRACE exists
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_FIRE_WALKING_RIGHT : ANIMATION::MARIO_FIRE_WALKING_LEFT;
+		break;
+	case MarioAnimState::IDLE:
+	default:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_FIRE_IDLE_RIGHT : ANIMATION::MARIO_FIRE_IDLE_LEFT;
+		break;
 	}
 }
 
 void Mario::MarioFrogRender(int& aniId)
 {
-	if (!isOnGround) {
-		aniId = (direction > 0) ? ANIMATION::MARIO_FROG_JUMP_RIGHT : ANIMATION::MARIO_FROG_JUMP_LEFT;
-	}
-	else if (vx != 0) {
-		aniId = (direction > 0) ? ANIMATION::MARIO_FROG_WALKING_RIGHT : ANIMATION::MARIO_FROG_WALKING_LEFT;
-	}
-	else {
-		aniId = (direction > 0) ? ANIMATION::MARIO_FROG_IDLE_RIGHT : ANIMATION::MARIO_FROG_IDLE_LEFT;
+	switch (animState)
+	{
+	case MarioAnimState::JUMPING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_FROG_JUMP_RIGHT : ANIMATION::MARIO_FROG_JUMP_LEFT;
+		break;
+	case MarioAnimState::RUNNING:
+	case MarioAnimState::WALKING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_FROG_WALKING_RIGHT : ANIMATION::MARIO_FROG_WALKING_LEFT;
+		break;
+	case MarioAnimState::IDLE:
+	default:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_FROG_IDLE_RIGHT : ANIMATION::MARIO_FROG_IDLE_LEFT;
+		break;
 	}
 }
 

@@ -145,6 +145,7 @@
     <ClInclude Include="Core\PauseKeyHandler.h" />
     <ClInclude Include="Core\GameOverHandler.h" />
     <ClInclude Include="Core\ScoreManager.h" />
+    <ClInclude Include="Core\MarioPhysics.h" />
     <ClInclude Include="Scenes\PlayScene.h" />
     <ClInclude Include="Scenes\HelpScene.h" />
     <ClInclude Include="Scenes\LevelScene.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="Core\Collision.cpp" />
     <ClCompile Include="Core\GameManager.cpp" />
     <ClCompile Include="Core\ScoreManager.cpp" />
+    <ClCompile Include="Core\MarioPhysics.cpp" />
     <ClCompile Include="Scenes\PlayScene.cpp" />
     <ClCompile Include="Scenes\HelpScene.cpp" />
     <ClCompile Include="Scenes\LevelScene.cpp" />

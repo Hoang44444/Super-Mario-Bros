@@ -4,6 +4,7 @@
 #include "../../../Resource/SoundManager.h"
 #include "../Resource/AssetID.h"
 #include "../../Core/ScoreManager.h"
+#include "../../Core/MarioPhysics.h"
 
 class DynamicPlatform;
 
@@ -28,6 +29,17 @@ namespace MARIO_STATE
 	constexpr int SHOOT         = 500;
 }
 
+enum class MarioAnimState
+{
+	IDLE,
+	WALKING,
+	RUNNING,
+	SKIDDING,
+	JUMPING,
+	SITTING,
+	DYING
+};
+
 namespace MARIO_PARAMS
 {
 	constexpr float GRAVITY         = 0.0021f;
@@ -47,6 +59,14 @@ namespace MARIO_PARAMS
 	constexpr float SMALL_BBOX_HEIGHT = 16.0f;
 	constexpr float BIG_BBOX_WIDTH    = 14.0f;
 	constexpr float BIG_BBOX_HEIGHT   = 28.0f;   // BIG / FIRE / FROG
+	
+	// Animation hysteresis — đồng bộ maxWalkSpeed=0.12, maxRunSpeed=0.20, accelWalk=0.005 @ dt~16ms
+	// WALK_START ~0.5 frame accel (0.005*16=0.08); RUN cần physState.isRunning (xem UpdateAnimationState)
+	constexpr float WALK_START_THRESHOLD = 0.03f;   // vx > này -> walk (~1 frame)
+	constexpr float IDLE_START_THRESHOLD = 0.008f;  // vx < này -> idle
+	constexpr float RUN_START_THRESHOLD  = 0.13f;   // vx > này + isRunning -> run
+	constexpr float WALK_BACK_THRESHOLD  = 0.10f;   // vx < này -> walk (từ run)
+	constexpr DWORD ANIM_DEBOUNCE_TIME   = 50;      // ms (~3 frame; 120ms gây cảm giác đứng hình)
 }
 
 class Mario : public GameObject
@@ -64,14 +84,31 @@ private:
 	bool isStarPower = false;    // riêng Star: chạm enemy là giết enemy
 	bool isWindyScene = false;
 	DWORD invincibleTime = 0;
+
+	// Animation state machine
+	MarioAnimState animState = MarioAnimState::IDLE;
+	int animFacing = 1; // 1: right, -1: left
+	DWORD animDebounceTimer = 0;
+
+	void UpdateAnimationState(DWORD dt);
+
+	// Hệ thống vật lý mới
+	MarioPhysics physics;
+	
+	// Input cho physics system
+	MarioPhysicsInput physicsInput;
 public:
 	Mario(float x, float y, float z) : GameObject(x, y, z) {
 		// Khôi phục trạng thái đã giữ qua các màn (level quyết định animation)
 		level = PlayerData::Get().level;
-		coin  = PlayerData::Get().coins;
-		life  = PlayerData::Get().lives;
-		score = PlayerData::Get().score;
 		canShoot = (level == MARIO_LEVEL::FIRE);   // khôi phục theo level, nếu không Fire màn mới bấm K không bắn
+
+		animState = MarioAnimState::IDLE;
+		animFacing = 1;
+		animDebounceTimer = 0;
+
+		// Đảm bảo vật lý bắt đầu từ trạng thái nghỉ khi spawn/màn mới
+		physics.Reset();
 	};
 	~Mario() {};
 
@@ -102,7 +139,7 @@ public:
 
 	// RENDER WITH MARIO LEVEL
 	void MarioSmallRender(int& aniId);
-	void MarioBigRender(int& andId);
+	void MarioBigRender(int& aniId);
 	void MarioFireRender(int& aniId);
 	void MarioFrogRender(int& aniId);
 
@@ -131,9 +168,16 @@ public:
 	// WINDY SCENE
 	void SetWindyScene(bool isWindy) { this->isWindyScene = isWindy; }
 
+	// PHYSICS INPUT
+	void SetPhysicsInput(int moveDir, bool jumpPressed, bool jumpJustPressed, bool runHeld)
+	{
+		physicsInput.moveDirection = moveDir;
+		physicsInput.jumpPressed = jumpPressed;
+		physicsInput.jumpJustPressed = jumpJustPressed;
+		physicsInput.runHeld = runHeld;
+	}
+
 private:
-	int coin = 0;
-	int life  = 3;
-	int score = 0;
+	// coin, life, score are now managed by ScoreManager/PlayerData to ensure persistence
 };
 
