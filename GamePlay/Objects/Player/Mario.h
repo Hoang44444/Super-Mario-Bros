@@ -62,10 +62,16 @@ namespace MARIO_PARAMS
 	
 	// Animation hysteresis — B3: ngưỡng thu hẹp giảm nhấp nháy WALK/IDLE khi ma sát
 	constexpr float WALK_START_THRESHOLD = 0.03f;   // vx > này -> walk
-	constexpr float IDLE_START_THRESHOLD = 0.008f;  // vx < này -> idle
+	constexpr float IDLE_ENTER_THRESHOLD = 0.008f;  // vx < này -> idle
+	constexpr float IDLE_EXIT_THRESHOLD  = 0.02f;   // vx > này -> walk từ idle
+	constexpr float IDLE_START_THRESHOLD = IDLE_ENTER_THRESHOLD;
 	constexpr float RUN_START_THRESHOLD  = 0.13f;   // vx > này + isRunning -> run
 	constexpr float WALK_BACK_THRESHOLD  = 0.10f;   // vx < này -> walk (từ run)
-	constexpr DWORD ANIM_DEBOUNCE_TIME   = 50;      // B2: ms debounce animation (120ms gây lag)
+	constexpr DWORD ANIM_DEBOUNCE_TIME   = 30;      // B2: ms debounce animation (120ms gây lag)
+	constexpr DWORD IDLE_EXIT_DEBOUNCE_TIME = 30;   // 1-2 frame debounce khi thoát idle
+
+	// Ground probe epsilon — khoảng kiểm tra dưới chân Mario để xác định isOnGround
+	constexpr float GROUND_PROBE_EPSILON = 0.08f;   // lớn hơn BLOCK_PUSH_FACTOR (0.01f) để đảm bảo detect
 }
 
 class Mario : public GameObject
@@ -76,6 +82,7 @@ private:
 	float accelX = MARIO_PARAMS::ACCEL_X;
 	void MovementUpdate(DWORD dt);
 	void ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects);
+	bool CheckGroundProbe(vector<LPGAMEOBJECT>* coObjects);
 
 	bool isOnGround = false;
 	bool canShoot = false;
@@ -88,6 +95,10 @@ private:
 	MarioAnimState animState = MarioAnimState::IDLE;
 	int animFacing = 1; // 1: right, -1: left
 	DWORD animDebounceTimer = 0;
+	int lastAnimMoveDir = 0;
+	DWORD animReleaseLogTimer = 0;
+	DWORD animStopLogTimer = 0;
+	bool animStopLogCaptured = false;
 
 	void UpdateAnimationState(DWORD dt);
 
