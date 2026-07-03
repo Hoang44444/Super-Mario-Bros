@@ -3,6 +3,7 @@
 #include "../Resource/AssetID.h"
 #include "debug.h"
 #include "Enemy.h"
+#include "../../Cannon.h"
 
 void Bullet::Moving(DWORD dt)
 {
@@ -47,6 +48,13 @@ void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<Enemy*>(e->obj)) { // hit an enemy -> handle before the blocking check
 		OnCollisionWithEnemy(e);        // (enemies are non-blocking, so this must come first)
+		return;
+	}
+
+	// Trúng Cannon -> tính 1 phát, đủ 3 phát thì Cannon biến mất; đạn tan.
+	if (Cannon* cannon = dynamic_cast<Cannon*>(e->obj)) {
+		cannon->OnHitByBullet();
+		this->Delete();
 		return;
 	}
 
