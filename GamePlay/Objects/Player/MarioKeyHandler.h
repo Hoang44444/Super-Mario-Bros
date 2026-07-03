@@ -9,6 +9,9 @@
 class MarioKeyHandler : public KeyEventHandler
 {
 	PlayScene* scene;
+	
+	// A1/A4: một nguồn edge duy nhất — set từ OnKeyDown, consume trong KeyState
+	bool jumpPending = false;
 
 public:
 	MarioKeyHandler(PlayScene* s) : KeyEventHandler() {
@@ -21,12 +24,47 @@ public:
 
 		if (mario->GetState() == MARIO_STATE::DIE) return;
 
+		// Determine movement direction
+		int moveDir = 0;
 		if (states[VK_RIGHT] & 0x80)
-			mario->SetState(MARIO_STATE::WALKING_RIGHT);
+			moveDir = 1;
 		else if (states[VK_LEFT] & 0x80)
-			mario->SetState(MARIO_STATE::WALKING_LEFT);
+			moveDir = -1;
+
+		// A4: jumpPressed = polling (variable jump height); jumpJustPressed = event jumpPending
+		bool jumpPressed = (states[VK_SPACE] & 0x80) != 0;
+		bool jumpJustPressed = jumpPending;
+
+		// NES gốc: chạy = giữ phím hướng liên tục (không có phím Run; Shift = bắn)
+		bool runHeld = (moveDir != 0);
+
+		// Check sit button state (Down)
+		bool sitPressed = (states[VK_DOWN] & 0x80) != 0;
+
+		// Provide input to physics system
+		Mario* marioObj = dynamic_cast<Mario*>(mario);
+		if (marioObj != nullptr)
+		{
+			marioObj->SetPhysicsInput(moveDir, jumpPressed, jumpJustPressed, runHeld);
+		}
+		jumpPending = false; // A1: consume event edge sau khi đẩy sang Mario
+
+		// Set animation state based on movement (for rendering)
+		if (sitPressed)
+		{
+			mario->SetState(MARIO_STATE::SIT);
+		}
+		else if (moveDir != 0)
+		{
+			if (moveDir > 0)
+				mario->SetState(MARIO_STATE::WALKING_RIGHT);
+			else
+				mario->SetState(MARIO_STATE::WALKING_LEFT);
+		}
 		else
+		{
 			mario->SetState(MARIO_STATE::IDLE);
+		}
 	}
 
 	virtual void OnKeyDown(int KeyCode) {
@@ -42,19 +80,21 @@ public:
 
 		if (mario->GetState() == MARIO_STATE::DIE) return;
 
+		// Handle non-physics actions (shooting)
 		switch (KeyCode)
 		{
-		case VK_SPACE:
-			mario->SetState(MARIO_STATE::JUMP);
-			break;
 		case VK_SHIFT:
 			DebugOut(L"[KEYBOARD] Key 'Shift' pressed: Shooting bullet\n");
 			mario->SetState(MARIO_STATE::SHOOT);
+			break;
+		case VK_SPACE:
+			jumpPending = true; // A4: bắt tap nhanh (< 1 frame) không phụ thuộc polling
+			mario->SetState(MARIO_STATE::JUMP);
 			break;
 		}
 	}
 
 	virtual void OnKeyUp(int KeyCode) {
-		// Handle key release if needed
+		// A1: không reset edge nhảy ở đây — tránh xung đột với jumpPending
 	}
 };

@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
+#include "Core/ScoreManager.h"
 
 Lakitu::Lakitu(float x, float y, float z) : Enemy(x, y, z)
 {
@@ -130,6 +131,8 @@ void Lakitu::OnCollisionWith(LPCOLLISIONEVENT e)
         if (koopa->GetState() == KOOPA_STATE_SPINNING)
         {
             this->SetState(LAKITU_STATE_DIE);
+            // Award score for shell kill (no combo for shell kills)
+            ScoreManager::Get().AddScore(SCORE_VALUES::SHELL_KICK);
             return;
         }
     }
@@ -139,6 +142,8 @@ void Lakitu::OnCollisionWith(LPCOLLISIONEVENT e)
         if (beetle->GetState() == BUZZY_STATE_SPINNING)
         {
             this->SetState(LAKITU_STATE_DIE);
+            // Award score for shell kill (no combo for shell kills)
+            ScoreManager::Get().AddScore(SCORE_VALUES::SHELL_KICK);
             return;
         }
     }
@@ -156,6 +161,19 @@ void Lakitu::OnMarioCollison(Mario* mario, float ny)
             float mx, my, mz, mvx, mvy;
             mario->GetSpeed(mvx, mvy);
             mario->SetSpeed(mvx, -0.4f);
+
+            // Award score with combo system for stomp
+            ScoreManager& scoreMgr = ScoreManager::Get();
+            scoreMgr.IncrementCombo();
+            
+            if (scoreMgr.IsMaxCombo())
+            {
+                mario->AddLife(1);
+            }
+            else
+            {
+                mario->AddScore(scoreMgr.GetComboScore());
+            }
         }
         else
         {

@@ -4,6 +4,7 @@
 #include "AssetID.h"
 #include "StaticObject.h"
 #include "SoundManager.h"
+#include "../Core/ScoreManager.h"
 
 void Mushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -47,5 +48,9 @@ void Mushroom::OnMarioCollision(Mario* mario)
 {
 	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
 	mario->SetLevel(MARIO_LEVEL::BIG);
+	
+	// Award score for Super Mushroom
+	ScoreManager::Get().AddScore(SCORE_VALUES::SUPER_MUSHROOM);
+	
 	Delete();
 }

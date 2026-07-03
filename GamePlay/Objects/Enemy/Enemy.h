@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Mario.h"
+#include "../Core/ScoreManager.h"
 
 class Enemy : public GameObject{
 protected:
@@ -35,7 +36,29 @@ public:
 
 	// Called when a bullet hits this enemy. Default: just remove the enemy.
 	// Enemies that have a death animation override this to switch to their die state instead.
-	virtual void OnHitByBullet() { Delete(); }
+	virtual void OnHitByBullet() { 
+		// Award score for fireball kill (no combo for fireball/star kills)
+		ScoreManager::Get().AddScore(SCORE_VALUES::FIREBALL_KILL);
+		Delete(); 
+	}
+
+	// Called when star power kills this enemy
+	virtual void OnHitByStar(Mario* mario) {
+		// Award score with combo system for star kills
+		ScoreManager& scoreMgr = ScoreManager::Get();
+		scoreMgr.IncrementCombo();
+		
+		if (scoreMgr.IsMaxCombo())
+		{
+			mario->AddLife(1);
+		}
+		else
+		{
+			mario->AddScore(scoreMgr.GetComboScore());
+		}
+		
+		Delete();
+	}
 
 	// Whether a turn block (id 44) is allowed to flip this enemy. Only enemies that are
 	// alive (IsCollidable() is false in death states) and actually moving (vx != 0) get

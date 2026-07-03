@@ -190,6 +190,8 @@ namespace ANIMATION
     constexpr int MARIO_BIG_SIT_LEFT = 901;
     constexpr int MARIO_BIG_BRACE_RIGHT = 1000;
     constexpr int MARIO_BIG_BRACE_LEFT = 1001;
+    constexpr int MARIO_BIG_SKID_RIGHT = 1050;
+    constexpr int MARIO_BIG_SKID_LEFT = 1051;
 
     // RACCOON MARIO
     constexpr int MARIO_RACCOON_IDLE_RIGHT = 2400;
@@ -248,6 +250,8 @@ namespace ANIMATION
     constexpr int MARIO_SMALL_RUNNING_LEFT = 1301;
     constexpr int MARIO_SMALL_BRACE_RIGHT = 1400;
     constexpr int MARIO_SMALL_BRACE_LEFT = 1401;
+    constexpr int MARIO_SMALL_SKID_RIGHT = 1700;
+    constexpr int MARIO_SMALL_SKID_LEFT = 1701;
     constexpr int MARIO_SMALL_JUMP_WALK_RIGHT = 1500;
     constexpr int MARIO_SMALL_JUMP_WALK_LEFT = 1501;
     constexpr int MARIO_SMALL_JUMP_RUN_RIGHT = 1600;
@@ -279,8 +283,12 @@ namespace ANIMATION
     constexpr int MARIO_FIRE_IDLE_LEFT = 2101;
     constexpr int MARIO_FIRE_WALKING_RIGHT = 2200;
     constexpr int MARIO_FIRE_WALKING_LEFT = 2201;
+    constexpr int MARIO_FIRE_RUNNING_RIGHT = 2250;
+    constexpr int MARIO_FIRE_RUNNING_LEFT = 2251;
     constexpr int MARIO_FIRE_JUMP_WALK_RIGHT = 2300;
     constexpr int MARIO_FIRE_JUMP_WALK_LEFT = 2301;
+    constexpr int MARIO_FIRE_SKID_RIGHT = 2400;
+    constexpr int MARIO_FIRE_SKID_LEFT = 2401;
 
     // FROG MARIO (5400-5601, safe — tránh RACCOON 2400-3001)
     constexpr int MARIO_FROG_IDLE_RIGHT = 5400;

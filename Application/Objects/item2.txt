@@ -1,8 +1,8 @@
 [SPRITES]
 # id     l    t    r    b    tex_id
-80001    300  98   316  114  2       # Coin (Đồng xu vàng - Nằm ngay phía trên cục Nấm 1-Up)
-80002    316  98   332  114  2       # Coin (Đồng xu vàng - Nằm ngay phía trên cục Nấm 1-Up)
-80003    331  98   347  114  2       # Coin (Đồng xu vàng - Nằm ngay phía trên cục Nấm 1-Up)
+80001    300  98   316  115  2       # Coin (Đồng xu vàng - Nằm ngay phía trên cục Nấm 1-Up)
+80002    316  98   332  115  2       # Coin (Đồng xu vàng - Nằm ngay phía trên cục Nấm 1-Up)
+80003    331  98   347  115  2       # Coin (Đồng xu vàng - Nằm ngay phía trên cục Nấm 1-Up)
 80011    317  188  334  206  2       # 1-Up mushroom (Cục Nấm Xanh chuẩn của bạn)
 80021    318  208  335  225  2       # Lá Super Leaf (Nằm ngay phía dưới cục Nấm 1-Up)
 80031    317  224  334  241  2       # Bộ đồ Tanooki (Nằm dưới chiếc Lá)
