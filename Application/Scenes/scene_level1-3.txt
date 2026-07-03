@@ -16,6 +16,7 @@ Objects/Koopa.txt
 Objects/Goomba.txt
 Objects/Lakitu.txt
 Objects/Spiny.txt
+Objects/blooper.txt
 
 [MAP]
 2624 240
@@ -45,6 +46,10 @@ Objects/Spiny.txt
 #---- Lakitu (40) - bay trên cao ném Spiny, hợp màn trên mây ----
 # type x y z endX   (endX = Mario vượt qua vị trí x này thì Lakitu bay đi)
 40 1150 40 0.5 2200
+
+#---- Con mực / Blooper (34) - lơ lửng, Mario lại gần thì nổi lên/chìm xuống bám theo ----
+34 1000 110 0.5
+34 1900 110 0.5
 
 ########## QUESTION BLOCK ##########
 # type x y z itemType   (11=mushroom 14=star 19=1up)

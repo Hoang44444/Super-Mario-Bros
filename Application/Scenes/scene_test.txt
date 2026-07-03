@@ -10,6 +10,11 @@ Objects/Podoboo.txt
 Objects/cannon.txt
 Objects/bulletbill.txt
 Objects/axe.txt
+Objects/hammerbro.txt
+Objects/hammer.txt
+Objects/bowser.txt
+Objects/BowserFire.txt
+Objects/bowserfireball.txt
 
 [MAP]
 2000 240
@@ -22,6 +27,15 @@ Objects/axe.txt
 ########## AXE ##########
 # type 	x 	y   z
 17 	960 	184 0.5
+
+########## HAMMER BRO (33) ##########
+# type 	x 	y   z
+33 	400 	160 0.5
+33 	700 	160 0.5
+
+########## BOWSER (35) - boss cuối ##########
+# type 	x 	y   z
+35 	800 	130 0.5
 
 ########## BRICK ##########
 6 0 200 0.5

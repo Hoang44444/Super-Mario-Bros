@@ -55,5 +55,8 @@ void Cannon::Render()
 
 void Cannon::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	// No bounding box for Cannon
+	l = x;
+	t = y;
+	r = x + CANNON_BBOX_WIDTH;
+	b = y + CANNON_BBOX_HEIGHT;
 }

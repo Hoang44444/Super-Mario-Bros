@@ -3,6 +3,7 @@
 #include "../Resource/AssetID.h"
 #include "debug.h"
 #include "Enemy.h"
+#include "../../Cannon.h"
 
 void Bullet::Moving(DWORD dt)
 {
@@ -50,7 +51,20 @@ void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 		return;
 	}
 
+	// Trúng Cannon -> tính 1 phát, đủ 3 phát thì Cannon biến mất; đạn tan.
+	if (Cannon* cannon = dynamic_cast<Cannon*>(e->obj)) {
+		cannon->OnHitByBullet();
+		this->Delete();
+		return;
+	}
+
 	if (!e->obj->IsBlocking()) return;  // pass through other non-static objects
+
+	// Đụng tường theo chiều X -> biến mất.
+	if (e->nx != 0) {
+		this->Delete();
+		return;
+	}
 
 	// Bounce off static objects instead of disappearing
 	if (e->ny < 0) {                    // hit floor -> bounce up
@@ -58,11 +72,6 @@ void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (e->ny > 0) {               // hit ceiling -> push down
 		vy = BULLET_BOUNCE_SPEED;
-	}
-
-	if (e->nx != 0) {                   // hit a wall -> reverse horizontal direction
-		vx = -vx;
-		direction = -direction;
 	}
 }
 

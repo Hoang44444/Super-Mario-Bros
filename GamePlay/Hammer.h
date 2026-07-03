@@ -4,7 +4,7 @@
 #define HAMMER_WIDTH 8.0f
 #define HAMMER_HEIGHT 8.0f
 #define HAMMER_GRAVITY 0.001f
-#define HAMMER_SPEED_X 0.05f
+#define HAMMER_SPEED_X 0.08f
 #define HAMMER_SPEED_Y 0.2f
 
 class Hammer : public GameObject

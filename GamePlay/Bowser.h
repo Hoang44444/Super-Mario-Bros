@@ -16,6 +16,7 @@ class Bowser : public Enemy
 {
     float startX;
     bool isOnGround = false;
+    bool active = false;   // Mario đã bước lên cầu kích hoạt Bowser chưa
 
     ULONGLONG jump_timer = 0;
     ULONGLONG fire_timer = 0;
@@ -41,4 +42,8 @@ public:
     virtual void OnHitByBullet() override { if (--hp <= 0) SetState(BOWSER_STATE_DIE); }
 
     virtual bool IsCollidable() override { return state != BOWSER_STATE_DIE; }
+
+    // Bowser chỉ đi/nhảy/phun lửa sau khi Mario bước lên cầu. Trước đó đứng yên tại chỗ.
+    void Activate()       { active = true; }
+    bool IsActive() const { return active; }
 };

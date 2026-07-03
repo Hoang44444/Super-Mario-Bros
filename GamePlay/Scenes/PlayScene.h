@@ -26,6 +26,9 @@ class PlayScene : public Scene
 	ULONGLONG stageClearStart = 0;  // tick when stage clear started
 	int stageClearTime = 0;         // time remaining when stage clear started
 
+	// Boss màn 1-4: Bowser đứng yên tại chỗ, chỉ kích hoạt khi Mario bước lên cầu.
+	LPGAMEOBJECT bossBowser = nullptr;
+
 	void OnMarioDeath();          // lose a life -> death screen, or game over -> menu
 
 	bool IsPlayerOnCastleBridge(); // Mario có đang đứng trên cầu cuối màn không
