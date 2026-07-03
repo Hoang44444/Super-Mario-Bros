@@ -324,10 +324,10 @@ namespace ANIMATION
     constexpr int PODOBOO_UP         = 7000;
     constexpr int PODOBOO_DOWN       = 7001;
 
-    // Spiny (Spiny.txt: 8000-8002)  *** trùng ID với ITEMS ở trên, xem ghi chú ***
-    constexpr int SPINY_WALK_LEFT    = 8000;
-    constexpr int SPINY_WALK_RIGHT   = 8001;
-    constexpr int SPINY_EGG_SPIN     = 8002;
+    // Spiny (Spiny.txt: 8500-8502)
+    constexpr int SPINY_WALK_LEFT    = 8500;
+    constexpr int SPINY_WALK_RIGHT   = 8501;
+    constexpr int SPINY_EGG_SPIN     = 8502;
 
     // Lakitu (Lakitu.txt: 9000-9001)
     constexpr int LAKITU_FLY_LEFT    = 9000;

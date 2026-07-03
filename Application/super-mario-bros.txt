@@ -23,7 +23,7 @@ screen_height 1080
 0   Texture/Items/brick.png
 1   Texture/Character/mario.png
 2   Texture/Items/misc.png
-3   Texture/Scene/menu_scene.png
+3   Texture/Scene/menu_scene.png	
 4   Texture/Scene/level1-1.png
 5   Texture/Scene/level1-2.png
 6   Texture/Scene/level1-3.png

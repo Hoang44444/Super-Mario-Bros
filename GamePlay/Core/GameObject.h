@@ -59,6 +59,10 @@ public:
     virtual void OnNoCollision(DWORD dt) {}
     virtual void OnCollisionWith(LPCOLLISIONEVENT e) {}
 
+    // Begin the "rise out of a block" animation. No-op by default; overridden by
+    // objects that can emerge from a question block (items, poison mushroom, ...).
+    virtual void StartEmerge() {}
+
     static bool IsDeleted(const LPGAMEOBJECT& o) { return o->isDeleted; };
     virtual int IsDirectionColliable(float nx, float ny) { return 1; }
 

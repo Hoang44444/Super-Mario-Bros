@@ -196,9 +196,10 @@ void PlayScene::Load()
 
 	// Gió ở màn 1-3: bật chu kỳ gió dùng chung (đồng bộ lá + lực đẩy Mario).
 	// Các màn khác tắt để không sót trạng thái.
-	if (id == SCENE::WORLD_1_3)
-		WindCycle::GetInstance()->Start();
-	else
+	// (tạm thời tắt gió ở 1-3: luôn Stop)
+	//if (id == SCENE::WORLD_1_3)
+	//	WindCycle::GetInstance()->Start();
+	//else
 		WindCycle::GetInstance()->Stop();
 }
 
@@ -479,8 +480,11 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	}
 
 	case OBJECT::LAKITU:
-		obj = new Lakitu(x, y, z);
+	{
+		float endX = (tokens.size() >= 5) ? (float)atof(tokens[4].c_str()) : 1e9f;
+		obj = new Lakitu(x, y, z, endX);
 		break;
+	}
 
 	case OBJECT::PODOBOO:
 		obj = new Podoboo(x, y, z);
