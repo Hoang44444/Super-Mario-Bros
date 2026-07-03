@@ -21,6 +21,9 @@ class PlayScene : public Scene
 	ULONGLONG marioDieStart = 0;  // tick when Mario entered the DIE state (0 = not dying)
 	ULONGLONG sceneStart = 0;     // tick when the scene started loading
 
+	// Boss màn 1-4: Bowser đứng yên tại chỗ, chỉ kích hoạt khi Mario bước lên cầu.
+	LPGAMEOBJECT bossBowser = nullptr;
+
 	void OnMarioDeath();          // lose a life -> death screen, or game over -> menu
 
 	bool IsPlayerOnCastleBridge(); // Mario có đang đứng trên cầu cuối màn không

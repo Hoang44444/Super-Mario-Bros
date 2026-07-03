@@ -52,17 +52,18 @@ void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (!e->obj->IsBlocking()) return;  // pass through other non-static objects
 
+	// Đụng tường theo chiều X -> biến mất.
+	if (e->nx != 0) {
+		this->Delete();
+		return;
+	}
+
 	// Bounce off static objects instead of disappearing
 	if (e->ny < 0) {                    // hit floor -> bounce up
 		vy = -BULLET_BOUNCE_SPEED;
 	}
 	else if (e->ny > 0) {               // hit ceiling -> push down
 		vy = BULLET_BOUNCE_SPEED;
-	}
-
-	if (e->nx != 0) {                   // hit a wall -> reverse horizontal direction
-		vx = -vx;
-		direction = -direction;
 	}
 }
 

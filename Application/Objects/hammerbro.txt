@@ -1,8 +1,21 @@
 [SPRITES]
 # id   left  top  right  bottom  tex_id
-35001  96    0    128    32      11
+# Vùng tổng trong enemies3.png (tex 11): L=85 T=87 R=255 B=146 -> lưới 6 cột x 2 hàng
+# ---- Hàng trên (Hammer Bro xanh lá) ----
+35001  85   87   113   117   11
+35002  113  87   142   117   11
+35003  142  87   170   117   11
+35004  170  87   198   117   11
+35005  198  87   227   117   11
+35006  227  87   255   117   11
 
 [ANIMATIONS]
-# id   sprite1_id  time1
-3500   35001       100
-3501   35001       100
+# id   sprite_id time  ...
+# 3500 = HAMMER_BRO_WALK_LEFT  (hàng trên)
+3500   35001 120  35002 120  35003 120 
+
+# 3501 = HAMMER_BRO_WALK_RIGHT (hàng dưới)
+3501   35004 120  35005 120  35006 120  
+
+# 3502 = HAMMER_BRO_JUMP (tạm dùng frame hàng trên - sheet chưa có sprite nhảy riêng)
+3502   35003 120  35004 120

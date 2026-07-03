@@ -344,8 +344,10 @@ namespace ANIMATION
     // BulletBill (bulletbill.txt: 3400)
     constexpr int BULLET_BILL        = 3400;
 
-    // HammerBro (hammerbro.txt: 3500-3501) + Hammer projectile (hammer.txt: 3550)
-    constexpr int HAMMER_BRO_WALK    = 3500;
+    // HammerBro (hammerbro.txt: 3500-3502) + Hammer projectile (hammer.txt: 3550)
+    constexpr int HAMMER_BRO_WALK_LEFT  = 3500;   // đi/nhìn sang trái  (hàng trên)
+    constexpr int HAMMER_BRO_WALK_RIGHT = 3501;   // đi/nhìn sang phải  (hàng dưới)
+    constexpr int HAMMER_BRO_JUMP       = 3502;   // đang nhảy
     constexpr int HAMMER             = 3550;
 
     // Bowser (bowser.txt: 3600-3602)
@@ -353,8 +355,9 @@ namespace ANIMATION
     constexpr int BOWSER_WALK_LEFT   = 3601;
     constexpr int BOWSER_ATTACK_RIGHT = 3602;
     constexpr int BOWSER_ATTACK_LEFT  = 3602;
-    constexpr int BOWSER_FIRE_RIGHT  = 3602;
-    constexpr int BOWSER_FIRE_LEFT   = 3602;
+    // Ngọn lửa Bowser phun ra: trỏ về animation trong BowserFire.txt (không phải thân Bowser)
+    constexpr int BOWSER_FIRE_RIGHT  = 10005;   // BowserFire.txt: FIRE RIGHT
+    constexpr int BOWSER_FIRE_LEFT   = 10004;   // BowserFire.txt: FIRE LEFT
 
     // BowserFire projectile (BowserFire.txt: 3650)
     constexpr int BOWSER_FIRE        = 3650;

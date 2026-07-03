@@ -50,6 +50,15 @@ void Bowser::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
     vy += BOWSER_GRAVITY * dt;
 
+    // Mario chưa lên cầu -> Bowser chưa kích hoạt: đứng yên tại chỗ (vẫn chịu trọng lực
+    // để đứng trên cầu), không đi/nhảy/phun lửa.
+    if (!active)
+    {
+        vx = 0;
+        Collision::GetInstance()->Process(this, dt, coObjects);
+        return;
+    }
+
     Mario* mario = NULL;
     for (size_t i = 0; i < coObjects->size(); i++)
     {

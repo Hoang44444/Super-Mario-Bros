@@ -4,6 +4,8 @@ Objects/question_block.txt
 Objects/mario.txt
 Objects/item2.txt
 Objects/fire_flower.txt
+Objects/mushroom.txt
+Objects/super_star.txt
 Objects/bullet.txt
 Objects/background.txt
 Objects/pipe.txt
@@ -50,9 +52,10 @@ Objects/bowserfireball.txt
 32 1775 180 0.5
 32 2096 180 0.5
 32 3376 132 0.5
+32 1260 130 0.5
 
 #---- CANNON(39) ----#
-39 720 172 0.5 1
+39 720 172 0.5 -1
 39 2979 172 0.5 1
 
 #---- PODOBOO ----#
@@ -66,19 +69,38 @@ Objects/bowserfireball.txt
 33 4300 180 0.5
 33 4550 180 0.5
 
-#Bowser
+#Bowser (đứng yên tại chỗ, chỉ hoạt động khi Mario bước lên cầu)
 35 4800 126 0.5
 
 ########## QUESTION BLOCK ##########
 # type x y z itemType   (12=fire_flower 19=1up)
 10 2600 160 0.5 19
 10 4400 160 0.5 12
+10 232 159 0.5 11
+10 248 159 0.5 14
+10 1518 127 0.5 14
 
 ########## COIN (thưởng đoạn tiếp cận Bowser) ##########
 # type x y z   (18 = coin)
 18 4180 160 0.5
 18 4204 160 0.5
 18 4228 160 0.5
+18 850 191 0.5 
+18 870 191 0.5
+18 890 191 0.5
+18 910 191 0.5
+18 930 191 0.5
+18 950 191 0.5
+18 970 191 0.5
+18 1215 79 0.5
+18 1237 79 0.5
+18 1259 79 0.5
+18 1330 143 0.5
+18 1350 143 0.5
+18 1370 143 0.5
+18 1390 143 0.5
+18 1410 143 0.5
+18 1430 143 0.5
 
 ########## PIPE ##########
 # type x y z
@@ -861,13 +883,10 @@ Objects/bowserfireball.txt
 17 4831 126 0.5
 
 ########## BLOCK SWITCH DIRECTION ENEMY (44) ##########
-# Keep the Buzzy Beetles from walking off the main floor (top y=207) into the pits.
-# Block y = 207 - 16 = 191 so it overlaps the walking Buzzy Beetle's body.
-# Buzzy Beetle at x=288: bound left edge (pit at x=96-160) and right edge (pit at x~1056)
 44 176 191 0.5
 44 1024 191 0.5
-# Buzzy Beetles at x=1775/1823/2096: right guard before the pit at x~2304
 44 2272 191 0.5
+44 1185 131 0.5
 
 ########## SWITCH SCENE POINT ##########
 # type x y z

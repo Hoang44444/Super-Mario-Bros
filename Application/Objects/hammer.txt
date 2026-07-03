@@ -1,7 +1,12 @@
 [SPRITES]
 # id   left  top  right  bottom  tex_id
-35501  128   0    160    32      11
+# Vùng búa trong enemies3.png (tex 11): L=261 T=85 R=295 B=116 -> lưới 2x2
+35501  261   85   278    100     11
+35502  278   85   295    100     11
+35503  261   100  278    116     11
+35504  278   100  295    116     11
 
 [ANIMATIONS]
-# id   sprite1_id  time1
-3550   35501       100
+# id   sprite_id time  ...
+# 3550 = HAMMER (búa xoay) - 1 animation lặp 4 frame
+3550   35501 60  35502 60  35504 60  35503 60

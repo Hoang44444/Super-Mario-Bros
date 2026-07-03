@@ -14,6 +14,7 @@ HammerBro::HammerBro(float x, float y, float z) : Enemy(x, y, z)
 	this->lastThrowTime = GetTickCount();
 	this->lastJumpTime = GetTickCount();
 	this->isJumping = false;
+	this->state = HAMMER_BRO_STATE_WALK_LEFT;   // khởi đầu đi sang trái
 }
 
 void HammerBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -39,12 +40,21 @@ void HammerBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		direction = (mx < x) ? -1 : 1;
 	}
 
-	// Handle throwing hammers
+	// Handle throwing hammers: mỗi đợt tung ra 10 cây, KHÔNG cùng lúc mà mỗi cây
+	// cách nhau một khoảng thời gian rất nhỏ (HAMMER_BRO_BURST_GAP).
 	DWORD now = GetTickCount();
-	if (now - lastThrowTime > HAMMER_BRO_THROW_INTERVAL)
+	if (hammersLeft == 0 && now - lastThrowTime > HAMMER_BRO_THROW_INTERVAL)
+	{
+		hammersLeft = HAMMER_BRO_BURST_COUNT;   // bắt đầu một đợt mới
+		lastBurstSpawn = 0;                      // để cây đầu tiên bay ra ngay
+	}
+	if (hammersLeft > 0 && now - lastBurstSpawn >= HAMMER_BRO_BURST_GAP)
 	{
 		ThrowHammer();
-		lastThrowTime = now;
+		lastBurstSpawn = now;
+		hammersLeft--;
+		if (hammersLeft == 0)
+			lastThrowTime = now;   // hết đợt -> tính lại cooldown cho đợt sau
 	}
 
 	// Handle jumping
@@ -54,13 +64,38 @@ void HammerBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		lastJumpTime = now;
 	}
 
+	// Cập nhật trạng thái để quyết định animation: đang nhảy -> JUMP;
+	// còn lại thì theo hướng nhìn Mario (trái/phải).
+	if (isJumping)
+		state = HAMMER_BRO_STATE_JUMP;
+	else if (direction < 0)
+		state = HAMMER_BRO_STATE_WALK_LEFT;
+	else
+		state = HAMMER_BRO_STATE_WALK_RIGHT;
+
 	// Physics and collision resolution
 	Collision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void HammerBro::Render()
 {
-	AnimationManager::GetInstance()->Get(ANIMATION::HAMMER_BRO_WALK)->Render(x, y, z);
+	int aniId;
+	switch (state)
+	{
+	case HAMMER_BRO_STATE_JUMP:
+		aniId = ANIMATION::HAMMER_BRO_JUMP;
+		break;
+	case HAMMER_BRO_STATE_WALK_RIGHT:
+		aniId = ANIMATION::HAMMER_BRO_WALK_RIGHT;
+		break;
+	case HAMMER_BRO_STATE_WALK_LEFT:
+	default:
+		aniId = ANIMATION::HAMMER_BRO_WALK_LEFT;
+		break;
+	}
+
+	LPANIMATION ani = AnimationManager::GetInstance()->Get(aniId);
+	if (ani != nullptr) ani->Render(x, y, z);
 }
 
 void HammerBro::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -91,6 +126,13 @@ void HammerBro::OnCollisionWith(LPCOLLISIONEVENT e)
 		{
 			isJumping = false; // Reset jumping state when landing on top of a blocking object
 		}
+	}
+	else if (e->nx != 0 && e->obj->IsBlocking())
+	{
+		// Đụng tường/block theo phương ngang -> quạy đầu (đổi hướng di chuyển).
+		// ReverseDirection(cooldown) chỉ lật tối đa 1 lần mỗi HAMMER_BRO_TURN_COOLDOWN
+		// nhờ lastTurnTime, nên không bị lật liên tục khi còn tì vào tường.
+		ReverseDirection(HAMMER_BRO_TURN_COOLDOWN);
 	}
 }
 

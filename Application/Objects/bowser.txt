@@ -1,9 +1,22 @@
 [SPRITES]
 # id   left  top  right  bottom  tex_id
-36001  160   0    224    64      11
+# Vùng tổng trong enemies3.png (tex 11): L=0 T=209 R=318 B=247 -> 8 frame ngang
+# ---- 4 frame đầu: quay TRÁI ----
+36001  0     209  40     247     11
+36002  40    209  80     247     11
+36003  80    209  119    247     11
+36004  119   209  159    247     11
+# ---- 4 frame sau: quay PHẢI ----
+36005  159   209  199    247     11
+36006  199   209  239    247     11
+36007  239   209  278    247     11
+36008  278   209  318    247     11
 
 [ANIMATIONS]
-# id   sprite1_id  time1
-3600   36001       100
-3601   36001       100
-3602   36001       100
+# id   sprite_id time  ...
+# 3601 = BOWSER_WALK_LEFT  (Render dùng khi direction < 0)
+3601   36001 150  36002 150  36003 150  36004 150
+# 3600 = BOWSER_WALK_RIGHT (Render dùng khi direction > 0)
+3600   36005 150  36006 150  36007 150  36008 150
+# 3602 = BOWSER_ATTACK (dùng chung 2 hướng - tạm 1 frame)
+3602   36001 150

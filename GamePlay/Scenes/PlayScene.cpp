@@ -201,6 +201,16 @@ void PlayScene::Load()
 	//	WindCycle::GetInstance()->Start();
 	//else
 		WindCycle::GetInstance()->Stop();
+
+	// Boss màn 1-4: tìm Bowser để kích hoạt khi Mario bước lên cầu (mặc định nó đứng yên).
+	bossBowser = nullptr;
+	if (id == SCENE::WORLD_1_4)
+	{
+		for (auto obj : objects)
+		{
+			if (dynamic_cast<Bowser*>(obj) != nullptr) { bossBowser = obj; break; }
+		}
+	}
 }
 
 void PlayScene::_ParseSection_ASSETS(string line)
@@ -580,6 +590,10 @@ void PlayScene::Update(DWORD dt)
 			return;
 		}
 	}
+
+	// Boss màn 1-4: Bowser chỉ bắt đầu hoạt động khi Mario đã bước lên cầu.
+	if (bossBowser != nullptr && !bossBowser->IsDeleted() && IsPlayerOnCastleBridge())
+		static_cast<Bowser*>(bossBowser)->Activate();
 
 	vector<LPGAMEOBJECT> coObjects;
 	for (auto obj : objects) coObjects.push_back(obj);
