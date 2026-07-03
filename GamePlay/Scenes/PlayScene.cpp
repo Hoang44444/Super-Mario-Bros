@@ -227,11 +227,8 @@ void PlayScene::Load()
 	else
 	{
 		DebugOut(L"[SFX_DEBUG] Stopping wind cycle\n");
-	// (tạm thời tắt gió ở 1-3: luôn Stop)
-	//if (id == SCENE::WORLD_1_3)
-	//	WindCycle::GetInstance()->Start();
-	//else
 		WindCycle::GetInstance()->Stop();
+	}
 
 	// Boss màn 1-4: tìm Bowser để kích hoạt khi Mario bước lên cầu (mặc định nó đứng yên).
 	bossBowser = nullptr;
