@@ -67,7 +67,7 @@ struct MarioPhysicsConfig
 		config.accelRun = 0.010f;         // Gia tốc chạy (nhanh hơn walk ~1.7x)
 		config.frictionGround = 0.016f;   // Ma sát buông phím (nhanh hơn accelWalk)
 		config.accelAir = 0.004f;         // Gia tốc trên không (~1/2 walk)
-		config.skidMultiplier = 0.02f;    // Skid chậm hơn ma sát (giảm từ 0.45 để trượt lâu ~1s)
+		config.skidMultiplier = 0.04f;    // Skid chậm hơn ma sát (phanh gấp khi đảo hướng, ~0.5s)
 		config.runActivationTime = 200;   // ~12 frame @ 60fps — giữ hướng liên tục
 		config.skidMinSpeed = 0.03f;      // Ngưỡng trượt (giảm từ 0.06 để kéo dài thời gian skid)
 		

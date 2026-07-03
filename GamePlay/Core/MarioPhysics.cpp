@@ -56,7 +56,8 @@ void MarioPhysics::UpdateHorizontalMovement(DWORD dt, const MarioPhysicsInput& i
 	bool isAirborne = !state.isOnGround;
 	float maxSpeed = GetMaxSpeed();
 	
-	// Kích hoạt chạy: giữ phím hướng liên tục đủ lâu (NES không có phím Run riêng)
+	// Kích hoạt chạy: giữ phím hướng liên tục đủ lâu (tự động chuyển sang run sau runActivationTime ms)
+	// Lưu ý: Bản gốc SMB (NES) dùng nút B để chạy, đây là thiết kế riêng của project
 	if (input.runHeld)
 	{
 		state.runHoldTime += dt;
@@ -79,16 +80,25 @@ void MarioPhysics::UpdateHorizontalMovement(DWORD dt, const MarioPhysicsInput& i
 	// Buông phím: ma sát nhanh (friction > accel bình thường)
 	if (moveDir == 0)
 	{
-		float friction = GetFriction(isAirborne);
-		if (state.vx > 0)
+		// Khi ở trên không trung và buông phím: bảo toàn đà ngang (SMB original behavior)
+		// Không áp dụng friction để giữ nguyên vận tốc ngang khi nhảy
+		if (isAirborne)
 		{
-			state.vx -= friction * dt;
-			if (state.vx < 0) state.vx = 0;
+			// Không làm gì - giữ nguyên vx
 		}
-		else if (state.vx < 0)
+		else
 		{
-			state.vx += friction * dt;
-			if (state.vx > 0) state.vx = 0;
+			float friction = GetFriction(isAirborne);
+			if (state.vx > 0)
+			{
+				state.vx -= friction * dt;
+				if (state.vx < 0) state.vx = 0;
+			}
+			else if (state.vx < 0)
+			{
+				state.vx += friction * dt;
+				if (state.vx > 0) state.vx = 0;
+			}
 		}
 	}
 	else
