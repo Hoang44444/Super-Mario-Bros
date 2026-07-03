@@ -25,6 +25,7 @@ public:
     void Update(float dt);
 
     bool  IsActive()   const { return enabled; }
+    bool  IsShaking()  const { return shaking; }
     float GetOffsetX() const { return offsetX; }
     float GetOffsetY() const { return offsetY; }
 };
