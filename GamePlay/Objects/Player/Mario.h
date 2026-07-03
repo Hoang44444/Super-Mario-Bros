@@ -90,6 +90,8 @@ private:
 	bool isStarPower = false;    // riêng Star: chạm enemy là giết enemy
 	bool isWindyScene = false;
 	DWORD invincibleTime = 0;
+	int previousBGM = -1;        // BGM ID before star power (to restore after star ends)
+	float originalMaxRunSpeed = 0.20f;  // Original run speed before star power (to restore after star ends)
 
 	// Animation state machine
 	MarioAnimState animState = MarioAnimState::IDLE;
@@ -161,7 +163,7 @@ public:
 	void SetInvincible(DWORD duration) { isInvincible = true; if (duration > invincibleTime) invincibleTime = duration; }
 	bool IsInvincible() { return isInvincible; }
 	// Star: vừa miễn thương vừa giết enemy khi chạm. Hết giờ thì cả hai tắt (xem Update).
-	void SetStarPower(DWORD duration) { isStarPower = true; SetInvincible(duration); }
+	void SetStarPower(DWORD duration);
 	bool IsStarPower() { return isStarPower; }
 	bool CanShoot() { return canShoot; }
 	void SetCanShoot(bool v) { canShoot = v; }

@@ -12,6 +12,7 @@
 #include "../../WindCycle.h"
 #include "../../Core/ScoreManager.h"
 #include "../../Core/MarioPhysics.h"
+#include "../../Core/GameManager.h"
 #include <cstdio>
 
 static const wchar_t* MarioAnimStateName(MarioAnimState state)
@@ -123,9 +124,7 @@ void Mario::UpdateAnimationState(DWORD dt)
 	static MarioAnimState lastLoggedState = MarioAnimState::IDLE;
 	if (animState != lastLoggedState)
 	{
-		DebugOut(L"[MARIO_ANIM_CHANGE] dt=%lu state: %s -> %s | vx=%.6f absVx=%.6f moveDir=%d facing=%d physRunning=%d physSkidding=%d isOnGround=%d\n",
-			dt, MarioAnimStateName(lastLoggedState), MarioAnimStateName(animState),
-			vx, absVx, physicsInput.moveDirection, physState.facing, physState.isRunning ? 1 : 0, physState.isSkidding ? 1 : 0, isOnGround ? 1 : 0);
+
 		lastLoggedState = animState;
 	}
 
@@ -160,6 +159,34 @@ void Mario::UpdateAnimationState(DWORD dt)
 		animStopLogTimer = (animStopLogTimer > dt) ? (animStopLogTimer - dt) : 0;
 	}
 	lastAnimMoveDir = physicsInput.moveDirection;
+}
+
+void Mario::SetStarPower(DWORD duration)
+{
+	// Save current BGM to restore later when star power ends
+	// Note: SoundManager doesn't expose GetCurrentBGM(), so we need to infer from scene
+	int sceneId = GameManager::GetInstance()->GetCurrentSceneID();
+	if (sceneId == SCENE::WORLD_1_2)
+		previousBGM = BGM::UNDERWORLD_THEME;
+	else if (sceneId == SCENE::WORLD_1_4)
+		previousBGM = BGM::CASTLE_THEME;
+	else
+		previousBGM = BGM::OVERWORLD_THEME;
+
+	DebugOut(L"[STAR_BGM_DEBUG] Star power activated, saved previous BGM=%d, playing STAR_THEME\n", previousBGM);
+
+	// Play star theme BGM
+	SoundManager::GetInstance()->PlayBGM(BGM::STAR_THEME, true);
+
+	// Increase running speed when star power is active
+	MarioPhysicsState ps = physics.GetState();
+	MarioPhysicsConfig config = physics.GetConfig();
+	originalMaxRunSpeed = config.maxRunSpeed;
+	config.maxRunSpeed = 0.30f;  // Increase from 0.20f to 0.30f (50% faster)
+	physics.SetConfig(config);
+
+	isStarPower = true;
+	SetInvincible(duration);
 }
 
 void Mario::SetLevel(int level)
@@ -278,7 +305,28 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (isInvincible)
 	{
 		if (invincibleTime > dt) invincibleTime -= dt;
-		else { invincibleTime = 0; isInvincible = false; isStarPower = false; }
+		else
+		{
+			// Star power ending: restore previous BGM and run speed
+			if (isStarPower)
+			{
+				DebugOut(L"[STAR_BGM_DEBUG] Star power ending, restoring BGM=%d\n", previousBGM);
+				SoundManager::GetInstance()->StopBGM();
+				if (previousBGM != -1)
+				{
+					SoundManager::GetInstance()->PlayBGM(previousBGM, true);
+				}
+				previousBGM = -1;
+
+				// Restore original run speed
+				MarioPhysicsConfig config = physics.GetConfig();
+				config.maxRunSpeed = originalMaxRunSpeed;
+				physics.SetConfig(config);
+			}
+			invincibleTime = 0;
+			isInvincible = false;
+			isStarPower = false;
+		}
 	}
 
 	// A5: đẩy vx/vy Mario -> physics trước khi tích phân (collision frame trước có thể đã sửa trực tiếp)
@@ -316,7 +364,15 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// với hiệu ứng lá (WindCycle) nên lực đẩy và lá luôn đồng pha.
 	if (this->isWindyScene && WindCycle::GetInstance()->IsActive())
 	{
-		this->vx += -0.003f * dt;
+		constexpr float WIND_ACCEL = 0.001f;  // Giảm từ 0.003f xuống 0.001f (~33%)
+		constexpr float WIND_MAX_FORCE = 0.08f;  // Giới hạn tốc độ tối đa gió có thể đẩy
+
+		float windForce = -WIND_ACCEL * dt;
+		this->vx += windForce;
+
+		// Cap wind force để tránh cộng dồn không giới hạn
+		if (this->vx < -WIND_MAX_FORCE)
+			this->vx = -WIND_MAX_FORCE;
 	}
 
 	// Save previous ground state for jump logic (don't clear yet)

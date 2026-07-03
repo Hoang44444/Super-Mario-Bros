@@ -10,6 +10,8 @@
 #include "GameManager.h"
 #include "PlayerData.h"
 #include "../Core/ScoreManager.h"
+#include "../../../Resource/SoundManager.h"
+#include "debug.h"
 
 namespace
 {
@@ -32,6 +34,7 @@ HUD::HUD(Mario* mario, int world, int stage)
 	this->remainingTime = START_TIME;
 	this->elapsedMs = 0;
 	this->font = nullptr;
+	this->warningBGMPlaying = false;
 }
 
 HUD::~HUD()
@@ -172,6 +175,7 @@ void HUD::ResetTimer()
 {
 	remainingTime = START_TIME;
 	elapsedMs = 0;
+	warningBGMPlaying = false;
 }
 
 void HUD::Update(DWORD dt)
@@ -201,6 +205,21 @@ void HUD::Update(DWORD dt)
 	{
 		remainingTime--;
 		elapsedMs -= 1000;
+	}
+
+	// Timer warning BGM: play when time <= 100s
+	if (remainingTime <= 100 && !warningBGMPlaying)
+	{
+		DebugOut(L"[WARNING_BGM_DEBUG] Time <= 100s (%d), playing WARNING_THEME\n", remainingTime);
+		SoundManager::GetInstance()->PlayBGM(BGM::WARNING_THEME, true);
+		warningBGMPlaying = true;
+	}
+	else if (remainingTime > 100 && warningBGMPlaying)
+	{
+		// Time went back above 100 (shouldn't happen normally, but handle it)
+		DebugOut(L"[WARNING_BGM_DEBUG] Time > 100s (%d), stopping WARNING_THEME\n", remainingTime);
+		SoundManager::GetInstance()->StopBGM();
+		warningBGMPlaying = false;
 	}
 
 	if (remainingTime <= 0)

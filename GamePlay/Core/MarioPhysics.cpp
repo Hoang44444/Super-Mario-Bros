@@ -240,9 +240,5 @@ bool MarioPhysics::ShouldSkid(int moveDirection) const
 	bool movingOpposite = (moveDirection > 0 && state.vx < 0) || (moveDirection < 0 && state.vx > 0);
 	bool hasMomentum = fabsf(state.vx) > config.skidMinSpeed;
 
-	// Debug log for skid condition
-	DebugOut(L"[SHOULD_SKID_DEBUG] moveDir=%d vx=%.6f skidMinSpeed=%.6f movingOpposite=%d hasMomentum=%d result=%d\n",
-		moveDirection, state.vx, config.skidMinSpeed, movingOpposite ? 1 : 0, hasMomentum ? 1 : 0, (movingOpposite && hasMomentum) ? 1 : 0);
-
 	return movingOpposite && hasMomentum;
 }

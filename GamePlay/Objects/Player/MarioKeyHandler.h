@@ -50,6 +50,8 @@ public:
 		jumpPending = false; // A1: consume event edge sau khi đẩy sang Mario
 
 		// Set animation state based on movement (for rendering)
+		// NOTE: When Mario is DEAD, this entire function returns early (line 25),
+		// so no animation state changes occur during death.
 		if (sitPressed)
 		{
 			mario->SetState(MARIO_STATE::SIT);
@@ -81,6 +83,8 @@ public:
 		if (mario->GetState() == MARIO_STATE::DIE) return;
 
 		// Handle non-physics actions (shooting)
+		// NOTE: When Mario is DEAD, this entire function returns early (line 81),
+		// so no input affects Mario's state or velocity during death.
 		switch (KeyCode)
 		{
 		case VK_SHIFT:

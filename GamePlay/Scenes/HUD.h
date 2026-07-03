@@ -16,6 +16,7 @@ private:
 	int remainingTime;
 	DWORD elapsedMs;
 	ID3DX10Font* font;
+	bool warningBGMPlaying;
 
 	void CreateFontIfNeeded();
 	void DrawTextLine(const wchar_t* text, int x, int y, int width, int height);

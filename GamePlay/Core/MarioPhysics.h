@@ -137,6 +137,10 @@ public:
 	void SetOnGround(bool onGround);
 	void SetFacing(int facing) { state.facing = facing; }
 	
+	// Getter/Setter cho cấu hình
+	const MarioPhysicsConfig& GetConfig() const { return config; }
+	void SetConfig(const MarioPhysicsConfig& newConfig) { config = newConfig; }
+	
 	// Reset trạng thái
 	void Reset();
 	

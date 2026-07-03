@@ -166,18 +166,35 @@ void PlayScene::Load()
 	SoundManager::GetInstance()->LoadSFX(SFX::FIREBALL, "../Resource/audio/sfx/smb_fireball.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::BRICK_BREAK, "../Resource/audio/sfx/smb_breakblock.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::ONE_UP, "../Resource/audio/sfx/smb_1-up.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::SMB_WINDY, "../Resource/audio/sfx/smb_windy.wav");
 
 	// Load and play BGM based on scene type
 	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
 	{
-		// Overworld levels - load and play main theme
+		DebugOut(L"[BGM_DEBUG] Loading BGMs for world 1 levels\n");
+		// Load all possible BGMs for world 1 levels
 		SoundManager::GetInstance()->LoadBGM(BGM::OVERWORLD_THEME, "../Resource/audio/bgm/overworld_theme.wav");
-		SoundManager::GetInstance()->PlayBGM(BGM::OVERWORLD_THEME, true);
-	}
-	else if (id == SCENE::MENU)
-	{
-		SoundManager::GetInstance()->LoadBGM(BGM::MENU_THEME, "../Resource/audio/bgm/menu_theme.wav");
-		SoundManager::GetInstance()->PlayBGM(BGM::MENU_THEME, true);
+		SoundManager::GetInstance()->LoadBGM(BGM::UNDERWORLD_THEME, "../Resource/audio/bgm/underworld_theme.wav");
+		SoundManager::GetInstance()->LoadBGM(BGM::CASTLE_THEME, "../Resource/audio/bgm/castle_theme.wav");
+		SoundManager::GetInstance()->LoadBGM(BGM::STAR_THEME, "../Resource/audio/bgm/star_theme.wav");
+		SoundManager::GetInstance()->LoadBGM(BGM::WARNING_THEME, "../Resource/audio/bgm/smb_warning.wav");
+
+		// Play appropriate BGM based on level
+		if (id == SCENE::WORLD_1_2)
+		{
+			SoundManager::GetInstance()->PlayBGM(BGM::UNDERWORLD_THEME, true);
+		}
+		else if (id == SCENE::WORLD_1_4)
+		{
+			DebugOut(L"[BGM_DEBUG] Playing CASTLE_THEME for level 1-4\n");
+			SoundManager::GetInstance()->PlayBGM(BGM::CASTLE_THEME, true);
+		}
+		else
+		{
+			// WORLD_1_1 and WORLD_1_3 use overworld theme
+			DebugOut(L"[BGM_DEBUG] Playing OVERWORLD_THEME for level %d\n", id);
+			SoundManager::GetInstance()->PlayBGM(BGM::OVERWORLD_THEME, true);
+		}
 	}
 	else if (id == SCENE::GAME_OVER)
 	{
@@ -197,9 +214,17 @@ void PlayScene::Load()
 	// Gió ở màn 1-3: bật chu kỳ gió dùng chung (đồng bộ lá + lực đẩy Mario).
 	// Các màn khác tắt để không sót trạng thái.
 	if (id == SCENE::WORLD_1_3)
+	{
+		DebugOut(L"[SFX_DEBUG] Starting wind cycle for level 1-3\n");
 		WindCycle::GetInstance()->Start();
+	}
 	else
+	{
+		DebugOut(L"[SFX_DEBUG] Stopping wind cycle\n");
 		WindCycle::GetInstance()->Stop();
+		SoundManager::GetInstance()->StopSFX(SFX::SMB_WINDY); // Stop wind sound
+		windSfxPlaying = false;  // Reset flag when leaving scene
+	}
 }
 
 void PlayScene::_ParseSection_ASSETS(string line)
@@ -600,6 +625,20 @@ void PlayScene::Update(DWORD dt)
 	if (menuHUD != nullptr)
 		menuHUD->Update();
 
+	// Wind SFX: only play when wind is actually blowing (not during inactive periods)
+	// Track state to avoid calling PlaySFX every frame (which would restart the sound)
+	bool windActive = (id == SCENE::WORLD_1_3 && WindCycle::GetInstance()->IsActive());
+	if (windActive && !windSfxPlaying)
+	{
+		SoundManager::GetInstance()->PlaySFX(SFX::SMB_WINDY, true);
+		windSfxPlaying = true;
+	}
+	else if (!windActive && windSfxPlaying)
+	{
+		SoundManager::GetInstance()->StopSFX(SFX::SMB_WINDY);
+		windSfxPlaying = false;
+	}
+
 	// skip the rest if scene was already unloaded (Mario died)
 	if (player == nullptr) return;
 
@@ -617,6 +656,7 @@ void PlayScene::Update(DWORD dt)
 		if (fellOff && marioDieStart == 0)
 		{
 			marioDieStart = now;
+			player->SetState(MARIO_STATE::DIE);  // Set DIE state immediately so camera stops following
 			SoundManager::GetInstance()->StopBGM();
 			SoundManager::GetInstance()->PlaySFX(SFX::DIE);
 		}
@@ -630,11 +670,14 @@ void PlayScene::Update(DWORD dt)
 		}
 	}
 
-	// Update camera to follow mario
-	float cx, cy, cz;
-	player->GetPosition(cx, cy, cz);
+	// Update camera to follow mario (only if Mario is alive)
+	if (player->GetState() != MARIO_STATE::DIE)
+	{
+		float cx, cy, cz;
+		player->GetPosition(cx, cy, cz);
 
-	Camera::GetInstance()->Follow(cx, fixedCameraY);
+		Camera::GetInstance()->Follow(cx, fixedCameraY);
+	}
 
 	// Động đất màn cuối: rung camera từng đợt, dừng hẳn khi Mario lên được cầu.
 	if (Camera::GetInstance()->IsEarthquakeActive())
