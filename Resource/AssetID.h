@@ -283,6 +283,8 @@ namespace ANIMATION
     constexpr int MARIO_FIRE_IDLE_LEFT = 2101;
     constexpr int MARIO_FIRE_WALKING_RIGHT = 2200;
     constexpr int MARIO_FIRE_WALKING_LEFT = 2201;
+    constexpr int MARIO_FIRE_RUNNING_RIGHT = 2250;
+    constexpr int MARIO_FIRE_RUNNING_LEFT = 2251;
     constexpr int MARIO_FIRE_JUMP_WALK_RIGHT = 2300;
     constexpr int MARIO_FIRE_JUMP_WALK_LEFT = 2301;
     constexpr int MARIO_FIRE_SKID_RIGHT = 2400;

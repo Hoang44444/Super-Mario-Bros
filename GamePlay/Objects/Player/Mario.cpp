@@ -483,6 +483,8 @@ void Mario::MarioFireRender(int& aniId)
 		aniId = (animFacing > 0) ? ANIMATION::MARIO_FIRE_JUMP_WALK_RIGHT : ANIMATION::MARIO_FIRE_JUMP_WALK_LEFT;
 		break;
 	case MarioAnimState::RUNNING:
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_FIRE_RUNNING_RIGHT : ANIMATION::MARIO_FIRE_RUNNING_LEFT;
+		break;
 	case MarioAnimState::WALKING:
 		aniId = (animFacing > 0) ? ANIMATION::MARIO_FIRE_WALKING_RIGHT : ANIMATION::MARIO_FIRE_WALKING_LEFT;
 		break;
