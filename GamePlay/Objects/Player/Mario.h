@@ -89,6 +89,7 @@ private:
 	bool isInvincible = false;   // miễn thương (dùng cho cả Star lẫn grace sau khi bị hạ cấp)
 	bool isStarPower = false;    // riêng Star: chạm enemy là giết enemy
 	bool isWindyScene = false;
+	DynamicPlatform* currentPlatform = nullptr;  // platform đang đứng trên (vertical hoặc horizontal)
 	DWORD invincibleTime = 0;
 	int previousBGM = -1;        // BGM ID before star power (to restore after star ends)
 	float originalMaxRunSpeed = 0.20f;  // Original run speed before star power (to restore after star ends)

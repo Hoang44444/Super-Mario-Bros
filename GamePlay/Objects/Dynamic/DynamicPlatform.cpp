@@ -5,6 +5,10 @@
 #include "AssetID.h"
 
 void DynamicPlatform::Movement(DWORD dt) {
+	// Lưu vị trí hiện tại trước khi di chuyển (để tính delta cho parenting Mario)
+	prevX = x;
+	prevY = y;
+
 	if (type == DYNAMIC_PLATFORM_TYPE::HORIZONTAL) {
 		x += direction * speed * dt;
 		if (x < minBound) {

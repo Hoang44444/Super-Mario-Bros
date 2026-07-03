@@ -4,7 +4,7 @@
 
 namespace DYNAMIC_PLATFORM_PARAMS
 {
-	constexpr float SPEED = 0.01f;
+	constexpr float SPEED = 0.05f;
 }
 
 namespace DYNAMIC_PLATFORM_TYPE
@@ -19,10 +19,12 @@ namespace DYNAMIC_PLATFORM_BBOX
 	constexpr float HEIGHT = 32.0f;
 }
 class DynamicPlatform : public GameObject{
-private: 
+private:
 	float speed = DYNAMIC_PLATFORM_PARAMS::SPEED;
 	float minBound, maxBound;
 	float direction = 1; //1: rightn(down), -1: left(up)
+	float prevX;  // vị trí X ở frame trước (để tính deltaX cho parenting Mario)
+	float prevY;  // vị trí Y ở frame trước (để tính deltaY cho parenting Mario)
 
 	int type; // 0: horizontal, 1: vertical
 public:
@@ -56,5 +58,8 @@ public:
 
 	float GetVx() const { return type == DYNAMIC_PLATFORM_TYPE::HORIZONTAL ? speed * direction : 0.0f; }
 	float GetVy() const { return type == DYNAMIC_PLATFORM_TYPE::VERTICAL ? speed * direction : 0.0f; }
+	int GetType() const { return type; }
+	float GetPrevX() const { return prevX; }
+	float GetPrevY() const { return prevY; }
 };
 
