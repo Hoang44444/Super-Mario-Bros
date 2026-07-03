@@ -63,13 +63,13 @@ struct MarioPhysicsConfig
 		// Di chuyển ngang - tỉ lệ walk:run = 3:5 như NES
 		config.maxWalkSpeed = 0.12f;      // 3/5 của run speed
 		config.maxRunSpeed = 0.20f;       // Tốc độ chạy tối đa
-		config.accelWalk = 0.005f;        // Gia tốc đi bộ (chậm, tăng tốc từ từ)
-		config.accelRun = 0.009f;         // Gia tốc chạy (nhanh hơn walk ~1.8x)
-		config.frictionGround = 0.014f;   // Ma sát buông phím (nhanh hơn accelWalk)
+		config.accelWalk = 0.006f;        // Gia tốc đi bộ (tăng nhẹ cho cảm giác mượt hơn)
+		config.accelRun = 0.010f;         // Gia tốc chạy (nhanh hơn walk ~1.7x)
+		config.frictionGround = 0.016f;   // Ma sát buông phím (nhanh hơn accelWalk)
 		config.accelAir = 0.004f;         // Gia tốc trên không (~1/2 walk)
-		config.skidMultiplier = 0.45f;    // Skid chậm hơn ma sát (< 1.0)
+		config.skidMultiplier = 0.02f;    // Skid chậm hơn ma sát (giảm từ 0.45 để trượt lâu ~1s)
 		config.runActivationTime = 200;   // ~12 frame @ 60fps — giữ hướng liên tục
-		config.skidMinSpeed = 0.06f;      // Ngưỡng trượt (~50% walk speed)
+		config.skidMinSpeed = 0.03f;      // Ngưỡng trượt (giảm từ 0.06 để kéo dài thời gian skid)
 		
 		// Nhảy - 3 mức rời rạc theo tốc độ ngang lúc bấm nhảy
 		config.jumpForceStand = 0.55f;     // Lực nhảy đứng yên

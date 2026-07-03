@@ -119,6 +119,16 @@ void Mario::UpdateAnimationState(DWORD dt)
 		}
 	}
 
+	// Log only when animState changes
+	static MarioAnimState lastLoggedState = MarioAnimState::IDLE;
+	if (animState != lastLoggedState)
+	{
+		DebugOut(L"[MARIO_ANIM_CHANGE] dt=%lu state: %s -> %s | vx=%.6f absVx=%.6f moveDir=%d facing=%d physRunning=%d physSkidding=%d isOnGround=%d\n",
+			dt, MarioAnimStateName(lastLoggedState), MarioAnimStateName(animState),
+			vx, absVx, physicsInput.moveDirection, physState.facing, physState.isRunning ? 1 : 0, physState.isSkidding ? 1 : 0, isOnGround ? 1 : 0);
+		lastLoggedState = animState;
+	}
+
 	// 3. Apply DEBOUNCE — B2: SKIDDING ưu tiên để không bị walk/idle đè khi trượt
 	bool isPriorityTransition = (nextState == MarioAnimState::IDLE || nextState == MarioAnimState::JUMPING || nextState == MarioAnimState::DYING
 		|| nextState == MarioAnimState::SITTING || nextState == MarioAnimState::SKIDDING);
@@ -137,10 +147,6 @@ void Mario::UpdateAnimationState(DWORD dt)
 
 	if (animReleaseLogTimer > 0 || animStopLogTimer > 0)
 	{
-		DebugOut(L"[MARIO_GROUND_FRAME] dt=%lu y=%.6f vy=%.6f prev=%s next=%s current=%s vx=%.6f absVx=%.6f physRunning=%d physSkidding=%d isOnGround=%d moveDir=%d debounce=%lu releaseLogMs=%lu stopLogMs=%lu\n",
-			dt, y, vy, MarioAnimStateName(previousState), MarioAnimStateName(nextState), MarioAnimStateName(animState),
-			vx, absVx, physState.isRunning ? 1 : 0, physState.isSkidding ? 1 : 0,
-			isOnGround ? 1 : 0, physicsInput.moveDirection, animDebounceTimer, animReleaseLogTimer, animStopLogTimer);
 		FILE* animLog = nullptr;
 		if (_wfopen_s(&animLog, L"mario_ground_probe.log", L"a, ccs=UTF-8") == 0 && animLog != nullptr)
 		{
@@ -281,7 +287,7 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	ps.vy = vy;
 	physics.SetState(ps);
 	physics.SetOnGround(isOnGround);
-	physics.SetFacing(direction);
+	// physics.SetFacing(direction);  // Đã xóa: để physics tự quản lý facing theo logic skid
 
 	bool jumpRequested = physicsInput.jumpJustPressed;
 	const bool groundedBeforePhysics = isOnGround;
@@ -323,7 +329,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	isOnGround = CheckGroundProbe(coObjects);
 
 	// Debug log: ground probe result
-	DebugOut(L"[MARIO_GROUND_PROBE] dt=%lu y=%.6f vy=%.6f isOnGround=%d wasOnGround=%d\n", dt, y, vy, isOnGround ? 1 : 0, wasOnGround ? 1 : 0);
 	FILE* groundProbeLog = nullptr;
 	if (_wfopen_s(&groundProbeLog, L"mario_ground_probe.log", L"a, ccs=UTF-8") == 0 && groundProbeLog != nullptr)
 	{
@@ -369,7 +374,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	UpdateAnimationState(dt);
 
-	DebugOut(L"[MARIO] Update - Position: (%.2f, %.2f), Speed: (%.2f, %.2f)\n", x, y, vx, vy);
 }
 
 void Mario::SetState(int state)
@@ -437,7 +441,7 @@ void Mario::MarioSmallRender(int& aniId) {
 		aniId = (animFacing > 0) ? ANIMATION::MARIO_SMALL_WALKING_RIGHT : ANIMATION::MARIO_SMALL_WALKING_LEFT;
 		break;
 	case MarioAnimState::SKIDDING:
-		aniId = (animFacing > 0) ? ANIMATION::MARIO_SMALL_BRACE_RIGHT : ANIMATION::MARIO_SMALL_BRACE_LEFT;
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_SMALL_SKID_RIGHT : ANIMATION::MARIO_SMALL_SKID_LEFT;
 		break;
 	case MarioAnimState::IDLE:
 	default:
@@ -459,7 +463,7 @@ void Mario::MarioBigRender(int& aniId) {
 		aniId = (animFacing > 0) ? ANIMATION::MARIO_BIG_WALKING_RIGHT : ANIMATION::MARIO_BIG_WALKING_LEFT;
 		break;
 	case MarioAnimState::SKIDDING:
-		aniId = (animFacing > 0) ? ANIMATION::MARIO_BIG_BRACE_RIGHT : ANIMATION::MARIO_BIG_BRACE_LEFT;
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_BIG_SKID_RIGHT : ANIMATION::MARIO_BIG_SKID_LEFT;
 		break;
 	case MarioAnimState::SITTING:
 		aniId = (animFacing > 0) ? ANIMATION::MARIO_BIG_SIT_RIGHT : ANIMATION::MARIO_BIG_SIT_LEFT;
@@ -483,8 +487,7 @@ void Mario::MarioFireRender(int& aniId)
 		aniId = (animFacing > 0) ? ANIMATION::MARIO_FIRE_WALKING_RIGHT : ANIMATION::MARIO_FIRE_WALKING_LEFT;
 		break;
 	case MarioAnimState::SKIDDING:
-		// Fallback to walking if no FIRE_BRACE exists
-		aniId = (animFacing > 0) ? ANIMATION::MARIO_FIRE_WALKING_RIGHT : ANIMATION::MARIO_FIRE_WALKING_LEFT;
+		aniId = (animFacing > 0) ? ANIMATION::MARIO_FIRE_SKID_RIGHT : ANIMATION::MARIO_FIRE_SKID_LEFT;
 		break;
 	case MarioAnimState::IDLE:
 	default:
@@ -528,6 +531,20 @@ void Mario::Render()
 
 	if (aniId != -1)
 	{
+		// Log when aniId changes
+		static int lastLoggedAniId = -1;
+		if (aniId != lastLoggedAniId)
+		{
+			FILE* renderLog = nullptr;
+			if (_wfopen_s(&renderLog, L"mario_skid_test.log", L"a, ccs=UTF-8") == 0 && renderLog != nullptr)
+			{
+				fwprintf(renderLog, L"[MARIO_ANI_ID_CHANGE] aniId: %d -> %d | level=%d animState=%s facing=%d\n",
+					lastLoggedAniId, aniId, level, MarioAnimStateName(animState), animFacing);
+				fclose(renderLog);
+			}
+			lastLoggedAniId = aniId;
+		}
+
 		// Nhấp nháy khi bất tử (biến hình / ăn item / grace sau khi trúng đòn / ngôi sao):
 		// bỏ vẽ ở các khung ~60ms xen kẽ để sprite chớp tắt.
 		if (isInvincible && (invincibleTime / 60) % 2 == 0)
@@ -619,7 +636,6 @@ void Mario::OnCollisionWithDynamicPlatform(LPCOLLISIONEVENT e)
 	else if (e->nx != 0) {
 		vx = 0;
 	}
-	DebugOut(L"[MARIO] Collided with Dynamic Platform");
 }
 
 void Mario::OnCollisionWith(LPCOLLISIONEVENT e)

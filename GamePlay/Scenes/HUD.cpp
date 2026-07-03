@@ -125,9 +125,9 @@ void HUD::RenderTextureRectAtScreen(int textureId, const RECT& rect, float scree
 void HUD::RenderCoinIcon(float screenX, float screenY)
 {
 	const RECT coinFrames[] = {
-		MakeRect(300, 98, 316, 114),
-		MakeRect(316, 98, 332, 114),
-		MakeRect(331, 98, 347, 114)
+		MakeRect(300, 98, 316, 115),
+		MakeRect(316, 98, 332, 115),
+		MakeRect(331, 98, 347, 115)
 	};
 	int frame = (int)((GetTickCount64() / 100) % 3);
 	RenderTextureRectAtScreen(TEXTURE::MISC, coinFrames[frame], screenX, screenY);

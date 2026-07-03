@@ -19,9 +19,9 @@ private:
 
 	int currentBGM = -1;
 	bool isBGMPlaying = false;
-	int masterVolume = 70;
-	int musicVolume = 70;
-	int sfxVolume = 70;
+	int masterVolume = 100;
+	int musicVolume = 100;
+	int sfxVolume = 100;
 
 	HWND hWnd;
 

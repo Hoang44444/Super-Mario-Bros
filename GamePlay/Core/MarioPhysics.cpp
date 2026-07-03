@@ -1,5 +1,8 @@
 #include "MarioPhysics.h"
 #include <cmath>
+#include <cstdio>
+#include <cwchar>
+#include "../../Resource/debug.h"
 
 MarioPhysics::MarioPhysics()
 	: config(MarioPhysicsConfig::GetDefault())
@@ -69,6 +72,8 @@ void MarioPhysics::UpdateHorizontalMovement(DWORD dt, const MarioPhysicsInput& i
 	}
 	
 	int moveDir = input.moveDirection;
+
+	// Tính isSkidding TRƯỚC KHI update vận tốc (dùng vx hiện tại của frame này)
 	state.isSkidding = ShouldSkid(moveDir);
 
 	// Buông phím: ma sát nhanh (friction > accel bình thường)
@@ -89,13 +94,13 @@ void MarioPhysics::UpdateHorizontalMovement(DWORD dt, const MarioPhysicsInput& i
 	else
 	{
 		float baseAccel = isAirborne ? config.accelAir : GetGroundAcceleration();
-		// Skid: giảm tốc chậm hơn ma sát thường (multiplier < 1)
-		float currentAccel = state.isSkidding ? baseAccel * config.skidMultiplier : baseAccel;
-		
+		// Skid: giảm tốc chậm hơn (multiplier < 1)
+		float effectiveAccel = state.isSkidding ? baseAccel * config.skidMultiplier : baseAccel;
+
 		if ((moveDir > 0 && state.vx >= 0) || (moveDir < 0 && state.vx <= 0))
 		{
-			state.vx += moveDir * currentAccel * dt;
-			
+			state.vx += moveDir * effectiveAccel * dt;
+
 			if (fabsf(state.vx) > maxSpeed)
 			{
 				state.vx = moveDir * maxSpeed;
@@ -103,18 +108,14 @@ void MarioPhysics::UpdateHorizontalMovement(DWORD dt, const MarioPhysicsInput& i
 		}
 		else
 		{
-			state.vx += moveDir * currentAccel * dt;
-			
-			if ((moveDir > 0 && state.vx > 0) || (moveDir < 0 && state.vx < 0))
-			{
-				state.facing = moveDir;
-			}
+			state.vx += moveDir * effectiveAccel * dt;
 		}
-		
-		if (moveDir != 0 && !state.isSkidding)
-		{
-			state.facing = moveDir;
-		}
+	}
+
+	// Cập nhật facing ngay lập tức theo input (giống Mario cổ điển)
+	if (moveDir != 0)
+	{
+		state.facing = moveDir;
 	}
 	
 	// Cap tốc độ theo maxSpeedCap (giới hạn tốc độ ngang khi nhảy)
@@ -222,12 +223,16 @@ float MarioPhysics::GetJumpForce() const
 
 bool MarioPhysics::ShouldSkid(int moveDirection) const
 {
-	// Skid khi di chuyển ngược với hướng mặt
-	// VÀ vận tốc hiện tại đủ lớn (dùng skidMinSpeed thay vì 0.01f)
+	// Skid khi di chuyển ngược với hướng vận tốc thực tế
+	// So sánh với dấu vx, KHÔNG dùng facing (để tránh deadlock)
 	if (moveDirection == 0 || !state.isOnGround) return false;
-	
-	bool movingOpposite = (moveDirection != state.facing);
+
+	bool movingOpposite = (moveDirection > 0 && state.vx < 0) || (moveDirection < 0 && state.vx > 0);
 	bool hasMomentum = fabsf(state.vx) > config.skidMinSpeed;
-	
+
+	// Debug log for skid condition
+	DebugOut(L"[SHOULD_SKID_DEBUG] moveDir=%d vx=%.6f skidMinSpeed=%.6f movingOpposite=%d hasMomentum=%d result=%d\n",
+		moveDirection, state.vx, config.skidMinSpeed, movingOpposite ? 1 : 0, hasMomentum ? 1 : 0, (movingOpposite && hasMomentum) ? 1 : 0);
+
 	return movingOpposite && hasMomentum;
 }
