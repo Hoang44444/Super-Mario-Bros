@@ -402,6 +402,7 @@ namespace SFX
     constexpr int CASTLE_CLEAR       = 3005;
     constexpr int LEVEL_CLEAR        = 3006;
     constexpr int SMB_WINDY          = 3007;
+    constexpr int FIREWORKS           = 3008;
 
     // UI sounds
     constexpr int MENU_SELECT        = 4000;
@@ -421,4 +422,5 @@ namespace BGM
     constexpr int MENU_THEME         = 5005;
     constexpr int GAME_OVER_THEME    = 5006;
     constexpr int WARNING_THEME     = 5007;  // Time warning (100s remaining)
+    constexpr int STAGE_CLEAR_THEME  = 5008;  // Stage clear BGM
 }

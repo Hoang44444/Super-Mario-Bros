@@ -17,6 +17,7 @@ private:
 	DWORD elapsedMs;
 	ID3DX10Font* font;
 	bool warningBGMPlaying;
+	bool stageClearOverride;  // if true, skip warning BGM logic (during stage clear)
 
 	void CreateFontIfNeeded();
 	void DrawTextLine(const wchar_t* text, int x, int y, int width, int height);
@@ -33,6 +34,8 @@ public:
 
 	void SetMario(Mario* mario) { this->mario = mario; }
 	void ResetTimer();
+	void SetRemainingTime(int time) { remainingTime = time; }
+	void SetStageClearActive(bool active) { stageClearOverride = active; }
 	void Update(DWORD dt);
 	void Render();
 

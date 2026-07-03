@@ -574,6 +574,10 @@ void Mario::MarioFrogRender(int& aniId)
 
 void Mario::Render()
 {
+	// Don't render if invisible (e.g., during stage clear sequence)
+	if (!isVisible)
+		return;
+
 	int aniId = -1;
 
 	if (state == MARIO_STATE::DIE)

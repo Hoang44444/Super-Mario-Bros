@@ -63,6 +63,10 @@ namespace
 	constexpr ULONGLONG GAME_OVER_SCENE_DELAY_MS = 4000;
 }
 
+PlayScene::PlayScene(int id, LPCWSTR filePath) : Scene(id, filePath)
+{
+}
+
 void PlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath.c_str());
@@ -167,6 +171,7 @@ void PlayScene::Load()
 	SoundManager::GetInstance()->LoadSFX(SFX::BRICK_BREAK, "../Resource/audio/sfx/smb_breakblock.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::ONE_UP, "../Resource/audio/sfx/smb_1-up.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::SMB_WINDY, "../Resource/audio/sfx/smb_windy.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::FIREWORKS, "../Resource/audio/sfx/smb_fireworks.wav");
 
 	// Load and play BGM based on scene type
 	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
@@ -178,6 +183,7 @@ void PlayScene::Load()
 		SoundManager::GetInstance()->LoadBGM(BGM::CASTLE_THEME, "../Resource/audio/bgm/castle_theme.wav");
 		SoundManager::GetInstance()->LoadBGM(BGM::STAR_THEME, "../Resource/audio/bgm/star_theme.wav");
 		SoundManager::GetInstance()->LoadBGM(BGM::WARNING_THEME, "../Resource/audio/bgm/smb_warning.wav");
+		SoundManager::GetInstance()->LoadBGM(BGM::STAGE_CLEAR_THEME, "../Resource/audio/bgm/smb_stage_clear.wav");
 
 		// Play appropriate BGM based on level
 		if (id == SCENE::WORLD_1_2)
@@ -639,6 +645,88 @@ void PlayScene::Update(DWORD dt)
 		windSfxPlaying = false;
 	}
 
+	// Stage clear sequence: time countdown with score bonus
+	if (stageClearActive)
+	{
+		ULONGLONG now = GetTickCount64();
+		constexpr ULONGLONG STAGE_CLEAR_BGM_DURATION = 2000;  // 2 seconds for stage clear BGM
+		constexpr ULONGLONG COUNTDOWN_SPEED = 30;  // countdown every 30ms (much faster)
+		constexpr int TIME_BONUS_MULTIPLIER = 50;  // 50 points per second
+
+		ULONGLONG elapsed = now - stageClearStart;
+
+		// Phase 1: Play stage clear BGM for 2 seconds
+		if (elapsed < STAGE_CLEAR_BGM_DURATION)
+		{
+			// Just wait, BGM is playing
+		}
+		// Phase 2: Countdown time rapidly with score + COIN SFX loop
+		else if (stageClearTime > 0)
+		{
+			ULONGLONG countdownElapsed = elapsed - STAGE_CLEAR_BGM_DURATION;
+			int countdownSteps = (int)(countdownElapsed / COUNTDOWN_SPEED);
+			int timeToSubtract = countdownSteps;
+
+			if (timeToSubtract > stageClearTime)
+				timeToSubtract = stageClearTime;
+
+			if (timeToSubtract > 0)
+			{
+				int oldTime = stageClearTime;
+				stageClearTime -= timeToSubtract;
+				if (stageClearTime < 0) stageClearTime = 0;
+
+				// Add score for time bonus (50 points per second)
+				int secondsCleared = oldTime - stageClearTime;
+				ScoreManager::Get().AddScore(secondsCleared * TIME_BONUS_MULTIPLIER);
+
+				// Play COIN SFX for each second cleared
+				if (secondsCleared > 0)
+					SoundManager::GetInstance()->PlaySFX(SFX::COIN, false);
+
+				// Update HUD time display
+				if (hud != nullptr)
+				{
+					hud->SetRemainingTime(stageClearTime);
+				}
+
+				// Reset stageClearStart to track next countdown step
+				stageClearStart = now - STAGE_CLEAR_BGM_DURATION;
+			}
+		}
+		// Phase 3: Time reached 0, play FIREWORKS sound then switch
+		else
+		{
+			constexpr ULONGLONG FIREWORKS_DURATION = 3000;  // 3 seconds for fireworks
+			constexpr ULONGLONG FIREWORKS_START = STAGE_CLEAR_BGM_DURATION;
+
+			if (elapsed < FIREWORKS_START + FIREWORKS_DURATION)
+			{
+				// Play fireworks sound once
+				static bool fireworksPlayed = false;
+				if (!fireworksPlayed)
+				{
+					SoundManager::GetInstance()->PlaySFX(SFX::FIREWORKS, false);
+					fireworksPlayed = true;
+				}
+			}
+			else
+			{
+				// Fireworks done, switch to INTRO scene
+				stageClearActive = false;
+				if (hud != nullptr)
+					hud->SetStageClearActive(false);  // Re-enable warning BGM logic
+
+				// Make Mario visible again for the next level
+				if (player != nullptr)
+					player->SetVisible(true);
+
+				GameManager::GetInstance()->InitiateSwitchScene(SCENE::INTRO);
+				return;
+			}
+		}
+	}
+
 	// skip the rest if scene was already unloaded (Mario died)
 	if (player == nullptr) return;
 
@@ -737,6 +825,25 @@ bool PlayScene::IsPlayerOnCastleBridge()
 			return true;
 	}
 	return false;
+}
+
+void PlayScene::StartStageClear()
+{
+	stageClearActive = true;
+	stageClearStart = GetTickCount64();
+	stageClearTime = hud->GetRemainingTime();
+
+	// Stop current BGM (including warning BGM if playing)
+	SoundManager::GetInstance()->StopBGM();
+
+	// Play stage clear BGM
+	SoundManager::GetInstance()->PlayBGM(BGM::STAGE_CLEAR_THEME, false);
+
+	// Disable warning BGM logic during stage clear
+	if (hud != nullptr)
+		hud->SetStageClearActive(true);
+
+	DebugOut(L"[STAGE_CLEAR] Starting stage clear sequence with time=%d\n", stageClearTime);
 }
 
 void PlayScene::OnMarioDeath()

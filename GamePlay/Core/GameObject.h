@@ -18,6 +18,7 @@ protected:
     int direction; // -1: left, 1: right
     int state;
     bool isDeleted;
+	bool isVisible;
 	Scene* scene; // Reference to the scene the object belongs to
 
 public:
@@ -27,6 +28,7 @@ public:
         this->direction = 1;
         this->state = -1;
         this->isDeleted = false;
+		this->isVisible = true;
 		scene = nullptr;
     };
     GameObject(float x, float y, float z) : GameObject() { this->x = x; this->y = y; this->z = z; };
@@ -46,6 +48,10 @@ public:
 
     virtual void Delete() { this->isDeleted = true; };
     bool IsDeleted() { return this->isDeleted; };
+
+    // Visibility
+    void SetVisible(bool visible) { this->isVisible = visible; }
+    bool IsVisible() { return this->isVisible; }
 
     // Core
     virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) = 0;

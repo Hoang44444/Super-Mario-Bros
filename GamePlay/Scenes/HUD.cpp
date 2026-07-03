@@ -35,6 +35,7 @@ HUD::HUD(Mario* mario, int world, int stage)
 	this->elapsedMs = 0;
 	this->font = nullptr;
 	this->warningBGMPlaying = false;
+	this->stageClearOverride = false;
 }
 
 HUD::~HUD()
@@ -208,18 +209,22 @@ void HUD::Update(DWORD dt)
 	}
 
 	// Timer warning BGM: play when time <= 100s
-	if (remainingTime <= 100 && !warningBGMPlaying)
+	// Skip this logic during stage clear (stageClearOverride = true)
+	if (!stageClearOverride)
 	{
-		DebugOut(L"[WARNING_BGM_DEBUG] Time <= 100s (%d), playing WARNING_THEME\n", remainingTime);
-		SoundManager::GetInstance()->PlayBGM(BGM::WARNING_THEME, true);
-		warningBGMPlaying = true;
-	}
-	else if (remainingTime > 100 && warningBGMPlaying)
-	{
-		// Time went back above 100 (shouldn't happen normally, but handle it)
-		DebugOut(L"[WARNING_BGM_DEBUG] Time > 100s (%d), stopping WARNING_THEME\n", remainingTime);
-		SoundManager::GetInstance()->StopBGM();
-		warningBGMPlaying = false;
+		if (remainingTime <= 100 && !warningBGMPlaying)
+		{
+			DebugOut(L"[WARNING_BGM_DEBUG] Time <= 100s (%d), playing WARNING_THEME\n", remainingTime);
+			SoundManager::GetInstance()->PlayBGM(BGM::WARNING_THEME, true);
+			warningBGMPlaying = true;
+		}
+		else if (remainingTime > 100 && warningBGMPlaying)
+		{
+			// Time went back above 100 (shouldn't happen normally, but handle it)
+			DebugOut(L"[WARNING_BGM_DEBUG] Time > 100s (%d), stopping WARNING_THEME\n", remainingTime);
+			SoundManager::GetInstance()->StopBGM();
+			warningBGMPlaying = false;
+		}
 	}
 
 	if (remainingTime <= 0)
