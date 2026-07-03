@@ -8,7 +8,8 @@ Objects/item2.txt
 Objects/mushroom.txt
 Objects/super_star.txt
 Objects/bullet.txt
-Objects/WindEffect.txt
+#Objects/WindEffect.txt
+Objects/fire_flower.txt
 
 #### Enemy
 Objects/Koopa.txt
@@ -34,6 +35,7 @@ Objects/Spiny.txt
 30 730 36 0.5
 30 682 36 0.5
 30 1288 68 0.5
+30 842 179 0.5
 
 #---- Koopa -----#
 31 435 52 0.5
@@ -41,13 +43,14 @@ Objects/Spiny.txt
 31 2175 180 0.5
 
 #---- Lakitu (40) - bay trên cao ném Spiny, hợp màn trên mây ----
-40 1500 40 0.5
+# type x y z endX   (endX = Mario vượt qua vị trí x này thì Lakitu bay đi)
+40 1150 40 0.5 2200
 
 ########## QUESTION BLOCK ##########
 # type x y z itemType   (11=mushroom 14=star 19=1up)
-10 944 160 0.5 11
-10 1720 64 0.5 14
-10 1072 160 0.5 19
+10 313 144 0.5 11
+10 526 148 0.5 12
+10 1089 148 0.5 19
 
 ########## COIN (hàng coin thưởng - dẫn đường nhảy) ##########
 # type x y z   (18 = coin)
@@ -66,6 +69,17 @@ Objects/Spiny.txt
 18 2100 184 0.5
 18 2124 184 0.5
 18 2148 184 0.5
+18 565 100 0.5
+18 594 100 0.5
+18 625 100 0.5
+
+18 899 119 0.5
+
+
+18 950 180 0.5
+18 962 180 0.5
+18 981 180 0.5
+18 1005 180 0.5
 
 ########## PLATFORM ##########
 # type x y z
@@ -288,13 +302,14 @@ Objects/Spiny.txt
 
 ########## WIND EFFECTS ##########
 # type x y z
-60 2175 50 0.5
-60 2320 180 0.5
-60 2480 80 0.5
-60 2630 200 0.5
-60 2790 30 0.5
-60 2950 140 0.5
-60 3100 100 0.5
+# (tạm thời tắt wind effect)
+#60 2175 50 0.5
+#60 2320 180 0.5
+#60 2480 80 0.5
+#60 2630 200 0.5
+#60 2790 30 0.5
+#60 2950 140 0.5
+#60 3100 100 0.5
 
 ########## BLOCK SWITCH DIRECTION ENEMY (44) ##########
 # Keep each enemy patrolling on its own small platform instead of walking off the edge.
@@ -313,6 +328,9 @@ Objects/Spiny.txt
 44 1776 96 0.5
 # Platform 17 (ground, top y=208) - left edge guard for the Koopa near Mario's start
 44 2064 192 0.5
+44 784 196 0.5
+44 863 196 0.5
+
 
 ########## SWITCH SCENE POINT ##########
 # type x y z

@@ -2,7 +2,6 @@
 #include "AnimationManager.h"
 #include "AssetID.h"
 #include "PlayScene.h"
-#include "Item.h"
 #include "../../CoinPopupEffect.h"
 #include "SoundManager.h"
 #include "../Core/ScoreManager.h"
@@ -47,8 +46,7 @@ void QuestionBlock::SpawnItem(Mario* mario) {
 	if (itemType != OBJECT::ITEM_COIN2)
 		SoundManager::GetInstance()->PlaySFX(SFX::POWERUP_APPEARS);
 
-	Item* it = dynamic_cast<Item*>(item);
-	if (it != nullptr) it->StartEmerge();   // rise out of the block
+	item->StartEmerge();   // rise out of the block
 
 	playScene->AddObject(item);
 }

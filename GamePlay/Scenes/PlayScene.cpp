@@ -227,6 +227,10 @@ void PlayScene::Load()
 	else
 	{
 		DebugOut(L"[SFX_DEBUG] Stopping wind cycle\n");
+	// (tạm thời tắt gió ở 1-3: luôn Stop)
+	//if (id == SCENE::WORLD_1_3)
+	//	WindCycle::GetInstance()->Start();
+	//else
 		WindCycle::GetInstance()->Stop();
 		SoundManager::GetInstance()->StopSFX(SFX::SMB_WINDY); // Stop wind sound
 		windSfxPlaying = false;  // Reset flag when leaving scene
@@ -510,8 +514,11 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	}
 
 	case OBJECT::LAKITU:
-		obj = new Lakitu(x, y, z);
+	{
+		float endX = (tokens.size() >= 5) ? (float)atof(tokens[4].c_str()) : 1e9f;
+		obj = new Lakitu(x, y, z, endX);
 		break;
+	}
 
 	case OBJECT::PODOBOO:
 		obj = new Podoboo(x, y, z);

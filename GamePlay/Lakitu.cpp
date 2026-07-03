@@ -9,10 +9,10 @@
 #include "../Resource/AssetID.h"
 #include "Core/ScoreManager.h"
 
-Lakitu::Lakitu(float x, float y, float z) : Enemy(x, y, z)
+Lakitu::Lakitu(float x, float y, float z, float endX) : Enemy(x, y, z)
 {
-    bool isFacingRight;
-    this->startX = x;
+    this->spawnX = x;
+    this->endX = endX;
     SetState(LAKITU_STATE_FLYING);
     throw_start = GetTickCount64();
 }
@@ -44,6 +44,19 @@ void Lakitu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         return;
     }
 
+    // Mario đã vượt qua endX: Lakitu bay lên khỏi màn rồi biến mất, không bám/ném nữa.
+    if (leaving)
+    {
+        y -= LAKITU_LEAVE_SPEED * dt;
+
+        float cy = Camera::GetInstance()->GetY();
+        const float CULL_BUFFER = 100.0f;
+        if (this->y < cy - CULL_BUFFER)
+            this->Delete();
+
+        return;
+    }
+
     Mario* mario = NULL;
 
     for (size_t i = 0; i < coObjects->size(); i++)
@@ -55,31 +68,75 @@ void Lakitu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         }
     }
 
-    if (mario != NULL && mario->GetState() != MARIO_STATE_DIE)
+    if (mario == NULL || mario->GetState() == MARIO_STATE_DIE)
+        return;
+
+    float mx, my, mz;
+    mario->GetPosition(mx, my, mz);
+
+    // Vị trí neo góc TRÊN-PHẢI khung nhìn (theo camera) và độ cao hover cuối cùng.
+    int screenW = 0, screenH = 0;
+    Camera::GetInstance()->GetSize(screenW, screenH);
+    float camX = Camera::GetInstance()->GetX();
+    float camY = Camera::GetInstance()->GetY();
+
+    float anchorX = camX + screenW - LAKITU_BBOX_WIDTH - LAKITU_CORNER_MARGIN_X;
+    float hoverY  = camY + LAKITU_CORNER_MARGIN_Y;
+
+    // Lakitu chỉ hoạt động khi VỊ TRÍ của nó (mép phải màn) nằm trong vùng [spawnX, endX].
+    // Vị trí Lakitu vượt qua endX -> bay đi vĩnh viễn.
+    if (anchorX > endX)
     {
-        float mx, my, mz;
-        mario->GetPosition(mx, my, mz);
-
-        const float HOVER_RADIUS = 50.0f;
-
-        if (vx > 0 && this->x > mx + HOVER_RADIUS)
-        {
-            vx = -LAKITU_FLY_SPEED;
-        }
-        else if (vx < 0 && this->x < mx - HOVER_RADIUS)
-        {
-            vx = LAKITU_FLY_SPEED;
-        }
+        leaving = true;
+        return;
     }
 
-    x += vx * dt;
+    // Chưa kích hoạt: nấp phía trên đỉnh màn (ẩn) cho tới khi vị trí Lakitu chạm spawnX.
+    if (!activated)
+    {
+        this->x = anchorX;
+        this->y = camY - LAKITU_ENTRY_START_OFFSET;
+
+        if (anchorX >= spawnX)
+        {
+            activated = true;
+            entering = true;
+        }
+        return;
+    }
+
+    // Đã kích hoạt nhưng Mario lùi làm vị trí Lakitu ra khỏi mép trái vùng (< spawnX):
+    // ngừng di chuyển và ngừng ném, lơ lửng đứng yên tại chỗ tới khi trở lại vùng.
+    if (anchorX < spawnX)
+    {
+        isFacingRight = (mx >= this->x);
+        return;
+    }
+
+    // Trong vùng [spawnX, endX]: neo theo mép phải màn hình.
+    this->x = anchorX;
+    isFacingRight = (mx >= this->x);
+
+    // Đang bay từ đỉnh màn xuống vị trí hover: chưa ném Spiny cho tới khi vào vị trí.
+    if (entering)
+    {
+        this->y += LAKITU_ENTRY_SPEED * dt;
+        if (this->y >= hoverY)
+        {
+            this->y = hoverY;
+            entering = false;
+        }
+        return;
+    }
+
+    // Hover ổn định ở góc trên-phải.
+    this->y = hoverY;
 
     if (GetTickCount64() - throw_start > LAKITU_THROW_COOLDOWN)
     {
         throw_start = GetTickCount64();
 
         float cx = Camera::GetInstance()->GetX();
-        float cy = Camera::GetInstance()->GetY();
 
         const float SCREEN_WIDTH = 800.0f;
 
@@ -102,10 +159,11 @@ void Lakitu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
         if (activeSpinies < 4)
         {
+            // Trứng thả ngay tại vị trí Lakitu (góc trên-phải), rơi thẳng đứng xuống.
             Spiny* egg = new Spiny(this->x, this->y, this->z);
             egg->SetState(SPINY_STATE_EGG);
 
-            int lakituDirection = (this->vx > 0) ? 1 : -1;
+            int lakituDirection = (mx >= this->x) ? 1 : -1;   // spiny đi về phía Mario sau khi tiếp đất
             egg->SetFacingDirection(lakituDirection);
 
             PlayScene* currentScene = dynamic_cast<PlayScene*>(this->scene);
