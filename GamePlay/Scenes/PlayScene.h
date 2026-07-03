@@ -20,6 +20,7 @@ class PlayScene : public Scene
 	ULONGLONG marioDieStart = 0;  // tick when Mario entered the DIE state (0 = not dying)
 	ULONGLONG sceneStart = 0;     // tick when the scene started loading
 	bool windSfxPlaying = false;  // track if wind SFX is currently playing
+	bool earthquakeSfxPlaying = false;  // track if earthquake SFX is currently playing
 
 	// Stage clear sequence state
 	bool stageClearActive = false;  // stage clear sequence is running

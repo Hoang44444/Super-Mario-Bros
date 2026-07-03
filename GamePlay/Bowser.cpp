@@ -4,6 +4,7 @@
 #include "PlayScene.h"
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
+#include "../../Resource/SoundManager.h"
 
 Bowser::Bowser(float x, float y, float z) : Enemy(x, y, z)
 {
@@ -130,14 +131,21 @@ void Bowser::SetState(int state)
         break;
 
     case BOWSER_STATE_ATTACKING:
-        vx = 0;
-        attack_duration = GetTickCount64();
+        {
+            vx = 0;
+            attack_duration = GetTickCount64();
 
-        BowserFire* fire = new BowserFire(this->x, this->y + 12.0f, this->z, this->direction);
+            BowserFire* fire = new BowserFire(this->x, this->y + 12.0f, this->z, this->direction);
 
-        PlayScene* scene = dynamic_cast<PlayScene*>(this->scene);
-        if (scene != NULL) scene->AddObject(fire);
+            PlayScene* scene = dynamic_cast<PlayScene*>(this->scene);
+            if (scene != NULL) scene->AddObject(fire);
 
+            SoundManager::GetInstance()->PlaySFX(SFX::BOWSER_FIRE);
+        }
+        break;
+
+    case BOWSER_STATE_DIE:
+        SoundManager::GetInstance()->PlaySFX(SFX::BOWSER_FALLS);
         break;
     }
 }

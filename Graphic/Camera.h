@@ -38,5 +38,6 @@ public:
     void StopEarthquake()            { earthquake.Stop(); }
     void UpdateEarthquake(float dt)  { earthquake.Update(dt); }
     bool IsEarthquakeActive() const  { return earthquake.IsActive(); }
+    bool IsEarthquakeShaking() const { return earthquake.IsShaking(); }
 };
 

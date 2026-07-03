@@ -73,6 +73,8 @@ void PlayScene::Load()
 
 	marioDieStart = 0; // fresh load -> Mario is alive again
 	sceneStart = GetTickCount64();
+	windSfxPlaying = false;  // reset wind SFX state
+	earthquakeSfxPlaying = false;  // reset earthquake SFX state
 
 	if (key_handler == NULL)
 	{
@@ -171,6 +173,7 @@ void PlayScene::Load()
 	SoundManager::GetInstance()->LoadSFX(SFX::BRICK_BREAK, "../Resource/audio/sfx/smb_breakblock.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::ONE_UP, "../Resource/audio/sfx/smb_1-up.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::SMB_WINDY, "../Resource/audio/sfx/smb_windy.wav");
+	SoundManager::GetInstance()->LoadSFX(SFX::SMB_SHAKE, "../Resource/audio/sfx/smb_shake.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::FIREWORKS, "../Resource/audio/sfx/smb_fireworks.wav");
 
 	// Load and play BGM based on scene type
@@ -658,6 +661,23 @@ void PlayScene::Update(DWORD dt)
 	{
 		SoundManager::GetInstance()->StopSFX(SFX::SMB_WINDY);
 		windSfxPlaying = false;
+	}
+
+	// Earthquake SFX: only play when camera is actually shaking (not during rest periods or when on bridge)
+	bool earthquakeShaking = Camera::GetInstance()->IsEarthquakeShaking() && !IsPlayerOnCastleBridge();
+	DebugOut(L"[EARTHQUAKE_DEBUG] earthquakeShaking=%d earthquakeSfxPlaying=%d onBridge=%d\n",
+		earthquakeShaking, earthquakeSfxPlaying, IsPlayerOnCastleBridge());
+	if (earthquakeShaking && !earthquakeSfxPlaying)
+	{
+		DebugOut(L"[EARTHQUAKE_DEBUG] Playing SMB_SHAKE SFX\n");
+		SoundManager::GetInstance()->PlaySFX(SFX::SMB_SHAKE, true);
+		earthquakeSfxPlaying = true;
+	}
+	else if (!earthquakeShaking && earthquakeSfxPlaying)
+	{
+		DebugOut(L"[EARTHQUAKE_DEBUG] Stopping SMB_SHAKE SFX\n");
+		SoundManager::GetInstance()->StopSFX(SFX::SMB_SHAKE);
+		earthquakeSfxPlaying = false;
 	}
 
 	// Stage clear sequence: time countdown with score bonus

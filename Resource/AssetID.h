@@ -395,6 +395,7 @@ namespace SFX
     constexpr int KOOPA_KICK         = 2002;
     constexpr int BOWSER_ROAR        = 2003;
     constexpr int BOWSER_FIRE        = 2004;
+    constexpr int BOWSER_FALLS       = 2005;
 
     // Environment sounds
     constexpr int BRICK_BREAK        = 3000;
@@ -405,6 +406,7 @@ namespace SFX
     constexpr int CASTLE_CLEAR       = 3005;
     constexpr int LEVEL_CLEAR        = 3006;
     constexpr int SMB_WINDY          = 3007;
+    constexpr int SMB_SHAKE          = 3009;
     constexpr int FIREWORKS           = 3008;
 
     // UI sounds

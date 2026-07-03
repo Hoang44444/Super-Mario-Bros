@@ -198,6 +198,7 @@
     <ClInclude Include="Objects\Static\CastleBridge.h" />
     <ClInclude Include="WindCycle.h" />
     <ClInclude Include="WindEffect.h" />
+    <ClInclude Include="EarthquakeCycle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -261,6 +262,7 @@
     <ClCompile Include="Mushroom1Up.cpp" />
     <ClCompile Include="WindCycle.cpp" />
     <ClCompile Include="WindEffect.cpp" />
+    <ClCompile Include="EarthquakeCycle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

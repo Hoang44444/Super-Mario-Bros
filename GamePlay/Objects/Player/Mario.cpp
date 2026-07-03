@@ -329,6 +329,10 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
+	// DON'T reset currentPlatform at start of frame
+	// It persists across frames to allow gravity to be disabled when on platform
+	// It will be reset when Mario actually leaves the platform (logic at line 440-442)
+
 	// A5: đẩy vx/vy Mario -> physics trước khi tích phân (collision frame trước có thể đã sửa trực tiếp)
 	MarioPhysicsState ps = physics.GetState();
 	ps.vx = vx;
@@ -341,8 +345,16 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	const bool groundedBeforePhysics = isOnGround;
 	bool jumpedThisFrame = false;
 
-	// Di chuyển ngang + trọng lực (chưa nhảy)
+	// Di chuyển ngang + trọng lực ( chưa nhảy)
 	physics.Update(dt, physicsInput);
+
+	// Disable gravity when standing on dynamic platform
+	// This prevents Mario from being pulled down by gravity between collision events
+	if (currentPlatform != nullptr) {
+		ps = physics.GetState();
+		ps.vy = 0;  // Override gravity
+		physics.SetState(ps);
+	}
 
 	// A2: nhảy lần 1 — đã trên đất từ frame trước
 	if (jumpRequested && groundedBeforePhysics && level != MARIO_LEVEL::FROG)
@@ -378,11 +390,40 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// Save previous ground state for jump logic (don't clear yet)
 	bool wasOnGround = isOnGround;
 
+	// Log Mario.y BEFORE Collision::Process() (for vertical flicker debugging)
+	float marioYBeforeCollision = y;
+
 	ResolveOverlapWithPlatforms(coObjects);
 	Collision::GetInstance()->Process(this, dt, coObjects);
 
+	// Log Mario.y AFTER Collision::Process() (for vertical flicker debugging)
+	float marioYAfterCollision = y;
+	DebugOut(L"[VERTICAL_FLICKER_DEBUG] marioYBeforeCollision=%.6f marioYAfterCollision=%.6f delta=%.6f\n",
+		marioYBeforeCollision, marioYAfterCollision, marioYAfterCollision - marioYBeforeCollision);
+
 	// Ground probe: xác định isOnGround độc lập từ việc có collision event hay không
 	isOnGround = CheckGroundProbe(coObjects);
+
+	// Log: Check for double parenting (Mario overlapping with multiple platforms)
+	int platformCount = 0;
+	for (auto obj : *coObjects) {
+		if (obj == nullptr || obj->IsDeleted()) continue;
+		auto platform = dynamic_cast<DynamicPlatform*>(obj);
+		if (platform != nullptr) {
+			float pl, pt, pr, pb;
+			platform->GetBoundingBox(pl, pt, pr, pb);
+			float ml, mt, mr, mb;
+			GetBoundingBox(ml, mt, mr, mb);
+
+			// Check if Mario is overlapping with this platform
+			if (mr > pl && ml < pr && mb > pt && mt < pb) {
+				platformCount++;
+			}
+		}
+	}
+	if (platformCount > 1) {
+		DebugOut(L"[VERTICAL_FLICKER_DEBUG] WARNING: Double parenting detected! Mario overlapping with %d platforms\n", platformCount);
+	}
 
 	// Debug log: ground probe result
 	FILE* groundProbeLog = nullptr;
@@ -391,6 +432,128 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		fwprintf(groundProbeLog, L"[MARIO_GROUND_PROBE] dt=%lu y=%.6f vy=%.6f isOnGround=%d wasOnGround=%d\n", dt, y, vy, isOnGround ? 1 : 0, wasOnGround ? 1 : 0);
 		fclose(groundProbeLog);
 	}
+
+	// ========== DYNAMIC PLATFORM PARENTING ==========
+	// Check if Mario has left the platform
+	constexpr float EPSILON = 1.0f;  // Tolerance for floating point comparison
+	if (currentPlatform != nullptr) {
+		float pl, pt, pr, pb;
+		currentPlatform->GetBoundingBox(pl, pt, pr, pb);
+		float ml, mt, mr, mb;
+		GetBoundingBox(ml, mt, mr, mb);
+
+		// If Mario is no longer overlapping with platform
+		// Use EPSILON to avoid floating point precision issues
+		// NOTE: Don't check isOnGround here - Mario can be on platform even if ground probe fails momentarily
+		if (mr < pl - EPSILON || ml > pr + EPSILON || mb < pt - EPSILON || mt > pb + EPSILON) {
+			currentPlatform = nullptr;  // Reset immediately
+		}
+	}
+
+	// Parent Mario to platform using delta (actual movement, not velocity)
+	// Apply parenting EVERY frame when currentPlatform is set, not just when isOnGround is true
+	// This prevents gravity from pulling Mario down between collision events
+	if (currentPlatform != nullptr) {
+		float platformX, platformY, platformZ;
+		currentPlatform->GetPosition(platformX, platformY, platformZ);
+		int platformType = currentPlatform->GetType();
+
+		if (platformType == DYNAMIC_PLATFORM_TYPE::VERTICAL) {
+			// Vertical platform: apply deltaY
+			float deltaY = platformY - currentPlatform->GetPrevY();
+
+			// Log: Check if parenting is being called
+			DebugOut(L"[VERTICAL_FLICKER_DEBUG] Parenting called: deltaY=%.6f\n", deltaY);
+
+			// Check ceiling collision when platform moves up (deltaY < 0)
+			// This prevents Mario from being pushed through ceiling blocks
+			// Added for future-proofing in case levels have platforms moving up near obstacles
+			if (deltaY < 0) {
+				float ml, mt, mr, mb;
+				GetBoundingBox(ml, mt, mr, mb);
+				float probeTop = mt - 2.0f;  // 2 pixels above Mario
+				float probeBottom = mt;
+
+				// Check collision with blocking objects above
+				for (auto obj : *coObjects) {
+					if (obj == nullptr || obj->IsDeleted() || !obj->IsBlocking()) continue;
+					if (obj == currentPlatform) continue;  // Skip current platform
+
+					float ol, ot, or_, ob;
+					obj->GetBoundingBox(ol, ot, or_, ob);
+
+					// If there's an obstacle above, limit deltaY
+					if (mr > ol && ml < or_ && probeBottom > ot && probeTop < ob) {
+						deltaY = 0;  // Don't move up
+						break;
+					}
+				}
+			}
+
+			// Apply deltaY to Mario's position (only once, at the end of the frame)
+			float marioYBefore = y;
+			y += deltaY;
+
+			// Log: Check Mario.y after parenting
+			DebugOut(L"[VERTICAL_FLICKER_DEBUG] After parenting: marioYBefore=%.6f marioYAfter=%.6f delta=%.6f\n",
+				marioYBefore, y, y - marioYBefore);
+
+			// Debug log to verify gap stability
+			DebugOut(L"[VERTICAL_PLATFORM] marioYBefore=%.6f deltaY=%.6f marioYAfter=%.6f platformTop=%.6f gap=%.6f\n",
+				marioYBefore, deltaY, y, platformY, y - platformY);
+		}
+		else if (platformType == DYNAMIC_PLATFORM_TYPE::HORIZONTAL) {
+			// Horizontal platform: apply deltaX
+			float deltaX = platformX - currentPlatform->GetPrevX();
+
+			// Check side collision (left/right) before applying deltaX
+			// This prevents Mario from being pushed through walls
+			if (deltaX != 0) {
+				float ml, mt, mr, mb;
+				GetBoundingBox(ml, mt, mr, mb);
+				float probeLeft = ml - 2.0f;  // 2 pixels to the left of Mario
+				float probeRight = mr + 2.0f;  // 2 pixels to the right of Mario
+
+				// Check collision with blocking objects on the side
+				for (auto obj : *coObjects) {
+					if (obj == nullptr || obj->IsDeleted() || !obj->IsBlocking()) continue;
+					if (obj == currentPlatform) continue;  // Skip current platform
+
+					float ol, ot, or_, ob;
+					obj->GetBoundingBox(ol, ot, or_, ob);
+
+					// If moving right (deltaX > 0), check right side
+					if (deltaX > 0 && mr > ol && ml < or_ && mb > ot && mt < ob) {
+						// Check if obstacle is to the right
+						if (or_ > mr - EPSILON && or_ < mr + 2.0f) {
+							deltaX = 0;  // Don't move right
+							break;
+						}
+					}
+					// If moving left (deltaX < 0), check left side
+					else if (deltaX < 0 && mr > ol && ml < or_ && mb > ot && mt < ob) {
+						// Check if obstacle is to the left
+						if (ol < ml + EPSILON && ol > ml - 2.0f) {
+							deltaX = 0;  // Don't move left
+							break;
+						}
+					}
+				}
+			}
+
+			// Apply deltaX to Mario's position (only once, at the end of the frame)
+			// Note: physics set vx at line 361-365, which runs BEFORE this parenting
+			// So parenting will override the position, not the velocity
+			float marioXBefore = x;
+			x += deltaX;
+
+			// Debug log to verify horizontal movement
+			DebugOut(L"[HORIZONTAL_PLATFORM] marioXBefore=%.6f deltaX=%.6f marioXAfter=%.6f platformLeft=%.6f gap=%.6f\n",
+				marioXBefore, deltaX, x, platformX, x - platformX);
+		}
+	}
+	// ========== END DYNAMIC PLATFORM PARENTING ==========
+
 
 	// A2: nhảy lần 2 sau collision — sửa cửa sổ chết khi vừa chạm đất cùng frame bấm nhảy.
 	// Giữ phím Space khi tiếp đất (!wasOnGround -> isOnGround) cũng kích hoạt nhảy lại.
@@ -688,9 +851,43 @@ void Mario::OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e)
 
 void Mario::OnCollisionWithDynamicPlatform(LPCOLLISIONEVENT e)
 {
+	DebugOut(L"[PLATFORM_DEBUG] OnCollisionWithDynamicPlatform called: ny=%.2f nx=%.2f\n", e->ny, e->nx);
+
+	DynamicPlatform* platform = dynamic_cast<DynamicPlatform*>(e->obj);
+
 	if (e->ny < 0) {
 		isOnGround = true;
-		vy = dynamic_cast<DynamicPlatform*>(e->obj)->GetVy();
+		vy = platform->GetVy();
+
+		// Track the platform (both vertical and horizontal use same variable)
+		if (platform != nullptr) {
+			currentPlatform = platform;
+		}
+
+		// Debug log: Mario standing on Dynamic Platform
+		if (platform != nullptr)
+		{
+			static float lastMarioX = x;
+			static float lastMarioY = y;
+			static float lastPlatformX = 0;
+			static float lastPlatformY = 0;
+
+			float marioDeltaX = x - lastMarioX;
+			float marioDeltaY = y - lastMarioY;
+
+			float platformX, platformY, platformZ;
+			platform->GetPosition(platformX, platformY, platformZ);
+			float platformDeltaX = platformX - lastPlatformX;
+			float platformDeltaY = platformY - lastPlatformY;
+
+			DebugOut(L"[PLATFORM_DEBUG] Mario: x=%.2f y=%.2f dx=%.6f dy=%.6f | Platform: x=%.2f y=%.2f dx=%.6f dy=%.6f | Mario.vx=%.6f Mario.vy=%.6f\n",
+				x, y, marioDeltaX, marioDeltaY, platformX, platformY, platformDeltaX, platformDeltaY, vx, vy);
+
+			lastMarioX = x;
+			lastMarioY = y;
+			lastPlatformX = platformX;
+			lastPlatformY = platformY;
+		}
 	}
 	else if (e->ny > 0) {
 		vy = 0;
