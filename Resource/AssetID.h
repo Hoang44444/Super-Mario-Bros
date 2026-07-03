@@ -190,6 +190,8 @@ namespace ANIMATION
     constexpr int MARIO_BIG_SIT_LEFT = 901;
     constexpr int MARIO_BIG_BRACE_RIGHT = 1000;
     constexpr int MARIO_BIG_BRACE_LEFT = 1001;
+    constexpr int MARIO_BIG_SKID_RIGHT = 1050;
+    constexpr int MARIO_BIG_SKID_LEFT = 1051;
 
     // RACCOON MARIO
     constexpr int MARIO_RACCOON_IDLE_RIGHT = 2400;
@@ -248,6 +250,8 @@ namespace ANIMATION
     constexpr int MARIO_SMALL_RUNNING_LEFT = 1301;
     constexpr int MARIO_SMALL_BRACE_RIGHT = 1400;
     constexpr int MARIO_SMALL_BRACE_LEFT = 1401;
+    constexpr int MARIO_SMALL_SKID_RIGHT = 1700;
+    constexpr int MARIO_SMALL_SKID_LEFT = 1701;
     constexpr int MARIO_SMALL_JUMP_WALK_RIGHT = 1500;
     constexpr int MARIO_SMALL_JUMP_WALK_LEFT = 1501;
     constexpr int MARIO_SMALL_JUMP_RUN_RIGHT = 1600;
@@ -279,8 +283,12 @@ namespace ANIMATION
     constexpr int MARIO_FIRE_IDLE_LEFT = 2101;
     constexpr int MARIO_FIRE_WALKING_RIGHT = 2200;
     constexpr int MARIO_FIRE_WALKING_LEFT = 2201;
+    constexpr int MARIO_FIRE_RUNNING_RIGHT = 2250;
+    constexpr int MARIO_FIRE_RUNNING_LEFT = 2251;
     constexpr int MARIO_FIRE_JUMP_WALK_RIGHT = 2300;
     constexpr int MARIO_FIRE_JUMP_WALK_LEFT = 2301;
+    constexpr int MARIO_FIRE_SKID_RIGHT = 2400;
+    constexpr int MARIO_FIRE_SKID_LEFT = 2401;
 
     // FROG MARIO (5400-5601, safe — tránh RACCOON 2400-3001)
     constexpr int MARIO_FROG_IDLE_RIGHT = 5400;
@@ -396,6 +404,8 @@ namespace SFX
     constexpr int FLAGPOLE            = 3004;
     constexpr int CASTLE_CLEAR       = 3005;
     constexpr int LEVEL_CLEAR        = 3006;
+    constexpr int SMB_WINDY          = 3007;
+    constexpr int FIREWORKS           = 3008;
 
     // UI sounds
     constexpr int MENU_SELECT        = 4000;
@@ -408,10 +418,12 @@ namespace SFX
 namespace BGM
 {
     constexpr int OVERWORLD_THEME    = 5000;  // Overworld theme
-    constexpr int UNDERGROUND_THEME  = 5001;
+    constexpr int UNDERWORLD_THEME  = 5001;
     constexpr int WATER_THEME        = 5002;
     constexpr int CASTLE_THEME       = 5003;
     constexpr int STAR_THEME         = 5004;
     constexpr int MENU_THEME         = 5005;
     constexpr int GAME_OVER_THEME    = 5006;
+    constexpr int WARNING_THEME     = 5007;  // Time warning (100s remaining)
+    constexpr int STAGE_CLEAR_THEME  = 5008;  // Stage clear BGM
 }

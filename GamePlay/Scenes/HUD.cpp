@@ -9,48 +9,12 @@
 #include "../Resource/AssetID.h"
 #include "GameManager.h"
 #include "PlayerData.h"
+#include "../Core/ScoreManager.h"
+#include "../../../Resource/SoundManager.h"
+#include "debug.h"
 
 namespace
 {
-	template <typename T>
-	auto ReadScore(T* mario, int) -> decltype(mario->GetScore())
-	{
-		return mario != nullptr ? mario->GetScore() : 0;
-	}
-
-	int ReadScore(...)
-	{
-		return 0;
-	}
-
-	template <typename T>
-	auto ReadCoin(T* mario, int) -> decltype(mario->GetCoin())
-	{
-		return mario != nullptr ? mario->GetCoin() : 0;
-	}
-
-	int ReadCoin(...)
-	{
-		return 0;
-	}
-
-	template <typename T>
-	auto ReadLives(T* mario, int) -> decltype(mario->GetLives())
-	{
-		return mario != nullptr ? mario->GetLives() : 0;
-	}
-
-	template <typename T>
-	auto ReadLives(T* mario, long) -> decltype(mario->GetLife())
-	{
-		return mario != nullptr ? mario->GetLife() : 0;
-	}
-
-	int ReadLives(...)
-	{
-		return 0;
-	}
-
 	RECT MakeRect(int left, int top, int right, int bottom)
 	{
 		RECT rect;
@@ -70,6 +34,8 @@ HUD::HUD(Mario* mario, int world, int stage)
 	this->remainingTime = START_TIME;
 	this->elapsedMs = 0;
 	this->font = nullptr;
+	this->warningBGMPlaying = false;
+	this->stageClearOverride = false;
 }
 
 HUD::~HUD()
@@ -163,9 +129,9 @@ void HUD::RenderTextureRectAtScreen(int textureId, const RECT& rect, float scree
 void HUD::RenderCoinIcon(float screenX, float screenY)
 {
 	const RECT coinFrames[] = {
-		MakeRect(300, 98, 316, 114),
-		MakeRect(316, 98, 332, 114),
-		MakeRect(331, 98, 347, 114)
+		MakeRect(300, 98, 316, 115),
+		MakeRect(316, 98, 332, 115),
+		MakeRect(331, 98, 347, 115)
 	};
 	int frame = (int)((GetTickCount64() / 100) % 3);
 	RenderTextureRectAtScreen(TEXTURE::MISC, coinFrames[frame], screenX, screenY);
@@ -210,6 +176,7 @@ void HUD::ResetTimer()
 {
 	remainingTime = START_TIME;
 	elapsedMs = 0;
+	warningBGMPlaying = false;
 }
 
 void HUD::Update(DWORD dt)
@@ -239,6 +206,25 @@ void HUD::Update(DWORD dt)
 	{
 		remainingTime--;
 		elapsedMs -= 1000;
+	}
+
+	// Timer warning BGM: play when time <= 100s
+	// Skip this logic during stage clear (stageClearOverride = true)
+	if (!stageClearOverride)
+	{
+		if (remainingTime <= 100 && !warningBGMPlaying)
+		{
+			DebugOut(L"[WARNING_BGM_DEBUG] Time <= 100s (%d), playing WARNING_THEME\n", remainingTime);
+			SoundManager::GetInstance()->PlayBGM(BGM::WARNING_THEME, true);
+			warningBGMPlaying = true;
+		}
+		else if (remainingTime > 100 && warningBGMPlaying)
+		{
+			// Time went back above 100 (shouldn't happen normally, but handle it)
+			DebugOut(L"[WARNING_BGM_DEBUG] Time > 100s (%d), stopping WARNING_THEME\n", remainingTime);
+			SoundManager::GetInstance()->StopBGM();
+			warningBGMPlaying = false;
+		}
 	}
 
 	if (remainingTime <= 0)
@@ -288,9 +274,9 @@ void HUD::Render()
 	// ID3DX10Font changes sprite transforms/state for screen-space text.
 	spriteHandler->Flush();
 
-	const int score = ReadScore(mario, 0);
-	const int coins = (mario != nullptr) ? ReadCoin(mario, 0) : PlayerData::Get().coins;
-	const int lives = (mario != nullptr) ? ReadLives(mario, 0) : PlayerData::Get().lives;
+	const int score = ScoreManager::Get().GetScore();
+	const int coins = ScoreManager::Get().GetCoins();
+	const int lives = ScoreManager::Get().GetLives();
 
 	Renderer* r = Renderer::GetInstance();
 	int screenWidth = r->GetBackBufferWidth();

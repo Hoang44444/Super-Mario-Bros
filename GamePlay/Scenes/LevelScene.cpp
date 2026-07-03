@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "TextureManager.h"
 #include "../Resource/AssetID.h"
+#include "../Objects/Player/PlayerData.h"
 
 class LevelSceneKeyHandler : public KeyEventHandler
 {
@@ -299,9 +300,9 @@ void LevelScene::ConfirmSelection()
 		SCENE::WORLD_1_4
 	};
 
-	// TODO:
-	// load selected level
-	GameManager::GetInstance()->InitiateSwitchScene(levelScenes[selectedLevel]);
+	// Set returnScene to the selected level, then go through INTRO scene
+	PlayerData::Get().returnScene = levelScenes[selectedLevel];
+	GameManager::GetInstance()->InitiateSwitchScene(SCENE::INTRO);
 }
 
 void LevelScene::BackToMenu()

@@ -3,20 +3,7 @@
 #include "CoinCollectEffect.h"
 #include "../Resource/SoundManager.h"
 #include "../Resource/AssetID.h"
-
-namespace
-{
-	template <typename T>
-	auto AddCoinScore(T* mario, int) -> decltype(mario->AddScore(200), void())
-	{
-		if (mario != nullptr)
-			mario->AddScore(200);
-	}
-
-	void AddCoinScore(...)
-	{
-	}
-}
+#include "Core/ScoreManager.h"
 
 void Coin::Render()
 {
@@ -32,7 +19,6 @@ void Coin::OnMarioCollision(Mario* mario)
 
 	SoundManager::GetInstance()->PlaySFX(SFX::COIN);
 	mario->AddCoin();
-	AddCoinScore(mario, 0);
 
 	if (scene != nullptr)
 		scene->AddObject(new CoinCollectEffect(x, y, z));

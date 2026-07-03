@@ -3,6 +3,7 @@
 #include "AssetID.h"
 #include "BrickFragment.h"
 #include "SoundManager.h"
+#include "../Core/ScoreManager.h"
 
 void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {}
 
@@ -26,6 +27,9 @@ void Brick::OnMarioCollision(Mario* mario, LPCOLLISIONEVENT e) {
 
 void Brick::Break() {
 	SoundManager::GetInstance()->PlaySFX(SFX::BRICK_BREAK);
+
+	// Award score for destroying brick
+	ScoreManager::Get().AddScore(SCORE_VALUES::BRICK_DESTROYED);
 
 	float fragmentVx[] = { -0.1f, 0.1f, -0.1f, 0.1f };
 	float fragmentVy[] = { -0.2f, -0.2f, -0.1f, -0.1f };

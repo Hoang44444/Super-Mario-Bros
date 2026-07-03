@@ -140,7 +140,7 @@
 			DWORD chunkSize;
 			file.read((char*)&chunkSize, sizeof(DWORD));
 
-			DebugOut(L"[INFO] Chunk: %.4S, size=%d\n", chunkId, chunkSize);
+			DebugOut(L"[INFO] Chunk: %.4S, size=%u, filePos=%u\n", chunkId, chunkSize, (DWORD)file.tellg());
 
 			if (strncmp(chunkId, "fmt ", 4) == 0)
 			{
@@ -152,6 +152,10 @@
 				if (chunkSize > bytesToRead)
 					file.seekg(chunkSize - bytesToRead, std::ios::cur);
 
+				// Pad to word boundary
+				if (chunkSize % 2 != 0)
+					file.seekg(1, std::ios::cur);
+
 				foundFmt = true;
 			}
 			else if (strncmp(chunkId, "data", 4) == 0)
@@ -161,9 +165,21 @@
 				foundData = true;
 				break;
 			}
+			else if (strncmp(chunkId, "LIST", 4) == 0)
+			{
+				// Skip LIST chunks (metadata)
+				file.seekg(chunkSize, std::ios::cur);
+				// Pad to word boundary
+				if (chunkSize % 2 != 0)
+					file.seekg(1, std::ios::cur);
+			}
 			else
 			{
+				// Skip unknown chunks
 				file.seekg(chunkSize, std::ios::cur);
+				// Pad to word boundary
+				if (chunkSize % 2 != 0)
+					file.seekg(1, std::ios::cur);
 			}
 		}
 
@@ -253,7 +269,7 @@
 
 	bool SoundManager::LoadSFX(int id, const std::string& filePath)
 	{
-		DebugOut(L"[INFO] LoadSFX() called for ID %d, path: %s\n", id, std::wstring(filePath.begin(), filePath.end()).c_str());
+		DebugOut(L"[SOUND_DEBUG] LoadSFX() called for ID %d, path: %S\n", id, filePath.c_str());
 		ComPtr<IDirectSoundBuffer> buffer;
 		if (!LoadWAV(filePath, buffer, false))
 		{
@@ -269,17 +285,17 @@
 
 	bool SoundManager::LoadBGM(int id, const std::string& filePath)
 	{
-		DebugOut(L"[INFO] LoadBGM() called for ID %d, path: %s\n", id, std::wstring(filePath.begin(), filePath.end()).c_str());
+		DebugOut(L"[SOUND_DEBUG] LoadBGM() called for ID %d, path: %S\n", id, filePath.c_str());
 		ComPtr<IDirectSoundBuffer> buffer;
 		if (!LoadWAV(filePath, buffer, true))
 		{
-			DebugOut(L"[ERROR] Failed to load BGM %d from %s\n", id, std::wstring(filePath.begin(), filePath.end()).c_str());
+			DebugOut(L"[SOUND_DEBUG] Failed to load BGM %d from %S\n", id, filePath.c_str());
 			return false;
 		}
 
 		bgmBuffers[id] = buffer;
 		ApplyVolumeSettings();
-		DebugOut(L"[INFO] Successfully loaded BGM %d from %s\n", id, std::wstring(filePath.begin(), filePath.end()).c_str());
+		DebugOut(L"[SOUND_DEBUG] Successfully loaded BGM %d\n", id);
 		return true;
 	}
 
@@ -309,7 +325,7 @@
 
 	void SoundManager::PlayBGM(int id, bool loop)
 	{
-		DebugOut(L"[INFO] PlayBGM() called for ID %d, loop: %d\n", id, loop);
+		DebugOut(L"[SOUND_DEBUG] PlayBGM() called for ID %d, loop: %d\n", id, loop);
 		StopBGM();
 
 		auto it = bgmBuffers.find(id);

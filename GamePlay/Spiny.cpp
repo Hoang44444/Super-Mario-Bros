@@ -5,6 +5,7 @@
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
 #include "debug.h"
+#include "Core/ScoreManager.h"
 
 Spiny::Spiny(float x, float y, float z) : Enemy(x, y, z)
 {
@@ -85,6 +86,8 @@ void Spiny::OnCollisionWith(LPCOLLISIONEVENT e)
         if (koopa->GetState() == KOOPA_STATE_SPINNING)
         {
             this->SetState(SPINY_STATE_DIE);
+            // Award score for shell kill (no combo for shell kills)
+            ScoreManager::Get().AddScore(SCORE_VALUES::SHELL_KICK);
             return;
         }
     }
@@ -94,6 +97,8 @@ void Spiny::OnCollisionWith(LPCOLLISIONEVENT e)
         if (beetle->GetState() == BUZZY_STATE_SPINNING)
         {
             this->SetState(SPINY_STATE_DIE);
+            // Award score for shell kill (no combo for shell kills)
+            ScoreManager::Get().AddScore(SCORE_VALUES::SHELL_KICK);
             return;
         }
     }

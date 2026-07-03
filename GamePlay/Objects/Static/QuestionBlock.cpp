@@ -4,20 +4,7 @@
 #include "PlayScene.h"
 #include "../../CoinPopupEffect.h"
 #include "SoundManager.h"
-
-namespace
-{
-	template <typename T>
-	auto AddQuestionBlockCoinScore(T* mario, int) -> decltype(mario->AddScore(100), void())
-	{
-		if (mario != nullptr)
-			mario->AddScore(100);
-	}
-
-	void AddQuestionBlockCoinScore(...)
-	{
-	}
-}
+#include "../Core/ScoreManager.h"
 
 void QuestionBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {}
 
@@ -47,7 +34,6 @@ void QuestionBlock::SpawnItem(Mario* mario) {
 		if (mario != nullptr)
 		{
 			mario->AddCoin();
-			AddQuestionBlockCoinScore(mario, 0);
 		}
 
 		playScene->AddObject(new CoinPopupEffect(x, y - QUESTION_BLOCK_BBOX_SIZE, z));
