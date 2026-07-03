@@ -1,4 +1,3 @@
-
 #pragma once
 #include "Scene.h"
 #include "GameObject.h"
@@ -11,15 +10,21 @@ class MenuHUD;
 
 class PlayScene : public Scene
 {
-	LPGAMEOBJECT player;
+	LPGAMEOBJECT player = nullptr;
 	std::vector<LPGAMEOBJECT> objects;
 	MenuOptions* menuOptions = nullptr;   // the menu's options object (null on non-menu scenes)
 	HUD* hud = nullptr;
 	MenuHUD* menuHUD = nullptr;           // menu HUD for text-based menu (null on non-menu scenes)
-	float fixedCameraY;
+	float fixedCameraY = 0.0f;
 	int mapHeight = 0;            // map height (px); used to detect Mario falling off the bottom
 	ULONGLONG marioDieStart = 0;  // tick when Mario entered the DIE state (0 = not dying)
 	ULONGLONG sceneStart = 0;     // tick when the scene started loading
+	bool windSfxPlaying = false;  // track if wind SFX is currently playing
+
+	// Stage clear sequence state
+	bool stageClearActive = false;  // stage clear sequence is running
+	ULONGLONG stageClearStart = 0;  // tick when stage clear started
+	int stageClearTime = 0;         // time remaining when stage clear started
 
 	void OnMarioDeath();          // lose a life -> death screen, or game over -> menu
 
@@ -35,11 +40,7 @@ class PlayScene : public Scene
 	void LoadAssets(LPCWSTR assetFile);
 
 public:
-	PlayScene(int id, LPCWSTR filePath) : Scene(id, filePath) {
-		player = NULL;
-		hud = NULL;
-		fixedCameraY = 0;
-	}
+	PlayScene(int id, LPCWSTR filePath);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
@@ -58,5 +59,8 @@ public:
 
 	// Build an item object by its OBJECT type id (returns nullptr if not an item).
 	LPGAMEOBJECT CreateItem(int type, float x, float y, float z);
+
+	// Stage clear sequence (called by SwitchScenePoint)
+	void StartStageClear();
 };
 

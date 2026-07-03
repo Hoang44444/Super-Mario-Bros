@@ -3,6 +3,7 @@
 #include "GameManager.h"
 #include "../Resource/AssetID.h"
 #include "debug.h"
+#include "../Scenes/PlayScene.h"
 
 void SwitchScenePoint::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -23,5 +24,16 @@ void SwitchScenePoint::OnMarioCollision(Mario * mario)
 	else
 		nextSceneID = SCENE::MENU;                                      // fallback
 
-	GameManager::GetInstance()->InitiateSwitchScene(nextSceneID);
+	// Set returnScene to the next level
+	PlayerData::Get().returnScene = nextSceneID;
+
+	// Hide Mario (make invisible) but keep him alive for input during stage clear
+	mario->SetVisible(false);
+
+	// Start stage clear sequence instead of immediately switching
+	PlayScene* playScene = dynamic_cast<PlayScene*>(GameManager::GetInstance()->GetCurrentScene());
+	if (playScene != nullptr)
+	{
+		playScene->StartStageClear();
+	}
 }

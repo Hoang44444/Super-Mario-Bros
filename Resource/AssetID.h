@@ -401,6 +401,8 @@ namespace SFX
     constexpr int FLAGPOLE            = 3004;
     constexpr int CASTLE_CLEAR       = 3005;
     constexpr int LEVEL_CLEAR        = 3006;
+    constexpr int SMB_WINDY          = 3007;
+    constexpr int FIREWORKS           = 3008;
 
     // UI sounds
     constexpr int MENU_SELECT        = 4000;
@@ -413,10 +415,12 @@ namespace SFX
 namespace BGM
 {
     constexpr int OVERWORLD_THEME    = 5000;  // Overworld theme
-    constexpr int UNDERGROUND_THEME  = 5001;
+    constexpr int UNDERWORLD_THEME  = 5001;
     constexpr int WATER_THEME        = 5002;
     constexpr int CASTLE_THEME       = 5003;
     constexpr int STAR_THEME         = 5004;
     constexpr int MENU_THEME         = 5005;
     constexpr int GAME_OVER_THEME    = 5006;
+    constexpr int WARNING_THEME     = 5007;  // Time warning (100s remaining)
+    constexpr int STAGE_CLEAR_THEME  = 5008;  // Stage clear BGM
 }
