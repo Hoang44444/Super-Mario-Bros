@@ -1,5 +1,6 @@
 ﻿[ASSETS]
 Objects/brick_test.txt
+Objects/question_block.txt
 Objects/mario.txt
 Objects/item2.txt
 Objects/fire_flower.txt
@@ -21,7 +22,7 @@ Objects/hammerbro.txt
 Objects/hammer.txt
 Objects/axe.txt
 Objects/bowser.txt
-Objects/BowserFire
+Objects/BowserFire.txt
 Objects/bowserfireball.txt
 
 [MAP]
