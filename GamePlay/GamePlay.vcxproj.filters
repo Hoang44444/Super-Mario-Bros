@@ -295,6 +295,15 @@
     <ClInclude Include="WindEffect.h">
       <Filter>Objects\Dynamic\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Core\MarioPhysics.h">
+      <Filter>Objects\Player\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EarthquakeCycle.h">
+      <Filter>Objects\Dynamic\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ScoreManager.h">
+      <Filter>Scenes\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Collision.cpp">
@@ -440,6 +449,15 @@
     </ClCompile>
     <ClCompile Include="WindEffect.cpp">
       <Filter>Objects\Dynamic\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\MarioPhysics.cpp">
+      <Filter>Objects\Player\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EarthquakeCycle.cpp">
+      <Filter>Objects\Dynamic\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ScoreManager.cpp">
+      <Filter>Scenes\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
