@@ -25,7 +25,8 @@ class PlayScene : public Scene
 	// Stage clear sequence state
 	bool stageClearActive = false;  // stage clear sequence is running
 	ULONGLONG stageClearStart = 0;  // tick when stage clear started
-	int stageClearTime = 0;         // time remaining when stage clear started
+	int stageClearTime = 0;         // time remaining when stage clear started (dùng để tính điểm)
+	int stageClearDisplayTime = 0;  // time hiển thị trên màn hình (countdown nhanh)
 
 	// Boss màn 1-4: Bowser đứng yên tại chỗ, chỉ kích hoạt khi Mario bước lên cầu.
 	LPGAMEOBJECT bossBowser = nullptr;
