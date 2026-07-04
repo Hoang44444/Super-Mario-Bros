@@ -696,33 +696,33 @@ void PlayScene::Update(DWORD dt)
 			// Just wait, BGM is playing
 		}
 		// Phase 2: Countdown time rapidly with score + COIN SFX loop
-		else if (stageClearTime > 0)
+		else if (stageClearDisplayTime > 0)
 		{
 			ULONGLONG countdownElapsed = elapsed - STAGE_CLEAR_BGM_DURATION;
 			int countdownSteps = (int)(countdownElapsed / COUNTDOWN_SPEED);
-			int timeToSubtract = countdownSteps;
+			int timeToSubtract = countdownSteps * 3;  // Giảm 3 giây mỗi lần countdown
 
-			if (timeToSubtract > stageClearTime)
-				timeToSubtract = stageClearTime;
+			if (timeToSubtract > stageClearDisplayTime)
+				timeToSubtract = stageClearDisplayTime;
 
 			if (timeToSubtract > 0)
 			{
-				int oldTime = stageClearTime;
-				stageClearTime -= timeToSubtract;
-				if (stageClearTime < 0) stageClearTime = 0;
+				int oldDisplayTime = stageClearDisplayTime;
+				stageClearDisplayTime -= timeToSubtract;
+				if (stageClearDisplayTime < 0) stageClearDisplayTime = 0;
 
-				// Add score for time bonus (50 points per second)
-				int secondsCleared = oldTime - stageClearTime;
-				ScoreManager::Get().AddScore(secondsCleared * TIME_BONUS_MULTIPLIER);
+				// Tính điểm: thời gian còn lại thực tế x 50
+				// Mỗi lần countdown giảm 3 giây hiển thị, nhưng điểm dựa trên stageClearTime thực tế
+				int scoreToAdd = stageClearTime * TIME_BONUS_MULTIPLIER;
+				ScoreManager::Get().AddScore(scoreToAdd);
 
-				// Play COIN SFX for each second cleared
-				if (secondsCleared > 0)
-					SoundManager::GetInstance()->PlaySFX(SFX::COIN, false);
+				// Play COIN SFX
+				SoundManager::GetInstance()->PlaySFX(SFX::COIN, false);
 
 				// Update HUD time display
 				if (hud != nullptr)
 				{
-					hud->SetRemainingTime(stageClearTime);
+					hud->SetRemainingTime(stageClearDisplayTime);
 				}
 
 				// Reset stageClearStart to track next countdown step
@@ -866,7 +866,8 @@ void PlayScene::StartStageClear()
 {
 	stageClearActive = true;
 	stageClearStart = GetTickCount64();
-	stageClearTime = -5;  // Debug: set time = -5 để countdown nhanh
+	stageClearTime = hud->GetRemainingTime();  // Thời gian thực tế để tính điểm
+	stageClearDisplayTime = 100;  // Debug: hiển thị countdown 100 giây, giảm từng 5 giây
 
 	// Stop current BGM (including warning BGM if playing)
 	SoundManager::GetInstance()->StopBGM();
