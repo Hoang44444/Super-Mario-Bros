@@ -89,6 +89,7 @@ private:
 	bool isInvincible = false;   // miễn thương (dùng cho cả Star lẫn grace sau khi bị hạ cấp)
 	bool isStarPower = false;    // riêng Star: chạm enemy là giết enemy
 	bool isWindyScene = false;
+	bool flyMode = false;        // Debug: fly mode (kháng sát thương, bay ở y=150, không flicker)
 	DynamicPlatform* currentPlatform = nullptr;  // platform đang đứng trên (vertical hoặc horizontal)
 	DWORD invincibleTime = 0;
 	int previousBGM = -1;        // BGM ID before star power (to restore after star ends)
@@ -168,6 +169,8 @@ public:
 	bool IsStarPower() { return isStarPower; }
 	bool CanShoot() { return canShoot; }
 	void SetCanShoot(bool v) { canShoot = v; }
+	void SetFlyMode(bool v) { flyMode = v; }
+	bool IsFlyMode() { return flyMode; }
 	void AddCoin(int amount = 1) { ScoreManager::Get().AddCoin(amount); }
 	void AddLife(int amount = 1) { ScoreManager::Get().AddLife(amount); }
 	int GetCoin() { return ScoreManager::Get().GetCoins(); }

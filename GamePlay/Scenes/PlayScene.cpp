@@ -866,7 +866,7 @@ void PlayScene::StartStageClear()
 {
 	stageClearActive = true;
 	stageClearStart = GetTickCount64();
-	stageClearTime = hud->GetRemainingTime();
+	stageClearTime = -5;  // Debug: set time = -5 để countdown nhanh
 
 	// Stop current BGM (including warning BGM if playing)
 	SoundManager::GetInstance()->StopBGM();

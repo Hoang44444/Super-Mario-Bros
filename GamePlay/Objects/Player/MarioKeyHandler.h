@@ -9,9 +9,12 @@
 class MarioKeyHandler : public KeyEventHandler
 {
 	PlayScene* scene;
-	
+
 	// A1/A4: một nguồn edge duy nhất — set từ OnKeyDown, consume trong KeyState
 	bool jumpPending = false;
+
+	// Debug: Fly mode toggle (kháng sát thương, bay ở y=150, không flicker)
+	bool flyMode = false;
 
 public:
 	MarioKeyHandler(PlayScene* s) : KeyEventHandler() {
@@ -87,6 +90,27 @@ public:
 		// so no input affects Mario's state or velocity during death.
 		switch (KeyCode)
 		{
+		case 'G':
+		{
+			// Debug: Toggle fly mode (kháng sát thương, bay ở y=150, không flicker)
+			flyMode = !flyMode;
+			Mario* marioObj = dynamic_cast<Mario*>(mario);
+			if (marioObj != nullptr)
+			{
+				marioObj->SetFlyMode(flyMode);
+				if (flyMode)
+				{
+					marioObj->SetInvincible(999999999); // Kháng sát thương vô thời hạn
+					DebugOut(L"[DEBUG] Fly mode ON\n");
+				}
+				else
+				{
+					marioObj->SetInvincible(0); // Tắt miễn thương
+					DebugOut(L"[DEBUG] Fly mode OFF\n");
+				}
+			}
+			break;
+		}
 		case VK_SHIFT:
 			DebugOut(L"[KEYBOARD] Key 'Shift' pressed: Shooting bullet\n");
 			mario->SetState(MARIO_STATE::SHOOT);

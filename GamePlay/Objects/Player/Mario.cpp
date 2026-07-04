@@ -302,6 +302,16 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
+	// Debug: Fly mode - fix y=150, vô hiệu hóa trọng lực, cho phép di chuyển ngang
+	if (flyMode)
+	{
+		physics.Update(dt, physicsInput);  // Cập nhật vx từ input
+		y = 150.0f;  // Fix vị trí Y
+		vy = 0.0f;   // Vô hiệu hóa trọng lực
+		MovementUpdate(dt);  // Update di chuyển ngang
+		return;  // Bỏ qua collision và physics khác
+	}
+
 	if (isInvincible)
 	{
 		if (invincibleTime > dt) invincibleTime -= dt;
@@ -772,7 +782,8 @@ void Mario::Render()
 
 		// Nhấp nháy khi bất tử (biến hình / ăn item / grace sau khi trúng đòn / ngôi sao):
 		// bỏ vẽ ở các khung ~60ms xen kẽ để sprite chớp tắt.
-		if (isInvincible && (invincibleTime / 60) % 2 == 0)
+		// Fly mode: không flicker dù isInvincible = true
+		if (isInvincible && !flyMode && (invincibleTime / 60) % 2 == 0)
 			return;
 
 		LPANIMATION ani = AnimationManager::GetInstance()->Get(aniId);
