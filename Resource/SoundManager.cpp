@@ -33,7 +33,6 @@
 	SoundManager::~SoundManager()
 	{
 		// Destructor - ComPtr tự động release DirectSound resources
-		DebugOut(L"[INFO] SoundManager destructor called\n");
 	}
 
 	SoundManager* SoundManager::GetInstance()
@@ -58,7 +57,6 @@
 
 	bool SoundManager::Init(HWND hWnd)
 	{
-		DebugOut(L"[INFO] SoundManager::Init() called\n");
 		this->hWnd = hWnd;
 
 		// Bước 1: Tạo DirectSound device
@@ -68,7 +66,6 @@
 			DebugOut(L"[ERROR] DirectSoundCreate8 failed with HRESULT: 0x%08X\n", result);
 			return false;
 		}
-		DebugOut(L"[INFO] DirectSoundCreate8 succeeded\n");
 
 		// Bước 2: Set cooperative level - DSSCL_PRIORITY cho phép full control
 		result = dsound->SetCooperativeLevel(hWnd, DSSCL_PRIORITY);
@@ -77,7 +74,6 @@
 			DebugOut(L"[ERROR] SetCooperativeLevel failed with HRESULT: 0x%08X\n", result);
 			return false;
 		}
-		DebugOut(L"[INFO] SetCooperativeLevel succeeded\n");
 
 		// Bước 3: Tạo primary buffer - chỉ dùng để cấu hình format âm thanh chung
 		DSBUFFERDESC bufferDesc;
@@ -93,15 +89,12 @@
 			DebugOut(L"[ERROR] CreateSoundBuffer (primary) failed with HRESULT: 0x%08X\n", result);
 			return false;
 		}
-		DebugOut(L"[INFO] Primary buffer created successfully\n");
 
-		DebugOut(L"[INFO] SoundManager initialized successfully\n");
 		return true;
 	}
 
 	bool SoundManager::LoadWAV(const std::string& filePath, ComPtr<IDirectSoundBuffer>& buffer, bool isMusic)
 	{
-		DebugOut(L"[INFO] LoadWAV() called for path: %s, isMusic: %d\n", std::wstring(filePath.begin(), filePath.end()).c_str(), isMusic);
 		
 		// Bước 1: Mở file WAV
 		std::ifstream file(filePath, std::ios::binary);
@@ -110,7 +103,6 @@
 			DebugOut(L"[ERROR] Failed to open audio file: %s\n", std::wstring(filePath.begin(), filePath.end()).c_str());
 			return false;
 		}
-		DebugOut(L"[INFO] File opened successfully\n");
 
 		// Bước 2: Đọc và validate WAV header (RIFF và WAVE)
 		char riff[4];
@@ -133,7 +125,6 @@
 			file.close();
 			return false;
 		}
-		DebugOut(L"[INFO] WAV header validated\n");
 
 		// Bước 3: Parse các chunk trong file WAV (fmt, data, LIST, v.v.)
 		char chunkId[4];
@@ -150,8 +141,6 @@
 		{
 			DWORD chunkSize;
 			file.read((char*)&chunkSize, sizeof(DWORD));
-
-			DebugOut(L"[INFO] Chunk: %.4S, size=%u, filePos=%u\n", chunkId, chunkSize, (DWORD)file.tellg());
 
 			if (strncmp(chunkId, "fmt ", 4) == 0)
 			{
@@ -208,7 +197,6 @@
 			file.close();
 			return false;
 		}
-		DebugOut(L"[INFO] WAV format is PCM (supported)\n");
 
 		// Bước 5: Tạo secondary buffer để chứa dữ liệu âm thanh
 		if (!CreateBuffer(buffer, wf, dataSize, isMusic))
@@ -216,7 +204,6 @@
 			file.close();
 			return false;
 		}
-		DebugOut(L"[INFO] Secondary buffer created\n");
 
 		// Bước 6: Lock buffer để ghi dữ liệu âm thanh vào
 		LPVOID audioPtr1 = nullptr;
@@ -231,7 +218,6 @@
 			file.close();
 			return false;
 		}
-		DebugOut(L"[INFO] Buffer locked successfully\n");
 
 		// Bước 7: Đọc dữ liệu âm thanh từ file và ghi vào buffer
 		file.seekg(dataOffset);
@@ -240,19 +226,16 @@
 		{
 			file.read((char*)audioPtr2, audioBytes2);
 		}
-		DebugOut(L"[INFO] Audio data written to buffer\n");
 
 		// Bước 8: Unlock buffer và đóng file
 		buffer->Unlock(audioPtr1, audioBytes1, audioPtr2, audioBytes2);
 		file.close();
-		DebugOut(L"[INFO] Buffer unlocked and file closed\n");
 
 		return true;
 	}
 
 	bool SoundManager::CreateBuffer(ComPtr<IDirectSoundBuffer>& buffer, const WAVEFORMATEX& wf, DWORD dataSize, bool isMusic)
 	{
-		DebugOut(L"[INFO] CreateBuffer() called, dataSize: %d, isMusic: %d\n", dataSize, isMusic);
 		DSBUFFERDESC bufferDesc;
 		ZeroMemory(&bufferDesc, sizeof(DSBUFFERDESC));
 		bufferDesc.dwSize = sizeof(DSBUFFERDESC);
@@ -279,14 +262,12 @@
 			DebugOut(L"[ERROR] CreateSoundBuffer failed with HRESULT: 0x%08X\n", result);
 			return false;
 		}
-		DebugOut(L"[INFO] Secondary buffer created successfully\n");
 
 		return true;
 	}
 
 	bool SoundManager::LoadSFX(int id, const std::string& filePath)
 	{
-		DebugOut(L"[SOUND_DEBUG] LoadSFX() called for ID %d, path: %S\n", id, filePath.c_str());
 		ComPtr<IDirectSoundBuffer> buffer;
 		
 		// Load file WAV vào buffer (isMusic=false)
@@ -298,31 +279,26 @@
 
 		sfxBuffers[id] = buffer;
 		ApplyVolumeSettings();  // Áp dụng volume settings ngay sau khi load
-		DebugOut(L"[INFO] Successfully loaded SFX %d from %s\n", id, std::wstring(filePath.begin(), filePath.end()).c_str());
 		return true;
 	}
 
 	bool SoundManager::LoadBGM(int id, const std::string& filePath)
 	{
-		DebugOut(L"[SOUND_DEBUG] LoadBGM() called for ID %d, path: %S\n", id, filePath.c_str());
 		ComPtr<IDirectSoundBuffer> buffer;
 		
 		// Load file WAV vào buffer (isMusic=true - có thêm flag frequency control)
 		if (!LoadWAV(filePath, buffer, true))
 		{
-			DebugOut(L"[SOUND_DEBUG] Failed to load BGM %d from %S\n", id, filePath.c_str());
 			return false;
 		}
 
 		bgmBuffers[id] = buffer;
 		ApplyVolumeSettings();
-		DebugOut(L"[SOUND_DEBUG] Successfully loaded BGM %d\n", id);
 		return true;
 	}
 
 	void SoundManager::PlaySFX(int id, bool loop)
 	{
-		DebugOut(L"[INFO] PlaySFX() called for ID %d, loop: %d\n", id, loop);
 		auto it = sfxBuffers.find(id);
 		if (it != sfxBuffers.end())
 		{
@@ -334,10 +310,7 @@
 			{
 				DebugOut(L"[ERROR] Failed to play SFX %d with HRESULT: 0x%08X\n", id, result);
 			}
-			else
-			{
-				DebugOut(L"[INFO] Successfully playing SFX %d\n", id);
-			}
+
 		}
 		else
 		{
@@ -347,7 +320,6 @@
 
 	void SoundManager::PlayBGM(int id, bool loop)
 	{
-		DebugOut(L"[SOUND_DEBUG] PlayBGM() called for ID %d, loop: %d\n", id, loop);
 		StopBGM();  // Dừng BGM đang play trước (nếu có)
 
 		auto it = bgmBuffers.find(id);
@@ -363,10 +335,6 @@
 			{
 				DebugOut(L"[ERROR] Failed to play BGM %d with HRESULT: 0x%08X\n", id, result);
 			}
-			else
-			{
-				DebugOut(L"[INFO] Successfully playing BGM %d\n", id);
-			}
 		}
 		else
 		{
@@ -378,7 +346,6 @@
 
 	void SoundManager::StopBGM()
 	{
-		DebugOut(L"[INFO] StopBGM() called\n");
 		if (currentBGM != -1)
 		{
 			auto it = bgmBuffers.find(currentBGM);
@@ -393,7 +360,6 @@
 
 	void SoundManager::PauseBGM()
 	{
-		DebugOut(L"[INFO] PauseBGM() called\n");
 		if (currentBGM != -1 && isBGMPlaying)
 		{
 			auto it = bgmBuffers.find(currentBGM);
@@ -408,7 +374,6 @@
 
 	void SoundManager::ResumeBGM()
 	{
-		DebugOut(L"[INFO] ResumeBGM() called\n");
 		if (currentBGM != -1 && !isBGMPlaying)
 		{
 			auto it = bgmBuffers.find(currentBGM);
@@ -423,7 +388,6 @@
 
 	void SoundManager::StopSFX(int id)
 	{
-		DebugOut(L"[INFO] StopSFX() called for ID %d\n", id);
 		auto it = sfxBuffers.find(id);
 		if (it != sfxBuffers.end())
 		{
@@ -434,7 +398,6 @@
 
 	void SoundManager::StopAllSFX()
 	{
-		DebugOut(L"[INFO] StopAllSFX() called\n");
 		for (auto& pair : sfxBuffers)
 		{
 			pair.second->Stop();
@@ -445,7 +408,6 @@
 	void SoundManager::SetSFXVolume(int id, int volume)
 	{
 		volume = ClampVolume(volume);
-		DebugOut(L"[INFO] SetSFXVolume() called for ID %d, volume: %d\n", id, volume);
 		auto it = sfxBuffers.find(id);
 		if (it != sfxBuffers.end())
 		{
@@ -461,7 +423,6 @@
 	void SoundManager::SetBGMVolume(int volume)
 	{
 		volume = ClampVolume(volume);
-		DebugOut(L"[INFO] SetBGMVolume() called with volume: %d\n", volume);
 		if (currentBGM != -1)
 		{
 			auto it = bgmBuffers.find(currentBGM);
@@ -517,7 +478,6 @@
 				}
 				else if (!(status & DSBSTATUS_PLAYING))
 				{
-					DebugOut(L"[INFO] BGM stopped playing\n");
 					isBGMPlaying = false;
 				}
 			}

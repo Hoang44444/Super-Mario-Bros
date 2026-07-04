@@ -120,7 +120,5 @@ private:
 			options.push_back(o);
 		}
 		f.close();
-
-		DebugOut(L"[INFO] Loaded %d menu option(s) from %s\n", (int)options.size(), optionFile);
 	}
 };

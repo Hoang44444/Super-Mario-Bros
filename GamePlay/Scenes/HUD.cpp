@@ -214,14 +214,12 @@ void HUD::Update(DWORD dt)
 	{
 		if (remainingTime <= 100 && !warningBGMPlaying)
 		{
-			DebugOut(L"[WARNING_BGM_DEBUG] Time <= 100s (%d), playing WARNING_THEME\n", remainingTime);
 			SoundManager::GetInstance()->PlayBGM(BGM::WARNING_THEME, true);
 			warningBGMPlaying = true;
 		}
 		else if (remainingTime > 100 && warningBGMPlaying)
 		{
 			// Time went back above 100 (shouldn't happen normally, but handle it)
-			DebugOut(L"[WARNING_BGM_DEBUG] Time > 100s (%d), stopping WARNING_THEME\n", remainingTime);
 			SoundManager::GetInstance()->StopBGM();
 			warningBGMPlaying = false;
 		}

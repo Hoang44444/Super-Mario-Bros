@@ -69,8 +69,6 @@ PlayScene::PlayScene(int id, LPCWSTR filePath) : Scene(id, filePath)
 
 void PlayScene::Load()
 {
-	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath.c_str());
-
 	marioDieStart = 0; // fresh load -> Mario is alive again
 	sceneStart = GetTickCount64();
 	windSfxPlaying = false;  // reset wind SFX state
@@ -129,8 +127,6 @@ void PlayScene::Load()
 	}
 
 	f.close();
-	DebugOut(L"[INFO] Done loading scene from %s\n", sceneFilePath.c_str());
-
 	// Determine world and stage for HUD based on current scene or returnScene
 	int hudWorld = 1;
 	int hudStage = 1;
@@ -179,7 +175,6 @@ void PlayScene::Load()
 	// Load and play BGM based on scene type
 	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
 	{
-		DebugOut(L"[BGM_DEBUG] Loading BGMs for world 1 levels\n");
 		// Load all possible BGMs for world 1 levels
 		SoundManager::GetInstance()->LoadBGM(BGM::OVERWORLD_THEME, "../Resource/audio/bgm/overworld_theme.wav");
 		SoundManager::GetInstance()->LoadBGM(BGM::UNDERWORLD_THEME, "../Resource/audio/bgm/underworld_theme.wav");
@@ -195,13 +190,11 @@ void PlayScene::Load()
 		}
 		else if (id == SCENE::WORLD_1_4)
 		{
-			DebugOut(L"[BGM_DEBUG] Playing CASTLE_THEME for level 1-4\n");
 			SoundManager::GetInstance()->PlayBGM(BGM::CASTLE_THEME, true);
 		}
 		else
 		{
 			// WORLD_1_1 and WORLD_1_3 use overworld theme
-			DebugOut(L"[BGM_DEBUG] Playing OVERWORLD_THEME for level %d\n", id);
 			SoundManager::GetInstance()->PlayBGM(BGM::OVERWORLD_THEME, true);
 		}
 	}
@@ -224,12 +217,10 @@ void PlayScene::Load()
 	// Các màn khác tắt để không sót trạng thái.
 	if (id == SCENE::WORLD_1_3)
 	{
-		DebugOut(L"[SFX_DEBUG] Starting wind cycle for level 1-3\n");
 		WindCycle::GetInstance()->Start();
 	}
 	else
 	{
-		DebugOut(L"[SFX_DEBUG] Stopping wind cycle\n");
 		WindCycle::GetInstance()->Stop();
 	}
 
@@ -259,8 +250,6 @@ void PlayScene::_ParseSection_ASSETS(string line)
 
 void PlayScene::LoadAssets(LPCWSTR assetFile)
 {
-	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
-
 	ifstream f;
 	f.open(assetFile);
 
@@ -304,7 +293,6 @@ void PlayScene::LoadAssets(LPCWSTR assetFile)
 	}
 
 	f.close();
-	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
 
 void PlayScene::_ParseSection_SPRITES(string line)
@@ -370,7 +358,6 @@ void PlayScene::_ParseSection_ANIMATIONS(string line)
 	}
 
 	AnimationManager::GetInstance()->Add(ani_id, ani);
-	DebugOut(L"[INFO] Animation ID %d added\n", ani_id);
 }
 
 void PlayScene::_ParseSection_OBJECTS(string line)
@@ -399,7 +386,6 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Mario(x, y, z);
 		player = obj;
 		fixedCameraY = y;
-		DebugOut(L"Mario spawn Y = %f\n", y);
 		if (this->id == SCENE::WORLD_1_3)
 		{
 			static_cast<Mario*>(player)->SetWindyScene(true);
@@ -665,17 +651,13 @@ void PlayScene::Update(DWORD dt)
 
 	// Earthquake SFX: only play when camera is actually shaking (not during rest periods or when on bridge)
 	bool earthquakeShaking = Camera::GetInstance()->IsEarthquakeShaking() && !IsPlayerOnCastleBridge();
-	DebugOut(L"[EARTHQUAKE_DEBUG] earthquakeShaking=%d earthquakeSfxPlaying=%d onBridge=%d\n",
-		earthquakeShaking, earthquakeSfxPlaying, IsPlayerOnCastleBridge());
 	if (earthquakeShaking && !earthquakeSfxPlaying)
 	{
-		DebugOut(L"[EARTHQUAKE_DEBUG] Playing SMB_SHAKE SFX\n");
 		SoundManager::GetInstance()->PlaySFX(SFX::SMB_SHAKE, true);
 		earthquakeSfxPlaying = true;
 	}
 	else if (!earthquakeShaking && earthquakeSfxPlaying)
 	{
-		DebugOut(L"[EARTHQUAKE_DEBUG] Stopping SMB_SHAKE SFX\n");
 		SoundManager::GetInstance()->StopSFX(SFX::SMB_SHAKE);
 		earthquakeSfxPlaying = false;
 	}
@@ -825,7 +807,6 @@ void PlayScene::Update(DWORD dt)
 
 void PlayScene::Render()
 {
-	DebugOut(L"Render loop is active. Objects count: %d\n", objects.size());
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Render();
@@ -878,8 +859,6 @@ void PlayScene::StartStageClear()
 	// Disable warning BGM logic during stage clear
 	if (hud != nullptr)
 		hud->SetStageClearActive(true);
-
-	DebugOut(L"[STAGE_CLEAR] Starting stage clear sequence with time=%d\n", stageClearTime);
 }
 
 void PlayScene::OnMarioDeath()

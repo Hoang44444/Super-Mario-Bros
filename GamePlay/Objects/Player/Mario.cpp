@@ -173,8 +173,6 @@ void Mario::SetStarPower(DWORD duration)
 	else
 		previousBGM = BGM::OVERWORLD_THEME;
 
-	DebugOut(L"[STAR_BGM_DEBUG] Star power activated, saved previous BGM=%d, playing STAR_THEME\n", previousBGM);
-
 	// Play star theme BGM
 	SoundManager::GetInstance()->PlayBGM(BGM::STAR_THEME, true);
 
@@ -320,7 +318,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			// Star power ending: restore previous BGM and run speed
 			if (isStarPower)
 			{
-				DebugOut(L"[STAR_BGM_DEBUG] Star power ending, restoring BGM=%d\n", previousBGM);
 				SoundManager::GetInstance()->StopBGM();
 				if (previousBGM != -1)
 				{
@@ -408,8 +405,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	// Log Mario.y AFTER Collision::Process() (for vertical flicker debugging)
 	float marioYAfterCollision = y;
-	DebugOut(L"[VERTICAL_FLICKER_DEBUG] marioYBeforeCollision=%.6f marioYAfterCollision=%.6f delta=%.6f\n",
-		marioYBeforeCollision, marioYAfterCollision, marioYAfterCollision - marioYBeforeCollision);
 
 	// Ground probe: xác định isOnGround độc lập từ việc có collision event hay không
 	isOnGround = CheckGroundProbe(coObjects);
@@ -432,7 +427,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 	if (platformCount > 1) {
-		DebugOut(L"[VERTICAL_FLICKER_DEBUG] WARNING: Double parenting detected! Mario overlapping with %d platforms\n", platformCount);
 	}
 
 	// Debug log: ground probe result
@@ -473,8 +467,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			float deltaY = platformY - currentPlatform->GetPrevY();
 
 			// Log: Check if parenting is being called
-			DebugOut(L"[VERTICAL_FLICKER_DEBUG] Parenting called: deltaY=%.6f\n", deltaY);
-
 			// Check ceiling collision when platform moves up (deltaY < 0)
 			// This prevents Mario from being pushed through ceiling blocks
 			// Added for future-proofing in case levels have platforms moving up near obstacles
@@ -504,13 +496,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			float marioYBefore = y;
 			y += deltaY;
 
-			// Log: Check Mario.y after parenting
-			DebugOut(L"[VERTICAL_FLICKER_DEBUG] After parenting: marioYBefore=%.6f marioYAfter=%.6f delta=%.6f\n",
-				marioYBefore, y, y - marioYBefore);
-
-			// Debug log to verify gap stability
-			DebugOut(L"[VERTICAL_PLATFORM] marioYBefore=%.6f deltaY=%.6f marioYAfter=%.6f platformTop=%.6f gap=%.6f\n",
-				marioYBefore, deltaY, y, platformY, y - platformY);
 		}
 		else if (platformType == DYNAMIC_PLATFORM_TYPE::HORIZONTAL) {
 			// Horizontal platform: apply deltaX
@@ -556,10 +541,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			// So parenting will override the position, not the velocity
 			float marioXBefore = x;
 			x += deltaX;
-
-			// Debug log to verify horizontal movement
-			DebugOut(L"[HORIZONTAL_PLATFORM] marioXBefore=%.6f deltaX=%.6f marioXAfter=%.6f platformLeft=%.6f gap=%.6f\n",
-				marioXBefore, deltaX, x, platformX, x - platformX);
 		}
 	}
 	// ========== END DYNAMIC PLATFORM PARENTING ==========
@@ -862,8 +843,6 @@ void Mario::OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e)
 
 void Mario::OnCollisionWithDynamicPlatform(LPCOLLISIONEVENT e)
 {
-	DebugOut(L"[PLATFORM_DEBUG] OnCollisionWithDynamicPlatform called: ny=%.2f nx=%.2f\n", e->ny, e->nx);
-
 	DynamicPlatform* platform = dynamic_cast<DynamicPlatform*>(e->obj);
 
 	if (e->ny < 0) {
@@ -890,9 +869,6 @@ void Mario::OnCollisionWithDynamicPlatform(LPCOLLISIONEVENT e)
 			platform->GetPosition(platformX, platformY, platformZ);
 			float platformDeltaX = platformX - lastPlatformX;
 			float platformDeltaY = platformY - lastPlatformY;
-
-			DebugOut(L"[PLATFORM_DEBUG] Mario: x=%.2f y=%.2f dx=%.6f dy=%.6f | Platform: x=%.2f y=%.2f dx=%.6f dy=%.6f | Mario.vx=%.6f Mario.vy=%.6f\n",
-				x, y, marioDeltaX, marioDeltaY, platformX, platformY, platformDeltaX, platformDeltaY, vx, vy);
 
 			lastMarioX = x;
 			lastMarioY = y;

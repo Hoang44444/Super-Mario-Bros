@@ -57,7 +57,7 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath)
 	HRESULT hr = D3DX10GetImageInfoFromFile(texturePath, NULL, &imageInfo, NULL);
 	if (FAILED(hr))
 	{
-		DebugOut((wchar_t*)L"[ERROR] D3DX10GetImageInfoFromFile failed for  file: %s with error: %d\n", texturePath, hr);
+		DebugOut(L"[ERROR] D3DX10GetImageInfoFromFile failed for  file: %s with error: %d\n", texturePath, hr);
 		return NULL;
 	}
 
@@ -89,7 +89,7 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath)
 
 	if (FAILED(hr))
 	{
-		DebugOut((wchar_t*)L"[ERROR] Failed to load texture file: %s with error: %d\n", texturePath, hr);
+		DebugOut(L"[ERROR] Failed to load texture file: %s with error: %d\n", texturePath, hr);
 		return NULL;
 	}
 
@@ -98,7 +98,7 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath)
 	pD3D10Resource->Release();
 
 	if (!tex) {
-		DebugOut((wchar_t*)L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
+		DebugOut(L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
 		return NULL;
 	}
 

@@ -101,18 +101,15 @@ public:
 				if (flyMode)
 				{
 					marioObj->SetInvincible(999999999); // Kháng sát thương vô thời hạn
-					DebugOut(L"[DEBUG] Fly mode ON\n");
 				}
 				else
 				{
 					marioObj->SetInvincible(0); // Tắt miễn thương
-					DebugOut(L"[DEBUG] Fly mode OFF\n");
 				}
 			}
 			break;
 		}
 		case VK_SHIFT:
-			DebugOut(L"[KEYBOARD] Key 'Shift' pressed: Shooting bullet\n");
 			mario->SetState(MARIO_STATE::SHOOT);
 			break;
 		case VK_SPACE:

@@ -13,7 +13,6 @@ void SwitchScenePoint::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void SwitchScenePoint::OnMarioCollision(Mario * mario)
 {
-	DebugOut(L"[INFO] Mario collided with SwitchScenePoint at (%f, %f)\n", x, y);
 	int currentSceneID = GameManager::GetInstance()->GetCurrentSceneID();
 
 	int nextSceneID;
