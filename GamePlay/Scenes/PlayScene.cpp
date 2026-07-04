@@ -365,6 +365,170 @@ void PlayScene::_ParseSection_ANIMATIONS(string line)
 	AnimationManager::GetInstance()->Add(ani_id, ani);
 }
 
+LPGAMEOBJECT PlayScene::CreatePlayerObject(float x, float y, float z)
+{
+	if (player != NULL)
+	{
+		DebugOut(L"[ERROR] MARIO object was created before! \n");
+		return nullptr;
+	}
+	LPGAMEOBJECT obj = new Mario(x, y, z);
+	player = obj;
+	fixedCameraY = y;
+	if (this->id == SCENE::WORLD_1_3)
+	{
+		static_cast<Mario*>(player)->SetWindyScene(true);
+	}
+	return obj;
+}
+
+LPGAMEOBJECT PlayScene::CreateStaticObject(int type, float x, float y, float z, vector<string>& tokens)
+{
+	switch (type)
+	{
+	case OBJECT::PLATFORM:
+		return new Platform(x, y, z);
+
+	case OBJECT::BRICK_TEST:
+		return new BrickTest(x, y, z);
+
+	case OBJECT::BACKGROUND:
+		return new Background(x, y, z);
+
+	case OBJECT::PIPE:
+	{
+		int aniId = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : ANIMATION::PIPE_OVERWORLD;
+		return new Pipe(x, y, z, aniId);
+	}
+
+	case OBJECT::SWITCH_SCENE_POINT:
+		return new SwitchScenePoint(x, y, z);
+
+	case OBJECT::ENEMY_TURN_BLOCK:
+		return new EnemyTurnBlock(x, y, z);
+
+	case OBJECT::BRICK:
+	{
+		int aniId = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : ANIMATION::BRICK_OVERWORLD;
+		return new Brick(x, y, z, aniId);
+	}
+
+	case OBJECT::QUESTION_BLOCK:
+	{
+		int itemType = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : OBJECT::COIN;
+		return new QuestionBlock(x, y, z, itemType);
+	}
+
+	case OBJECT::CASTLE_BRIDGE:
+		return new CastleBridge(x, y, z);
+
+	case OBJECT::AXE:
+		return new Axe(x, y, z);
+
+	case OBJECT::MENU_OPTIONS:
+	{
+		wstring optFile = L"Objects/menu_options.txt";
+		if (tokens.size() >= 5)
+			optFile = wstring(tokens[4].begin(), tokens[4].end());
+		menuOptions = new MenuOptions(x, y, z, optFile.c_str());
+		return menuOptions;
+	}
+
+	case OBJECT::LIVES_NUMBER:
+	{
+		float w = (tokens.size() >= 5) ? (float)atof(tokens[4].c_str()) : 11.0f;
+		float h = (tokens.size() >= 6) ? (float)atof(tokens[5].c_str()) : 18.0f;
+		return new LivesNumber(x, y, z, w, h);
+	}
+
+	case OBJECT::WIND_PARTICLE:
+		return new WindEffect(x, y, z);
+	}
+	return nullptr;
+}
+
+LPGAMEOBJECT PlayScene::CreateDynamicObject(int type, float x, float y, float z, vector<string>& tokens)
+{
+	switch (type)
+	{
+	case OBJECT::DYNAMIC_PLATFORM:
+	{
+		if (tokens.size() < 5)
+		{
+			DebugOut(L"[ERROR] DYNAMIC_PLATFORM missing objectType field!\n");
+			return nullptr;
+		}
+		int objectType = atoi(tokens[4].c_str());
+		int initialDirection = (tokens.size() >= 6) ? atoi(tokens[5].c_str()) : 1;
+		return new DynamicPlatform(x, y, z, objectType, initialDirection);
+	}
+
+	case OBJECT::MUSHROOM:
+	case OBJECT::FIRE_FLOWER:
+	case OBJECT::POISON_MUSHROOM:
+	case OBJECT::SUPER_STAR:
+	case OBJECT::COIN:
+	case OBJECT::ITEM_COIN2:
+	case OBJECT::MUSHROOM_1UP:
+		return CreateItem(type, x, y, z);
+	}
+	return nullptr;
+}
+
+LPGAMEOBJECT PlayScene::CreateEnemyObject(int type, float x, float y, float z, vector<string>& tokens)
+{
+	switch (type)
+	{
+	case OBJECT::GOOMBA:
+		return new Goomba(x, y, z);
+
+	case OBJECT::KOOPA:
+		return new Koopa(x, y, z);
+
+	case OBJECT::BUZZY_BEETLE:
+		return new BuzzyBeetle(x, y, z);
+
+	case OBJECT::HAMMER_BRO:
+		return new HammerBro(x, y, z);
+
+	case OBJECT::BLOOPER:
+		return new Blooper(x, y, z);
+
+	case OBJECT::BOWSER:
+		return new Bowser(x, y, z);
+
+	case OBJECT::BULLET_BILL:
+	{
+		int dir = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : -1;
+		LPGAMEOBJECT obj = new BulletBill(x, y, z);
+		if (obj) static_cast<BulletBill*>(obj)->SetMovement(dir);
+		return obj;
+	}
+
+	case OBJECT::CANNON:
+	{
+		int dir = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : 1;
+		return new Cannon(x, y, z, dir);
+	}
+
+	case OBJECT::LAKITU:
+	{
+		float endX = (tokens.size() >= 5) ? (float)atof(tokens[4].c_str()) : 1e9f;
+		return new Lakitu(x, y, z, endX);
+	}
+
+	case OBJECT::PODOBOO:
+		return new Podoboo(x, y, z);
+
+	case OBJECT::SPINY:
+		return new Spiny(x, y, z);
+
+	case OBJECT::PIRANHA_PLANT:
+		return new PiranhaPlant(x, y, z);
+	}
+	return nullptr;
+}
+
 // Parse section [OBJECTS] - tạo objects dựa trên type
 void PlayScene::_ParseSection_OBJECTS(string line)
 {
@@ -384,174 +548,50 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	switch (type)
 	{
 	case OBJECT::MARIO:
-		if (player != NULL)
-		{
-			DebugOut(L"[ERROR] MARIO object was created before! \n");
-			return;
-		}
-		obj = new Mario(x, y, z);
-		player = obj;
-		fixedCameraY = y;
-		if (this->id == SCENE::WORLD_1_3)
-		{
-			static_cast<Mario*>(player)->SetWindyScene(true);
-		}
+		obj = CreatePlayerObject(x, y, z);
 		break;
 
 	case OBJECT::PLATFORM:
-		obj = new Platform(x, y, z);
-		break;
-
 	case OBJECT::BRICK_TEST:
-		obj = new BrickTest(x, y, z);
-		break;
-
 	case OBJECT::BACKGROUND:
-		obj = new Background(x, y, z);
-		break;
 	case OBJECT::PIPE:
-	{
-		int aniId = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : ANIMATION::PIPE_OVERWORLD;
-		obj = new Pipe(x, y, z, aniId);
-		break;
-	}
 	case OBJECT::SWITCH_SCENE_POINT:
-		obj = new SwitchScenePoint(x, y, z);
-		break;
-
 	case OBJECT::ENEMY_TURN_BLOCK:
-		obj = new EnemyTurnBlock(x, y, z);
-		break;
-
 	case OBJECT::BRICK:
-	{
-		int aniId = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : ANIMATION::BRICK_OVERWORLD;
-		obj = new Brick(x, y, z, aniId);
-		break;
-	}
-
 	case OBJECT::QUESTION_BLOCK:
-	{
-		int itemType = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : OBJECT::COIN;
-		obj = new QuestionBlock(x, y, z, itemType);
+	case OBJECT::CASTLE_BRIDGE:
+	case OBJECT::AXE:
+	case OBJECT::MENU_OPTIONS:
+	case OBJECT::LIVES_NUMBER:
+	case OBJECT::WIND_PARTICLE:
+		obj = CreateStaticObject(type, x, y, z, tokens);
 		break;
-	}
 
+	case OBJECT::DYNAMIC_PLATFORM:
 	case OBJECT::MUSHROOM:
 	case OBJECT::FIRE_FLOWER:
 	case OBJECT::POISON_MUSHROOM:
 	case OBJECT::SUPER_STAR:
-		obj = CreateItem(type, x, y, z);
-		break;
-
-	case OBJECT::CASTLE_BRIDGE:
-		obj = new CastleBridge(x, y, z);
-		break;
-
-	case OBJECT::AXE:
-		obj = new Axe(x, y, z);
-		break;
-
-	case OBJECT::DYNAMIC_PLATFORM:
-	{
-		if (tokens.size() < 5)
-		{
-			DebugOut(L"[ERROR] DYNAMIC_PLATFORM missing objectType field!\n");
-			return;
-		}
-		int objectType = atoi(tokens[4].c_str());
-		int initialDirection = (tokens.size() >= 6) ? atoi(tokens[5].c_str()) : 1;
-		obj = new DynamicPlatform(x, y, z, objectType, initialDirection);
-		break;
-	}
-
-	// ---- ITEMS ----
 	case OBJECT::COIN:
 	case OBJECT::ITEM_COIN2:
 	case OBJECT::MUSHROOM_1UP:
-		obj = CreateItem(type, x, y, z);
+		obj = CreateDynamicObject(type, x, y, z, tokens);
 		break;
 
-	// ---- ENEMIES ----
 	case OBJECT::GOOMBA:
-		obj = new Goomba(x, y, z);
-		break;
-
 	case OBJECT::KOOPA:
-		obj = new Koopa(x, y, z);
-		break;
-
 	case OBJECT::BUZZY_BEETLE:
-		obj = new BuzzyBeetle(x, y, z);
-		break;
-
 	case OBJECT::HAMMER_BRO:
-		obj = new HammerBro(x, y, z);
-		break;
-
 	case OBJECT::BLOOPER:
-		obj = new Blooper(x, y, z);
-		break;
-
 	case OBJECT::BOWSER:
-		obj = new Bowser(x, y, z);
-		break;
-
 	case OBJECT::BULLET_BILL:
-	{
-		int dir = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : -1;
-		obj = new BulletBill(x, y, z);
-		if (obj) static_cast<BulletBill*>(obj)->SetMovement(dir);
-		break;
-	}
-
 	case OBJECT::CANNON:
-	{
-		int dir = (tokens.size() >= 5) ? atoi(tokens[4].c_str()) : 1;
-		obj = new Cannon(x, y, z, dir);
-		break;
-	}
-
 	case OBJECT::LAKITU:
-	{
-		float endX = (tokens.size() >= 5) ? (float)atof(tokens[4].c_str()) : 1e9f;
-		obj = new Lakitu(x, y, z, endX);
-		break;
-	}
-
 	case OBJECT::PODOBOO:
-		obj = new Podoboo(x, y, z);
-		break;
-
 	case OBJECT::SPINY:
-		obj = new Spiny(x, y, z);
-		break;
-
 	case OBJECT::PIRANHA_PLANT:
-		obj = new PiranhaPlant(x, y, z);
+		obj = CreateEnemyObject(type, x, y, z, tokens);
 		break;
-	case OBJECT::WIND_PARTICLE:
-		obj = new WindEffect(x, y, z);
-		break;
-	case OBJECT::MENU_OPTIONS:
-	{
-		// 5th token = path to the option-definition file (defaults if omitted).
-		wstring optFile = L"Objects/menu_options.txt";
-		if (tokens.size() >= 5)
-			optFile = wstring(tokens[4].begin(), tokens[4].end());
-		menuOptions = new MenuOptions(x, y, z, optFile.c_str());
-		obj = menuOptions;
-		break;
-	}
-
-	case OBJECT::LIVES_NUMBER:
-	{
-		// tokens: 51 x y z [w] [h]  — x,y là toạ độ logic; w,h là kích thước vẽ.
-		float w = (tokens.size() >= 5) ? (float)atof(tokens[4].c_str()) : 11.0f;
-		float h = (tokens.size() >= 6) ? (float)atof(tokens[5].c_str()) : 18.0f;
-		obj = new LivesNumber(x, y, z, w, h);
-		break;
-	}
 	}
 
 	if (obj != NULL) {
@@ -593,58 +633,30 @@ void PlayScene::_ParseSection_MAP(string line)
 	Camera::GetInstance()->SetMapSize(width, height);
 }
 
-// Update scene: xử lý logic game, collision, camera, effects
-void PlayScene::Update(DWORD dt)
+void PlayScene::HandleIntroDeathSceneUpdate()
 {
-	if (id == SCENE::INTRO || id == SCENE::DEATH)
+	ULONGLONG now = GetTickCount64();
+	if (now - sceneStart >= 2000)
 	{
-		ULONGLONG now = GetTickCount64();
-		if (now - sceneStart >= 2000)
-		{
-			GameManager::GetInstance()->InitiateSwitchScene(PlayerData::Get().returnScene);
-			return;
-		}
+		GameManager::GetInstance()->InitiateSwitchScene(PlayerData::Get().returnScene);
+		return;
 	}
+}
 
-	if (id == SCENE::GAME_OVER)
+void PlayScene::HandleGameOverSceneUpdate()
+{
+	ULONGLONG now = GetTickCount64();
+	if (now - sceneStart >= GAME_OVER_SCENE_DELAY_MS)
 	{
-		ULONGLONG now = GetTickCount64();
-		if (now - sceneStart >= GAME_OVER_SCENE_DELAY_MS)
-		{
-			PlayerData::Get().Reset();
-			GameManager::GetInstance()->InitiateSwitchScene(SCENE::MENU);
-			return;
-		}
+		PlayerData::Get().Reset();
+		GameManager::GetInstance()->InitiateSwitchScene(SCENE::MENU);
+		return;
 	}
+}
 
-	// Boss màn 1-4: Bowser chỉ bắt đầu hoạt động khi Mario đã bước lên cầu.
-	if (bossBowser != nullptr && !bossBowser->IsDeleted() && IsPlayerOnCastleBridge())
-		static_cast<Bowser*>(bossBowser)->Activate();
-
-	vector<LPGAMEOBJECT> coObjects;
-	for (auto obj : objects) coObjects.push_back(obj);
-
-	// Update mọi object TRỪ player trước, rồi update player cuối cùng.
-	// Player phải chạy sau moving platforms để collision resolve với vị trí hiện tại của platforms.
-	// Nếu không Mario sẽ lag 1 frame và rơi qua/jitter trên platforms di chuyển lên.
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		if (objects[i] == player) continue;
-		if (!objects[i]->IsDeleted())
-			objects[i]->Update(dt, &coObjects);
-	}
-
-	if (player != nullptr && !player->IsDeleted())
-		player->Update(dt, &coObjects);
-
-	if (hud != nullptr)
-		hud->Update(dt);
-
-	if (menuHUD != nullptr)
-		menuHUD->Update();
-
+void PlayScene::UpdateSoundEffects()
+{
 	// Wind SFX: chỉ play khi gió thực sự thổi (không trong khoảng nghỉ)
-	// Track state để tránh gọi PlaySFX mỗi frame (sẽ restart sound)
 	bool windActive = (id == SCENE::WORLD_1_3 && WindCycle::GetInstance()->IsActive());
 	if (windActive && !windSfxPlaying)
 	{
@@ -669,125 +681,126 @@ void PlayScene::Update(DWORD dt)
 		SoundManager::GetInstance()->StopSFX(SFX::SMB_SHAKE);
 		earthquakeSfxPlaying = false;
 	}
+}
 
-	// Stage clear sequence: countdown thời gian với điểm bonus
-	if (stageClearActive)
+void PlayScene::UpdateStageClearSequence()
+{
+	if (!stageClearActive) return;
+
+	ULONGLONG now = GetTickCount64();
+	constexpr ULONGLONG STAGE_CLEAR_BGM_DURATION = 2000;  // 2 giây cho stage clear BGM
+	constexpr ULONGLONG COUNTDOWN_SPEED = 30;  // countdown mỗi 30ms (nhanh hơn)
+	constexpr int TIME_BONUS_MULTIPLIER = 50;  // 50 điểm mỗi giây
+
+	ULONGLONG elapsed = now - stageClearStart;
+
+	// Phase 1: Play stage clear BGM trong 2 giây
+	if (elapsed < STAGE_CLEAR_BGM_DURATION)
 	{
-		ULONGLONG now = GetTickCount64();
-		constexpr ULONGLONG STAGE_CLEAR_BGM_DURATION = 2000;  // 2 giây cho stage clear BGM
-		constexpr ULONGLONG COUNTDOWN_SPEED = 30;  // countdown mỗi 30ms (nhanh hơn)
-		constexpr int TIME_BONUS_MULTIPLIER = 50;  // 50 điểm mỗi giây
+		// Just wait, BGM is playing
+	}
+	// Phase 2: Countdown thời gian nhanh với điểm + loop COIN SFX
+	else if (stageClearDisplayTime > 0)
+	{
+		ULONGLONG countdownElapsed = elapsed - STAGE_CLEAR_BGM_DURATION;
+		int countdownSteps = (int)(countdownElapsed / COUNTDOWN_SPEED);
+		int timeToSubtract = countdownSteps * 3;  // Giảm 3 giây mỗi lần countdown
 
-		ULONGLONG elapsed = now - stageClearStart;
+		if (timeToSubtract > stageClearDisplayTime)
+			timeToSubtract = stageClearDisplayTime;
 
-		// Phase 1: Play stage clear BGM trong 2 giây
-		if (elapsed < STAGE_CLEAR_BGM_DURATION)
+		if (timeToSubtract > 0)
 		{
-			// Just wait, BGM is playing
-		}
-		// Phase 2: Countdown thời gian nhanh với điểm + loop COIN SFX
-		else if (stageClearDisplayTime > 0)
-		{
-			ULONGLONG countdownElapsed = elapsed - STAGE_CLEAR_BGM_DURATION;
-			int countdownSteps = (int)(countdownElapsed / COUNTDOWN_SPEED);
-			int timeToSubtract = countdownSteps * 3;  // Giảm 3 giây mỗi lần countdown
+			int oldDisplayTime = stageClearDisplayTime;
+			stageClearDisplayTime -= timeToSubtract;
+			if (stageClearDisplayTime < 0) stageClearDisplayTime = 0;
 
-			if (timeToSubtract > stageClearDisplayTime)
-				timeToSubtract = stageClearDisplayTime;
+			// Tính điểm: thời gian còn lại thực tế x 50
+			int scoreToAdd = stageClearTime * TIME_BONUS_MULTIPLIER;
+			ScoreManager::Get().AddScore(scoreToAdd);
 
-			if (timeToSubtract > 0)
+			// Play COIN SFX
+			SoundManager::GetInstance()->PlaySFX(SFX::COIN, false);
+
+			// Update HUD time display
+			if (hud != nullptr)
 			{
-				int oldDisplayTime = stageClearDisplayTime;
-				stageClearDisplayTime -= timeToSubtract;
-				if (stageClearDisplayTime < 0) stageClearDisplayTime = 0;
-
-				// Tính điểm: thời gian còn lại thực tế x 50
-				// Mỗi lần countdown giảm 3 giây hiển thị, nhưng điểm dựa trên stageClearTime thực tế
-				int scoreToAdd = stageClearTime * TIME_BONUS_MULTIPLIER;
-				ScoreManager::Get().AddScore(scoreToAdd);
-
-				// Play COIN SFX
-				SoundManager::GetInstance()->PlaySFX(SFX::COIN, false);
-
-				// Update HUD time display
-				if (hud != nullptr)
-				{
-					hud->SetRemainingTime(stageClearDisplayTime);
-				}
-
-				// Reset stageClearStart để track bước countdown tiếp theo
-				stageClearStart = now - STAGE_CLEAR_BGM_DURATION;
+				hud->SetRemainingTime(stageClearDisplayTime);
 			}
-		}
-		// Phase 3: Thời gian về 0, play FIREWORKS sound rồi chuyển
-		else
-		{
-			constexpr ULONGLONG FIREWORKS_DURATION = 3000;  // 3 giây cho fireworks
-			constexpr ULONGLONG FIREWORKS_START = STAGE_CLEAR_BGM_DURATION;
 
-			if (elapsed < FIREWORKS_START + FIREWORKS_DURATION)
-			{
-				// Play fireworks sound một lần
-				static bool fireworksPlayed = false;
-				if (!fireworksPlayed)
-				{
-					SoundManager::GetInstance()->PlaySFX(SFX::FIREWORKS, false);
-					fireworksPlayed = true;
-				}
-			}
-			else
-			{
-				// Fireworks xong, chuyển sang INTRO scene
-				stageClearActive = false;
-				if (hud != nullptr)
-					hud->SetStageClearActive(false);  // Re-enable warning BGM logic
-
-				// Make Mario visible again for the next level
-				if (player != nullptr)
-					player->SetVisible(true);
-
-				GameManager::GetInstance()->InitiateSwitchScene(SCENE::INTRO);
-				return;
-			}
+			// Reset stageClearStart để track bước countdown tiếp theo
+			stageClearStart = now - STAGE_CLEAR_BGM_DURATION;
 		}
 	}
-
-	// Bỏ qua phần còn lại nếu scene đã unloaded (Mario chết)
-	if (player == nullptr) return;
-
-	// Death detection: Mario rơi xuống đáy map, hoặc animation DIE đã chạy đủ lâu.
+	// Phase 3: Thời gian về 0, play FIREWORKS sound rồi chuyển
+	else
 	{
-		float px, py, pz;
-		player->GetPosition(px, py, pz);
-		ULONGLONG now = GetTickCount64();
+		constexpr ULONGLONG FIREWORKS_DURATION = 3000;  // 3 giây cho fireworks
+		constexpr ULONGLONG FIREWORKS_START = STAGE_CLEAR_BGM_DURATION;
 
-		if (player->GetState() == MARIO_STATE::DIE && marioDieStart == 0)
-			marioDieStart = now;
-
-		bool fellOff = (mapHeight > 0 && py > mapHeight);
-		if (fellOff && marioDieStart == 0)
+		if (elapsed < FIREWORKS_START + FIREWORKS_DURATION)
 		{
-			marioDieStart = now;
-			player->SetState(MARIO_STATE::DIE);  // Set DIE state ngay để camera stop following
-			SoundManager::GetInstance()->StopBGM();
-			SoundManager::GetInstance()->PlaySFX(SFX::DIE);
+			// Play fireworks sound một lần
+			static bool fireworksPlayed = false;
+			if (!fireworksPlayed)
+			{
+				SoundManager::GetInstance()->PlaySFX(SFX::FIREWORKS, false);
+				fireworksPlayed = true;
+			}
 		}
-
-		bool dieSoundDone = (marioDieStart != 0 && now - marioDieStart >= MARIO_DIE_SCENE_DELAY_MS);
-
-		if (dieSoundDone)
+		else
 		{
-			OnMarioDeath();
+			// Fireworks xong, chuyển sang INTRO scene
+			stageClearActive = false;
+			if (hud != nullptr)
+				hud->SetStageClearActive(false);  // Re-enable warning BGM logic
+
+			// Make Mario visible again for the next level
+			if (player != nullptr)
+				player->SetVisible(true);
+
+			GameManager::GetInstance()->InitiateSwitchScene(SCENE::INTRO);
 			return;
 		}
 	}
+}
 
+void PlayScene::HandleDeathDetection()
+{
+	if (player == nullptr) return;
+
+	float px, py, pz;
+	player->GetPosition(px, py, pz);
+	ULONGLONG now = GetTickCount64();
+
+	if (player->GetState() == MARIO_STATE::DIE && marioDieStart == 0)
+		marioDieStart = now;
+
+	bool fellOff = (mapHeight > 0 && py > mapHeight);
+	if (fellOff && marioDieStart == 0)
+	{
+		marioDieStart = now;
+		player->SetState(MARIO_STATE::DIE);  // Set DIE state ngay để camera stop following
+		SoundManager::GetInstance()->StopBGM();
+		SoundManager::GetInstance()->PlaySFX(SFX::DIE);
+	}
+
+	bool dieSoundDone = (marioDieStart != 0 && now - marioDieStart >= MARIO_DIE_SCENE_DELAY_MS);
+
+	if (dieSoundDone)
+	{
+		OnMarioDeath();
+		return;
+	}
+}
+
+void PlayScene::UpdateCameraAndEarthquake(DWORD dt)
+{
 	// Update camera để follow mario (chỉ nếu Mario sống)
-	if (player->GetState() != MARIO_STATE::DIE)
+	if (player != nullptr && player->GetState() != MARIO_STATE::DIE)
 	{
 		float cx, cy, cz;
 		player->GetPosition(cx, cy, cz);
-
 		Camera::GetInstance()->Follow(cx, fixedCameraY);
 	}
 
@@ -799,6 +812,70 @@ void PlayScene::Update(DWORD dt)
 		else
 			Camera::GetInstance()->UpdateEarthquake((float)dt);
 	}
+}
+
+void PlayScene::ActivateBossIfOnBridge()
+{
+	if (bossBowser != nullptr && !bossBowser->IsDeleted() && IsPlayerOnCastleBridge())
+		static_cast<Bowser*>(bossBowser)->Activate();
+}
+
+// Update scene: xử lý logic game, collision, camera, effects
+void PlayScene::Update(DWORD dt)
+{
+	// Handle intro/death scene timeout
+	if (id == SCENE::INTRO || id == SCENE::DEATH)
+	{
+		HandleIntroDeathSceneUpdate();
+		return;
+	}
+
+	// Handle game over scene timeout
+	if (id == SCENE::GAME_OVER)
+	{
+		HandleGameOverSceneUpdate();
+		return;
+	}
+
+	// Activate boss when on bridge
+	ActivateBossIfOnBridge();
+
+	vector<LPGAMEOBJECT> coObjects;
+	for (auto obj : objects) coObjects.push_back(obj);
+
+	// Update mọi object TRỪ player trước, rồi update player cuối cùng.
+	// Player phải chạy sau moving platforms để collision resolve với vị trí hiện tại của platforms.
+	// Nếu không Mario sẽ lag 1 frame và rơi qua/jitter trên platforms di chuyển lên.
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (objects[i] == player) continue;
+		if (!objects[i]->IsDeleted())
+			objects[i]->Update(dt, &coObjects);
+	}
+
+	if (player != nullptr && !player->IsDeleted())
+		player->Update(dt, &coObjects);
+
+	if (hud != nullptr)
+		hud->Update(dt);
+
+	if (menuHUD != nullptr)
+		menuHUD->Update();
+
+	// Update sound effects
+	UpdateSoundEffects();
+
+	// Update stage clear sequence
+	UpdateStageClearSequence();
+
+	// Bỏ qua phần còn lại nếu scene đã unloaded (Mario chết)
+	if (player == nullptr) return;
+
+	// Handle death detection
+	HandleDeathDetection();
+
+	// Update camera and earthquake
+	UpdateCameraAndEarthquake(dt);
 
 	// Xóa deleted objects
 	for (size_t i = 0; i < objects.size(); i++)

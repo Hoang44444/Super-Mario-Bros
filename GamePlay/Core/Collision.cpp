@@ -260,6 +260,55 @@ void Collision::Filter(LPGAMEOBJECT objSrc,
 *  Bao gồm: Scan -> Filter -> Update position -> OnCollisionWith
 *  NOTE: Có thể cần cải thiện dựa trên game logic cụ thể
 */
+void Collision::UpdatePositionFromCollisions(LPGAMEOBJECT objSrc, LPCOLLISIONEVENT colX, LPCOLLISIONEVENT colY, float min_tx, float min_ty, float nx, float ny)
+{
+	float x, y, z, vx, vy;
+	objSrc->GetPosition(x, y, z);
+	objSrc->GetSpeed(vx, vy);
+
+	if (min_tx <= min_ty)
+	{
+		if (colX != NULL)
+		{
+			x += colX->t * colX->dx + nx * 0.1f;
+			y += colX->t * colX->dy + ny * 0.1f;
+		}
+		else
+		{
+			x += min_tx * vx + nx * 0.1f;
+			y += min_ty * vy + ny * 0.1f;
+		}
+	}
+	else
+	{
+		if (colY != NULL)
+		{
+			x += colY->t * colY->dx + nx * 0.1f;
+			y += colY->t * colY->dy + ny * 0.1f;
+		}
+		else
+		{
+			x += min_tx * vx + nx * 0.1f;
+			y += min_ty * vy + ny * 0.1f;
+		}
+	}
+
+	objSrc->SetPosition(x, y, z);
+}
+
+void Collision::HandleNonBlockingCollisions(LPGAMEOBJECT objSrc, vector<LPCOLLISIONEVENT>& coEvents, LPCOLLISIONEVENT colX, LPCOLLISIONEVENT colY)
+{
+	for (UINT i = 0; i < coEvents.size(); i++)
+	{
+		LPCOLLISIONEVENT e = coEvents[i];
+		if (e->isDeleted) continue;
+		if (e->obj->IsBlocking()) continue;
+		if (e == colX || e == colY) continue;
+
+		objSrc->OnCollisionWith(e);
+	}
+}
+
 void Collision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -389,15 +438,7 @@ void Collision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coO
 	//
 	// Bước 5: Xử lý non-blocking collisions (coin, mushroom, v.v.)
 	//
-	for (UINT i = 0; i < coEvents.size(); i++)
-	{
-		LPCOLLISIONEVENT e = coEvents[i];
-		if (e == nullptr || e->obj == nullptr) continue;
-		if (e->isDeleted) continue;
-		if (e->obj->IsBlocking()) continue;  // Blocking đã xử lý rồi, bỏ qua
-
-		objSrc->OnCollisionWith(e);
-	}
+	HandleNonBlockingCollisions(objSrc, coEvents, colX, colY);
 
 
 	// Cleanup: xóa tất cả collision events

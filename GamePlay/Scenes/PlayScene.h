@@ -33,8 +33,21 @@ class PlayScene : public Scene
 	// Boss màn 1-4: Bowser đứng yên tại chỗ, chỉ kích hoạt khi Mario bước lên cầu.
 	LPGAMEOBJECT bossBowser = nullptr;
 
+	// Helper functions for _ParseSection_OBJECTS
+	LPGAMEOBJECT CreatePlayerObject(float x, float y, float z);  // Tạo Mario
+	LPGAMEOBJECT CreateStaticObject(int type, float x, float y, float z, vector<string>& tokens);  // Tạo static objects
+	LPGAMEOBJECT CreateDynamicObject(int type, float x, float y, float z, vector<string>& tokens);  // Tạo dynamic objects
+	LPGAMEOBJECT CreateEnemyObject(int type, float x, float y, float z, vector<string>& tokens);  // Tạo enemies
+	void HandleIntroDeathSceneUpdate();  // Xử lý intro/death scene timeout
+	void HandleGameOverSceneUpdate();  // Xử lý game over scene timeout
+	void UpdateSoundEffects();  // Xử lý wind và earthquake SFX
+	void UpdateStageClearSequence();  // Xử lý stage clear countdown
+	void HandleDeathDetection();  // Xử lý Mario death detection
+	void UpdateCameraAndEarthquake(DWORD dt);  // Xử lý camera follow và earthquake
+
 	void OnMarioDeath();  // Mất mạng -> death screen, hoặc game over -> menu
 	bool IsPlayerOnCastleBridge();  // Mario có đang đứng trên cầu cuối màn không
+	void ActivateBossIfOnBridge();  // Kích hoạt Bowser khi Mario lên cầu
 
 	void _ParseSection_ASSETS(string line);  // Parse section [ASSETS] từ file scene
 	void _ParseSection_OBJECTS(string line);  // Parse section [OBJECTS] từ file scene

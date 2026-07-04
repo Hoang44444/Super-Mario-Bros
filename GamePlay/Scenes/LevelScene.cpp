@@ -30,7 +30,7 @@ public:
 		case VK_RIGHT:
 			scene->MoveSelection(1);  // Di phải
 			break;
-		case VK_RETURN:
+		case VK_SPACE:
 			scene->ConfirmSelection();  // Xác nhận
 			break;
 		case VK_ESCAPE:

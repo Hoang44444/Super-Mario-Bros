@@ -10,7 +10,7 @@
 30014 0 0 960 540 14
 
 #---- CONTROL SCENE ----#
-30015 0 0 960 540 15
+# 30015 0 0 960 540 15
 
 #---- END SCENE ----#
 30016 0 0 960 540 16
@@ -26,10 +26,10 @@
 # Both states are padded to the same left edge (x=27) so the arrow swaps in
 # without shifting the text or distorting the sprite.
 # id  l   t   r   b   tex_id
-30020 27  28  333 79  17    # Bắt đầu   (not selected — no arrow)
-30021 27  134 333 186 17    # Bắt đầu   (selected — with ▶ arrow)
-30022 27  240 431 302 17    # Hướng dẫn (not selected — no arrow)
-30023 27  346 431 408 17    # Hướng dẫn (selected — with ▶ arrow)
+# 30020 27  28  333 79  17    # Bắt đầu   (not selected — no arrow)
+# 30021 27  134 333 186 17    # Bắt đầu   (selected — with ▶ arrow)
+# 30022 27  240 431 302 17    # Hướng dẫn (not selected — no arrow)
+# 30023 27  346 431 408 17    # Hướng dẫn (selected — with ▶ arrow)
 
 #---- LIVES DIGITS (nums_123.png, tex 20) ----#
 # id   l   t   r   b   tex
@@ -44,17 +44,17 @@
 3002 30012 100
 3003 30013 100
 3004 30014 100
-3005 30015 100
+# 3005 30015 100
 3006 30016 100
 3007 30017 100
 3008 30018 100
 3009 30019 100
 
 # Menu option text
-3010 30020 100
-3011 30021 100
-3012 30022 100
-3013 30023 100
+# 3010 30020 100
+# 3011 30021 100
+# 3012 30022 100
+# 3013 30023 100
 
 # Lives digits (death screen)
 3020 30030 100

@@ -36,7 +36,7 @@ public:
 		case VK_RIGHT:
 			scene->AdjustSelection(10);  // Tăng giá trị
 			break;
-		case VK_RETURN:
+		case VK_SPACE:
 			scene->ConfirmSelection();  // Xác nhận
 			break;
 		case VK_ESCAPE:
@@ -317,11 +317,14 @@ void HelpScene::Render()
 	const int volumeY = (int)(logicalH * 1.54f);   // ~370/240
 
 	// Vẽ hướng dẫn điều khiển (bên trái: action, bên phải: phím)
+	DrawTextLine(L"Move", leftX, controlsY, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Left / Right Arrow", rightX, controlsY, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
-	DrawTextLine(L"Jump", leftX, controlsY + lineHeight, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	DrawTextLine(L"Jump / Interact", leftX, controlsY + lineHeight, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Space", rightX, controlsY + lineHeight, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Shoot", leftX, controlsY + lineHeight * 2, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Shift", rightX, controlsY + lineHeight * 2, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	DrawTextLine(L"Back", leftX, controlsY + lineHeight * 3, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	DrawTextLine(L"Esc", rightX, controlsY + lineHeight * 3, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 
 	SoundManager* sound = SoundManager::GetInstance();
 	DrawVolumeOption(L"Master Volume", sound->GetMasterVolume(), leftX, volumeY, selectedOption == 0);

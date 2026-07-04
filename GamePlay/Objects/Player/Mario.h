@@ -84,13 +84,13 @@ private:
 	void MovementUpdate(DWORD dt);  // Update vị trí dựa trên vận tốc
 	void ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects);  // Xử lý overlap với platforms
 	bool CheckGroundProbe(vector<LPGAMEOBJECT>* coObjects);  // Kiểm tra Mario có đứng trên đất không
+	int CountPlatformOverlaps(vector<LPGAMEOBJECT>* coObjects);  // Đếm số platform Mario đang overlap
 
 	bool isOnGround = false;  // Mario có đang đứng trên đất không
 	bool canShoot = false;  // Mario có thể bắn đạn không (Fire level)
 	bool isInvincible = false;  // Miễn thương (dùng cho cả Star lẫn grace sau khi bị hạ cấp)
 	bool isStarPower = false;  // Riêng Star: chạm enemy là giết enemy
 	bool isWindyScene = false;  // Scene có gió không (màn 1-3)
-	bool flyMode = false;  // Debug: fly mode (kháng sát thương, bay ở y=150, không flicker)
 	DynamicPlatform* currentPlatform = nullptr;  // Platform đang đứng trên (vertical hoặc horizontal)
 	DWORD invincibleTime = 0;  // Thời gian còn lại của invincibility
 	int previousBGM = -1;  // BGM ID trước star power (để khôi phục sau khi star hết)
@@ -106,6 +106,12 @@ private:
 	bool animStopLogCaptured = false;  // Đã capture stop log chưa
 
 	void UpdateAnimationState(DWORD dt);  // Update state animation
+
+	// Helper functions for Update()
+	void HandleInvincibilityUpdate(DWORD dt);  // Xử lý invincibility timer
+	void HandleWindEffect(DWORD dt);  // Xử lý gió kéo Mario
+	void HandlePlatformParenting(DWORD dt, vector<LPGAMEOBJECT>* coObjects);  // Xử lý parenting với dynamic platform
+	void HandleJumpAfterCollision(bool jumpRequested, bool& jumpedThisFrame, bool wasOnGround);  // Xử lý nhảy sau collision
 
 	// Hệ thống vật lý mới
 	MarioPhysics physics;  // Physics engine cho Mario
@@ -170,8 +176,6 @@ public:
 	bool IsStarPower() { return isStarPower; }  // Check có star power không
 	bool CanShoot() { return canShoot; }  // Check có thể bắn không
 	void SetCanShoot(bool v) { canShoot = v; }  // Set có thể bắn
-	void SetFlyMode(bool v) { flyMode = v; }  // Set fly mode (debug)
-	bool IsFlyMode() { return flyMode; }  // Check fly mode
 	void AddCoin(int amount = 1) { ScoreManager::Get().AddCoin(amount); }  // Thêm coin
 	void AddLife(int amount = 1) { ScoreManager::Get().AddLife(amount); }  // Thêm mạng
 	int GetCoin() { return ScoreManager::Get().GetCoins(); }  // Lấy số coin

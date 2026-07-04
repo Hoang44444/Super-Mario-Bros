@@ -8,8 +8,8 @@
 #include "../Resource/AssetID.h"
 
 // Xử lý phím cho các màn hình không phải gameplay (menu/control/end/death)
-// MENU: Lên/Xuống di chuyển con trỏ, Enter/Space xác nhận
-// DEATH/INTRO: Enter/Space để tiếp tục chơi
+// MENU: Lên/Xuống di chuyển con trỏ, Space xác nhận
+// DEATH/INTRO: Space để tiếp tục chơi
 // CONTROL/END: Phím bất kỳ để về menu
 class MenuKeyHandler : public KeyEventHandler
 {
@@ -35,7 +35,6 @@ public:
 			case VK_DOWN:
 				mh->MoveSelection(+1);  // Xuống
 				break;
-			case VK_RETURN:
 			case VK_SPACE:
 				{
 					int selected = mh->GetSelectedOption();
@@ -61,7 +60,7 @@ public:
 		}
 		// Màn hình chết hoặc intro
 		else if (sceneId == SCENE::DEATH || sceneId == SCENE::INTRO) {
-			if (KeyCode == VK_RETURN || KeyCode == VK_SPACE)
+			if (KeyCode == VK_SPACE)
 				gm->InitiateSwitchScene(PlayerData::Get().returnScene);  // Tiếp tục chơi
 		}
 		// Màn hình control hoặc end

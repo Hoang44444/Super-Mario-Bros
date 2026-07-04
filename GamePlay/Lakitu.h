@@ -34,6 +34,13 @@ class Lakitu : public Enemy
 
     int max_spinies_on_screen = 3;  // Số Spiny tối đa trên màn
 
+    // Helper functions for Update()
+    Mario* FindMario(vector<LPGAMEOBJECT>* coObjects);  // Tìm Mario trong danh sách objects
+    int CountActiveSpinies(vector<LPGAMEOBJECT>* coObjects, float camX);  // Đếm số Spiny đang hoạt động trên màn
+    void HandleActivationAndEntry(float anchorX, float camY, float hoverY, DWORD dt);  // Xử lý kích hoạt và bay vào màn
+    void HandleLeaving(float camY, DWORD dt);  // Xử lý bay khỏi màn
+    void HandleHoverAndThrow(vector<LPGAMEOBJECT>* coObjects, float anchorX, float hoverY, float mx);  // Xử lý hover và ném Spiny
+
 public:
     Lakitu(float x, float y, float z = 0, float endX = 1e9f);
 	

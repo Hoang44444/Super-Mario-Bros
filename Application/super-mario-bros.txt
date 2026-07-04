@@ -35,9 +35,9 @@ screen_height 1080
 12  Texture/Items/Bridge.png
 13  Texture/Items/axe.png
 14  Texture/Scene/menu_scene.png
-15  Texture/Scene/controls.png
+# 15  Texture/Scene/controls.png
 16  Texture/Scene/end_scene.png
-17  Texture/Items/menu_text.png
+# 17  Texture/Items/menu_text.png
 18  Texture/Scene/death_scene.png
 19  Texture/Scene/gameover_scene.png
 20  Texture/Items/nums_123.png

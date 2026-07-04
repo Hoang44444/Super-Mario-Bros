@@ -73,6 +73,13 @@ void GameManager::OnKeyDown(int KeyCode)
 	if (game_state == GAME_STATE::PAUSE) { s_pauseHandler.OnKeyDown(KeyCode); return; }
 	if (game_state == GAME_STATE::GAME_OVER) { s_gameOverHandler.OnKeyDown(KeyCode); return; }
 
+	// ESC để thoát về menu khi đang chơi
+	if (game_state == GAME_STATE::PLAY && KeyCode == VK_ESCAPE) {
+		SetGameState(GAME_STATE::MENU);
+		InitiateSwitchScene(SCENE::MENU);
+		return;
+	}
+
 	if (key_handler != NULL)
 		key_handler->OnKeyDown(KeyCode);
 }

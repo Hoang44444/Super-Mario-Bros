@@ -102,6 +102,10 @@ public:
 		int filterX,
 		int filterY);
 
+	// Helper functions for Process()
+	void UpdatePositionFromCollisions(LPGAMEOBJECT objSrc, LPCOLLISIONEVENT colX, LPCOLLISIONEVENT colY, float min_tx, float min_ty, float nx, float ny);
+	void HandleNonBlockingCollisions(LPGAMEOBJECT objSrc, vector<LPCOLLISIONEVENT>& coEvents, LPCOLLISIONEVENT colX, LPCOLLISIONEVENT colY);
+
 	// Process - xử lý va chạm hoàn chỉnh cho một object
 	// Bao gồm: Scan -> Filter -> Update position -> OnCollisionWith
 	void Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects);
