@@ -5,7 +5,7 @@
 
 Blooper::Blooper(float x, float y, float z) : Enemy(x, y, z)
 {
-	// Start in idle state
+	// Start ở idle state
 	this->state = BLOOPER_STATE_IDLE;
 	this->timer = GetTickCount();
     this->startY = y;
@@ -17,20 +17,20 @@ void Blooper::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	DWORD now = GetTickCount();
 
-	// Try to obtain Mario's position if we have a scene reference
+	// Tìm vị trí Mario nếu có scene reference
 	PlayScene* playScene = dynamic_cast<PlayScene*>(scene);
 	float marioX = 0.0f, marioY = 0.0f;
 	if (playScene && playScene->GetPlayer())
 	{
 		playScene->GetPlayer()->GetPosition(marioX, marioY, this->z);
 	}
-    // Compute horizontal distance to Mario
+    // Tính khoảng cách ngang đến Mario
     float distX = abs(marioX - x);
-    // If Mario is out of chase range while Blooper is chasing, return to idle
+    // Nếu Mario ra khỏi phạm vi đuổi theo khi Blooper đang đuổi, quay về idle
     if (distX > chaseDistance && state != BLOOPER_STATE_IDLE) {
         state = BLOOPER_STATE_IDLE;
         timer = now;
-        y = startY;          // reset vertical position
+        y = startY;          // reset vị trí dọc
         flipX = false;
         return;
     }
@@ -38,7 +38,7 @@ void Blooper::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     switch (state)
     {
     case BLOOPER_STATE_IDLE:
-        // Check distance to Mario to activate
+        // Check khoảng cách đến Mario để kích hoạt
         if (playScene && playScene->GetPlayer())
         {
             float dist = abs(marioX - x);
@@ -55,9 +55,9 @@ void Blooper::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         break;
 
     case BLOOPER_STATE_RISING:
-        // Move upward
+        // Di chuyển lên
         y -= 0.04f * dt;
-        // Horizontal adjustment towards Mario while rising
+        // Điều chỉnh ngang về phía Mario khi đang lên
         if (marioX < x) x -= 0.04f * dt;
         else if (marioX > x) x += 0.04f * dt;
         if (now - timer > BLOOPER_RISE_TIME)
@@ -68,9 +68,9 @@ void Blooper::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         break;
 
     case BLOOPER_STATE_SINKING:
-        // Move downward
+        // Di chuyển xuống
         y += 0.04f * dt;
-        // Horizontal chase towards Mario
+        // Đuổi theo theo chiều ngang
         if (marioX < x) x -= 0.04f * dt;
         else if (marioX > x) x += 0.04 * dt;
         if (now - timer > BLOOPER_SINK_TIME)

@@ -125,8 +125,9 @@ void HelpScene::CreateFontIfNeeded()
 		&font);
 }
 
-	// Load background, reset camera, áp dụng volume settings
+void HelpScene::Load()
 {
+	// Load background, reset camera, áp dụng volume settings
 	LoadBackgroundPath();
 	Camera::GetInstance()->SetPosition(0.0f, 0.0f);
 	ApplyVolumes();
@@ -179,8 +180,10 @@ void HelpScene::DrawTextLine(const wchar_t* text, int x, int y, int width, int h
 	font->DrawText(Renderer::GetInstance()->GetSpriteHandler(), text, -1, &rect, format, color);
 }
 
-		// Vẽ option volume với label, value và highlight nếu được chọn
-		// Format: "< value >" với màu vàng n
+void HelpScene::DrawVolumeOption(const wchar_t* label, int value, int x, int y, bool selected)
+{
+	// Vẽ option volume với label, value và highlight nếu được chọn
+	// Format: "< value >" với màu vàng
 	wchar_t line[128];
 	swprintf_s(line, L"%s < %3d >", label, value);
 
@@ -193,9 +196,8 @@ void HelpScene::DrawTextLine(const wchar_t* text, int x, int y, int width, int h
 }
 
 // Điều chỉnh volume của option được chọn (master/music/sfx)
-/ Giới hạn trong khoảng [0, 100]
-oid HelpScene::AdjustSelectedVolu
-void HelpScene::AdjustSelectedVolume(int delta)me(int delta)
+// Giới hạn trong khoảng [0, 100]
+void HelpScene::AdjustSelectedVolume(int delta)
 {
 	SoundManager* sound = SoundManager::GetInstance();
 	int masterVolume = sound->GetMasterVolume();
@@ -215,8 +217,10 @@ void HelpScene::AdjustSelectedVolume(int delta)me(int delta)
 	sound->SetVolumeSettings(masterVolume, musicVolume, sfxVolume);
 }
 
-		// Áp dụng volume settings: tính effective volume = master * setting / 100
-		// Áp dụng cho BGM và tất cả SF
+void HelpScene::ApplyVolumes()
+{
+	// Áp dụng volume settings: tính effective volume = master * setting / 100
+	// Áp dụng cho BGM và tất cả SFX
 	SoundManager* sound = SoundManager::GetInstance();
 	int masterVolume = sound->GetMasterVolume();
 	int musicVolume = sound->GetMusicVolume();
@@ -326,7 +330,8 @@ void HelpScene::Render()
 
 // Vẽ nút Back với highlight nếu được chọn
 	D3DXCOLOR backColor = (selectedOption == 3) ?
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f) :
+		D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
 	DrawTextLine(L"<", leftX - 42, volumeY + lineHeight * 3, 40, 44, backColor, DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Back", leftX, volumeY + lineHeight * 3, 200, 44, backColor, DT_LEFT | DT_TOP | DT_NOCLIP);
 
@@ -363,8 +368,9 @@ void HelpScene::AdjustSelection(int delta)
 	AdjustSelectedVolume(delta);
 }
 
-	// Xác nhận: nếu chọn Back thì quay về menu
+void HelpScene::ConfirmSelection()
 {
+	// Xác nhận: nếu chọn Back thì quay về menu
 	if (selectedOption == 3)
 		BackToMenu();
 }

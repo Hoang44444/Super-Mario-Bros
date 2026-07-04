@@ -13,9 +13,10 @@ class Mario;
 #define MUSHROOM_1UP_STATE_SPAWNING 1
 #define MUSHROOM_1UP_STATE_WALKING  2
 
+// Mushroom1Up - item 1-up (nấm xanh) cộng thêm mạng khi ăn
 class Mushroom1Up : public Mushroom {
 protected:
-	float start_y;
+	float start_y;  // Vị trí Y ban đầu (để check khi spawn xong)
 public:
 	Mushroom1Up(float x, float y, float z) : Mushroom(x, y, z) 
 	{
@@ -39,7 +40,7 @@ public:
 
 	void OnMarioCollision(Mario* mario) override;
 
-	// 1Up already rises out of the block via its own SPAWNING state, so the
-	// generic emerge animation is a no-op here.
+	// 1Up đã rise ra khỏi block qua state SPAWNING của riêng nó, nên
+	// generic emerge animation là no-op ở đây.
 	void StartEmerge() override {}
 };

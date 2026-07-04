@@ -40,7 +40,7 @@ void BuzzyBeetle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         const float SCREEN_HEIGHT = 600.0f;
         const float CULL_BUFFER = 100.0f;
 
-        if (this->y > cy + SCREEN_HEIGHT + CULL_BUFFER)
+        // Cull khi rơi khỏi màn hình
         {
             this->Delete();
         }
@@ -79,7 +79,7 @@ void BuzzyBeetle::OnCollisionWith(LPCOLLISIONEVENT e)
         if (koopa->GetState() == KOOPA_STATE_SPINNING)
         {
             this->SetState(BUZZY_STATE_DIE);
-            // Award score for shell kill (no combo for shell kills)
+            // Award điểm cho shell kill (không combo cho shell kills)
             ScoreManager::Get().AddScore(SCORE_VALUES::SHELL_KICK);
             return;
         }
@@ -90,7 +90,7 @@ void BuzzyBeetle::OnCollisionWith(LPCOLLISIONEVENT e)
         if (beetle->GetState() == BUZZY_STATE_SPINNING)
         {
             this->SetState(BUZZY_STATE_DIE);
-            // Award score for shell kill (no combo for shell kills)
+            // Award điểm cho shell kill (không combo cho shell kills)
             ScoreManager::Get().AddScore(SCORE_VALUES::SHELL_KICK);
             return;
         }
@@ -124,7 +124,7 @@ void BuzzyBeetle::OnMarioCollison(Mario* mario, float ny)
             SetState(BUZZY_STATE_SHELL);
             mario->SetSpeed(mvx, -0.4f);
 
-            // Award score with combo system for stomp
+            // Award điểm với combo system cho stomp
             ScoreManager& scoreMgr = ScoreManager::Get();
             scoreMgr.IncrementCombo();
             

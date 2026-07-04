@@ -237,6 +237,7 @@ void PlayScene::Load()
 }
 
 // Parse section [ASSETS] từ file scene - load file asset
+void PlayScene::_ParseSection_ASSETS(string line)
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -250,6 +251,7 @@ void PlayScene::Load()
 }
 
 // Load assets từ file: parse sprites, animations, và objects
+void PlayScene::LoadAssets(LPCWSTR assetFile)
 {
 	ifstream f;
 	f.open(assetFile);
@@ -297,6 +299,7 @@ void PlayScene::Load()
 }
 
 // Parse section [SPRITES] - tạo sprite từ texture
+void PlayScene::_ParseSection_SPRITES(string line)
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -323,6 +326,7 @@ void PlayScene::Load()
 }
 
 // Parse section [ANIMATIONS] - tạo animation từ sprites
+void PlayScene::_ParseSection_ANIMATIONS(string line)
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -362,6 +366,7 @@ void PlayScene::Load()
 }
 
 // Parse section [OBJECTS] - tạo objects dựa trên type
+void PlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -556,6 +561,7 @@ void PlayScene::Load()
 }
 
 // Tạo item object dựa trên type
+LPGAMEOBJECT PlayScene::CreateItem(int type, float x, float y, float z)
 {
 	switch (type)
 	{
@@ -571,6 +577,7 @@ void PlayScene::Load()
 }
 
 // Parse section [MAP] - set kích thước map cho camera
+void PlayScene::_ParseSection_MAP(string line)
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -587,6 +594,7 @@ void PlayScene::Load()
 }
 
 // Update scene: xử lý logic game, collision, camera, effects
+void PlayScene::Update(DWORD dt)
 {
 	if (id == SCENE::INTRO || id == SCENE::DEATH)
 	{
@@ -805,6 +813,7 @@ void PlayScene::Load()
 }
 
 // Render tất cả objects và HUD
+void PlayScene::Render()
 {
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -819,6 +828,7 @@ void PlayScene::Load()
 }
 
 // Kiểm tra Mario có đang đứng trên cầu cuối màn không
+bool PlayScene::IsPlayerOnCastleBridge()
 {
 	if (player == nullptr) return false;
 
@@ -843,6 +853,7 @@ void PlayScene::Load()
 }
 
 // Bắt đầu stage clear sequence
+void PlayScene::StartStageClear()
 {
 	stageClearActive = true;
 	stageClearStart = GetTickCount64();
@@ -861,6 +872,7 @@ void PlayScene::Load()
 }
 
 // Xử lý khi Mario chết
+void PlayScene::OnMarioDeath()
 {
 	PlayerData& pd = PlayerData::Get();
 	pd.lives--;
@@ -875,6 +887,7 @@ void PlayScene::Load()
 }
 
 // Unload scene: xóa tất cả objects và HUD
+void PlayScene::Unload()
 {
 	delete hud;
 	hud = NULL;

@@ -5,6 +5,7 @@
 #define BULLET_BILL_HEIGHT 12.0f
 #define BULLET_BILL_SPEED 0.2f
 
+// BulletBill - đạn từ cannon bay theo chiều ngang
 class BulletBill : public Enemy
 {
 public:
@@ -17,6 +18,6 @@ public:
 
 	virtual void OnMarioCollison(Mario* mario, float ny) override;
 
-	// Set direction and velocity for this bullet
+	// Set hướng và vận tốc cho đạn
 	void SetMovement(int dir);
 };

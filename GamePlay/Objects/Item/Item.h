@@ -12,6 +12,7 @@ constexpr float ITEM_EMERGE_SPEED = 0.03f; // Tốc độ nhảy ra khỏi block
 
 // Base class cho tất cả các item (mushroom, flower, star, ...)
 // Xử lý animation nhảy ra khỏi question block
+class Item : public GameObject {
 protected:
 	int animationId;
 	bool emerging = false;       // Đang nhảy ra khỏi question block

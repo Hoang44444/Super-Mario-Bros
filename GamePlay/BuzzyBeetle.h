@@ -17,11 +17,12 @@
 
 #define BUZZY_SHELL_TIMEOUT 5000
 
+// BuzzyBeetle - enemy giống Goomba nhưng cứng hơn (không bị fireball giết), có thể kick shell
 class BuzzyBeetle : public Enemy
 {
 public:
-    ULONGLONG shell_start = 0;
-    bool isFacingRight;
+    ULONGLONG shell_start = 0;  // Tick khi bắt đầu state shell (để timeout)
+    bool isFacingRight;  // Hướng đang nhìn
 
     BuzzyBeetle(float x, float y, float z = 0);
     virtual ~BuzzyBeetle() {}
@@ -35,7 +36,7 @@ public:
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
     virtual void OnMarioCollison(Mario* mario, float ny) override;
     virtual void OnHitByBullet() override { SetState(BUZZY_STATE_DIE); }
-    // Only a normally-walking BuzzyBeetle is flipped by a turn block; a spinning shell is not.
+    // Chỉ BuzzyBeetle đang đi bộ bị flip bởi turn block; shell đang spin không bị.
     virtual bool CanBeTurnedByBlock() override { return state == BUZZY_STATE_WALKING; }
     virtual bool IsCollidable() override;
 };

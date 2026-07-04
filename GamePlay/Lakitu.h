@@ -21,17 +21,18 @@
 // Tốc độ Lakitu bay lên khỏi màn sau khi Mario đã vượt qua endX.
 #define LAKITU_LEAVE_SPEED 0.15f
 
+// Lakitu - enemy bay trên trời ném Spiny, theo Mario và kích hoạt khi Mario đến spawnX
 class Lakitu : public Enemy
 {
-    bool isFacingRight;
-    float spawnX;            // mép phải màn chạm x này thì Lakitu kích hoạt (bay vào từ đỉnh)
-    float endX;              // mép phải màn vượt qua x này thì Lakitu bay đi
+    bool isFacingRight;  // Hướng đang nhìn
+    float spawnX;  // Mép phải màn chạm x này thì Lakitu kích hoạt (bay vào từ đỉnh)
+    float endX;  // Mép phải màn vượt qua x này thì Lakitu bay đi
     bool activated = false;  // Mario đã tới spawnX kích hoạt Lakitu chưa
-    bool entering = false;   // đang bay từ đỉnh màn xuống vị trí hover
-    bool leaving = false;    // đang bay khỏi màn (Mario đã qua endX)
-    ULONGLONG throw_start = 0;
+    bool entering = false;  // Đang bay từ đỉnh màn xuống vị trí hover
+    bool leaving = false;  // Đang bay khỏi màn (Mario đã qua endX)
+    ULONGLONG throw_start = 0;  // Tick khi bắt đầu throw Spiny
 
-    int max_spinies_on_screen = 3;
+    int max_spinies_on_screen = 3;  // Số Spiny tối đa trên màn
 
 public:
     Lakitu(float x, float y, float z = 0, float endX = 1e9f);

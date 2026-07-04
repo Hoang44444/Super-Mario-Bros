@@ -78,40 +78,40 @@ namespace MARIO_PARAMS
 class Mario : public GameObject
 {
 private:
-	int level; 
-	float gravity = MARIO_PARAMS::GRAVITY;
-	float accelX = MARIO_PARAMS::ACCEL_X;
-	void MovementUpdate(DWORD dt);
-	void ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects);
-	bool CheckGroundProbe(vector<LPGAMEOBJECT>* coObjects);
+	int level;  // Level hiện tại của Mario (SMALL, BIG, FIRE, FROG)
+	float gravity = MARIO_PARAMS::GRAVITY;  // Trọng lực
+	float accelX = MARIO_PARAMS::ACCEL_X;  // Gia tốc X
+	void MovementUpdate(DWORD dt);  // Update vị trí dựa trên vận tốc
+	void ResolveOverlapWithPlatforms(vector<LPGAMEOBJECT>* coObjects);  // Xử lý overlap với platforms
+	bool CheckGroundProbe(vector<LPGAMEOBJECT>* coObjects);  // Kiểm tra Mario có đứng trên đất không
 
-	bool isOnGround = false;
-	bool canShoot = false;
-	bool isInvincible = false;   // Miễn thương (dùng cho cả Star lẫn grace sau khi bị hạ cấp)
-	bool isStarPower = false;    // Riêng Star: chạm enemy là giết enemy
-	bool isWindyScene = false;
-	bool flyMode = false;        // Debug: fly mode (kháng sát thương, bay ở y=150, không flicker)
+	bool isOnGround = false;  // Mario có đang đứng trên đất không
+	bool canShoot = false;  // Mario có thể bắn đạn không (Fire level)
+	bool isInvincible = false;  // Miễn thương (dùng cho cả Star lẫn grace sau khi bị hạ cấp)
+	bool isStarPower = false;  // Riêng Star: chạm enemy là giết enemy
+	bool isWindyScene = false;  // Scene có gió không (màn 1-3)
+	bool flyMode = false;  // Debug: fly mode (kháng sát thương, bay ở y=150, không flicker)
 	DynamicPlatform* currentPlatform = nullptr;  // Platform đang đứng trên (vertical hoặc horizontal)
-	DWORD invincibleTime = 0;
-	int previousBGM = -1;        // BGM ID trước star power (để khôi phục sau khi star hết)
+	DWORD invincibleTime = 0;  // Thời gian còn lại của invincibility
+	int previousBGM = -1;  // BGM ID trước star power (để khôi phục sau khi star hết)
 	float originalMaxRunSpeed = 0.20f;  // Tốc độ chạy gốc trước star power (để khôi phục sau khi star hết)
 
 	// Animation state machine
-	MarioAnimState animState = MarioAnimState::IDLE;
+	MarioAnimState animState = MarioAnimState::IDLE;  // State animation hiện tại
 	int animFacing = 1; // 1: phải, -1: trái
-	DWORD animDebounceTimer = 0;
-	int lastAnimMoveDir = 0;
-	DWORD animReleaseLogTimer = 0;
-	DWORD animStopLogTimer = 0;
-	bool animStopLogCaptured = false;
+	DWORD animDebounceTimer = 0;  // Timer debounce animation
+	int lastAnimMoveDir = 0;  // Hướng di chuyển cuối cùng
+	DWORD animReleaseLogTimer = 0;  // Timer log khi release movement
+	DWORD animStopLogTimer = 0;  // Timer log khi stop movement
+	bool animStopLogCaptured = false;  // Đã capture stop log chưa
 
-	void UpdateAnimationState(DWORD dt);
+	void UpdateAnimationState(DWORD dt);  // Update state animation
 
 	// Hệ thống vật lý mới
-	MarioPhysics physics;
+	MarioPhysics physics;  // Physics engine cho Mario
 	
 	// Input cho physics system
-	MarioPhysicsInput physicsInput;
+	MarioPhysicsInput physicsInput;  // Input từ bàn phím cho physics
 public:
 	Mario(float x, float y, float z) : GameObject(x, y, z) {
 		// Khôi phục trạng thái đã giữ qua các màn (level quyết định animation)
@@ -128,65 +128,65 @@ public:
 	~Mario() {};
 
 	// HÀNH ĐỘNG
-	void Jump();
-	void ShootBullet();
-	void TakeDamage();   // Bị thương bởi enemy: thu nhỏ thành Small (có grace) hoặc chết nếu đã là Small
+	void Jump();  // Nhảy
+	void ShootBullet();  // Bắn đạn (Fire level)
+	void TakeDamage();  // Bị thương bởi enemy: thu nhỏ thành Small (có grace) hoặc chết nếu đã là Small
 
 	// CORE
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
-	void Render();
-	void SetState(int state);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);  // Update Mario mỗi frame
+	void Render();  // Render Mario
+	void SetState(int state);  // Set state của Mario
 
 	// VA CHẠM
-	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	bool IsCollidable() { return true; }
-	bool IsBlocking() { return false; }
+	void GetBoundingBox(float& l, float& t, float& r, float& b);  // Lấy bounding box
+	bool IsCollidable() { return true; }  // Mario có thể va chạm
+	bool IsBlocking() { return false; }  // Mario không chặn object khác
 
-	void OnCollisionWith(LPCOLLISIONEVENT e);
-	void OnNoCollision(DWORD dt);
+	void OnCollisionWith(LPCOLLISIONEVENT e);  // Xử lý va chạm chung
+	void OnNoCollision(DWORD dt);  // Xử lý khi không có va chạm
 
 	// VA CHẠM VỚI
-	void OnCollisionWithStaticObject(LPCOLLISIONEVENT e);
-	void OnCollisionWithDynamicPlatform(LPCOLLISIONEVENT e);
-	void OnCollisionWithEnemy(LPCOLLISIONEVENT e);
-	void OnCollisionWithItem(LPCOLLISIONEVENT e);
-	void OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e);
+	void OnCollisionWithStaticObject(LPCOLLISIONEVENT e);  // Va chạm với static object (block, ground)
+	void OnCollisionWithDynamicPlatform(LPCOLLISIONEVENT e);  // Va chạm với dynamic platform
+	void OnCollisionWithEnemy(LPCOLLISIONEVENT e);  // Va chạm với enemy
+	void OnCollisionWithItem(LPCOLLISIONEVENT e);  // Va chạm với item
+	void OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e);  // Va chạm với invisible object
 
 	// RENDER THEO LEVEL
-	void MarioSmallRender(int& aniId);
-	void MarioBigRender(int& aniId);
-	void MarioFireRender(int& aniId);
-	void MarioFrogRender(int& aniId);
+	void MarioSmallRender(int& aniId);  // Render Mario nhỏ
+	void MarioBigRender(int& aniId);  // Render Mario lớn
+	void MarioFireRender(int& aniId);  // Render Mario Fire
+	void MarioFrogRender(int& aniId);  // Render Mario Frog
 
 	// GETTERS AND SETTERS
-	void SetSpeedY(float vy) { this->vy = vy; }
-	void SetSpeedX(float vx) { this->vx = vx; }
-	int GetLevel() { return level; }
-	void SetLevel(int level);
-	void SetInvincible(DWORD duration) { isInvincible = true; if (duration > invincibleTime) invincibleTime = duration; }
-	bool IsInvincible() { return isInvincible; }
+	void SetSpeedY(float vy) { this->vy = vy; }  // Set vận tốc Y
+	void SetSpeedX(float vx) { this->vx = vx; }  // Set vận tốc X
+	int GetLevel() { return level; }  // Lấy level hiện tại
+	void SetLevel(int level);  // Set level (SMALL/BIG/FIRE/FROG)
+	void SetInvincible(DWORD duration) { isInvincible = true; if (duration > invincibleTime) invincibleTime = duration; }  // Set invincibility
+	bool IsInvincible() { return isInvincible; }  // Check có invincible không
 	// Star: vừa miễn thương vừa giết enemy khi chạm. Hết giờ thì cả hai tắt (xem Update).
-	void SetStarPower(DWORD duration);
-	bool IsStarPower() { return isStarPower; }
-	bool CanShoot() { return canShoot; }
-	void SetCanShoot(bool v) { canShoot = v; }
-	void SetFlyMode(bool v) { flyMode = v; }
-	bool IsFlyMode() { return flyMode; }
-	void AddCoin(int amount = 1) { ScoreManager::Get().AddCoin(amount); }
-	void AddLife(int amount = 1) { ScoreManager::Get().AddLife(amount); }
-	int GetCoin() { return ScoreManager::Get().GetCoins(); }
-	int GetLife() { return ScoreManager::Get().GetLives(); }
+	void SetStarPower(DWORD duration);  // Set star power
+	bool IsStarPower() { return isStarPower; }  // Check có star power không
+	bool CanShoot() { return canShoot; }  // Check có thể bắn không
+	void SetCanShoot(bool v) { canShoot = v; }  // Set có thể bắn
+	void SetFlyMode(bool v) { flyMode = v; }  // Set fly mode (debug)
+	bool IsFlyMode() { return flyMode; }  // Check fly mode
+	void AddCoin(int amount = 1) { ScoreManager::Get().AddCoin(amount); }  // Thêm coin
+	void AddLife(int amount = 1) { ScoreManager::Get().AddLife(amount); }  // Thêm mạng
+	int GetCoin() { return ScoreManager::Get().GetCoins(); }  // Lấy số coin
+	int GetLife() { return ScoreManager::Get().GetLives(); }  // Lấy số mạng
 
 	// ĐIỂM SỐ: chỉ là hạ tầng lấy/cộng điểm. Cộng bao nhiêu điểm do từng
 	// enemy/item tự quyết và gọi AddScore(...). HUD đọc qua GetScore().
-	void AddScore(int amount) { ScoreManager::Get().AddScore(amount); }
-	int  GetScore() { return ScoreManager::Get().GetScore(); }
+	void AddScore(int amount) { ScoreManager::Get().AddScore(amount); }  // Thêm điểm
+	int  GetScore() { return ScoreManager::Get().GetScore(); }  // Lấy điểm
 
 	// WINDY SCENE
-	void SetWindyScene(bool isWindy) { this->isWindyScene = isWindy; }
+	void SetWindyScene(bool isWindy) { this->isWindyScene = isWindy; }  // Set scene có gió
 
 	// PHYSICS INPUT
-	void SetPhysicsInput(int moveDir, bool jumpPressed, bool jumpJustPressed, bool runHeld)
+	void SetPhysicsInput(int moveDir, bool jumpPressed, bool jumpJustPressed, bool runHeld)  // Set input cho physics
 	{
 		physicsInput.moveDirection = moveDir;
 		physicsInput.jumpPressed = jumpPressed;
@@ -195,6 +195,6 @@ public:
 	}
 
 private:
-	// coin, life, score are now managed by ScoreManager/PlayerData to ensure persistence
+	// coin, life, score được quản lý bởi ScoreManager/PlayerData để đảm bảo persistence
 };
 

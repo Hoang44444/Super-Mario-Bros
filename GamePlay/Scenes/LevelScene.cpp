@@ -274,6 +274,7 @@ void LevelScene::Render()
 	DrawCenteredText(L"LEVEL", (int)titleY, 120, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	// Vẽ các level 1-1, 1-2, 1-3, 1-4 với highlight cho level được chọn
+	const wchar_t* levels[] = { L"1-1", L"1-2", L"1-3", L"1-4" };
 	for (int i = 0; i < 4; i++)
 	{
 		D3DXCOLOR color = (i == selectedLevel) ?

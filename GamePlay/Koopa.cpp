@@ -78,7 +78,7 @@ void Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
         if (koopa->GetState() == KOOPA_STATE_SPINNING)
         {
             this->SetState(KOOPA_STATE_DIE);
-            // Award score for shell kill (no combo for shell kills)
+            // Award điểm cho shell kill (không combo cho shell kills)
             ScoreManager::Get().AddScore(SCORE_VALUES::SHELL_KICK);
             return;
         }
@@ -89,7 +89,7 @@ void Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
         if (beetle->GetState() == BUZZY_STATE_SPINNING)
         {
             this->SetState(KOOPA_STATE_DIE);
-            // Award score for shell kill (no combo for shell kills)
+            // Award điểm cho shell kill (không combo cho shell kills)
             ScoreManager::Get().AddScore(SCORE_VALUES::SHELL_KICK);
             return;
         }
@@ -123,7 +123,7 @@ void Koopa::OnMarioCollison(Mario* mario, float ny)
             SetState(KOOPA_STATE_SHELL);
             mario->SetSpeed(mvx, -0.4f);
 
-            // Award score with combo system for stomp
+            // Award điểm với combo system cho stomp
             ScoreManager& scoreMgr = ScoreManager::Get();
             scoreMgr.IncrementCombo();
             

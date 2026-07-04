@@ -13,7 +13,7 @@ void BowserFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	x += vx * dt;
 
-	// Automatically delete if out of bounds (assuming screen width 320)
+	// Tự động xóa nếu ra khỏi bounds (giả sử chiều rộng màn hình 320)
 	if (x < -BOWSER_FIREBALL_WIDTH || x > 320 + BOWSER_FIREBALL_WIDTH)
 	{
 		this->Delete();
