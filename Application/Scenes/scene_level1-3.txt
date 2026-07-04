@@ -31,7 +31,7 @@ Objects/blooper.txt
 
 ########## MARIO ##########
 # type x y z
-0 1100 176 0.2
+0 16 176 0.2
 
 ########## ENEMY ##########
 # type x y z
@@ -349,14 +349,13 @@ Objects/blooper.txt
 
 ########## WIND EFFECTS ##########
 # type x y z
-# (tạm thời tắt wind effect)
-#60 2175 50 0.5
-#60 2320 180 0.5
-#60 2480 80 0.5
-#60 2630 200 0.5
-#60 2790 30 0.5
-#60 2950 140 0.5
-#60 3100 100 0.5
+60 2175 50 0.5
+60 2320 180 0.5
+60 2480 80 0.5
+60 2630 200 0.5
+60 2790 30 0.5
+60 2950 140 0.5
+60 3100 100 0.5
 
 ########## BLOCK SWITCH DIRECTION ENEMY (44) ##########
 # Keep each enemy patrolling on its own small platform instead of walking off the edge.

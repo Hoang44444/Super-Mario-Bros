@@ -69,19 +69,18 @@ Objects/bowserfireball.txt
 
 #---- Hammer Bro (33) - canh đường trước phòng Bowser ----
 33 4300 180 0.5
-33 4550 180 0.5
 
 #Bowser (đứng yên tại chỗ, chỉ hoạt động khi Mario bước lên cầu)
 35 4800 126 0.5
 
 ########## QUESTION BLOCK ##########
 # type x y z itemType   (12=fire_flower 19=1up)
-10 2600 160 0.5 19
-10 4400 160 0.5 12
-10 216 159 0.5 18
-10 232 159 0.5 12
-10 248 159 0.5 14
-10 264 159 0.5 18
+10 2600 144 0.5 19
+10 4400 144 0.5 12
+10 216 143 0.5 18
+10 232 143 0.5 12
+10 248 143 0.5 14
+10 264 143 0.5 18
 10 1518 100 0.5 14
 
 ########## COIN (thưởng đoạn tiếp cận Bowser) ##########
@@ -935,4 +934,4 @@ Objects/bowserfireball.txt
 
 ########## SWITCH SCENE POINT ##########
 # type x y z
-5 5088 175 0.5
+5 4845 126 0.5
