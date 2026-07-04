@@ -8,16 +8,17 @@ class Mario;
 #define ITEM_BBOX_WIDTH 16.0f
 #define ITEM_BBOX_HEIGHT 16.0f
 
-constexpr float ITEM_EMERGE_SPEED = 0.03f; // px/ms while rising out of a block (~16px in ~0.5s)
+constexpr float ITEM_EMERGE_SPEED = 0.03f; // Tốc độ nhảy ra khỏi block (~16px trong ~0.5s)
 
-class Item : public GameObject{
+// Base class cho tất cả các item (mushroom, flower, star, ...)
+// Xử lý animation nhảy ra khỏi question block
 protected:
 	int animationId;
-	bool emerging = false;       // true while rising out of a question block
-	float emergeTargetY = 0;     // y position where the emerge animation stops
+	bool emerging = false;       // Đang nhảy ra khỏi question block
+	float emergeTargetY = 0;     // Vị trí Y nơi animation nhảy ra kết thúc
 
-	// Advance the emerge animation. Returns true while still emerging so derived
-	// Update() methods can skip their normal physics until the item has fully risen.
+	// Tiến hành animation nhảy ra. Trả về true khi vẫn đang nhảy để class con
+	// có thể bỏ qua physics cho đến khi item nhảy xong.
 	bool UpdateEmerge(DWORD dt) {
 		if (!emerging) return false;
 		y -= ITEM_EMERGE_SPEED * dt;
@@ -29,8 +30,8 @@ protected:
 		return true;
 	}
 
-	// Called once when the emerge animation finishes. Override to kick off the
-	// item's natural motion (e.g. a mushroom starts walking).
+	// Được gọi 1 lần khi animation nhảy ra kết thúc. Override để bắt đầu
+	// chuyển động tự nhiên của item (ví dụ mushroom bắt đầu đi).
 	virtual void OnEmergeComplete() {}
 public:
 	Item(float x, float y, float z, int animationId = -1) : GameObject(x, y, z) {
@@ -38,7 +39,7 @@ public:
 	}
 	virtual ~Item() {}
 
-	// Begin the "rise out of a block" animation: lift one tile upward with no physics.
+	// Bắt đầu animation "nhảy ra khỏi block": nhảy lên 1 ô mà không có physics
 	virtual void StartEmerge() {
 		emerging = true;
 		emergeTargetY = y - ITEM_BBOX_HEIGHT;
@@ -67,6 +68,7 @@ public:
 	bool IsCollidable() { return true; }
 	bool IsBlocking() { return false; }
 
-	virtual void OnMarioCollision(Mario * mario) = 0; // Define this in derived classes to specify what happens when Mario collides with the item
+	// Xử lý khi Mario va chạm với item (mỗi class con định nghĩa riêng)
+	virtual void OnMarioCollision(Mario * mario) = 0;
 };
 

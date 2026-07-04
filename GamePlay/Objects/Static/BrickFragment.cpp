@@ -17,11 +17,11 @@ void BrickFragment::GetBoundingBox(float& l, float& t, float& r, float& b) {
 void BrickFragment::OnNoCollision(DWORD dt) {
 	this->x += this->vx * dt;
 	this->y += this->vy * dt;
-	this->vy += BRICK_FRAGMENT_PARAMS::GRAVITY * dt; // gravity effect
+	this->vy += BRICK_FRAGMENT_PARAMS::GRAVITY * dt; // Hiệu ứng trọng lực
 }
 
 void BrickFragment::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (dynamic_cast<DeathZone*>(e->obj)) {
-		this->Delete(); // Remove the fragment if it collides with a death zone
+		this->Delete(); // Xóa mảnh nếu chạm death zone
 	}
 }

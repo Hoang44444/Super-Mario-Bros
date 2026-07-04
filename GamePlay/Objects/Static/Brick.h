@@ -5,10 +5,12 @@
 constexpr float BRICK_BBOX_WIDTH = 14.0f;
 constexpr float BRICK_BBOX_HEIGHT = 14.0f;
 
-class Brick : public StaticObject {
+// Gạch có thể phá vỡ - Mario Big/Fire đụng từ dưới sẽ vỡ
+class Brick : public StaticObject
+{
 private:
 	int animationId = ANIMATION::BRICK_OVERWORLD;
-	void Break();
+	void Break();  // Phá gạch thành 4 mảnh
 public:
 	Brick(float x, float y, float z) : StaticObject(x, y, z) {
 		this->state = 0;

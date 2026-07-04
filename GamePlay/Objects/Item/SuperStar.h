@@ -7,7 +7,9 @@ constexpr float SUPER_STAR_GRAVITY       = 0.002f;
 constexpr float SUPER_STAR_SPEED         = 0.06f;
 constexpr float SUPER_STAR_BOUNCE_SPEED  = 0.45f;
 
-class SuperStar : public Item {
+// Ngôi sao vô địch - Mario ăn sẽ bất tử trong thời gian ngắn
+class SuperStar : public Item
+{
 public:
 	SuperStar(float x, float y, float z) : Item(x, y, z) {
 		vx = SUPER_STAR_SPEED;
@@ -24,5 +26,5 @@ public:
 	virtual void OnMarioCollision(Mario* mario) override;
 
 protected:
-	void OnEmergeComplete() override { vx = SUPER_STAR_SPEED * direction; vy = -SUPER_STAR_BOUNCE_SPEED; }
+	void OnEmergeComplete() override { vx = SUPER_STAR_SPEED * direction; vy = -SUPER_STAR_BOUNCE_SPEED; }  // Bắt đầu nảy sau khi nhảy xong
 };

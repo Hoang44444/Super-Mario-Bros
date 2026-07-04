@@ -74,6 +74,7 @@ namespace MARIO_PARAMS
 	constexpr float GROUND_PROBE_EPSILON = 0.08f;   // lớn hơn BLOCK_PUSH_FACTOR (0.01f) để đảm bảo detect
 }
 
+// Class chính cho nhân vật Mario - xử lý vật lý, animation, va chạm, input
 class Mario : public GameObject
 {
 private:
@@ -86,18 +87,18 @@ private:
 
 	bool isOnGround = false;
 	bool canShoot = false;
-	bool isInvincible = false;   // miễn thương (dùng cho cả Star lẫn grace sau khi bị hạ cấp)
-	bool isStarPower = false;    // riêng Star: chạm enemy là giết enemy
+	bool isInvincible = false;   // Miễn thương (dùng cho cả Star lẫn grace sau khi bị hạ cấp)
+	bool isStarPower = false;    // Riêng Star: chạm enemy là giết enemy
 	bool isWindyScene = false;
 	bool flyMode = false;        // Debug: fly mode (kháng sát thương, bay ở y=150, không flicker)
-	DynamicPlatform* currentPlatform = nullptr;  // platform đang đứng trên (vertical hoặc horizontal)
+	DynamicPlatform* currentPlatform = nullptr;  // Platform đang đứng trên (vertical hoặc horizontal)
 	DWORD invincibleTime = 0;
-	int previousBGM = -1;        // BGM ID before star power (to restore after star ends)
-	float originalMaxRunSpeed = 0.20f;  // Original run speed before star power (to restore after star ends)
+	int previousBGM = -1;        // BGM ID trước star power (để khôi phục sau khi star hết)
+	float originalMaxRunSpeed = 0.20f;  // Tốc độ chạy gốc trước star power (để khôi phục sau khi star hết)
 
 	// Animation state machine
 	MarioAnimState animState = MarioAnimState::IDLE;
-	int animFacing = 1; // 1: right, -1: left
+	int animFacing = 1; // 1: phải, -1: trái
 	DWORD animDebounceTimer = 0;
 	int lastAnimMoveDir = 0;
 	DWORD animReleaseLogTimer = 0;
@@ -115,7 +116,7 @@ public:
 	Mario(float x, float y, float z) : GameObject(x, y, z) {
 		// Khôi phục trạng thái đã giữ qua các màn (level quyết định animation)
 		level = PlayerData::Get().level;
-		canShoot = (level == MARIO_LEVEL::FIRE);   // khôi phục theo level, nếu không Fire màn mới bấm K không bắn
+		canShoot = (level == MARIO_LEVEL::FIRE);   // Khôi phục theo level, nếu không Fire màn mới bấm K không bắn
 
 		animState = MarioAnimState::IDLE;
 		animFacing = 1;
@@ -126,17 +127,17 @@ public:
 	};
 	~Mario() {};
 
-	// ACTIONS
+	// HÀNH ĐỘNG
 	void Jump();
 	void ShootBullet();
-	void TakeDamage();   // hurt by an enemy: shrink to Small (with grace) or die if already Small
+	void TakeDamage();   // Bị thương bởi enemy: thu nhỏ thành Small (có grace) hoặc chết nếu đã là Small
 
 	// CORE
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void Render();
 	void SetState(int state);
 
-	// COLLISION
+	// VA CHẠM
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	bool IsCollidable() { return true; }
 	bool IsBlocking() { return false; }
@@ -144,14 +145,14 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnNoCollision(DWORD dt);
 
-	// COLISION WITH
+	// VA CHẠM VỚI
 	void OnCollisionWithStaticObject(LPCOLLISIONEVENT e);
 	void OnCollisionWithDynamicPlatform(LPCOLLISIONEVENT e);
 	void OnCollisionWithEnemy(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 	void OnCollisionWithInvisibleObject(LPCOLLISIONEVENT e);
 
-	// RENDER WITH MARIO LEVEL
+	// RENDER THEO LEVEL
 	void MarioSmallRender(int& aniId);
 	void MarioBigRender(int& aniId);
 	void MarioFireRender(int& aniId);

@@ -4,7 +4,9 @@
 constexpr float PLATFORM_BBOX_WIDTH = 16.0f;
 constexpr float PLATFORM_BBOX_HEIGHT = 16.0f;
 
-class Platform : public StaticObject {
+// Sàn (platform) - vật tĩnh dùng để Mario đứng trên
+class Platform : public StaticObject
+{
 public:
 	Platform(float x, float y, float z) : StaticObject(x, y, z) {
 		this->state = 0;

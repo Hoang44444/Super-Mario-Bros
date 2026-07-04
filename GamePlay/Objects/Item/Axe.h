@@ -4,7 +4,9 @@
 constexpr float AXE_BBOX_WIDTH  = 16.0f;
 constexpr float AXE_BBOX_HEIGHT = 16.0f;
 
-class Axe : public Item {
+// Rìu - Mario chạm sẽ làm cầu sập (dùng ở cuối castle)
+class Axe : public Item
+{
 public:
 	Axe(float x, float y, float z) : Item(x, y, z) {}
 	virtual ~Axe() {}

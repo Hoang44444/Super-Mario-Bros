@@ -39,9 +39,9 @@ void SuperStar::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (dynamic_cast<StaticObject*>(e->obj))
 	{
-		if (e->ny < 0) vy = -SUPER_STAR_BOUNCE_SPEED;
-		else if (e->ny > 0) vy = 0;
-		else if (e->nx != 0) { direction = -direction; vx = SUPER_STAR_SPEED * direction; }
+		if (e->ny < 0) vy = -SUPER_STAR_BOUNCE_SPEED;  // Chạm đất -> nảy lên
+		else if (e->ny > 0) vy = 0;  // Chạm trần
+		else if (e->nx != 0) { direction = -direction; vx = SUPER_STAR_SPEED * direction; }  // Chạm tường -> đảo hướng
 	}
 }
 
@@ -50,7 +50,7 @@ void SuperStar::OnMarioCollision(Mario* mario)
 	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
 	mario->SetStarPower(MARIO_PARAMS::STAR_POWER_TIME);
 	
-	// Award score for Starman
+	// Cộng điểm cho Starman
 	ScoreManager::Get().AddScore(SCORE_VALUES::STARMAN);
 	
 	Delete();

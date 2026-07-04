@@ -6,11 +6,11 @@ void DeathZone::OnMarioCollision(Mario* mario) {
 }
 
 void DeathZone::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	// No need to update anything since it's invisible and doesn't move
+	// Không cần update vì vô hình và không di chuyển
 }
 
 void DeathZone::Render() {
-	// No need to render anything since it's invisible
+	// Không cần render vì vô hình
 }
 
 void DeathZone::GetBoundingBox(float& l, float& t, float& r, float& b) {
