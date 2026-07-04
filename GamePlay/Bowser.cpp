@@ -3,6 +3,7 @@
 #include "Mario.h"
 #include "PlayScene.h"
 #include "AnimationManager.h"
+#include "Camera.h"
 #include "../Resource/AssetID.h"
 #include "../../Resource/SoundManager.h"
 
@@ -47,7 +48,29 @@ void Bowser::OnMarioCollison(Mario* mario, float ny)
 
 void Bowser::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-    if (state == BOWSER_STATE_DIE) return;
+    if (state == BOWSER_STATE_DIE)
+    {
+        // Pha 1: đứng nhấp nháy tại chỗ trong BOWSER_DIE_BLINK_TIME (không di chuyển).
+        if (GetTickCount64() - die_timer < BOWSER_DIE_BLINK_TIME)
+        {
+            vx = 0;
+            vy = 0;
+            return;
+        }
+
+        // Pha 2: rơi thẳng xuống, BỎ QUA va chạm -> rơi xuyên dù cầu còn hay đã sập.
+        vy += BOWSER_GRAVITY * dt;
+        y += vy * dt;
+
+        // Pha 3: rơi khỏi màn -> tự xóa (biến mất).
+        float cy = Camera::GetInstance()->GetY();
+        const float SCREEN_HEIGHT = 600.0f;
+        const float CULL_BUFFER = 100.0f;
+        if (y > cy + SCREEN_HEIGHT + CULL_BUFFER)
+            Delete();
+
+        return;
+    }
 
     vy += BOWSER_GRAVITY * dt;
 
@@ -145,6 +168,9 @@ void Bowser::SetState(int state)
         break;
 
     case BOWSER_STATE_DIE:
+        vx = 0;
+        vy = 0;
+        die_timer = GetTickCount64();   // bắt đầu đếm pha nhấp nháy 2s
         SoundManager::GetInstance()->PlaySFX(SFX::BOWSER_FALLS);
         break;
     }
@@ -152,6 +178,15 @@ void Bowser::SetState(int state)
 
 void Bowser::Render()
 {
+    // Nhấp nháy khi vừa chết: bỏ vẽ xen kẽ theo BOWSER_DIE_BLINK_INTERVAL để tạo hiệu ứng chớp.
+    if (state == BOWSER_STATE_DIE)
+    {
+        ULONGLONG elapsed = GetTickCount64() - die_timer;
+        if (elapsed < BOWSER_DIE_BLINK_TIME
+            && (elapsed / BOWSER_DIE_BLINK_INTERVAL) % 2 == 0)
+            return;
+    }
+
     int aniId = ANIMATION::BOWSER_WALK_LEFT;
 
     if (state == BOWSER_STATE_ATTACKING)
