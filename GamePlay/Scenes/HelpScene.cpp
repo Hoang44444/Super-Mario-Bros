@@ -286,12 +286,21 @@ void HelpScene::Render()
 		return;
 	}
 
-	// UI layout: adjust these values to reposition help text and volume controls.
-	const int leftX = 420;
-	const int rightX = 840;
-	const int controlsY = 170;
-	const int lineHeight = 52;
-	const int volumeY = 370;
+	// UI layout: responsive based on screen size (original: 440x240 logical)
+	Renderer* r = Renderer::GetInstance();
+	int screenWidth = r->GetBackBufferWidth();
+	int screenHeight = r->GetBackBufferHeight();
+	float scale = r->GetGlobalScale();
+	int logicalW = (int)(screenWidth / scale);
+	int logicalH = (int)(screenHeight / scale);
+
+	// Original values: leftX=420, rightX=840, controlsY=170, lineHeight=52, volumeY=370 (for 1280x720)
+	// Scale factors based on logical resolution 440x240
+	const int leftX = (int)(logicalW * 0.95f);   // ~420/440
+	const int rightX = (int)(logicalW * 1.90f);  // ~840/440
+	const int controlsY = (int)(logicalH * 0.70f); // ~170/240
+	const int lineHeight = (int)(logicalH * 0.22f);  // ~52/240
+	const int volumeY = (int)(logicalH * 1.54f);   // ~370/240
 
 	DrawTextLine(L"Move left / right", leftX, controlsY, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Left / Right Arrow", rightX, controlsY, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);

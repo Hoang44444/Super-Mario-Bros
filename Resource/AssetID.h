@@ -1,12 +1,32 @@
 #pragma once
 
+// File này định nghĩa tất cả các ID dùng trong game
+// Các ID được nhóm theo namespace để dễ quản lý:
+// - SCENE: ID của các scene (menu, level, death, v.v.)
+// - GAME_STATE: Trạng thái game tổng quát (menu, play, pause, game over)
+// - GAME: Section trong file cấu hình game
+// - ASSET: Section trong file cấu hình asset
+// - OBJECT: ID của các object type (Mario, enemy, item, v.v.)
+// - TEXTURE: ID của các texture file
+// - ANIMATION: ID của các animation
+// - SFX: ID của các sound effect
+// - BGM: ID của các background music
+//
+// LƯU Ý QUAN TRỌNG:
+// - Các ID animation từ 8000 trở lên phải khớp với file .txt trong Application/Objects/
+// - Đừng đổi số ID nếu không sửa luôn file .txt tương ứng
+
+// ID của các scene trong game
+// Dùng để chuyển đổi giữa các màn chơi/menu
 namespace SCENE
 {
+    // Section ID dùng trong file cấu hình scene
     constexpr int SECTION_UNKNOWN = -1;
     constexpr int SECTION_ASSETS = 1;
     constexpr int SECTION_OBJECTS = 2;
     constexpr int SECTION_MAP = 3;
 
+    // ID của từng scene cụ thể
     constexpr int MENU = 0;
     constexpr int WORLD_1_1 = 1;
     constexpr int WORLD_1_2 = 2;
@@ -29,12 +49,13 @@ namespace SCENE
     constexpr int LEVEL_SELECT = 19; // level selection UI
 }
 
-// Compatibility names for UI scene switches. IDs 4 and 5 are already occupied
-// by gameplay scenes in this project, so these intentionally use free scene IDs.
+// Tên tương thích để chuyển scene UI (để tương thích với code cũ)
+// IDs 4 và 5 đã bị chiếm bởi gameplay scenes, nên dùng IDs trống khác
 #define ID_SCENE_HELP   SCENE::HELP
 #define ID_SCENE_LEVEL  SCENE::LEVEL_SELECT
 
-// High-level game state (independent of which scene file is loaded).
+// Trạng thái game tổng quát (không phụ thuộc scene nào đang load)
+// Dùng để quản lý logic game ở mức cao hơn scene
 namespace GAME_STATE
 {
     constexpr int MENU = 0;       // menu / control / death-continue screens
@@ -43,6 +64,7 @@ namespace GAME_STATE
     constexpr int GAME_OVER = 3;  // game finished (reached the end scene)
 }
 
+// Section ID trong file cấu hình game (super-mario-bros.txt)
 namespace GAME
 {
     constexpr int SECTION_SETTINGS = 1;
@@ -50,6 +72,7 @@ namespace GAME
     constexpr int SECTION_TEXTURES = 3;
 }
 
+// Section ID trong file cấu hình asset
 namespace ASSET
 {
     constexpr int SECTION_UNKNOWN = -1;
@@ -57,82 +80,92 @@ namespace ASSET
     constexpr int SECTION_ANIMATIONS = 3;
 }
 
+// ID của các loại object trong game
+// Dùng để xác định loại object khi spawn từ map
 namespace OBJECT
 {
-    constexpr int MARIO = 0;
-    constexpr int PLATFORM = 1;
-    constexpr int BULLET = 2;
-    constexpr int BACKGROUND = 3;
-    constexpr int PIPE = 4;
-    constexpr int SWITCH_SCENE_POINT = 5;
-	constexpr int BRICK_TEST = 6;
-	constexpr int DYNAMIC_PLATFORM = 7;
-	constexpr int BRICK = 8;
-	constexpr int DEATH_ZONE = 9;
-	constexpr int QUESTION_BLOCK = 10;
+    // ---- PLAYER & ENVIRONMENT ----
+    constexpr int MARIO = 0;              // Người chơi
+    constexpr int PLATFORM = 1;           // Nền tảng tĩnh
+    constexpr int BULLET = 2;             // Đạn Mario bắn
+    constexpr int BACKGROUND = 3;         // Background
+    constexpr int PIPE = 4;               // Ống dẫn (warp pipe)
+    constexpr int SWITCH_SCENE_POINT = 5; // Điểm chuyển scene
+	constexpr int BRICK_TEST = 6;         // Gạch test
+	constexpr int DYNAMIC_PLATFORM = 7;   // Nền tảng động (di chuyển)
+	constexpr int BRICK = 8;               // Gạch thường
+	constexpr int DEATH_ZONE = 9;          // Vùng chết (rơi xuống chết)
+	constexpr int QUESTION_BLOCK = 10;    // Block dấu chấm hỏi
 
-    // ---- ITEMS ----
-	constexpr int MUSHROOM = 11;
-	constexpr int FIRE_FLOWER = 12;
-	constexpr int POISON_MUSHROOM = 13;
-	constexpr int SUPER_STAR = 14;
-	constexpr int CASTLE_BRIDGE = 16;
-	constexpr int AXE = 17;
-    constexpr int COIN = 18;
-	constexpr int MUSHROOM_1UP = 19;
-	constexpr int HAMMER = 23;
-	constexpr int ITEM_COIN2 = 24;
+    // ---- ITEMS (Vật phẩm) ----
+	constexpr int MUSHROOM = 11;          // Nấm tăng size
+	constexpr int FIRE_FLOWER = 12;       // Hoa lửa
+	constexpr int POISON_MUSHROOM = 13;    // Nấm độc
+	constexpr int SUPER_STAR = 14;         // Ngôi sao vô hình
+	constexpr int CASTLE_BRIDGE = 16;      // Cầu ở castle
+	constexpr int AXE = 17;                // Rìu (cắt cầu)
+    constexpr int COIN = 18;              // Xu
+	constexpr int MUSHROOM_1UP = 19;      // Nấm 1UP
+	constexpr int HAMMER = 23;             // Búa
+	constexpr int ITEM_COIN2 = 24;        // Xu (variant khác)
 
-	// ---- ENEMIES ----
-	constexpr int GOOMBA = 30;
-	constexpr int KOOPA = 31;
-	constexpr int BUZZY_BEETLE = 32;
-	constexpr int HAMMER_BRO = 33;
-	constexpr int BLOOPER = 34;
-	constexpr int BOWSER = 35;
-	constexpr int BOWSER_FIRE = 36;
-	constexpr int BOWSER_FIREBALL = 37;
-	constexpr int BULLET_BILL = 38;
-	constexpr int CANNON = 39;
-	constexpr int LAKITU = 40;
-	constexpr int PODOBOO = 41;
-	constexpr int SPINY = 42;
-	constexpr int PIRANHA_PLANT = 43;
-	constexpr int ENEMY_TURN_BLOCK = 44; // invisible block that flips enemy direction
+	// ---- ENEMIES (Kẻ thù) ----
+	constexpr int GOOMBA = 30;             // Nấm nâu
+	constexpr int KOOPA = 31;              // Rùa xanh
+	constexpr int BUZZY_BEETLE = 32;       // Bọ cánh cứng
+	constexpr int HAMMER_BRO = 33;         // Kẻ ném búa
+	constexpr int BLOOPER = 34;            // Mực nước
+	constexpr int BOWSER = 35;             // Boss cuối game
+	constexpr int BOWSER_FIRE = 36;        // Lửa Bowser
+	constexpr int BOWSER_FIREBALL = 37;   // Quả cầu lửa Bowser
+	constexpr int BULLET_BILL = 38;        // Đạn côn
+	constexpr int CANNON = 39;             // Súng đạn côn
+	constexpr int LAKITU = 40;             // Rùa bay ném Spiny
+	constexpr int PODOBOO = 41;            // Quỷ lửa nhảy
+	constexpr int SPINY = 42;              // Rùa gai
+	constexpr int PIRANHA_PLANT = 43;     // Cây ăn thịt trong ống
+	constexpr int ENEMY_TURN_BLOCK = 44;   // Block vô hình làm kẻ thù quay đầu
 
-	// ---- UI ----
-	constexpr int MENU_OPTIONS = 50;     // menu text options ("Bắt đầu" / "Hướng dẫn")
-	constexpr int LIVES_NUMBER = 51;     // số mạng còn lại cạnh chữ X (death screen)
+	// ---- UI (Giao diện) ----
+	constexpr int MENU_OPTIONS = 50;      // Tùy chọn menu ("Bắt đầu" / "Hướng dẫn")
+	constexpr int LIVES_NUMBER = 51;      // Số mạng còn lại (death screen)
 
-    //Wind effect
-    constexpr int WIND_PARTICLE = 60;
+    // ---- EFFECTS ----
+    constexpr int WIND_PARTICLE = 60;     // Hiệu ứng gió
 }
 
+// ID của các texture file (ảnh)
+// Dùng bởi TextureManager để load texture từ file
 namespace TEXTURE
 {
+    // Texture cơ bản
     constexpr int BRICK = 0;
     constexpr int MARIO = 1;
     constexpr int MISC = 2;
     constexpr int MENUBACKGROUND = 3;
     constexpr int LEVEL1_1 = 4;
-    constexpr int BBOX = -100;
+    constexpr int BBOX = -100;          // Bounding box debug
     constexpr int ENEMIES = 11;
 
-    // Full-screen scene backgrounds (match [TEXTURES] in super-mario-bros.txt)
+    // Background toàn màn hình cho các scene (khớp với [TEXTURES] trong super-mario-bros.txt)
     constexpr int MENU_SCENE = 14;
     constexpr int CONTROL_SCENE = 15;
     constexpr int END_SCENE = 16;
-    constexpr int MENU_TEXT = 17;   // menu_text.png: white/yellow "Bắt đầu" & "Hướng dẫn"
-    constexpr int DEATH_SCENE = 18; // death_scene.png
-    constexpr int GAMEOVER_SCENE = 19; // gameover_scene.png
-    constexpr int NUMS = 20;           // nums_123.png (chữ số 1,2,3)
-    constexpr int INTRO_SCENE = 21;    // intro_scene.png
-    constexpr int HELP_SCENE = 22;     // help_scene.png
-    constexpr int LEVEL_SCENE = 23;    // level_scene.png
+    constexpr int MENU_TEXT = 17;       // menu_text.png: text "Bắt đầu" & "Hướng dẫn"
+    constexpr int DEATH_SCENE = 18;     // death_scene.png
+    constexpr int GAMEOVER_SCENE = 19;  // gameover_scene.png
+    constexpr int NUMS = 20;             // nums_123.png (chữ số 1,2,3)
+    constexpr int INTRO_SCENE = 21;     // intro_scene.png
+    constexpr int HELP_SCENE = 22;      // help_scene.png
+    constexpr int LEVEL_SCENE = 23;     // level_scene.png
 }
 
+// ID của các animation
+// Dùng bởi AnimationManager để load animation từ file .txt
+// Animation định nghĩa chuỗi sprite frames cho một hành động
 namespace ANIMATION
 {
+    // ---- BRICK & PLATFORM ----
     constexpr int BRICK_OVERWORLD = 100;
     constexpr int BRICK_UNDERWORLD = 101;
     constexpr int DYNAMIC_PLATFORM = 102;
@@ -148,10 +181,10 @@ namespace ANIMATION
     constexpr int BULLET_LEFT = 201;
     constexpr int CRACKED_BRICK = 300;
     
-    // WIND EFFECT
-    constexpr int WIND_EFFECT = 310;
+    // ---- EFFECTS ----
+    constexpr int WIND_EFFECT = 310;    // Hiệu ứng gió
     
-    // Background
+    // ---- BACKGROUND ANIMATIONS ----
     constexpr int MENU_BACKGROUND = 300;
     constexpr int BACKGROUND_LEVEL1_1 = 3000;
 	constexpr int BACKGROUND_LEVEL1_2 = 3001;
@@ -164,18 +197,20 @@ namespace ANIMATION
 	constexpr int BACKGROUND_GAMEOVER = 3008; // gameover_scene.png
 	constexpr int BACKGROUND_INTRO    = 3009; // intro_scene.png
 
-	// Menu option text (white = not selected, yellow = selected)
-	constexpr int MENU_START_WHITE    = 3010; // "Bắt đầu"
-	constexpr int MENU_START_YELLOW   = 3011;
-	constexpr int MENU_GUIDE_WHITE    = 3012; // "Hướng dẫn"
-	constexpr int MENU_GUIDE_YELLOW   = 3013;
+	// ---- MENU TEXT (trắng = chưa chọn, vàng = đã chọn) ----
+	constexpr int MENU_START_WHITE    = 3010; // "Bắt đầu" (trắng)
+	constexpr int MENU_START_YELLOW   = 3011; // "Bắt đầu" (vàng)
+	constexpr int MENU_GUIDE_WHITE    = 3012; // "Hướng dẫn" (trắng)
+	constexpr int MENU_GUIDE_YELLOW   = 3013; // "Hướng dẫn" (vàng)
 
-	// Lives digits (death screen). Must be consecutive: digit n -> LIVES_DIGIT_1 + (n-1).
+	// ---- LIVES DIGITS (death screen) ----
+	// Phải liên tiếp: digit n -> LIVES_DIGIT_1 + (n-1)
 	constexpr int LIVES_DIGIT_1       = 3020;
 	constexpr int LIVES_DIGIT_2       = 3021;
 	constexpr int LIVES_DIGIT_3       = 3022;
 
-    // BIG MARIO
+    // ---- MARIO ANIMATIONS ----
+    // MARIO BIG (Mario lớn)
     constexpr int MARIO_BIG_IDLE_RIGHT = 400;
     constexpr int MARIO_BIG_IDLE_LEFT = 401;
     constexpr int MARIO_BIG_WALKING_RIGHT = 500;
@@ -193,7 +228,7 @@ namespace ANIMATION
     constexpr int MARIO_BIG_SKID_RIGHT = 1050;
     constexpr int MARIO_BIG_SKID_LEFT = 1051;
 
-    // RACCOON MARIO
+    // MARIO RACCOON (Mario Raccoon)
     constexpr int MARIO_RACCOON_IDLE_RIGHT = 2400;
     constexpr int MARIO_RACCOON_IDLE_LEFT = 2401;
     constexpr int MARIO_RACCOON_WALKING_RIGHT = 2500;
@@ -209,7 +244,7 @@ namespace ANIMATION
     constexpr int MARIO_RACCOON_BRACE_RIGHT = 3000;
     constexpr int MARIO_RACCOON_BRACE_LEFT = 3001;
 
-    // TANOOKI MARIO
+    // MARIO TANOOKI (Mario Tanooki)
     constexpr int MARIO_TANOOKI_IDLE_RIGHT = 3400;
     constexpr int MARIO_TANOOKI_IDLE_LEFT = 3401;
     constexpr int MARIO_TANOOKI_WALKING_RIGHT = 3500;
@@ -225,7 +260,7 @@ namespace ANIMATION
     constexpr int MARIO_TANOOKI_BRACE_RIGHT = 4000;
     constexpr int MARIO_TANOOKI_BRACE_LEFT = 4001;
 
-    // HAMMER MARIO
+    // MARIO HAMMER (Mario Hammer)
     constexpr int MARIO_HAMMER_IDLE_RIGHT = 4400;
     constexpr int MARIO_HAMMER_IDLE_LEFT = 4401;
     constexpr int MARIO_HAMMER_WALKING_RIGHT = 4500;
@@ -241,7 +276,7 @@ namespace ANIMATION
     constexpr int MARIO_HAMMER_BRACE_RIGHT = 5000;
     constexpr int MARIO_HAMMER_BRACE_LEFT = 5001;
 
-    // SMALL MARIO
+    // MARIO SMALL (Mario nhỏ)
     constexpr int MARIO_SMALL_IDLE_RIGHT = 1100;
     constexpr int MARIO_SMALL_IDLE_LEFT = 1102;
     constexpr int MARIO_SMALL_WALKING_RIGHT = 1200;
@@ -259,16 +294,18 @@ namespace ANIMATION
 
     constexpr int MARIO_DIE = 999;
 
-    // PIPE
+    // ---- PIPE ANIMATIONS ----
     constexpr int PIPE_OVERWORLD = 3100;
     constexpr int PIPE_UNDERWORLD = 3101;
     constexpr int PIPE_CASTLE = 3102;
 
-    // QUESTION BLOCK
+    // ---- QUESTION BLOCK ----
     constexpr int QUESTION_BLOCK = 3200;
     constexpr int QUESTION_BLOCK_DELETED = 3201;
 
-    // ITEMS cơ bản — dời sang 5050-5054 để tránh trùng KOOPA (5000-5003); CASTLE_BRIDGE/AXE giữ 5007/5008
+    // ---- ITEM ANIMATIONS ----
+    // Items cơ bản - dời sang 5050-5054 để tránh trùng KOOPA (5000-5003)
+    // CASTLE_BRIDGE/AXE giữ 5007/5008
     // (khớp với mushroom.txt / fire_flower.txt / poison_mushroom.txt / super_star.txt / frog_suit.txt)
     constexpr int MUSHROOM = 5050;
     constexpr int FIRE_FLOWER = 5051;
@@ -278,7 +315,7 @@ namespace ANIMATION
     constexpr int CASTLE_BRIDGE = 5007;
     constexpr int AXE = 5008;
 
-    // FIRE MARIO (2100-2301, safe)
+    // MARIO FIRE (Mario lửa) - range 2100-2301
     constexpr int MARIO_FIRE_IDLE_RIGHT = 2100;
     constexpr int MARIO_FIRE_IDLE_LEFT = 2101;
     constexpr int MARIO_FIRE_WALKING_RIGHT = 2200;
@@ -290,7 +327,7 @@ namespace ANIMATION
     constexpr int MARIO_FIRE_SKID_RIGHT = 2400;
     constexpr int MARIO_FIRE_SKID_LEFT = 2401;
 
-    // FROG MARIO (5400-5601, safe — tránh RACCOON 2400-3001)
+    // MARIO FROG (Mario ếch) - range 5400-5601 (tránh RACCOON 2400-3001)
     constexpr int MARIO_FROG_IDLE_RIGHT = 5400;
     constexpr int MARIO_FROG_IDLE_LEFT = 5401;
     constexpr int MARIO_FROG_WALKING_RIGHT = 5500;
@@ -303,15 +340,14 @@ namespace ANIMATION
     //  (đừng đổi số nếu không sửa luôn file .txt tương ứng)
     // ============================================================
 
-    // ---- ITEMS ---- (item2.txt)
+    // ---- ITEM ANIMATIONS (item2.txt) ----
     constexpr int ITEM_COIN          = 8000;
     constexpr int ITEM_MUSHROOM_1UP  = 8001;
     constexpr int ITEM_SUPER_LEAF    = 8002;
     constexpr int ITEM_TANOOKI_SUIT  = 8003;
     constexpr int ITEM_HAMMER_SUIT   = 8004;
 
-    // ---- ENEMIES ----
-
+    // ---- ENEMY ANIMATIONS ----
     // Goomba (Goomba.txt: 4000-4001)
     constexpr int GOOMBA_WALK        = 4000;
     constexpr int GOOMBA_DIE         = 4001;
@@ -353,8 +389,8 @@ namespace ANIMATION
     constexpr int BULLET_BILL        = 3400;
 
     // HammerBro (hammerbro.txt: 3500-3502) + Hammer projectile (hammer.txt: 3550)
-    constexpr int HAMMER_BRO_WALK_LEFT  = 3500;   // đi/nhìn sang trái  (hàng trên)
-    constexpr int HAMMER_BRO_WALK_RIGHT = 3501;   // đi/nhìn sang phải  (hàng dưới)
+    constexpr int HAMMER_BRO_WALK_LEFT  = 3500;   // đi/nhìn sang trái (hàng trên)
+    constexpr int HAMMER_BRO_WALK_RIGHT = 3501;   // đi/nhìn sang phải (hàng dưới)
     constexpr int HAMMER_BRO_JUMP       = 3502;   // đang nhảy
     constexpr int HAMMER             = 3550;
 
@@ -375,9 +411,11 @@ namespace ANIMATION
 }
 
 // ---- SOUND EFFECTS (SFX) ----
+// ID của các hiệu ứng âm thanh (short sound effects)
+// Dùng bởi SoundManager::LoadSFX() và PlaySFX()
 namespace SFX
 {
-    // Mario sounds
+    // ---- MARIO SOUNDS ----
     constexpr int JUMP               = 1000;
     constexpr int JUMP_SMALL         = 1001;
     constexpr int STOMP              = 1002;
@@ -389,7 +427,7 @@ namespace SFX
     constexpr int DIE                = 1008;
     constexpr int ONE_UP             = 1009;
 
-    // Enemy sounds
+    // ---- ENEMY SOUNDS ----
     constexpr int GOOMBA_STOMP       = 2000;
     constexpr int KOOPA_STOMP        = 2001;
     constexpr int KOOPA_KICK         = 2002;
@@ -397,7 +435,7 @@ namespace SFX
     constexpr int BOWSER_FIRE        = 2004;
     constexpr int BOWSER_FALLS       = 2005;
 
-    // Environment sounds
+    // ---- ENVIRONMENT SOUNDS ----
     constexpr int BRICK_BREAK        = 3000;
     constexpr int BUMP               = 3001;
     constexpr int QUESTION_BLOCK      = 3002;
@@ -409,7 +447,7 @@ namespace SFX
     constexpr int SMB_SHAKE          = 3009;
     constexpr int FIREWORKS           = 3008;
 
-    // UI sounds
+    // ---- UI SOUNDS ----
     constexpr int MENU_SELECT        = 4000;
     constexpr int MENU_MOVE          = 4001;
     constexpr int PAUSE              = 4002;
@@ -417,9 +455,11 @@ namespace SFX
 }
 
 // ---- BACKGROUND MUSIC (BGM) ----
+// ID của các nhạc nền (background music)
+// Dùng bởi SoundManager::LoadBGM() và PlayBGM()
 namespace BGM
 {
-    constexpr int OVERWORLD_THEME    = 5000;  // Overworld theme
+    constexpr int OVERWORLD_THEME    = 5000;  // Nhạc overworld (level thường)
     constexpr int UNDERWORLD_THEME  = 5001;
     constexpr int WATER_THEME        = 5002;
     constexpr int CASTLE_THEME       = 5003;

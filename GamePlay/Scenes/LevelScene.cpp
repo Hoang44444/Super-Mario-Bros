@@ -245,13 +245,22 @@ void LevelScene::Render()
 		return;
 	}
 
-	// UI layout: adjust these values to reposition the level selector.
-	float titleY = 170.0f;
-	float levelY = 380.0f;
-	float startX = 270.0f;
-	float spacing = 310.0f;
-	float levelWidth = 120.0f;
-	float levelHeight = 70.0f;
+	// UI layout: responsive based on screen size (original: 440x240 logical)
+	Renderer* r = Renderer::GetInstance();
+	int screenWidth = r->GetBackBufferWidth();
+	int screenHeight = r->GetBackBufferHeight();
+	float scale = r->GetGlobalScale();
+	float logicalW = screenWidth / scale;
+	float logicalH = screenHeight / scale;
+
+	// Original values: titleY=170, levelY=380, startX=270, spacing=310, levelWidth=120, levelHeight=70 (for 1280x720)
+	// Scale factors based on logical resolution 440x240
+	float titleY = logicalH * 0.70f;   // ~170/240
+	float levelY = logicalH * 1.58f;  // ~380/240
+	float startX = logicalW * 0.61f;   // ~270/440
+	float spacing = logicalW * 0.70f; // ~310/440
+	float levelWidth = logicalW * 0.27f; // ~120/440
+	float levelHeight = logicalH * 0.29f; // ~70/240
 
 	DrawCenteredText(L"LEVEL", (int)titleY, 120, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 

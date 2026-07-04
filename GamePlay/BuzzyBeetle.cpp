@@ -8,7 +8,7 @@
 
 BuzzyBeetle::BuzzyBeetle(float x, float y, float z) : Enemy(x, y, z)
 {
-    bool isFacingRight;
+    isFacingRight = false;
     SetState(BUZZY_STATE_WALKING);
 }
 

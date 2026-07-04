@@ -3,14 +3,17 @@
 	#include <iostream>
 	#include "debug.h"
 
+	// Khởi tạo instance singleton tĩnh
 	SoundManager* SoundManager::__instance = nullptr;
 
 	SoundManager::SoundManager()
 	{
+		// Constructor - các thành viên được khởi tạo mặc định
 	}
 
 	int SoundManager::ClampVolume(int volume)
 	{
+		// Giới hạn volume trong khoảng 0-100
 		if (volume < 0) return 0;
 		if (volume > 100) return 100;
 		return volume;
@@ -21,18 +24,21 @@
 		volume = ClampVolume(volume);
 		if (volume == 0) return DSBVOLUME_MIN;
 
-		// Keep the UI's 0-100 values usable: the old linear -10000..0 mapping
-		// made mid-range values like 49 effectively silent.
+		// Mapping volume 0-100 sang decibel cho DirectSound
+		// Công thức này giúp mid-range values (như 49) không bị im lặng
+		// Volume 100 -> 0dB (max), Volume 0 -> -10000dB (im lặng)
 		return -3000 + (volume * 30);
 	}
 
 	SoundManager::~SoundManager()
 	{
+		// Destructor - ComPtr tự động release DirectSound resources
 		DebugOut(L"[INFO] SoundManager destructor called\n");
 	}
 
 	SoundManager* SoundManager::GetInstance()
 	{
+		// Lấy instance singleton - tạo mới nếu chưa tồn tại
 		if (__instance == nullptr)
 		{
 			__instance = new SoundManager();
@@ -42,6 +48,7 @@
 
 	void SoundManager::ReleaseInstance()
 	{
+		// Giải phóng instance singleton - gọi khi đóng game
 		if (__instance)
 		{
 			delete __instance;
@@ -54,6 +61,7 @@
 		DebugOut(L"[INFO] SoundManager::Init() called\n");
 		this->hWnd = hWnd;
 
+		// Bước 1: Tạo DirectSound device
 		HRESULT result = DirectSoundCreate8(nullptr, &dsound, nullptr);
 		if (FAILED(result))
 		{
@@ -62,6 +70,7 @@
 		}
 		DebugOut(L"[INFO] DirectSoundCreate8 succeeded\n");
 
+		// Bước 2: Set cooperative level - DSSCL_PRIORITY cho phép full control
 		result = dsound->SetCooperativeLevel(hWnd, DSSCL_PRIORITY);
 		if (FAILED(result))
 		{
@@ -70,7 +79,7 @@
 		}
 		DebugOut(L"[INFO] SetCooperativeLevel succeeded\n");
 
-		// Create primary buffer
+		// Bước 3: Tạo primary buffer - chỉ dùng để cấu hình format âm thanh chung
 		DSBUFFERDESC bufferDesc;
 		ZeroMemory(&bufferDesc, sizeof(DSBUFFERDESC));
 		bufferDesc.dwSize = sizeof(DSBUFFERDESC);
@@ -93,6 +102,8 @@
 	bool SoundManager::LoadWAV(const std::string& filePath, ComPtr<IDirectSoundBuffer>& buffer, bool isMusic)
 	{
 		DebugOut(L"[INFO] LoadWAV() called for path: %s, isMusic: %d\n", std::wstring(filePath.begin(), filePath.end()).c_str(), isMusic);
+		
+		// Bước 1: Mở file WAV
 		std::ifstream file(filePath, std::ios::binary);
 		if (!file.is_open())
 		{
@@ -101,7 +112,7 @@
 		}
 		DebugOut(L"[INFO] File opened successfully\n");
 
-		// Read WAV header
+		// Bước 2: Đọc và validate WAV header (RIFF và WAVE)
 		char riff[4];
 		file.read(riff, 4);
 		if (strncmp(riff, "RIFF", 4) != 0)
@@ -124,7 +135,7 @@
 		}
 		DebugOut(L"[INFO] WAV header validated\n");
 
-		// Find fmt chunk
+		// Bước 3: Parse các chunk trong file WAV (fmt, data, LIST, v.v.)
 		char chunkId[4];
 		DWORD chunkSize;
 		WAVEFORMATEX wf;
@@ -144,6 +155,7 @@
 
 			if (strncmp(chunkId, "fmt ", 4) == 0)
 			{
+				// Chunk fmt chứa thông tin format âm thanh (sample rate, channels, v.v.)
 				ZeroMemory(&wf, sizeof(WAVEFORMATEX));
 
 				DWORD bytesToRead = min(chunkSize, (DWORD)sizeof(WAVEFORMATEX));
@@ -152,7 +164,7 @@
 				if (chunkSize > bytesToRead)
 					file.seekg(chunkSize - bytesToRead, std::ios::cur);
 
-				// Pad to word boundary
+				// WAV chunks phải align theo word boundary (2 bytes)
 				if (chunkSize % 2 != 0)
 					file.seekg(1, std::ios::cur);
 
@@ -160,6 +172,7 @@
 			}
 			else if (strncmp(chunkId, "data", 4) == 0)
 			{
+				// Chunk data chứa dữ liệu âm thanh thực tế
 				dataSize = chunkSize;
 				dataOffset = (DWORD)file.tellg();
 				foundData = true;
@@ -167,17 +180,15 @@
 			}
 			else if (strncmp(chunkId, "LIST", 4) == 0)
 			{
-				// Skip LIST chunks (metadata)
+				// Chunk LIST chứa metadata - bỏ qua
 				file.seekg(chunkSize, std::ios::cur);
-				// Pad to word boundary
 				if (chunkSize % 2 != 0)
 					file.seekg(1, std::ios::cur);
 			}
 			else
 			{
-				// Skip unknown chunks
+				// Bỏ qua các chunk không xác định
 				file.seekg(chunkSize, std::ios::cur);
-				// Pad to word boundary
 				if (chunkSize % 2 != 0)
 					file.seekg(1, std::ios::cur);
 			}
@@ -190,7 +201,7 @@
 			return false;
 		}
 
-		// Check if format is PCM (DirectSound requires PCM)
+		// Bước 4: Kiểm tra format - DirectSound chỉ hỗ trợ PCM
 		if (wf.wFormatTag != WAVE_FORMAT_PCM)
 		{
 			DebugOut(L"[ERROR] WAV file is not PCM format (tag: %d). DirectSound only supports PCM.\n", wf.wFormatTag);
@@ -199,7 +210,7 @@
 		}
 		DebugOut(L"[INFO] WAV format is PCM (supported)\n");
 
-		// Create secondary buffer
+		// Bước 5: Tạo secondary buffer để chứa dữ liệu âm thanh
 		if (!CreateBuffer(buffer, wf, dataSize, isMusic))
 		{
 			file.close();
@@ -207,7 +218,7 @@
 		}
 		DebugOut(L"[INFO] Secondary buffer created\n");
 
-		// Lock buffer and write data
+		// Bước 6: Lock buffer để ghi dữ liệu âm thanh vào
 		LPVOID audioPtr1 = nullptr;
 		LPVOID audioPtr2 = nullptr;
 		DWORD audioBytes1 = 0;
@@ -222,6 +233,7 @@
 		}
 		DebugOut(L"[INFO] Buffer locked successfully\n");
 
+		// Bước 7: Đọc dữ liệu âm thanh từ file và ghi vào buffer
 		file.seekg(dataOffset);
 		file.read((char*)audioPtr1, audioBytes1);
 		if (audioBytes2 > 0)
@@ -230,6 +242,7 @@
 		}
 		DebugOut(L"[INFO] Audio data written to buffer\n");
 
+		// Bước 8: Unlock buffer và đóng file
 		buffer->Unlock(audioPtr1, audioBytes1, audioPtr2, audioBytes2);
 		file.close();
 		DebugOut(L"[INFO] Buffer unlocked and file closed\n");
@@ -244,6 +257,10 @@
 		ZeroMemory(&bufferDesc, sizeof(DSBUFFERDESC));
 		bufferDesc.dwSize = sizeof(DSBUFFERDESC);
 
+		// Cấu hình flags cho buffer
+		// DSBCAPS_CTRLVOLUME: cho phép điều chỉnh volume
+		// DSBCAPS_CTRLPAN: cho phép điều chỉnh balance (trái/phải)
+		// DSBCAPS_CTRLPAN: cho phép thay đổi tần số (chỉ cho music)
 		if (isMusic)
 		{
 			bufferDesc.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_CTRLFREQUENCY;
@@ -271,6 +288,8 @@
 	{
 		DebugOut(L"[SOUND_DEBUG] LoadSFX() called for ID %d, path: %S\n", id, filePath.c_str());
 		ComPtr<IDirectSoundBuffer> buffer;
+		
+		// Load file WAV vào buffer (isMusic=false)
 		if (!LoadWAV(filePath, buffer, false))
 		{
 			DebugOut(L"[ERROR] Failed to load SFX %d from %s\n", id, std::wstring(filePath.begin(), filePath.end()).c_str());
@@ -278,7 +297,7 @@
 		}
 
 		sfxBuffers[id] = buffer;
-		ApplyVolumeSettings();
+		ApplyVolumeSettings();  // Áp dụng volume settings ngay sau khi load
 		DebugOut(L"[INFO] Successfully loaded SFX %d from %s\n", id, std::wstring(filePath.begin(), filePath.end()).c_str());
 		return true;
 	}
@@ -287,6 +306,8 @@
 	{
 		DebugOut(L"[SOUND_DEBUG] LoadBGM() called for ID %d, path: %S\n", id, filePath.c_str());
 		ComPtr<IDirectSoundBuffer> buffer;
+		
+		// Load file WAV vào buffer (isMusic=true - có thêm flag frequency control)
 		if (!LoadWAV(filePath, buffer, true))
 		{
 			DebugOut(L"[SOUND_DEBUG] Failed to load BGM %d from %S\n", id, filePath.c_str());
@@ -305,6 +326,7 @@
 		auto it = sfxBuffers.find(id);
 		if (it != sfxBuffers.end())
 		{
+			// Reset về đầu buffer trước khi play
 			it->second->SetCurrentPosition(0);
 			DWORD flags = loop ? DSBPLAY_LOOPING : 0;
 			HRESULT result = it->second->Play(0, 0, flags);
@@ -326,7 +348,7 @@
 	void SoundManager::PlayBGM(int id, bool loop)
 	{
 		DebugOut(L"[SOUND_DEBUG] PlayBGM() called for ID %d, loop: %d\n", id, loop);
-		StopBGM();
+		StopBGM();  // Dừng BGM đang play trước (nếu có)
 
 		auto it = bgmBuffers.find(id);
 		if (it != bgmBuffers.end())
@@ -377,6 +399,7 @@
 			auto it = bgmBuffers.find(currentBGM);
 			if (it != bgmBuffers.end())
 			{
+				// Stop buffer nhưng giữ currentBGM để có thể resume
 				it->second->Stop();
 			}
 			isBGMPlaying = false;
@@ -391,6 +414,7 @@
 			auto it = bgmBuffers.find(currentBGM);
 			if (it != bgmBuffers.end())
 			{
+				// Play lại từ vị trí hiện tại (không reset về đầu)
 				it->second->Play(0, 0, DSBPLAY_LOOPING);
 				isBGMPlaying = true;
 			}
@@ -404,7 +428,7 @@
 		if (it != sfxBuffers.end())
 		{
 			it->second->Stop();
-			it->second->SetCurrentPosition(0);
+			it->second->SetCurrentPosition(0);  // Reset về đầu buffer
 		}
 	}
 
@@ -458,11 +482,12 @@
 		masterVolume = ClampVolume(master);
 		musicVolume = ClampVolume(music);
 		sfxVolume = ClampVolume(sfx);
-		ApplyVolumeSettings();
+		ApplyVolumeSettings();  // Áp dụng ngay lập tức
 	}
 
 	void SoundManager::ApplyVolumeSettings()
 	{
+		// Tính volume thực tế = master * category / 100
 		int effectiveMusic =
 			(masterVolume * musicVolume) / 100;
 
@@ -471,13 +496,14 @@
 
 		SetBGMVolume(effectiveMusic);
 
+		// Áp dụng volume cho tất cả SFX buffers
 		for (auto& pair : sfxBuffers)
 			SetSFXVolume(pair.first, effectiveSfx);
 	}
 
 	void SoundManager::Update()
 	{
-		// Check if BGM has stopped
+		// Kiểm tra xem BGM đã dừng chưa (cho trường hợp non-looping BGM)
 		if (currentBGM != -1 && isBGMPlaying)
 		{
 			auto it = bgmBuffers.find(currentBGM);

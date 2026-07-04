@@ -10,7 +10,7 @@ class Cannon : public StaticObject
 {
 private:
 	int direction; // 1: right, -1: left
-	DWORD shootTimer;
+	ULONGLONG shootTimer;
 	int hits = 0;  // số lần đã trúng đạn Mario
 
 public:

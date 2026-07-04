@@ -80,7 +80,7 @@ void Lakitu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     float camX = Camera::GetInstance()->GetX();
     float camY = Camera::GetInstance()->GetY();
 
-    float anchorX = camX + screenW - LAKITU_BBOX_WIDTH - LAKITU_CORNER_MARGIN_X;
+    float anchorX = camX + (float)screenW - LAKITU_BBOX_WIDTH - LAKITU_CORNER_MARGIN_X;
     float hoverY  = camY + LAKITU_CORNER_MARGIN_Y;
 
     // Lakitu chỉ hoạt động khi VỊ TRÍ của nó (mép phải màn) nằm trong vùng [spawnX, endX].
@@ -216,7 +216,7 @@ void Lakitu::OnMarioCollison(Mario* mario, float ny)
         if (ny < 0)
         {
             SetState(LAKITU_STATE_DIE);
-            float mx, my, mz, mvx, mvy;
+            float mvx, mvy;
             mario->GetSpeed(mvx, mvy);
             mario->SetSpeed(mvx, -0.4f);
 
