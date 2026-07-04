@@ -144,20 +144,25 @@ void Mario::UpdateAnimationState(DWORD dt)
 	// 4. Update FACING (Sửa YÊU CẦU CHUNG: lấy trực tiếp từ physics)
 	animFacing = physState.facing;
 
-	if (animReleaseLogTimer > 0 || animStopLogTimer > 0)
-	{
-		FILE* animLog = nullptr;
-		if (_wfopen_s(&animLog, L"mario_ground_probe.log", L"a, ccs=UTF-8") == 0 && animLog != nullptr)
-		{
-			fwprintf(animLog, L"[MARIO_GROUND_FRAME] dt=%lu y=%.6f vy=%.6f prev=%s next=%s current=%s vx=%.6f absVx=%.6f physRunning=%d physSkidding=%d isOnGround=%d moveDir=%d debounce=%lu releaseLogMs=%lu stopLogMs=%lu\n",
-				dt, y, vy, MarioAnimStateName(previousState), MarioAnimStateName(nextState), MarioAnimStateName(animState),
-				vx, absVx, physState.isRunning ? 1 : 0, physState.isSkidding ? 1 : 0,
-				isOnGround ? 1 : 0, physicsInput.moveDirection, animDebounceTimer, animReleaseLogTimer, animStopLogTimer);
-			fclose(animLog);
-		}
-		animReleaseLogTimer = (animReleaseLogTimer > dt) ? (animReleaseLogTimer - dt) : 0;
-		animStopLogTimer = (animStopLogTimer > dt) ? (animStopLogTimer - dt) : 0;
-	}
+	// DISABLED: File logging causes severe performance degradation (disk I/O every frame)
+	// if (animReleaseLogTimer > 0 || animStopLogTimer > 0)
+	// {
+	// 	FILE* animLog = nullptr;
+	// 	if (_wfopen_s(&animLog, L"mario_ground_probe.log", L"a, ccs=UTF-8") == 0 && animLog != nullptr)
+	// 	{
+	// 		fwprintf(animLog, L"[MARIO_GROUND_FRAME] dt=%lu y=%.6f vy=%.6f prev=%s next=%s current=%s vx=%.6f absVx=%.6f physRunning=%d physSkidding=%d isOnGround=%d moveDir=%d debounce=%lu releaseLogMs=%lu stopLogMs=%lu\n",
+	// 			dt, y, vy, MarioAnimStateName(previousState), MarioAnimStateName(nextState), MarioAnimStateName(animState),
+	// 			vx, absVx, physState.isRunning ? 1 : 0, physState.isSkidding ? 1 : 0,
+	// 			isOnGround ? 1 : 0, physicsInput.moveDirection, animDebounceTimer, animReleaseLogTimer, animStopLogTimer);
+	// 		fclose(animLog);
+	// 	}
+	// 	animReleaseLogTimer = (animReleaseLogTimer > dt) ? (animReleaseLogTimer - dt) : 0;
+	// 	animStopLogTimer = (animStopLogTimer > dt) ? (animStopLogTimer - dt) : 0;
+	// }
+
+	// Reset timers to prevent accumulation
+	animReleaseLogTimer = 0;
+	animStopLogTimer = 0;
 	lastAnimMoveDir = physicsInput.moveDirection;
 }
 

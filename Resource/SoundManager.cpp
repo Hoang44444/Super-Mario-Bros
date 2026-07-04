@@ -314,7 +314,8 @@
 		}
 		else
 		{
-			DebugOut(L"[WARNING] SFX %d not found in sfxBuffers\n", id);
+			// DISABLED: Warning log causes performance degradation during gameplay
+			// DebugOut(L"[WARNING] SFX %d not found in sfxBuffers\n", id);
 		}
 	}
 
@@ -338,7 +339,8 @@
 		}
 		else
 		{
-			DebugOut(L"[WARNING] BGM %d not found in bgmBuffers\n", id);
+			// DISABLED: Warning log causes performance degradation during gameplay
+			// DebugOut(L"[WARNING] BGM %d not found in bgmBuffers\n", id);
 		}
 
 		
@@ -474,7 +476,8 @@
 				HRESULT result = it->second->GetStatus(&status);
 				if (FAILED(result))
 				{
-					DebugOut(L"[ERROR] GetStatus failed with HRESULT: 0x%08X\n", result);
+					// DISABLED: Error log in Update() called every frame
+					// DebugOut(L"[ERROR] GetStatus failed with HRESULT: 0x%08X\n", result);
 				}
 				else if (!(status & DSBSTATUS_PLAYING))
 				{
