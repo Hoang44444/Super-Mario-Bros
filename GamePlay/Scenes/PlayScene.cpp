@@ -67,6 +67,7 @@ PlayScene::PlayScene(int id, LPCWSTR filePath) : Scene(id, filePath)
 {
 }
 
+// Load scene: parse file scene, tạo objects, setup key handler, HUD, BGM, và effects
 void PlayScene::Load()
 {
 	marioDieStart = 0; // fresh load -> Mario is alive again
@@ -76,7 +77,7 @@ void PlayScene::Load()
 
 	if (key_handler == NULL)
 	{
-		// Non-gameplay screens (menu / control / end / death) have no player; use the menu handler.
+	// Non-gameplay screens (menu / control / end / death) không có player; dùng menu handler.
 		if (id == SCENE::MENU || id == SCENE::CONTROL || id == SCENE::END || id == SCENE::DEATH || id == SCENE::GAME_OVER || id == SCENE::INTRO)
 			key_handler = new MenuKeyHandler();
 		else
@@ -127,7 +128,7 @@ void PlayScene::Load()
 	}
 
 	f.close();
-	// Determine world and stage for HUD based on current scene or returnScene
+	// Determine world và stage cho HUD dựa trên scene hiện tại hoặc returnScene
 	int hudWorld = 1;
 	int hudStage = 1;
 	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
@@ -172,10 +173,10 @@ void PlayScene::Load()
 	SoundManager::GetInstance()->LoadSFX(SFX::SMB_SHAKE, "../Resource/audio/sfx/smb_shake.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::FIREWORKS, "../Resource/audio/sfx/smb_fireworks.wav");
 
-	// Load and play BGM based on scene type
+	// Load và play BGM dựa trên loại scene
 	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
 	{
-		// Load all possible BGMs for world 1 levels
+		// Load tất cả BGM có thể cho world 1 levels
 		SoundManager::GetInstance()->LoadBGM(BGM::OVERWORLD_THEME, "../Resource/audio/bgm/overworld_theme.wav");
 		SoundManager::GetInstance()->LoadBGM(BGM::UNDERWORLD_THEME, "../Resource/audio/bgm/underworld_theme.wav");
 		SoundManager::GetInstance()->LoadBGM(BGM::CASTLE_THEME, "../Resource/audio/bgm/castle_theme.wav");
@@ -183,7 +184,7 @@ void PlayScene::Load()
 		SoundManager::GetInstance()->LoadBGM(BGM::WARNING_THEME, "../Resource/audio/bgm/smb_warning.wav");
 		SoundManager::GetInstance()->LoadBGM(BGM::STAGE_CLEAR_THEME, "../Resource/audio/bgm/smb_stage_clear.wav");
 
-		// Play appropriate BGM based on level
+		// Play BGM phù hợp dựa trên level
 		if (id == SCENE::WORLD_1_2)
 		{
 			SoundManager::GetInstance()->PlayBGM(BGM::UNDERWORLD_THEME, true);
@@ -194,7 +195,7 @@ void PlayScene::Load()
 		}
 		else
 		{
-			// WORLD_1_1 and WORLD_1_3 use overworld theme
+			// WORLD_1_1 và WORLD_1_3 dùng overworld theme
 			SoundManager::GetInstance()->PlayBGM(BGM::OVERWORLD_THEME, true);
 		}
 	}
@@ -235,7 +236,7 @@ void PlayScene::Load()
 	}
 }
 
-void PlayScene::_ParseSection_ASSETS(string line)
+// Parse section [ASSETS] từ file scene - load file asset
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -248,7 +249,7 @@ void PlayScene::_ParseSection_ASSETS(string line)
 	LoadAssets(path.c_str());
 }
 
-void PlayScene::LoadAssets(LPCWSTR assetFile)
+// Load assets từ file: parse sprites, animations, và objects
 {
 	ifstream f;
 	f.open(assetFile);
@@ -295,7 +296,7 @@ void PlayScene::LoadAssets(LPCWSTR assetFile)
 	f.close();
 }
 
-void PlayScene::_ParseSection_SPRITES(string line)
+// Parse section [SPRITES] - tạo sprite từ texture
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -321,7 +322,7 @@ void PlayScene::_ParseSection_SPRITES(string line)
 	SpriteManager::GetInstance()->Add(id, l, t, r, b, tex);
 }
 
-void PlayScene::_ParseSection_ANIMATIONS(string line)
+// Parse section [ANIMATIONS] - tạo animation từ sprites
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -360,7 +361,7 @@ void PlayScene::_ParseSection_ANIMATIONS(string line)
 	AnimationManager::GetInstance()->Add(ani_id, ani);
 }
 
-void PlayScene::_ParseSection_OBJECTS(string line)
+// Parse section [OBJECTS] - tạo objects dựa trên type
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -554,7 +555,7 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 	}
 }
 
-LPGAMEOBJECT PlayScene::CreateItem(int type, float x, float y, float z)
+// Tạo item object dựa trên type
 {
 	switch (type)
 	{
@@ -569,7 +570,7 @@ LPGAMEOBJECT PlayScene::CreateItem(int type, float x, float y, float z)
 	return nullptr;
 }
 
-void PlayScene::_ParseSection_MAP(string line)
+// Parse section [MAP] - set kích thước map cho camera
 {
 	vector<string> tokens;
 	stringstream ss(line);
@@ -585,7 +586,7 @@ void PlayScene::_ParseSection_MAP(string line)
 	Camera::GetInstance()->SetMapSize(width, height);
 }
 
-void PlayScene::Update(DWORD dt)
+// Update scene: xử lý logic game, collision, camera, effects
 {
 	if (id == SCENE::INTRO || id == SCENE::DEATH)
 	{
@@ -615,10 +616,9 @@ void PlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	for (auto obj : objects) coObjects.push_back(obj);
 
-	// Update every object EXCEPT the player first, then update the player last.
-	// The player must run after the moving platforms so its collision resolves
-	// against the platforms' current-frame position. Otherwise Mario lags one
-	// frame behind and falls through / jitters on upward-moving platforms.
+	// Update mọi object TRỪ player trước, rồi update player cuối cùng.
+	// Player phải chạy sau moving platforms để collision resolve với vị trí hiện tại của platforms.
+	// Nếu không Mario sẽ lag 1 frame và rơi qua/jitter trên platforms di chuyển lên.
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (objects[i] == player) continue;
@@ -635,8 +635,8 @@ void PlayScene::Update(DWORD dt)
 	if (menuHUD != nullptr)
 		menuHUD->Update();
 
-	// Wind SFX: only play when wind is actually blowing (not during inactive periods)
-	// Track state to avoid calling PlaySFX every frame (which would restart the sound)
+	// Wind SFX: chỉ play khi gió thực sự thổi (không trong khoảng nghỉ)
+	// Track state để tránh gọi PlaySFX mỗi frame (sẽ restart sound)
 	bool windActive = (id == SCENE::WORLD_1_3 && WindCycle::GetInstance()->IsActive());
 	if (windActive && !windSfxPlaying)
 	{
@@ -649,7 +649,7 @@ void PlayScene::Update(DWORD dt)
 		windSfxPlaying = false;
 	}
 
-	// Earthquake SFX: only play when camera is actually shaking (not during rest periods or when on bridge)
+	// Earthquake SFX: chỉ play khi camera thực sự rung (không trong khoảng nghỉ hoặc khi trên cầu)
 	bool earthquakeShaking = Camera::GetInstance()->IsEarthquakeShaking() && !IsPlayerOnCastleBridge();
 	if (earthquakeShaking && !earthquakeSfxPlaying)
 	{
@@ -662,22 +662,22 @@ void PlayScene::Update(DWORD dt)
 		earthquakeSfxPlaying = false;
 	}
 
-	// Stage clear sequence: time countdown with score bonus
+	// Stage clear sequence: countdown thời gian với điểm bonus
 	if (stageClearActive)
 	{
 		ULONGLONG now = GetTickCount64();
-		constexpr ULONGLONG STAGE_CLEAR_BGM_DURATION = 2000;  // 2 seconds for stage clear BGM
-		constexpr ULONGLONG COUNTDOWN_SPEED = 30;  // countdown every 30ms (much faster)
-		constexpr int TIME_BONUS_MULTIPLIER = 50;  // 50 points per second
+		constexpr ULONGLONG STAGE_CLEAR_BGM_DURATION = 2000;  // 2 giây cho stage clear BGM
+		constexpr ULONGLONG COUNTDOWN_SPEED = 30;  // countdown mỗi 30ms (nhanh hơn)
+		constexpr int TIME_BONUS_MULTIPLIER = 50;  // 50 điểm mỗi giây
 
 		ULONGLONG elapsed = now - stageClearStart;
 
-		// Phase 1: Play stage clear BGM for 2 seconds
+		// Phase 1: Play stage clear BGM trong 2 giây
 		if (elapsed < STAGE_CLEAR_BGM_DURATION)
 		{
 			// Just wait, BGM is playing
 		}
-		// Phase 2: Countdown time rapidly with score + COIN SFX loop
+		// Phase 2: Countdown thời gian nhanh với điểm + loop COIN SFX
 		else if (stageClearDisplayTime > 0)
 		{
 			ULONGLONG countdownElapsed = elapsed - STAGE_CLEAR_BGM_DURATION;
@@ -707,19 +707,19 @@ void PlayScene::Update(DWORD dt)
 					hud->SetRemainingTime(stageClearDisplayTime);
 				}
 
-				// Reset stageClearStart to track next countdown step
+				// Reset stageClearStart để track bước countdown tiếp theo
 				stageClearStart = now - STAGE_CLEAR_BGM_DURATION;
 			}
 		}
-		// Phase 3: Time reached 0, play FIREWORKS sound then switch
+		// Phase 3: Thời gian về 0, play FIREWORKS sound rồi chuyển
 		else
 		{
-			constexpr ULONGLONG FIREWORKS_DURATION = 3000;  // 3 seconds for fireworks
+			constexpr ULONGLONG FIREWORKS_DURATION = 3000;  // 3 giây cho fireworks
 			constexpr ULONGLONG FIREWORKS_START = STAGE_CLEAR_BGM_DURATION;
 
 			if (elapsed < FIREWORKS_START + FIREWORKS_DURATION)
 			{
-				// Play fireworks sound once
+				// Play fireworks sound một lần
 				static bool fireworksPlayed = false;
 				if (!fireworksPlayed)
 				{
@@ -729,7 +729,7 @@ void PlayScene::Update(DWORD dt)
 			}
 			else
 			{
-				// Fireworks done, switch to INTRO scene
+				// Fireworks xong, chuyển sang INTRO scene
 				stageClearActive = false;
 				if (hud != nullptr)
 					hud->SetStageClearActive(false);  // Re-enable warning BGM logic
@@ -744,11 +744,10 @@ void PlayScene::Update(DWORD dt)
 		}
 	}
 
-	// skip the rest if scene was already unloaded (Mario died)
+	// Bỏ qua phần còn lại nếu scene đã unloaded (Mario chết)
 	if (player == nullptr) return;
 
-	// Death detection: either Mario fell off the bottom of the map, or his death
-	// animation (DIE state) has played long enough.
+	// Death detection: Mario rơi xuống đáy map, hoặc animation DIE đã chạy đủ lâu.
 	{
 		float px, py, pz;
 		player->GetPosition(px, py, pz);
@@ -761,7 +760,7 @@ void PlayScene::Update(DWORD dt)
 		if (fellOff && marioDieStart == 0)
 		{
 			marioDieStart = now;
-			player->SetState(MARIO_STATE::DIE);  // Set DIE state immediately so camera stops following
+			player->SetState(MARIO_STATE::DIE);  // Set DIE state ngay để camera stop following
 			SoundManager::GetInstance()->StopBGM();
 			SoundManager::GetInstance()->PlaySFX(SFX::DIE);
 		}
@@ -775,7 +774,7 @@ void PlayScene::Update(DWORD dt)
 		}
 	}
 
-	// Update camera to follow mario (only if Mario is alive)
+	// Update camera để follow mario (chỉ nếu Mario sống)
 	if (player->GetState() != MARIO_STATE::DIE)
 	{
 		float cx, cy, cz;
@@ -793,7 +792,7 @@ void PlayScene::Update(DWORD dt)
 			Camera::GetInstance()->UpdateEarthquake((float)dt);
 	}
 
-	// Remove deleted objects
+	// Xóa deleted objects
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (objects[i]->IsDeleted())
@@ -805,7 +804,7 @@ void PlayScene::Update(DWORD dt)
 	}
 }
 
-void PlayScene::Render()
+// Render tất cả objects và HUD
 {
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -819,7 +818,7 @@ void PlayScene::Render()
 		menuHUD->Render();
 }
 
-bool PlayScene::IsPlayerOnCastleBridge()
+// Kiểm tra Mario có đang đứng trên cầu cuối màn không
 {
 	if (player == nullptr) return false;
 
@@ -843,39 +842,39 @@ bool PlayScene::IsPlayerOnCastleBridge()
 	return false;
 }
 
-void PlayScene::StartStageClear()
+// Bắt đầu stage clear sequence
 {
 	stageClearActive = true;
 	stageClearStart = GetTickCount64();
 	stageClearTime = hud->GetRemainingTime();  // Thời gian thực tế để tính điểm
 	stageClearDisplayTime = 100;  // Debug: hiển thị countdown 100 giây, giảm từng 5 giây
 
-	// Stop current BGM (including warning BGM if playing)
+	// Stop BGM hiện tại (bao gồm warning BGM nếu đang chơi)
 	SoundManager::GetInstance()->StopBGM();
 
 	// Play stage clear BGM
 	SoundManager::GetInstance()->PlayBGM(BGM::STAGE_CLEAR_THEME, false);
 
-	// Disable warning BGM logic during stage clear
+	// Disable warning BGM logic trong stage clear
 	if (hud != nullptr)
 		hud->SetStageClearActive(true);
 }
 
-void PlayScene::OnMarioDeath()
+// Xử lý khi Mario chết
 {
 	PlayerData& pd = PlayerData::Get();
 	pd.lives--;
 	pd.returnScene = id;   // level to resume if lives remain
 
-	// Lives remaining -> death screen (Enter resumes this level).
-	// Out of lives    -> game-over screen (Enter replays from the start).
+	// Lives còn lại -> death screen (Enter resume level này).
+	// Hết mạng -> game-over screen (Enter replay từ đầu).
 	if (pd.lives > 0)
 		GameManager::GetInstance()->InitiateSwitchScene(SCENE::DEATH);
 	else
 		GameManager::GetInstance()->InitiateSwitchScene(SCENE::GAME_OVER);
 }
 
-void PlayScene::Unload()
+// Unload scene: xóa tất cả objects và HUD
 {
 	delete hud;
 	hud = NULL;
@@ -889,5 +888,5 @@ void PlayScene::Unload()
 	}
 	objects.clear();
 	player = NULL;
-	menuOptions = NULL;   // was owned by `objects`, already deleted above
+	menuOptions = NULL;   // được sở hữu bởi `objects`, đã xóa ở trên
 }
