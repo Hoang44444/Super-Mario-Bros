@@ -5,6 +5,10 @@
 #define BOWSER_JUMP_SPEED 0.3f
 #define BOWSER_GRAVITY 0.001f
 
+// Chuỗi chết: đứng nhấp nháy tại chỗ, sau đó rơi thẳng (bỏ qua va chạm) rồi tự xóa.
+#define BOWSER_DIE_BLINK_TIME 2000       // ms nhấp nháy tại chỗ khi vừa chết
+#define BOWSER_DIE_BLINK_INTERVAL 120    // ms mỗi lần chớp sprite
+
 #define BOWSER_BBOX_WIDTH 34
 #define BOWSER_BBOX_HEIGHT 34
 
@@ -22,6 +26,7 @@ class Bowser : public Enemy
     ULONGLONG fire_timer = 0;
     ULONGLONG attack_duration = 0;
     ULONGLONG current_fire_cooldown = 4000;
+    ULONGLONG die_timer = 0;   // thời điểm vào trạng thái chết (để tính pha nhấp nháy 2s)
 
     int hp = 5;
 

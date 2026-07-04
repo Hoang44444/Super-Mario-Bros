@@ -28,7 +28,7 @@ Objects/blooper.txt
 
 ########## MARIO ##########
 # type x y z
-0 16 176 0.2
+0 1100 176 0.2
 
 ########## ENEMY ##########
 # type x y z
