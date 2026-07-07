@@ -1,6 +1,6 @@
-#include "Hammer.h"
+﻿#include "Hammer.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "PlayScene.h"
 #include "Mario.h"
 

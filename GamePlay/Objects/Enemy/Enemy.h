@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 #include "Mario.h"
-#include "../Core/ScoreManager.h"
+#include "ScoreManager.h"
 
 class Enemy : public GameObject{
 protected:

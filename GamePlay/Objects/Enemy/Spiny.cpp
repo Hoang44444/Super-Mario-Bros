@@ -1,11 +1,11 @@
-#include "Spiny.h"
+﻿#include "Spiny.h"
 #include "BuzzyBeetle.h"
 #include "Koopa.h"
 #include "Camera.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "debug.h"
-#include "Core/ScoreManager.h"
+#include "ScoreManager.h"
 
 Spiny::Spiny(float x, float y, float z) : Enemy(x, y, z)
 {

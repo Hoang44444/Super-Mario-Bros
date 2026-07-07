@@ -1,7 +1,7 @@
-#include "CoinPopupEffect.h"
+﻿#include "CoinPopupEffect.h"
 
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 CoinPopupEffect::CoinPopupEffect(float x, float y, float z) : GameObject(x, y, z)
 {

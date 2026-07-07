@@ -1,9 +1,9 @@
-#include "FireFlower.h"
+﻿#include "FireFlower.h"
 #include "Mario.h"
 #include "AnimationManager.h"
 #include "AssetID.h"
 #include "SoundManager.h"
-#include "../Core/ScoreManager.h"
+#include "ScoreManager.h"
 
 void FireFlower::Render()
 {

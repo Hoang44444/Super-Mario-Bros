@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once
 #include "Item.h"
 #include <vector>
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 constexpr float MUSHROOM_BBOX_WIDTH  = 16.0f;
 constexpr float MUSHROOM_BBOX_HEIGHT = 16.0f;

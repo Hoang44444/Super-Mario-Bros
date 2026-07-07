@@ -1,10 +1,10 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include "Mushroom.h"
 #include "GameObject.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 using namespace std;
 

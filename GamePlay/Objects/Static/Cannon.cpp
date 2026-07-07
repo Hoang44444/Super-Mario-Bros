@@ -1,8 +1,8 @@
-#include "Cannon.h"
+﻿#include "Cannon.h"
 #include "BulletBill.h"
 #include "PlayScene.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "GameObject.h"
 
 Cannon::Cannon(float x, float y, float z, int dir) : StaticObject(x, y, z)

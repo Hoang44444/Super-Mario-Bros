@@ -1,11 +1,11 @@
-#include "Goomba.h"
+﻿#include "Goomba.h"
 #include "Koopa.h"
 #include "BuzzyBeetle.h"
 #include "Camera.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "debug.h"
-#include "Core/ScoreManager.h"
+#include "ScoreManager.h"
 
 Goomba::Goomba(float x, float y, float z) : Enemy(x, y, z)
 {

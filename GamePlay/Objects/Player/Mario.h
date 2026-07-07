@@ -1,10 +1,10 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 #include "PlayerData.h"
-#include "../../../Resource/SoundManager.h"
-#include "../Resource/AssetID.h"
-#include "../../Core/ScoreManager.h"
-#include "../../Core/MarioPhysics.h"
+#include "SoundManager.h"
+#include "AssetID.h"
+#include "ScoreManager.h"
+#include "MarioPhysics.h"
 
 class DynamicPlatform;
 

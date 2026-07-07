@@ -1,10 +1,10 @@
-#include "Mushroom.h"
+﻿#include "Mushroom.h"
 #include "Mario.h"
 #include "AnimationManager.h"
 #include "AssetID.h"
 #include "StaticObject.h"
 #include "SoundManager.h"
-#include "../Core/ScoreManager.h"
+#include "ScoreManager.h"
 
 void Mushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {

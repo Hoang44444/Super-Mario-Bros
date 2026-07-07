@@ -1,4 +1,4 @@
-#include "Lakitu.h"
+﻿#include "Lakitu.h"
 #include "Spiny.h"
 #include "BuzzyBeetle.h"
 #include "Koopa.h"
@@ -6,8 +6,8 @@
 #include "PlayScene.h"
 #include "Camera.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
-#include "Core/ScoreManager.h"
+#include "AssetID.h"
+#include "ScoreManager.h"
 
 Lakitu::Lakitu(float x, float y, float z, float endX) : Enemy(x, y, z)
 {

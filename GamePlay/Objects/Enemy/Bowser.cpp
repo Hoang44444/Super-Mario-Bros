@@ -1,11 +1,11 @@
-#include "Bowser.h"
+﻿#include "Bowser.h"
 #include "BowserFire.h"
 #include "Mario.h"
 #include "PlayScene.h"
 #include "AnimationManager.h"
 #include "Camera.h"
-#include "../Resource/AssetID.h"
-#include "../../Resource/SoundManager.h"
+#include "AssetID.h"
+#include "SoundManager.h"
 
 Bowser::Bowser(float x, float y, float z) : Enemy(x, y, z)
 {

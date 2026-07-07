@@ -1,4 +1,4 @@
-#include "LevelScene.h"
+﻿#include "LevelScene.h"
 
 #include <fstream>
 #include <sstream>
@@ -8,8 +8,8 @@
 #include "GameManager.h"
 #include "Renderer.h"
 #include "TextureManager.h"
-#include "../Resource/AssetID.h"
-#include "../Objects/Player/PlayerData.h"
+#include "AssetID.h"
+#include "PlayerData.h"
 
 class LevelSceneKeyHandler : public KeyEventHandler
 {

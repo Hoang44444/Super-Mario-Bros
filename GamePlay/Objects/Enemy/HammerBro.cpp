@@ -1,7 +1,7 @@
-#include "HammerBro.h"
+﻿#include "HammerBro.h"
 #include "Hammer.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "PlayScene.h"
 
 HammerBro::HammerBro(float x, float y, float z) : Enemy(x, y, z)

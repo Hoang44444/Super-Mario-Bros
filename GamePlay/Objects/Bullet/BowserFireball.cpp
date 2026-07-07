@@ -1,6 +1,6 @@
-#include "BowserFireball.h"
+﻿#include "BowserFireball.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 BowserFireball::BowserFireball(float x, float y, float z, int dir) : GameObject(x, y, z)
 {

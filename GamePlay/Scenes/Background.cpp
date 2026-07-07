@@ -1,9 +1,9 @@
-#include "Background.h"
+﻿#include "Background.h"
 #include "AnimationManager.h"
 #include "GameManager.h"
 #include "Renderer.h"
 #include "Camera.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 void Background::Render()
 {

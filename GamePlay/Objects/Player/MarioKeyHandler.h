@@ -1,9 +1,9 @@
-#pragma once
+﻿#pragma once
 #include "KeyEventHandler.h"
 #include "PlayScene.h"
 #include "Mario.h"
 #include "GameManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "debug.h"
 
 class MarioKeyHandler : public KeyEventHandler

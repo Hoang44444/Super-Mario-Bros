@@ -1,6 +1,6 @@
-#include "Blooper.h"
+﻿#include "Blooper.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "PlayScene.h"
 
 Blooper::Blooper(float x, float y, float z) : Enemy(x, y, z)

@@ -1,9 +1,9 @@
-#include "SwitchScenePoint.h"
+﻿#include "SwitchScenePoint.h"
 #include "Mario.h"
 #include "GameManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "debug.h"
-#include "../Scenes/PlayScene.h"
+#include "PlayScene.h"
 
 void SwitchScenePoint::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {

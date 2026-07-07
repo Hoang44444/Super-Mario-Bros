@@ -1,6 +1,6 @@
 ﻿#include "Mario.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "debug.h"
 #include "Bullet.h"
 #include "StaticObject.h"
@@ -8,11 +8,11 @@
 #include "Item.h"
 #include "InvisibleObject.h"
 #include "DynamicPlatform.h"
-#include "../../../Resource/SoundManager.h"
+#include "SoundManager.h"
 #include "WindCycle.h"
-#include "../../Core/ScoreManager.h"
-#include "../../Core/MarioPhysics.h"
-#include "../../Core/GameManager.h"
+#include "ScoreManager.h"
+#include "MarioPhysics.h"
+#include "GameManager.h"
 #include <cstdio>
 
 static const wchar_t* MarioAnimStateName(MarioAnimState state)

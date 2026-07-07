@@ -1,6 +1,6 @@
-#include "Podoboo.h"
+﻿#include "Podoboo.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "debug.h"
 
 Podoboo::Podoboo(float x, float y, float z) : Enemy(x, y, z)

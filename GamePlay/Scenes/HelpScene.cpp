@@ -1,4 +1,4 @@
-#include "HelpScene.h"
+﻿#include "HelpScene.h"
 
 #include <cwchar>
 #include <fstream>
@@ -9,7 +9,7 @@
 #include "Renderer.h"
 #include "SoundManager.h"
 #include "TextureManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 class HelpSceneKeyHandler : public KeyEventHandler
 {

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -9,10 +9,10 @@
 #include "Renderer.h"
 #include "Camera.h"
 #include "debug.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 // One selectable menu entry. Every field is loaded from the menu options file
-// (e.g. Objects/menu_options.txt) — nothing here is hardcoded.
+// (e.g. Objects/menu_options.txt) â€” nothing here is hardcoded.
 struct MenuOptionEntry
 {
 	int   aniWhite;     // animation drawn when the option is NOT selected

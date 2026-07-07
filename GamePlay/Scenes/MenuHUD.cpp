@@ -1,4 +1,4 @@
-#include "MenuHUD.h"
+﻿#include "MenuHUD.h"
 
 #include <cstdio>
 
@@ -7,7 +7,7 @@
 #include "Renderer.h"
 #include "SpriteManager.h"
 #include "Sprite.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 MenuHUD::MenuHUD()
 {

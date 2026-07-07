@@ -1,9 +1,9 @@
-#include "Brick.h"
+﻿#include "Brick.h"
 #include "AnimationManager.h"
 #include "AssetID.h"
 #include "BrickFragment.h"
 #include "SoundManager.h"
-#include "../Core/ScoreManager.h"
+#include "ScoreManager.h"
 
 void Brick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {}
 

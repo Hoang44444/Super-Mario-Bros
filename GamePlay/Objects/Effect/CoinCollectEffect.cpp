@@ -1,7 +1,7 @@
-#include "CoinCollectEffect.h"
+﻿#include "CoinCollectEffect.h"
 
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 CoinCollectEffect::CoinCollectEffect(float x, float y, float z) : GameObject(x, y, z)
 {

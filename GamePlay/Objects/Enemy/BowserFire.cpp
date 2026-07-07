@@ -1,6 +1,6 @@
-#include "BowserFire.h"
+﻿#include "BowserFire.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 BowserFire::BowserFire(float x, float y, float z, int direction) : Enemy(x, y, z)
 {

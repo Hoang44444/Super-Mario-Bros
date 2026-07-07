@@ -13,7 +13,7 @@
 #include "MenuOptions.h"
 #include "LivesNumber.h"
 #include "PlayerData.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
@@ -51,7 +51,7 @@
 #include "Podoboo.h"
 #include "Spiny.h"
 #include "PiranhaPlant.h"
-#include "../../Resource/SoundManager.h"
+#include "SoundManager.h"
 // Wind Effect
 #include "WindEffect.h"
 #include "WindCycle.h"

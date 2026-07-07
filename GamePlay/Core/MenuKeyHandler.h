@@ -1,11 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "KeyEventHandler.h"
 #include "GameManager.h"
 #include "PlayerData.h"
 #include "PlayScene.h"
 #include "MenuOptions.h"
-#include "../Scenes/MenuHUD.h"
-#include "../Resource/AssetID.h"
+#include "MenuHUD.h"
+#include "AssetID.h"
 
 // Keyboard handler for the non-gameplay screens (menu / control / end / death).
 // On the MENU it moves the selection cursor over the options and confirms with

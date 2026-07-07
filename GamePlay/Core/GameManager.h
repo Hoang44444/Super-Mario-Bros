@@ -1,10 +1,10 @@
-#pragma once
+﻿#pragma once
 #include <Windows.h>
 #include <unordered_map>
 #include <string>
 
 #include "Scene.h"
-#include "../../Resource/SoundManager.h"
+#include "SoundManager.h"
 
 class GameManager
 {

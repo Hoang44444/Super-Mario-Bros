@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <sstream>
 
@@ -9,7 +9,7 @@
 #include "TextureManager.h"
 #include "SpriteManager.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "PlayerData.h"
 #include "PauseKeyHandler.h"
 #include "GameOverHandler.h"

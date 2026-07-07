@@ -1,6 +1,6 @@
-#include "CastleBridge.h"
+﻿#include "CastleBridge.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 void CastleBridge::Collapse(DWORD delay)
 {

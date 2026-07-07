@@ -1,4 +1,4 @@
-#include "HUD.h"
+﻿#include "HUD.h"
 
 #include <cstdio>
 
@@ -6,11 +6,11 @@
 #include "Mario.h"
 #include "Renderer.h"
 #include "TextureManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 #include "GameManager.h"
 #include "PlayerData.h"
-#include "../Core/ScoreManager.h"
-#include "../../../Resource/SoundManager.h"
+#include "ScoreManager.h"
+#include "SoundManager.h"
 #include "debug.h"
 
 namespace
@@ -232,8 +232,8 @@ void HUD::Update(DWORD dt)
 		remainingTime = 0;
 		elapsedMs = 0;
 
-		// Hết giờ -> Mario chết. Chỉ kích hoạt một lần (frame vừa về 0); các frame
-		// sau bị chặn bởi nhánh remainingTime <= 0 ở đầu hàm.
+		// Háº¿t giá» -> Mario cháº¿t. Chá»‰ kÃ­ch hoáº¡t má»™t láº§n (frame vá»«a vá» 0); cÃ¡c frame
+		// sau bá»‹ cháº·n bá»Ÿi nhÃ¡nh remainingTime <= 0 á»Ÿ Ä‘áº§u hÃ m.
 		if (mario != nullptr && mario->GetState() != MARIO_STATE::DIE)
 			mario->SetState(MARIO_STATE::DIE);
 	}

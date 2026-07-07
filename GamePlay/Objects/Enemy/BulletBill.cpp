@@ -1,6 +1,6 @@
-#include "BulletBill.h"
+﻿#include "BulletBill.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 BulletBill::BulletBill(float x, float y, float z) : Enemy(x, y, z)
 {
 	this->direction = 1;

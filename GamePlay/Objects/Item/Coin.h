@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include "Item.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 class Mario;
 

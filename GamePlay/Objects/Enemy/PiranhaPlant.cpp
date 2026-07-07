@@ -1,6 +1,6 @@
-#include "PiranhaPlant.h"
+﻿#include "PiranhaPlant.h"
 #include "AnimationManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 PiranhaPlant::PiranhaPlant(float x, float y, float z) : Enemy(x, y, z)
 {

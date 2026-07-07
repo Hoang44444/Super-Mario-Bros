@@ -1,9 +1,9 @@
-#include "Coin.h"
+﻿#include "Coin.h"
 #include "Mario.h"
 #include "CoinCollectEffect.h"
-#include "../Resource/SoundManager.h"
-#include "../Resource/AssetID.h"
-#include "Core/ScoreManager.h"
+#include "SoundManager.h"
+#include "AssetID.h"
+#include "ScoreManager.h"
 
 void Coin::Render()
 {

@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <!-- Core -->
     <Filter Include="Core">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
     </Filter>
@@ -13,7 +12,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FD}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
-    <!-- Scenes -->
     <Filter Include="Scenes">
       <UniqueIdentifier>{0f77f2fd-788c-408a-8ce7-27e7164e43bf}</UniqueIdentifier>
     </Filter>
@@ -25,11 +23,9 @@
       <UniqueIdentifier>{81de123d-a914-4366-8ba5-8bf07cc51ff8}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
-    <!-- Objects -->
     <Filter Include="Objects">
       <UniqueIdentifier>{90f07e24-de63-4db1-a262-98535361f41a}</UniqueIdentifier>
     </Filter>
-    <!-- Objects\Player -->
     <Filter Include="Objects\Player">
       <UniqueIdentifier>{b1e7ca46-ca53-4979-8499-ce53d5c290f4}</UniqueIdentifier>
     </Filter>
@@ -41,7 +37,6 @@
       <UniqueIdentifier>{db9f92e6-6e34-40cf-a094-f053bc2cf061}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
-    <!-- Objects\Bullet -->
     <Filter Include="Objects\Bullet">
       <UniqueIdentifier>{f199c178-8ee0-4be5-bc6a-c1eca98c0c13}</UniqueIdentifier>
     </Filter>
@@ -53,7 +48,6 @@
       <UniqueIdentifier>{44bdc7fd-01c4-46cd-ab62-7e23b2e9f77f}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
-    <!-- Objects\Enemy -->
     <Filter Include="Objects\Enemy">
       <UniqueIdentifier>{c4e21d13-72d4-4fe0-bf7a-9dd9d77121e0}</UniqueIdentifier>
     </Filter>
@@ -65,7 +59,6 @@
       <UniqueIdentifier>{c4e21d13-72d4-4fe0-bf7a-9dd9d77121e2}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
-    <!-- Objects\Item -->
     <Filter Include="Objects\Item">
       <UniqueIdentifier>{a8419ccb-7851-4360-baf7-424a8cd73940}</UniqueIdentifier>
     </Filter>
@@ -77,7 +70,6 @@
       <UniqueIdentifier>{a8419ccb-7851-4360-baf7-424a8cd73942}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
-    <!-- Objects\Static -->
     <Filter Include="Objects\Static">
       <UniqueIdentifier>{61aba161-a8d6-4401-ba79-29782b13c77e}</UniqueIdentifier>
     </Filter>
@@ -89,7 +81,6 @@
       <UniqueIdentifier>{16c4da6e-4637-4953-a484-a6741dd65951}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
-    <!-- Objects\Dynamic -->
     <Filter Include="Objects\Dynamic">
       <UniqueIdentifier>{07dc5f03-d366-4633-bc45-70fd28b801f6}</UniqueIdentifier>
     </Filter>
@@ -101,7 +92,6 @@
       <UniqueIdentifier>{07dc5f03-d366-4633-bc45-70fd28b801f8}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
-    <!-- Objects\Invisible -->
     <Filter Include="Objects\Invisible">
       <UniqueIdentifier>{6ebb9be3-519b-4ab5-835f-424e4ed7b3e7}</UniqueIdentifier>
     </Filter>
@@ -111,6 +101,17 @@
     </Filter>
     <Filter Include="Objects\Invisible\Source Files">
       <UniqueIdentifier>{7ca4ff27-a279-4eea-bb4f-0d28e7710163}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
+    </Filter>
+    <Filter Include="Objects\Effect">
+      <UniqueIdentifier>{a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Effect\Header Files">
+      <UniqueIdentifier>{a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c51}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx</Extensions>
+    </Filter>
+    <Filter Include="Objects\Effect\Source Files">
+      <UniqueIdentifier>{a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c52}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx</Extensions>
     </Filter>
   </ItemGroup>
@@ -130,6 +131,21 @@
     <ClInclude Include="Core\GameManager.h">
       <Filter>Core\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Core\MenuKeyHandler.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PauseKeyHandler.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GameOverHandler.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ScoreManager.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Player\MarioPhysics.h">
+      <Filter>Objects\Player\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Scenes\PlayScene.h">
       <Filter>Scenes\Header Files</Filter>
     </ClInclude>
@@ -142,7 +158,16 @@
     <ClInclude Include="Scenes\HUD.h">
       <Filter>Scenes\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scenes\MenuHUD.h">
+      <Filter>Scenes\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Scenes\Background.h">
+      <Filter>Scenes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\MenuOptions.h">
+      <Filter>Scenes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\LivesNumber.h">
       <Filter>Scenes\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Player\Mario.h">
@@ -153,9 +178,6 @@
     </ClInclude>
     <ClInclude Include="Objects\Player\PlayerData.h">
       <Filter>Objects\Player\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\LivesNumber.h">
-      <Filter>Scenes\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Bullet\Bullet.h">
       <Filter>Objects\Bullet\Header Files</Filter>
@@ -173,7 +195,7 @@
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Bullet\BowserFireball.h">
-      <Filter>Objects\Enemy\Header Files</Filter>
+      <Filter>Objects\Bullet\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Enemy\BulletBill.h">
       <Filter>Objects\Enemy\Header Files</Filter>
@@ -188,7 +210,7 @@
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Bullet\Hammer.h">
-      <Filter>Objects\Enemy\Header Files</Filter>
+      <Filter>Objects\Bullet\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Enemy\HammerBro.h">
       <Filter>Objects\Enemy\Header Files</Filter>
@@ -211,10 +233,28 @@
     <ClInclude Include="Objects\Item\Item.h">
       <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\Item\Coin.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Item\ItemCoin2.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Effect\CoinCollectEffect.h">
+      <Filter>Objects\Effect\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Effect\CoinPopupEffect.h">
+      <Filter>Objects\Effect\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Item\Mushroom1Up.h">
+      <Filter>Objects\Item\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Objects\Static\StaticObject.h">
       <Filter>Objects\Static\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Static\Brick.h">
+      <Filter>Objects\Static\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Static\QuestionBlock.h">
       <Filter>Objects\Static\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Static\BrickFragment.h">
@@ -241,8 +281,8 @@
     <ClInclude Include="Objects\Invisible\SwitchScenePoint.h">
       <Filter>Objects\Invisible\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Static\QuestionBlock.h">
-      <Filter>Objects\Static\Header Files</Filter>
+    <ClInclude Include="Objects\Invisible\EnemyTurnBlock.h">
+      <Filter>Objects\Invisible\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Item\Mushroom.h">
       <Filter>Objects\Item\Header Files</Filter>
@@ -262,44 +302,14 @@
     <ClInclude Include="Objects\Static\CastleBridge.h">
       <Filter>Objects\Static\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Item\Coin.h">
-      <Filter>Objects\Item\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Item\ItemCoin2.h">
-      <Filter>Objects\Item\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Effect\CoinCollectEffect.h">
-      <Filter>Objects\Item\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Effect\CoinPopupEffect.h">
-      <Filter>Objects\Item\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Item\Mushroom1Up.h">
-      <Filter>Objects\Item\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Invisible\EnemyTurnBlock.h">
-      <Filter>Objects\Invisible\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\MenuKeyHandler.h">
-      <Filter>Core\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\PauseKeyHandler.h">
-      <Filter>Core\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\GameOverHandler.h">
-      <Filter>Core\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\MenuHUD.h">
-      <Filter>Core\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenes\MenuOptions.h">
-      <Filter>Core\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Objects\Effect\WindCycle.h">
-      <Filter>Objects\Dynamic\Header Files</Filter>
+      <Filter>Objects\Effect\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Effect\WindEffect.h">
-      <Filter>Objects\Dynamic\Header Files</Filter>
+      <Filter>Objects\Effect\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Effect\EarthquakeCycle.h">
+      <Filter>Objects\Effect\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -308,6 +318,12 @@
     </ClCompile>
     <ClCompile Include="Core\GameManager.cpp">
       <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ScoreManager.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Player\MarioPhysics.cpp">
+      <Filter>Objects\Player\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\PlayScene.cpp">
       <Filter>Scenes\Source Files</Filter>
@@ -319,6 +335,9 @@
       <Filter>Scenes\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\HUD.cpp">
+      <Filter>Scenes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\MenuHUD.cpp">
       <Filter>Scenes\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\Background.cpp">
@@ -334,6 +353,9 @@
       <Filter>Objects\Static\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Static\Brick.cpp">
+      <Filter>Objects\Static\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Static\QuestionBlock.cpp">
       <Filter>Objects\Static\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Static\BrickFragment.cpp">
@@ -354,8 +376,8 @@
     <ClCompile Include="Objects\Invisible\SwitchScenePoint.cpp">
       <Filter>Objects\Invisible\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Static\QuestionBlock.cpp">
-      <Filter>Objects\Static\Source Files</Filter>
+    <ClCompile Include="Objects\Invisible\EnemyTurnBlock.cpp">
+      <Filter>Objects\Invisible\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Item\Mushroom.cpp">
       <Filter>Objects\Item\Source Files</Filter>
@@ -385,7 +407,7 @@
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Bullet\BowserFireball.cpp">
-      <Filter>Objects\Enemy\Source Files</Filter>
+      <Filter>Objects\Bullet\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Enemy\BulletBill.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
@@ -400,7 +422,7 @@
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Bullet\Hammer.cpp">
-      <Filter>Objects\Enemy\Source Files</Filter>
+      <Filter>Objects\Bullet\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Enemy\HammerBro.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
@@ -427,25 +449,22 @@
       <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Effect\CoinCollectEffect.cpp">
-      <Filter>Objects\Item\Source Files</Filter>
+      <Filter>Objects\Effect\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Effect\CoinPopupEffect.cpp">
-      <Filter>Objects\Item\Source Files</Filter>
+      <Filter>Objects\Effect\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Item\Mushroom1Up.cpp">
       <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Invisible\EnemyTurnBlock.cpp">
-      <Filter>Objects\Invisible\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scenes\MenuHUD.cpp">
-      <Filter>Core\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Objects\Effect\WindCycle.cpp">
-      <Filter>Objects\Dynamic\Source Files</Filter>
+      <Filter>Objects\Effect\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Effect\WindEffect.cpp">
-      <Filter>Objects\Dynamic\Source Files</Filter>
+      <Filter>Objects\Effect\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Effect\EarthquakeCycle.cpp">
+      <Filter>Objects\Effect\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

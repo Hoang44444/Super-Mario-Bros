@@ -4,7 +4,7 @@
 #include "PlayScene.h"
 #include "CoinPopupEffect.h"
 #include "SoundManager.h"
-#include "../Core/ScoreManager.h"
+#include "ScoreManager.h"
 
 void QuestionBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {}
 

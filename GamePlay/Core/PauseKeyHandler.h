@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once
 #include "KeyEventHandler.h"
 #include "GameManager.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 // Input handler used while the game is paused (GAME_STATE::PAUSE).
 //   'P'  : resume play

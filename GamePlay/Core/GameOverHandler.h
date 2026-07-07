@@ -1,11 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "KeyEventHandler.h"
 #include "GameManager.h"
 #include "PlayerData.h"
-#include "../Resource/AssetID.h"
+#include "AssetID.h"
 
 // Input handler used on the game-over screen (GAME_STATE::GAME_OVER, out of lives).
-// Enter/Space resets the run and replays from the first level ("chơi lại từ đầu").
+// Enter/Space resets the run and replays from the first level ("chÆ¡i láº¡i tá»« Ä‘áº§u").
 class GameOverHandler : public KeyEventHandler
 {
 public:
