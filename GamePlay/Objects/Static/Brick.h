@@ -5,7 +5,8 @@
 constexpr float BRICK_BBOX_WIDTH = 14.0f;
 constexpr float BRICK_BBOX_HEIGHT = 14.0f;
 
-class Brick : public StaticObject {
+class Brick : public StaticObject
+{
 private:
 	int animationId = ANIMATION::BRICK_OVERWORLD;
 	void Break();

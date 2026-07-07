@@ -4,7 +4,7 @@
 #include <vector>
 #include "debug.h"
 
-class MenuOptions;   // menu-only object; full definition pulled in by PlayScene.cpp
+class MenuOptions;
 class HUD;
 class MenuHUD;
 
@@ -12,28 +12,37 @@ class PlayScene : public Scene
 {
 	LPGAMEOBJECT player = nullptr;
 	std::vector<LPGAMEOBJECT> objects;
-	MenuOptions* menuOptions = nullptr;   // the menu's options object (null on non-menu scenes)
-	HUD* hud = nullptr;
-	MenuHUD* menuHUD = nullptr;           // menu HUD for text-based menu (null on non-menu scenes)
+	MenuOptions* menuOptions = nullptr;
+	HUD* hud;
+	MenuHUD* menuHUD;
 	float fixedCameraY = 0.0f;
-	int mapHeight = 0;            // map height (px); used to detect Mario falling off the bottom
-	ULONGLONG marioDieStart = 0;  // tick when Mario entered the DIE state (0 = not dying)
-	ULONGLONG sceneStart = 0;     // tick when the scene started loading
-	bool windSfxPlaying = false;  // track if wind SFX is currently playing
-	bool earthquakeSfxPlaying = false;  // track if earthquake SFX is currently playing
+	int mapHeight = 0;
+	ULONGLONG marioDieStart = 0;
+	ULONGLONG sceneStart = 0;
+	bool windSfxPlaying = false;
+	bool earthquakeSfxPlaying = false;
 
-	// Stage clear sequence state
-	bool stageClearActive = false;  // stage clear sequence is running
-	ULONGLONG stageClearStart = 0;  // tick when stage clear started
-	int stageClearTime = 0;         // time remaining when stage clear started (dùng để tính điểm)
-	int stageClearDisplayTime = 0;  // time hiển thị trên màn hình (countdown nhanh)
+	bool stageClearActive = false;
+	ULONGLONG stageClearStart = 0;
+	int stageClearTime = 0;
+	int stageClearDisplayTime = 0;
 
-	// Boss màn 1-4: Bowser đứng yên tại chỗ, chỉ kích hoạt khi Mario bước lên cầu.
 	LPGAMEOBJECT bossBowser = nullptr;
 
-	void OnMarioDeath();          // lose a life -> death screen, or game over -> menu
+	LPGAMEOBJECT CreatePlayerObject(float x, float y, float z);
+	LPGAMEOBJECT CreateStaticObject(int type, float x, float y, float z, vector<string>& tokens);
+	LPGAMEOBJECT CreateDynamicObject(int type, float x, float y, float z, vector<string>& tokens);
+	LPGAMEOBJECT CreateEnemyObject(int type, float x, float y, float z, vector<string>& tokens);
+	void HandleIntroDeathSceneUpdate();
+	void HandleGameOverSceneUpdate();
+	void UpdateSoundEffects();
+	void UpdateStageClearSequence();
+	void HandleDeathDetection();
+	void UpdateCameraAndEarthquake(DWORD dt);
 
-	bool IsPlayerOnCastleBridge(); // Mario có đang đứng trên cầu cuối màn không
+	void OnMarioDeath();
+	bool IsPlayerOnCastleBridge();
+	void ActivateBossIfOnBridge();
 
 	void _ParseSection_ASSETS(string line);
 	void _ParseSection_OBJECTS(string line);
@@ -54,7 +63,6 @@ public:
 	void AddObject(LPGAMEOBJECT obj) {
 		obj->SetScene(this);
 		objects.push_back(obj);
-		DebugOut(L"[SCENE] Added new object. Total objects: %d\n", objects.size());
 	}
 
 	LPGAMEOBJECT GetPlayer() { return player; }
@@ -62,10 +70,8 @@ public:
 	MenuOptions* GetMenuOptions() { return menuOptions; }
 	MenuHUD* GetMenuHUD() { return menuHUD; }
 
-	// Build an item object by its OBJECT type id (returns nullptr if not an item).
 	LPGAMEOBJECT CreateItem(int type, float x, float y, float z);
 
-	// Stage clear sequence (called by SwitchScenePoint)
 	void StartStageClear();
 };
 

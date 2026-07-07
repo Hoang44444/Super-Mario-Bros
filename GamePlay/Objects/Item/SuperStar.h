@@ -7,7 +7,8 @@ constexpr float SUPER_STAR_GRAVITY       = 0.002f;
 constexpr float SUPER_STAR_SPEED         = 0.06f;
 constexpr float SUPER_STAR_BOUNCE_SPEED  = 0.45f;
 
-class SuperStar : public Item {
+class SuperStar : public Item
+{
 public:
 	SuperStar(float x, float y, float z) : Item(x, y, z) {
 		vx = SUPER_STAR_SPEED;

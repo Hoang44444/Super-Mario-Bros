@@ -18,7 +18,6 @@
 
 GameManager* GameManager::__instance = NULL;
 
-// State-specific input handlers (don't belong to any scene file).
 static PauseKeyHandler s_pauseHandler;
 static GameOverHandler s_gameOverHandler;
 
@@ -48,7 +47,7 @@ void GameManager::Init(HWND hWnd, HINSTANCE hInstance)
 
 void GameManager::ProcessKeyboard()
 {
-	if (game_state == GAME_STATE::PAUSE) return; // frozen: ignore held-key movement
+	if (game_state == GAME_STATE::PAUSE) return;
 
 	if (key_handler != NULL)
 	{
@@ -62,9 +61,14 @@ void GameManager::ProcessKeyboard()
 
 void GameManager::OnKeyDown(int KeyCode)
 {
-	// Route discrete key presses to the handler that matches the current game state.
 	if (game_state == GAME_STATE::PAUSE) { s_pauseHandler.OnKeyDown(KeyCode); return; }
 	if (game_state == GAME_STATE::GAME_OVER) { s_gameOverHandler.OnKeyDown(KeyCode); return; }
+
+	if (game_state == GAME_STATE::PLAY && KeyCode == VK_ESCAPE) {
+		SetGameState(GAME_STATE::MENU);
+		InitiateSwitchScene(SCENE::MENU);
+		return;
+	}
 
 	if (key_handler != NULL)
 		key_handler->OnKeyDown(KeyCode);
@@ -78,8 +82,6 @@ void GameManager::OnKeyUp(int KeyCode)
 
 void GameManager::LoadSettings(LPCWSTR gameFile)
 {
-	DebugOut(L"[INFO] Start loading game settings from : %s \n", gameFile);
-
 	ifstream f;
 	f.open(gameFile);
 
@@ -106,13 +108,8 @@ void GameManager::LoadSettings(LPCWSTR gameFile)
 	f.close();
 }
 
-/*
-	Load master configuration file
-*/
 void GameManager::Load(LPCWSTR gameFile)
 {
-	DebugOut(L"[INFO] Start loading game from : %s \n", gameFile);
-
 	ifstream f;
 	f.open(gameFile);
 
@@ -142,13 +139,9 @@ void GameManager::Load(LPCWSTR gameFile)
 		}
 	}
 	f.close();
-
-	DebugOut(L"[INFO] Done loading game from : %s \n", gameFile);
-
 	SwitchScene();
 }
 
-// Better parser for GameManager::Load
 void GameManager::_ParseSection_SETTINGS(string line)
 {
 	vector<string> tokens;
@@ -207,8 +200,6 @@ void GameManager::SwitchScene()
 {
 	if (next_scene < 0 || next_scene == current_scene) return;
 
-	DebugOut(L"[INFO] Switching to scene %d\n", next_scene);
-
 	if (current_scene != -1)
 		scenes[current_scene]->Unload();
 
@@ -217,13 +208,12 @@ void GameManager::SwitchScene()
 
 	current_scene = next_scene;
 
-	// Derive the high-level game state from the scene just entered.
 	if (current_scene >= SCENE::WORLD_1_1 && current_scene <= SCENE::WORLD_1_4)
 		game_state = GAME_STATE::PLAY;
 	else if (current_scene == SCENE::GAME_OVER)
-		game_state = GAME_STATE::GAME_OVER;   // out of lives -> game-over screen
+		game_state = GAME_STATE::GAME_OVER;
 	else
-		game_state = GAME_STATE::MENU;        // menu / control / end(win) / death-continue
+		game_state = GAME_STATE::MENU;
 
 	LPSCENE s = scenes[current_scene];
 	GameManager::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
@@ -232,7 +222,7 @@ void GameManager::SwitchScene()
 
 void GameManager::Update(DWORD dt)
 {
-	if (game_state == GAME_STATE::PAUSE) return; // frozen: keep last frame, skip updates
+	if (game_state == GAME_STATE::PAUSE) return;
 
 	if (current_scene != -1)
 		scenes[current_scene]->Update(dt);

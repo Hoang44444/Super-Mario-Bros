@@ -2,7 +2,8 @@
 #include "GameObject.h"
 #include "Mario.h"
 
-class StaticObject : public GameObject{
+class StaticObject : public GameObject
+{
 public:
 	StaticObject(float x, float y, float z) : GameObject(x, y, z){}
 	~StaticObject(){}

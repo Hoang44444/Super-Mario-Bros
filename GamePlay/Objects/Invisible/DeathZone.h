@@ -6,7 +6,8 @@ namespace DEATHZONE_BBOX {
 	constexpr float HEIGHT = 16.0f;
 }
 
-class DeathZone : public InvisibleObject {
+class DeathZone : public InvisibleObject
+{
 public:
 	DeathZone(float x, float y, float z) : InvisibleObject(x, y, z) {};
 	virtual ~DeathZone() {};

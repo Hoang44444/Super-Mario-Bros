@@ -5,7 +5,9 @@ constexpr float CASTLE_BRIDGE_BBOX_WIDTH  = 16.0f;
 constexpr float CASTLE_BRIDGE_BBOX_HEIGHT = 16.0f;
 constexpr float CASTLE_BRIDGE_GRAVITY     = 0.0015f;
 
-class CastleBridge : public StaticObject {
+class CastleBridge : public StaticObject
+{
+private:
 	DWORD collapseDelay = 0;
 	bool isCollapsing = false;
 	bool isFalling    = false;

@@ -15,21 +15,17 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 {
 	OutputDebugString(L"[INIT] Renderer::Init called!\n");
 
-	// retrieve client area width & height so that we can create backbuffer height & width accordingly 
 	RECT r;
 	GetClientRect(hWnd, &r);
 
 	backBufferWidth = r.right - r.left;
 	backBufferHeight = r.bottom - r.top;
 
-	// Calculate Global Scale based on height
 	globalScale = (float)backBufferHeight / (float)INTERNAL_SCREEN_HEIGHT;
 
-	// Create & clear the DXGI_SWAP_CHAIN_DESC structure
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
 
-	// Fill in the needed values
 	swapChainDesc.BufferCount = 1;
 	swapChainDesc.BufferDesc.Width = backBufferWidth;
 	swapChainDesc.BufferDesc.Height = backBufferHeight;
@@ -42,7 +38,6 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	swapChainDesc.SampleDesc.Quality = 0;
 	swapChainDesc.Windowed = TRUE;
 
-	// Create the D3D device and the swap chain
 	HRESULT hr = D3D10CreateDeviceAndSwapChain(NULL,
 		D3D10_DRIVER_TYPE_HARDWARE,
 		NULL,
@@ -58,7 +53,6 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 		return;
 	}
 
-	// Get the back buffer from the swapchain
 	ID3D10Texture2D* pBackBuffer;
 	hr = pSwapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID*)&pBackBuffer);
 	if (hr != S_OK)
@@ -67,7 +61,6 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 		return;
 	}
 
-	// create the render target view
 	hr = pD3DDevice->CreateRenderTargetView(pBackBuffer, NULL, &pRenderTargetView);
 
 	pBackBuffer->Release();
@@ -77,10 +70,8 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 		return;
 	}
 
-	// set the render target
 	pD3DDevice->OMSetRenderTargets(1, &pRenderTargetView, NULL);
 
-	// create and set the viewport
 	D3D10_VIEWPORT viewPort;
 	viewPort.Width = backBufferWidth;
 	viewPort.Height = backBufferHeight;
@@ -91,10 +82,6 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	pD3DDevice->RSSetViewports(1, &viewPort);
 
 	DebugOut(L"[INFO] Viewport set: %d x %d | Global Scale: %f\n", backBufferWidth, backBufferHeight, globalScale);
-
-	//
-	//
-	//
 
 	D3D10_SAMPLER_DESC desc;
 	desc.Filter = D3D10_FILTER_MIN_MAG_POINT_MIP_LINEAR;
@@ -113,7 +100,6 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 
 	pD3DDevice->CreateSamplerState(&desc, &this->pPointSamplerState);
 
-	// create the sprite object to handle sprite drawing 
 	hr = D3DX10CreateSprite(pD3DDevice, 0, &spriteObject);
 
 	if (hr != S_OK)
@@ -123,24 +109,19 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 	}
 
 	D3DXMATRIX matProjection;
-
-	// Create the projection matrix using the values in the viewport
-	// Divide Width and Height by globalScale to create a "Virtual Resolution" (Zoom in)
 	D3DXMatrixOrthoOffCenterLH(&matProjection,
 		(float)viewPort.TopLeftX,
 		(float)viewPort.Width / globalScale,
-		(float)viewPort.TopLeftY, // Bottom = 0
-		(float)viewPort.Height / globalScale,    // Top = Height
+		(float)viewPort.TopLeftY,
+		(float)viewPort.Height / globalScale,
 		0.1f,
 		10);
 	hr = spriteObject->SetProjectionTransform(&matProjection);
 
-	// Set identity view transform as default
 	D3DXMATRIX matView;
 	D3DXMatrixIdentity(&matView);
 	spriteObject->SetViewTransform(&matView);
 
-	// Initialize the blend state for alpha drawing
 	D3D10_BLEND_DESC StateDesc;
 	ZeroMemory(&StateDesc, sizeof(D3D10_BLEND_DESC));
 	StateDesc.AlphaToCoverageEnable = FALSE;
@@ -161,11 +142,13 @@ void Renderer::Init(HWND hWnd, HINSTANCE hInstance)
 
 void Renderer::BeginRender()
 {
-    float color[4] = { 0.2f, 0.2f, 0.2f, 1.0f }; // Màu nền xám, alpha = 1.0f
+    float color[4] = { 0.2f, 0.2f, 0.2f, 1.0f };
     pD3DDevice->ClearRenderTargetView(pRenderTargetView, color);
 
     pD3DDevice->OMSetBlendState(pBlendStateAlpha, NULL, 0xffffffff);
+
     pD3DDevice->PSSetSamplers(0, 1, &this->pPointSamplerState);
+
     spriteObject->Begin(D3DX10_SPRITE_SORT_DEPTH_BACK_TO_FRONT);
 }
 
@@ -186,8 +169,6 @@ void Renderer::DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_w
 		return;
 	}
 
-
-	// Tọa độ trên màn hình (đã trừ camera)
 	float screen_x = x - Camera::GetInstance()->GetX();
 	float screen_y = y - Camera::GetInstance()->GetY();
 
@@ -213,9 +194,8 @@ void Renderer::DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_w
 	sprite.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
 
 	D3DXMATRIX matWorld, matTranslation, matScale;
-	
+
 	float draw_x = screen_x + dest_width / 2.0f;
-	// Use Logical Height (BackBufferHeight / globalScale) for the Y calculation
 	float logicalHeight = (float)backBufferHeight / globalScale;
 	float draw_y = logicalHeight - (screen_y + dest_height / 2.0f);
 
@@ -231,6 +211,7 @@ void Renderer::DrawScaled(float x, float y, float z, LPTEXTURE tex, float dest_w
 void Renderer::EndRender()
 {
     spriteObject->End();
+
     pSwapChain->Present(0, 0);
 }
 

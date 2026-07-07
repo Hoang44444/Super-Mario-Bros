@@ -145,7 +145,7 @@ float HUD::GetMarioLivesStartX() const
 
 	float marioWidth = 13.0f * scale;
 	float spacing = 15.0f;
-	float textWidth = 60.0f; // Approx width of "x3"
+	float textWidth = 60.0f;
 	float totalWidth = marioWidth + spacing + textWidth;
 
 	return (screenWidth - totalWidth) / 2.0f;
@@ -182,10 +182,10 @@ void HUD::ResetTimer()
 void HUD::Update(DWORD dt)
 {
 	int sceneId = GameManager::GetInstance()->GetCurrentSceneID();
-	bool isGameplayScene = (sceneId != SCENE::MENU && 
-	                        sceneId != SCENE::CONTROL && 
-	                        sceneId != SCENE::DEATH && 
-	                        sceneId != SCENE::GAME_OVER && 
+	bool isGameplayScene = (sceneId != SCENE::MENU &&
+	                        sceneId != SCENE::CONTROL &&
+	                        sceneId != SCENE::DEATH &&
+	                        sceneId != SCENE::GAME_OVER &&
 	                        sceneId != SCENE::END &&
 	                        sceneId != SCENE::INTRO);
 
@@ -208,20 +208,15 @@ void HUD::Update(DWORD dt)
 		elapsedMs -= 1000;
 	}
 
-	// Timer warning BGM: play when time <= 100s
-	// Skip this logic during stage clear (stageClearOverride = true)
 	if (!stageClearOverride)
 	{
 		if (remainingTime <= 100 && !warningBGMPlaying)
 		{
-			DebugOut(L"[WARNING_BGM_DEBUG] Time <= 100s (%d), playing WARNING_THEME\n", remainingTime);
 			SoundManager::GetInstance()->PlayBGM(BGM::WARNING_THEME, true);
 			warningBGMPlaying = true;
 		}
 		else if (remainingTime > 100 && warningBGMPlaying)
 		{
-			// Time went back above 100 (shouldn't happen normally, but handle it)
-			DebugOut(L"[WARNING_BGM_DEBUG] Time > 100s (%d), stopping WARNING_THEME\n", remainingTime);
 			SoundManager::GetInstance()->StopBGM();
 			warningBGMPlaying = false;
 		}
@@ -232,8 +227,6 @@ void HUD::Update(DWORD dt)
 		remainingTime = 0;
 		elapsedMs = 0;
 
-		// Háº¿t giá» -> Mario cháº¿t. Chá»‰ kÃ­ch hoáº¡t má»™t láº§n (frame vá»«a vá» 0); cÃ¡c frame
-		// sau bá»‹ cháº·n bá»Ÿi nhÃ¡nh remainingTime <= 0 á»Ÿ Ä‘áº§u hÃ m.
 		if (mario != nullptr && mario->GetState() != MARIO_STATE::DIE)
 			mario->SetState(MARIO_STATE::DIE);
 	}
@@ -270,8 +263,6 @@ void HUD::Render()
 	ID3D10SamplerState* oldSamplerState = nullptr;
 	device->PSGetSamplers(0, 1, &oldSamplerState);
 
-	// The world is buffered through the same sprite helper. Flush it before
-	// ID3DX10Font changes sprite transforms/state for screen-space text.
 	spriteHandler->Flush();
 
 	const int score = ScoreManager::Get().GetScore();
@@ -290,10 +281,10 @@ void HUD::Render()
 	float col4_X = screenWidth * 0.85f;
 
 	sceneId = GameManager::GetInstance()->GetCurrentSceneID();
-	bool isGameplayScene = (sceneId != SCENE::MENU && 
-	                        sceneId != SCENE::CONTROL && 
-	                        sceneId != SCENE::DEATH && 
-	                        sceneId != SCENE::GAME_OVER && 
+	bool isGameplayScene = (sceneId != SCENE::MENU &&
+	                        sceneId != SCENE::CONTROL &&
+	                        sceneId != SCENE::DEATH &&
+	                        sceneId != SCENE::GAME_OVER &&
 	                        sceneId != SCENE::END &&
 	                        sceneId != SCENE::INTRO);
 
@@ -308,14 +299,12 @@ void HUD::Render()
 		RenderMarioLivesIcon(marioLivesY);
 	spriteHandler->Flush();
 
-	// 1. Draw top row (Labels)
 	DrawTextLine(L"SCORE", (int)col0_X, 20, 200, 60);
 	DrawTextLine(L"COINS", (int)col1_X, 20, 200, 60);
 	DrawTextLine(L"WORLD", (int)col2_X, 20, 200, 60);
 	DrawTextLine(L"TIME", (int)col3_X, 20, 200, 60);
 	DrawTextLine(L"LIVES", (int)col4_X, 20, 200, 60);
 
-	// 2. Draw values (Row 2)
 	wchar_t line[128];
 	swprintf_s(line, L"%06d", score);
 	DrawTextLine(line, (int)col0_X-10, 80, 200, 60);
@@ -335,19 +324,15 @@ void HUD::Render()
 	swprintf_s(line, L"x%d", lives);
 	DrawTextLine(line, (int)col4_X + 35, 80, 200, 60);
 
-	// 3. Render Center Screen Content for INTRO / DEATH
 	if (sceneId == SCENE::INTRO)
 	{
-		// Render WORLD <world>-<stage>
 		swprintf_s(line, L"WORLD %d-%d", world, stage);
 		DrawCenteredTextLine(line, (int)(screenHeight * 0.5f - 80.0f), 60);
 
-		// Render Mario small and x<lives>
 		DrawMarioLivesText(lives, marioLivesY);
 	}
 	else if (sceneId == SCENE::DEATH)
 	{
-		// Render Mario small and x<lives> centered
 		DrawMarioLivesText(lives, marioLivesY);
 	}
 

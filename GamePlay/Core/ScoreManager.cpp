@@ -6,8 +6,7 @@ void ScoreManager::AddScore(int value)
 	if (value <= 0) return;
 
 	PlayerData& data = PlayerData::Get();
-	
-	// Cap score at 999999
+
 	if (data.score + value > 999999)
 	{
 		data.score = 999999;
@@ -67,7 +66,6 @@ bool ScoreManager::IsMaxCombo()
 
 void ScoreManager::SetOnGround(bool onGround)
 {
-	// Reset combo when landing on ground
 	if (onGround && !isOnGround)
 	{
 		ResetCombo();
@@ -87,10 +85,8 @@ void ScoreManager::AddCoin(int amount)
 	PlayerData& data = PlayerData::Get();
 	data.coins += amount;
 
-	// Award 200 points per coin
 	AddScore(SCORE_VALUES::COIN);
 
-	// Award 1UP every 100 coins
 	if (data.coins >= 100)
 	{
 		data.coins -= 100;
@@ -110,7 +106,6 @@ void ScoreManager::AddLife(int amount)
 	PlayerData& data = PlayerData::Get();
 	data.lives += amount;
 
-	// Cap lives at 99 (reasonable upper limit)
 	if (data.lives > 99)
 	{
 		data.lives = 99;

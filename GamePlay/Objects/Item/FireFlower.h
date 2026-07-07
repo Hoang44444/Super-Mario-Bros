@@ -4,7 +4,8 @@
 constexpr float FIRE_FLOWER_BBOX_WIDTH  = 16.0f;
 constexpr float FIRE_FLOWER_BBOX_HEIGHT = 16.0f;
 
-class FireFlower : public Item {
+class FireFlower : public Item
+{
 public:
 	FireFlower(float x, float y, float z) : Item(x, y, z) {}
 	virtual ~FireFlower() {}

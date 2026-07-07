@@ -29,7 +29,4 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="Objects\WindEffect.txt" />
-  </ItemGroup>
 </Project>

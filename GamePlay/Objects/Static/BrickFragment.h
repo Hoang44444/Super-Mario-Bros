@@ -6,7 +6,8 @@ namespace BRICK_FRAGMENT_PARAMS
 	constexpr float GRAVITY = 0.001f;
 }
 
-class BrickFragment : public GameObject{
+class BrickFragment : public GameObject
+{
 private:
 	int aniId;
 public:

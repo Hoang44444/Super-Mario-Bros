@@ -13,8 +13,7 @@ MenuHUD::MenuHUD()
 {
 	this->font = nullptr;
 	this->selectedOption = 0;
-	
-	// Cursor initial position (will be updated in Update)
+
 	this->cursorX = 150.0f;
 	this->cursorY = 200.0f;
 
@@ -42,7 +41,7 @@ void MenuHUD::CreateFontIfNeeded()
 
 	D3DX10CreateFont(
 		device,
-		80,  // Height (changed from 60 to 80 for bigger buttons)
+		80,
 		0,
 		FW_BOLD,
 		1,
@@ -78,10 +77,10 @@ void MenuHUD::DrawCursor()
 {
 	Renderer* r = Renderer::GetInstance();
 	float scale = r->GetGlobalScale();
-	
+
 	float camX = Camera::GetInstance()->GetX();
 	float camY = Camera::GetInstance()->GetY();
-	
+
 	LPSPRITE cursorSprite = SpriteManager::GetInstance()->Get(11);
 	if (cursorSprite != nullptr)
 	{
@@ -118,9 +117,7 @@ void MenuHUD::Update()
 		cursorHeight = (float)(rect.bottom - rect.top);
 	}
 
-	// Position the cursor to the left of the menu starting position
 	cursorX = menuStartX - (cursorWidth * scale) - 20.0f;
-	// Vertically center the cursor relative to the text line
 	cursorY = menuStartY + selectedOption * menuSpacing + (fontHeight - cursorHeight * scale) / 2.0f;
 }
 
@@ -152,19 +149,17 @@ void MenuHUD::Render()
 	ID3D10SamplerState* oldSamplerState = nullptr;
 	device->PSGetSamplers(0, 1, &oldSamplerState);
 
-	// 1. Flush background
 	spriteHandler->Flush();
 
 	Renderer* r = Renderer::GetInstance();
 	int screenWidth = r->GetBackBufferWidth();
 	int screenHeight = r->GetBackBufferHeight();
 	float scale = r->GetGlobalScale();
-	
+
 	float camX = Camera::GetInstance()->GetX();
 	float camY = Camera::GetInstance()->GetY();
 
-	// 2. Render Mario decoration (world-space)
-	LPANIMATION marioAni = AnimationManager::GetInstance()->Get(1100); // MARIO_SMALL_IDLE_RIGHT
+	LPANIMATION marioAni = AnimationManager::GetInstance()->Get(1100);
 	if (marioAni != nullptr)
 	{
 		float marioX = screenWidth * 0.15f;
@@ -176,28 +171,23 @@ void MenuHUD::Render()
 		);
 	}
 
-	// 3. Render Cursor (world-space)
 	DrawCursor();
 
-	// 4. Flush Mario and Cursor sprites
 	spriteHandler->Flush();
 
-	// 5. Draw menu items (screen-space)
 	const wchar_t* menuItems[] = { L"START", L"LEVEL", L"HELP", L"QUIT" };
-	
+
 	for (int i = 0; i < 4; i++)
 	{
-		D3DXCOLOR color = (i == selectedOption) ? 
-			D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f) :  // Yellow for selected
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);   // White for unselected
-		
+		D3DXCOLOR color = (i == selectedOption) ?
+			D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f) :
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
 		DrawTextLine(menuItems[i], (int)menuStartX, (int)(menuStartY + i * menuSpacing), 400, (int)fontHeight, color);
 	}
 
-	// 6. Flush text drawings
 	spriteHandler->Flush();
 
-	// 7. Restore original transforms and pipeline state
 	spriteHandler->SetProjectionTransform(&oldProjection);
 	spriteHandler->SetViewTransform(&oldView);
 	device->RSSetViewports(oldViewportCount, oldViewports);
@@ -214,8 +204,7 @@ void MenuHUD::Render()
 void MenuHUD::MoveSelection(int delta)
 {
 	selectedOption += delta;
-	
-	// Clamp to valid range
+
 	if (selectedOption < 0) selectedOption = 3;
 	if (selectedOption > 3) selectedOption = 0;
 }

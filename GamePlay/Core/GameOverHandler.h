@@ -4,8 +4,6 @@
 #include "PlayerData.h"
 #include "AssetID.h"
 
-// Input handler used on the game-over screen (GAME_STATE::GAME_OVER, out of lives).
-// Enter/Space resets the run and replays from the first level ("chÆ¡i láº¡i tá»« Ä‘áº§u").
 class GameOverHandler : public KeyEventHandler
 {
 public:

@@ -47,12 +47,9 @@ float Camera::GetY()
 
 void Camera::Follow(float targetX, float targetY)
 {
-    // Đưa player về giữa màn hình
     x = targetX - screenWidth / 2;
     y = targetY - screenHeight / 2;
-    
-    // Clamp không cho ra ngoài map
-    // Ensure we don't clamp to a negative value if map is smaller than screen
+
     float max_x = std::max(0.0f, (float)(mapWidth - screenWidth));
 	float max_y = std::max(0.0f, (float)(mapHeight - screenHeight));
 

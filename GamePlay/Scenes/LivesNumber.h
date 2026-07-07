@@ -6,9 +6,6 @@
 #include "PlayerData.h"
 #include "AssetID.h"
 
-// Hiá»ƒn thá»‹ sá»‘ máº¡ng CÃ’N Láº I (1..3) cáº¡nh chá»¯ X trÃªn mÃ n hÃ¬nh Mario cháº¿t (death scene).
-// Äá»c trá»±c tiáº¿p PlayerData::lives nÃªn luÃ´n Ä‘Ãºng sá»‘ máº¡ng hiá»‡n táº¡i.
-// (x,y) lÃ  toáº¡ Ä‘á»™ logic, neo theo camera giá»‘ng background; (w,h) lÃ  kÃ­ch thÆ°á»›c váº½.
 class LivesNumber : public GameObject
 {
 	float w, h;
@@ -25,8 +22,8 @@ public:
 	void Render() override
 	{
 		int lives = PlayerData::Get().lives;
-		if (lives < 1 || lives > 3) return;                 // áº£nh chá»‰ cÃ³ sá»‘ 1..3
-		int aniId = ANIMATION::LIVES_DIGIT_1 + (lives - 1); // digit n -> 3020 + (n-1)
+		if (lives < 1 || lives > 3) return;
+		int aniId = ANIMATION::LIVES_DIGIT_1 + (lives - 1);
 
 		LPANIMATION ani = AnimationManager::GetInstance()->Get(aniId);
 		if (ani == nullptr) return;

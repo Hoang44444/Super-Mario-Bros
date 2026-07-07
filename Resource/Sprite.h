@@ -1,5 +1,6 @@
 #pragma once
 #include "Texture.h"
+
 class Sprite
 {
     int id;
@@ -15,7 +16,9 @@ public:
         this->bottom = bottom;
         this->texture = tex;
     }
+
     LPTEXTURE GetTexture() { return texture; }
+
     RECT GetRect() {
         RECT r;
         r.left = left;

@@ -33,7 +33,7 @@ void Cannon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         (direction == -1 && dx > 0))
         return;
 
-    DWORD now = GetTickCount64();
+    ULONGLONG now = GetTickCount64();
 
     if (now - shootTimer >= CANNON_SHOOT_INTERVAL)
     {

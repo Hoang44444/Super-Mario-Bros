@@ -36,6 +36,7 @@ public:
 			scene->AdjustSelection(10);
 			break;
 		case VK_RETURN:
+		case VK_SPACE:
 			scene->ConfirmSelection();
 			break;
 		case VK_ESCAPE:
@@ -78,8 +79,8 @@ void HelpScene::LoadBackgroundPath()
 		if (line.empty() || line[0] == '#') continue;
 		if (!line.empty() && line.back() == '\r') line.pop_back();
 
-		if (line == "[BACKGROUND]") { section = 1; continue; }
-		if (line[0] == '[') { section = 0; continue; }
+	if (line == "[BACKGROUND]") { section = 1; continue; }
+	if (line[0] == '[') { section = 0; continue; }
 
 		if (section == 1)
 		{
@@ -286,19 +287,27 @@ void HelpScene::Render()
 		return;
 	}
 
-	// UI layout: adjust these values to reposition help text and volume controls.
-	const int leftX = 420;
-	const int rightX = 840;
-	const int controlsY = 170;
-	const int lineHeight = 52;
-	const int volumeY = 370;
+	Renderer* r = Renderer::GetInstance();
+	int screenWidth = r->GetBackBufferWidth();
+	int screenHeight = r->GetBackBufferHeight();
+	float scale = r->GetGlobalScale();
+	int logicalW = (int)(screenWidth / scale);
+	int logicalH = (int)(screenHeight / scale);
 
-	DrawTextLine(L"Move left / right", leftX, controlsY, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	const int leftX = (int)(logicalW * 0.95f);
+	const int rightX = (int)(logicalW * 1.90f);
+	const int controlsY = (int)(logicalH * 0.70f);
+	const int lineHeight = (int)(logicalH * 0.22f);
+	const int volumeY = (int)(logicalH * 1.54f);
+
+	DrawTextLine(L"Move", leftX, controlsY, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Left / Right Arrow", rightX, controlsY, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
-	DrawTextLine(L"Jump", leftX, controlsY + lineHeight, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	DrawTextLine(L"Jump / Interact", leftX, controlsY + lineHeight, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Space", rightX, controlsY + lineHeight, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Shoot", leftX, controlsY + lineHeight * 2, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Shift", rightX, controlsY + lineHeight * 2, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	DrawTextLine(L"Back", leftX, controlsY + lineHeight * 3, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	DrawTextLine(L"Esc", rightX, controlsY + lineHeight * 3, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 
 	SoundManager* sound = SoundManager::GetInstance();
 	DrawVolumeOption(L"Master Volume", sound->GetMasterVolume(), leftX, volumeY, selectedOption == 0);
@@ -306,8 +315,8 @@ void HelpScene::Render()
 	DrawVolumeOption(L"SFX Volume   ", sound->GetSFXVolume(), leftX, volumeY + lineHeight * 2, selectedOption == 2);
 
 	D3DXCOLOR backColor = (selectedOption == 3) ?
-		D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f) :
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f) :
+		D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
 	DrawTextLine(L"<", leftX - 42, volumeY + lineHeight * 3, 40, 44, backColor, DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Back", leftX, volumeY + lineHeight * 3, 200, 44, backColor, DT_LEFT | DT_TOP | DT_NOCLIP);
 

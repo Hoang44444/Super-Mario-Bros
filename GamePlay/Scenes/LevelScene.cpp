@@ -30,6 +30,7 @@ public:
 			scene->MoveSelection(1);
 			break;
 		case VK_RETURN:
+		case VK_SPACE:
 			scene->ConfirmSelection();
 			break;
 		case VK_ESCAPE:
@@ -245,13 +246,19 @@ void LevelScene::Render()
 		return;
 	}
 
-	// UI layout: adjust these values to reposition the level selector.
-	float titleY = 170.0f;
-	float levelY = 380.0f;
-	float startX = 270.0f;
-	float spacing = 310.0f;
-	float levelWidth = 120.0f;
-	float levelHeight = 70.0f;
+	Renderer* r = Renderer::GetInstance();
+	int screenWidth = r->GetBackBufferWidth();
+	int screenHeight = r->GetBackBufferHeight();
+	float scale = r->GetGlobalScale();
+	float logicalW = screenWidth / scale;
+	float logicalH = screenHeight / scale;
+
+	float titleY = logicalH * 0.70f;
+	float levelY = logicalH * 1.58f;
+	float startX = logicalW * 0.61f;
+	float spacing = logicalW * 0.70f;
+	float levelWidth = logicalW * 0.27f;
+	float levelHeight = logicalH * 0.29f;
 
 	DrawCenteredText(L"LEVEL", (int)titleY, 120, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -264,7 +271,6 @@ void LevelScene::Render()
 		DrawTextLine(levels[i], (int)(startX + spacing * i), (int)levelY, (int)levelWidth, (int)levelHeight, color, DT_CENTER | DT_TOP | DT_NOCLIP);
 	}
 
-	DrawTextLine(L">", (int)(startX + spacing * selectedLevel - 10.0f), (int)levelY, 40, (int)levelHeight, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	spriteHandler->Flush();
 
 	spriteHandler->SetProjectionTransform(&oldProjection);
@@ -300,7 +306,6 @@ void LevelScene::ConfirmSelection()
 		SCENE::WORLD_1_4
 	};
 
-	// Set returnScene to the selected level, then go through INTRO scene
 	PlayerData::Get().returnScene = levelScenes[selectedLevel];
 	GameManager::GetInstance()->InitiateSwitchScene(SCENE::INTRO);
 }

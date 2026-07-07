@@ -5,7 +5,8 @@
 constexpr float PIPE_BBOX_WIDTH = 32.0f;
 constexpr float PIPE_BBOX_HEIGHT = 32.0f;
 
-class Pipe : public StaticObject {
+class Pipe : public StaticObject
+{
 private:
 	int animationId = ANIMATION::PIPE_OVERWORLD;
 public:

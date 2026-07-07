@@ -7,10 +7,9 @@ class MenuHUD
 {
 private:
 	ID3DX10Font* font;
-	int selectedOption;  // 0=START, 1=LEVEL, 2=HELP, 3=QUIT
-	float cursorX, cursorY;  // Cursor position (mushroom icon)
+	int selectedOption;
+	float cursorX, cursorY;
 
-	// Menu layout variables computed in Update and shared with Render
 	float menuStartX;
 	float menuStartY;
 	float menuSpacing;

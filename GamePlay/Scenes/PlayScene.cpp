@@ -34,11 +34,9 @@
 #include "SuperStar.h"
 #include "CastleBridge.h"
 #include "Axe.h"
-// Items
 #include "Coin.h"
 #include "ItemCoin2.h"
 #include "Mushroom1Up.h"
-// Enemies
 #include "Goomba.h"
 #include "Koopa.h"
 #include "BuzzyBeetle.h"
@@ -52,7 +50,6 @@
 #include "Spiny.h"
 #include "PiranhaPlant.h"
 #include "SoundManager.h"
-// Wind Effect
 #include "WindEffect.h"
 #include "WindCycle.h"
 using namespace std;
@@ -71,21 +68,20 @@ void PlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath.c_str());
 
-	marioDieStart = 0; // fresh load -> Mario is alive again
+	marioDieStart = 0;
 	sceneStart = GetTickCount64();
-	windSfxPlaying = false;  // reset wind SFX state
-	earthquakeSfxPlaying = false;  // reset earthquake SFX state
+	windSfxPlaying = false;
+	earthquakeSfxPlaying = false;
 
 	if (key_handler == NULL)
 	{
-		// Non-gameplay screens (menu / control / end / death) have no player; use the menu handler.
 		if (id == SCENE::MENU || id == SCENE::CONTROL || id == SCENE::END || id == SCENE::DEATH || id == SCENE::GAME_OVER || id == SCENE::INTRO)
 			key_handler = new MenuKeyHandler();
 		else
 			key_handler = new MarioKeyHandler(this);
 		GameManager::GetInstance()->SetKeyHandler(key_handler);
 	}
-		
+
 	ifstream f;
 	f.open(sceneFilePath.c_str());
 
@@ -102,14 +98,12 @@ void PlayScene::Load()
 	{
 		string line(str);
 
-		// Strip UTF-8 BOM (EF BB BF) náº¿u cÃ³ á»Ÿ Ä‘áº§u dÃ²ng
 		if (line.size() >= 3 &&
 			(unsigned char)line[0] == 0xEF &&
 			(unsigned char)line[1] == 0xBB &&
 			(unsigned char)line[2] == 0xBF)
 			line = line.substr(3);
 
-		// Strip carriage return '\r' cuá»‘i dÃ²ng (Windows CRLF)
 		if (!line.empty() && line.back() == '\r')
 			line.pop_back();
 
@@ -131,7 +125,6 @@ void PlayScene::Load()
 	f.close();
 	DebugOut(L"[INFO] Done loading scene from %s\n", sceneFilePath.c_str());
 
-	// Determine world and stage for HUD based on current scene or returnScene
 	int hudWorld = 1;
 	int hudStage = 1;
 	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
@@ -162,7 +155,6 @@ void PlayScene::Load()
 		menuHUD = new MenuHUD();
 	}
 
-	// Load SFX
 	SoundManager::GetInstance()->LoadSFX(SFX::JUMP, "../Resource/audio/sfx/smb_jump-super.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::STOMP, "../Resource/audio/sfx/smb_stomp.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::COIN, "../Resource/audio/sfx/smb_coin.wav");
@@ -176,11 +168,9 @@ void PlayScene::Load()
 	SoundManager::GetInstance()->LoadSFX(SFX::SMB_SHAKE, "../Resource/audio/sfx/smb_shake.wav");
 	SoundManager::GetInstance()->LoadSFX(SFX::FIREWORKS, "../Resource/audio/sfx/smb_fireworks.wav");
 
-	// Load and play BGM based on scene type
 	if (id >= SCENE::WORLD_1_1 && id <= SCENE::WORLD_1_4)
 	{
 		DebugOut(L"[BGM_DEBUG] Loading BGMs for world 1 levels\n");
-		// Load all possible BGMs for world 1 levels
 		SoundManager::GetInstance()->LoadBGM(BGM::OVERWORLD_THEME, "../Resource/audio/bgm/overworld_theme.wav");
 		SoundManager::GetInstance()->LoadBGM(BGM::UNDERWORLD_THEME, "../Resource/audio/bgm/underworld_theme.wav");
 		SoundManager::GetInstance()->LoadBGM(BGM::CASTLE_THEME, "../Resource/audio/bgm/castle_theme.wav");
@@ -188,7 +178,6 @@ void PlayScene::Load()
 		SoundManager::GetInstance()->LoadBGM(BGM::WARNING_THEME, "../Resource/audio/bgm/smb_warning.wav");
 		SoundManager::GetInstance()->LoadBGM(BGM::STAGE_CLEAR_THEME, "../Resource/audio/bgm/smb_stage_clear.wav");
 
-		// Play appropriate BGM based on level
 		if (id == SCENE::WORLD_1_2)
 		{
 			SoundManager::GetInstance()->PlayBGM(BGM::UNDERWORLD_THEME, true);
@@ -200,7 +189,6 @@ void PlayScene::Load()
 		}
 		else
 		{
-			// WORLD_1_1 and WORLD_1_3 use overworld theme
 			DebugOut(L"[BGM_DEBUG] Playing OVERWORLD_THEME for level %d\n", id);
 			SoundManager::GetInstance()->PlayBGM(BGM::OVERWORLD_THEME, true);
 		}
@@ -213,15 +201,11 @@ void PlayScene::Load()
 
 	SoundManager::GetInstance()->ApplyVolumeSettings();
 
-	// Hiá»‡u á»©ng Ä‘á»™ng Ä‘áº¥t á»Ÿ mÃ n cuá»‘i (Bowser): camera rung tá»«ng Ä‘á»£t cho tá»›i khi
-	// Mario Ä‘á»©ng Ä‘Æ°á»£c lÃªn cáº§u. CÃ¡c mÃ n khÃ¡c Ä‘áº£m báº£o táº¯t rung (camera dÃ¹ng chung).
 	if (id == SCENE::WORLD_1_4)
 		Camera::GetInstance()->StartEarthquake();
 	else
 		Camera::GetInstance()->StopEarthquake();
 
-	// GiÃ³ á»Ÿ mÃ n 1-3: báº­t chu ká»³ giÃ³ dÃ¹ng chung (Ä‘á»“ng bá»™ lÃ¡ + lá»±c Ä‘áº©y Mario).
-	// CÃ¡c mÃ n khÃ¡c táº¯t Ä‘á»ƒ khÃ´ng sÃ³t tráº¡ng thÃ¡i.
 	if (id == SCENE::WORLD_1_3)
 	{
 		DebugOut(L"[SFX_DEBUG] Starting wind cycle for level 1-3\n");
@@ -233,7 +217,6 @@ void PlayScene::Load()
 		WindCycle::GetInstance()->Stop();
 	}
 
-	// Boss mÃ n 1-4: tÃ¬m Bowser Ä‘á»ƒ kÃ­ch hoáº¡t khi Mario bÆ°á»›c lÃªn cáº§u (máº·c Ä‘á»‹nh nÃ³ Ä‘á»©ng yÃªn).
 	bossBowser = nullptr;
 	if (id == SCENE::WORLD_1_4)
 	{
@@ -277,14 +260,12 @@ void PlayScene::LoadAssets(LPCWSTR assetFile)
 	{
 		string line(str);
 
-		// Strip UTF-8 BOM
 		if (line.size() >= 3 &&
 			(unsigned char)line[0] == 0xEF &&
 			(unsigned char)line[1] == 0xBB &&
 			(unsigned char)line[2] == 0xBF)
 			line = line.substr(3);
 
-		// Strip carriage return '\r' cuá»‘i dÃ²ng
 		if (!line.empty() && line.back() == '\r')
 			line.pop_back();
 
@@ -338,34 +319,31 @@ void PlayScene::_ParseSection_ANIMATIONS(string line)
 	vector<string> tokens;
 	stringstream ss(line);
 	string token;
-	
-	// Cáº¯t token cáº©n tháº­n, loáº¡i bá» pháº§n comment (báº¯t Ä‘áº§u báº±ng '#')
-	while (ss >> token) 
+
+	while (ss >> token)
 	{
-		if (token.empty() || token[0] == '#') break; // Bá» qua comment inline
+		if (token.empty() || token[0] == '#') break;
 		tokens.push_back(token);
 	}
 
-	if (tokens.size() < 3) return; 
+	if (tokens.size() < 3) return;
 
 	int ani_id = atoi(tokens[0].c_str());
 	LPANIMATION ani = new Animation();
 
-	// Token[0] lÃ  ID animation
-	// Token[i] lÃ  sprite_id, Token[i+1] lÃ  frame_time
 	for (size_t i = 1; i + 1 < tokens.size(); i += 2)
 	{
 		int sprite_id = atoi(tokens[i].c_str());
 		int frame_time = atoi(tokens[i+1].c_str());
-		
+
 		LPSPRITE sprite = SpriteManager::GetInstance()->Get(sprite_id);
-		
+
 		if (sprite == nullptr)
 		{
 			DebugOut(L"[ERROR] Sprite ID %d not found in animation %d\n", sprite_id, ani_id);
 			continue;
 		}
-		
+
 		ani->Add(sprite, frame_time);
 	}
 
@@ -473,14 +451,12 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 
-	// ---- ITEMS ----
 	case OBJECT::COIN:
 	case OBJECT::ITEM_COIN2:
 	case OBJECT::MUSHROOM_1UP:
 		obj = CreateItem(type, x, y, z);
 		break;
 
-	// ---- ENEMIES ----
 	case OBJECT::GOOMBA:
 		obj = new Goomba(x, y, z);
 		break;
@@ -543,7 +519,6 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT::MENU_OPTIONS:
 	{
-		// 5th token = path to the option-definition file (defaults if omitted).
 		wstring optFile = L"Objects/menu_options.txt";
 		if (tokens.size() >= 5)
 			optFile = wstring(tokens[4].begin(), tokens[4].end());
@@ -554,7 +529,6 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT::LIVES_NUMBER:
 	{
-		// tokens: 51 x y z [w] [h]  â€” x,y lÃ  toáº¡ Ä‘á»™ logic; w,h lÃ  kÃ­ch thÆ°á»›c váº½.
 		float w = (tokens.size() >= 5) ? (float)atof(tokens[4].c_str()) : 11.0f;
 		float h = (tokens.size() >= 6) ? (float)atof(tokens[5].c_str()) : 18.0f;
 		obj = new LivesNumber(x, y, z, w, h);
@@ -622,17 +596,12 @@ void PlayScene::Update(DWORD dt)
 		}
 	}
 
-	// Boss mÃ n 1-4: Bowser chá»‰ báº¯t Ä‘áº§u hoáº¡t Ä‘á»™ng khi Mario Ä‘Ã£ bÆ°á»›c lÃªn cáº§u.
 	if (bossBowser != nullptr && !bossBowser->IsDeleted() && IsPlayerOnCastleBridge())
 		static_cast<Bowser*>(bossBowser)->Activate();
 
 	vector<LPGAMEOBJECT> coObjects;
 	for (auto obj : objects) coObjects.push_back(obj);
 
-	// Update every object EXCEPT the player first, then update the player last.
-	// The player must run after the moving platforms so its collision resolves
-	// against the platforms' current-frame position. Otherwise Mario lags one
-	// frame behind and falls through / jitters on upward-moving platforms.
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (objects[i] == player) continue;
@@ -649,8 +618,6 @@ void PlayScene::Update(DWORD dt)
 	if (menuHUD != nullptr)
 		menuHUD->Update();
 
-	// Wind SFX: only play when wind is actually blowing (not during inactive periods)
-	// Track state to avoid calling PlaySFX every frame (which would restart the sound)
 	bool windActive = (id == SCENE::WORLD_1_3 && WindCycle::GetInstance()->IsActive());
 	if (windActive && !windSfxPlaying)
 	{
@@ -663,7 +630,6 @@ void PlayScene::Update(DWORD dt)
 		windSfxPlaying = false;
 	}
 
-	// Earthquake SFX: only play when camera is actually shaking (not during rest periods or when on bridge)
 	bool earthquakeShaking = Camera::GetInstance()->IsEarthquakeShaking() && !IsPlayerOnCastleBridge();
 	DebugOut(L"[EARTHQUAKE_DEBUG] earthquakeShaking=%d earthquakeSfxPlaying=%d onBridge=%d\n",
 		earthquakeShaking, earthquakeSfxPlaying, IsPlayerOnCastleBridge());
@@ -680,27 +646,23 @@ void PlayScene::Update(DWORD dt)
 		earthquakeSfxPlaying = false;
 	}
 
-	// Stage clear sequence: time countdown with score bonus
 	if (stageClearActive)
 	{
 		ULONGLONG now = GetTickCount64();
-		constexpr ULONGLONG STAGE_CLEAR_BGM_DURATION = 2000;  // 2 seconds for stage clear BGM
-		constexpr ULONGLONG COUNTDOWN_SPEED = 30;  // countdown every 30ms (much faster)
-		constexpr int TIME_BONUS_MULTIPLIER = 50;  // 50 points per second
+		constexpr ULONGLONG STAGE_CLEAR_BGM_DURATION = 2000;
+		constexpr ULONGLONG COUNTDOWN_SPEED = 30;
+		constexpr int TIME_BONUS_MULTIPLIER = 50;
 
 		ULONGLONG elapsed = now - stageClearStart;
 
-		// Phase 1: Play stage clear BGM for 2 seconds
 		if (elapsed < STAGE_CLEAR_BGM_DURATION)
 		{
-			// Just wait, BGM is playing
 		}
-		// Phase 2: Countdown time rapidly with score + COIN SFX loop
 		else if (stageClearDisplayTime > 0)
 		{
 			ULONGLONG countdownElapsed = elapsed - STAGE_CLEAR_BGM_DURATION;
 			int countdownSteps = (int)(countdownElapsed / COUNTDOWN_SPEED);
-			int timeToSubtract = countdownSteps * 3;  // Giáº£m 3 giÃ¢y má»—i láº§n countdown
+			int timeToSubtract = countdownSteps * 3;
 
 			if (timeToSubtract > stageClearDisplayTime)
 				timeToSubtract = stageClearDisplayTime;
@@ -711,33 +673,26 @@ void PlayScene::Update(DWORD dt)
 				stageClearDisplayTime -= timeToSubtract;
 				if (stageClearDisplayTime < 0) stageClearDisplayTime = 0;
 
-				// TÃ­nh Ä‘iá»ƒm: thá»i gian cÃ²n láº¡i thá»±c táº¿ x 50
-				// Má»—i láº§n countdown giáº£m 3 giÃ¢y hiá»ƒn thá»‹, nhÆ°ng Ä‘iá»ƒm dá»±a trÃªn stageClearTime thá»±c táº¿
 				int scoreToAdd = stageClearTime * TIME_BONUS_MULTIPLIER;
 				ScoreManager::Get().AddScore(scoreToAdd);
 
-				// Play COIN SFX
 				SoundManager::GetInstance()->PlaySFX(SFX::COIN, false);
 
-				// Update HUD time display
 				if (hud != nullptr)
 				{
 					hud->SetRemainingTime(stageClearDisplayTime);
 				}
 
-				// Reset stageClearStart to track next countdown step
 				stageClearStart = now - STAGE_CLEAR_BGM_DURATION;
 			}
 		}
-		// Phase 3: Time reached 0, play FIREWORKS sound then switch
 		else
 		{
-			constexpr ULONGLONG FIREWORKS_DURATION = 3000;  // 3 seconds for fireworks
+			constexpr ULONGLONG FIREWORKS_DURATION = 3000;
 			constexpr ULONGLONG FIREWORKS_START = STAGE_CLEAR_BGM_DURATION;
 
 			if (elapsed < FIREWORKS_START + FIREWORKS_DURATION)
 			{
-				// Play fireworks sound once
 				static bool fireworksPlayed = false;
 				if (!fireworksPlayed)
 				{
@@ -747,12 +702,10 @@ void PlayScene::Update(DWORD dt)
 			}
 			else
 			{
-				// Fireworks done, switch to INTRO scene
 				stageClearActive = false;
 				if (hud != nullptr)
-					hud->SetStageClearActive(false);  // Re-enable warning BGM logic
+					hud->SetStageClearActive(false);
 
-				// Make Mario visible again for the next level
 				if (player != nullptr)
 					player->SetVisible(true);
 
@@ -762,11 +715,8 @@ void PlayScene::Update(DWORD dt)
 		}
 	}
 
-	// skip the rest if scene was already unloaded (Mario died)
 	if (player == nullptr) return;
 
-	// Death detection: either Mario fell off the bottom of the map, or his death
-	// animation (DIE state) has played long enough.
 	{
 		float px, py, pz;
 		player->GetPosition(px, py, pz);
@@ -779,7 +729,7 @@ void PlayScene::Update(DWORD dt)
 		if (fellOff && marioDieStart == 0)
 		{
 			marioDieStart = now;
-			player->SetState(MARIO_STATE::DIE);  // Set DIE state immediately so camera stops following
+			player->SetState(MARIO_STATE::DIE);
 			SoundManager::GetInstance()->StopBGM();
 			SoundManager::GetInstance()->PlaySFX(SFX::DIE);
 		}
@@ -793,7 +743,6 @@ void PlayScene::Update(DWORD dt)
 		}
 	}
 
-	// Update camera to follow mario (only if Mario is alive)
 	if (player->GetState() != MARIO_STATE::DIE)
 	{
 		float cx, cy, cz;
@@ -802,7 +751,6 @@ void PlayScene::Update(DWORD dt)
 		Camera::GetInstance()->Follow(cx, fixedCameraY);
 	}
 
-	// Äá»™ng Ä‘áº¥t mÃ n cuá»‘i: rung camera tá»«ng Ä‘á»£t, dá»«ng háº³n khi Mario lÃªn Ä‘Æ°á»£c cáº§u.
 	if (Camera::GetInstance()->IsEarthquakeActive())
 	{
 		if (IsPlayerOnCastleBridge())
@@ -811,7 +759,6 @@ void PlayScene::Update(DWORD dt)
 			Camera::GetInstance()->UpdateEarthquake((float)dt);
 	}
 
-	// Remove deleted objects
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (objects[i]->IsDeleted())
@@ -853,7 +800,6 @@ bool PlayScene::IsPlayerOnCastleBridge()
 		float bl, bt, br, bb;
 		bridge->GetBoundingBox(bl, bt, br, bb);
 
-		// Mario chá»“ng theo phÆ°Æ¡ng ngang vÃ  chÃ¢n (Ä‘Ã¡y) tÃ¬ lÃªn máº·t trÃªn cá»§a cáº§u.
 		bool overlapX     = (mr > bl) && (ml < br);
 		bool restingOnTop = (mb >= bt - 4.0f) && (mb <= bt + 8.0f);
 		if (overlapX && restingOnTop)
@@ -866,16 +812,13 @@ void PlayScene::StartStageClear()
 {
 	stageClearActive = true;
 	stageClearStart = GetTickCount64();
-	stageClearTime = hud->GetRemainingTime();  // Thá»i gian thá»±c táº¿ Ä‘á»ƒ tÃ­nh Ä‘iá»ƒm
-	stageClearDisplayTime = 100;  // Debug: hiá»ƒn thá»‹ countdown 100 giÃ¢y, giáº£m tá»«ng 5 giÃ¢y
+	stageClearTime = hud->GetRemainingTime();
+	stageClearDisplayTime = 100;
 
-	// Stop current BGM (including warning BGM if playing)
 	SoundManager::GetInstance()->StopBGM();
 
-	// Play stage clear BGM
 	SoundManager::GetInstance()->PlayBGM(BGM::STAGE_CLEAR_THEME, false);
 
-	// Disable warning BGM logic during stage clear
 	if (hud != nullptr)
 		hud->SetStageClearActive(true);
 
@@ -886,10 +829,8 @@ void PlayScene::OnMarioDeath()
 {
 	PlayerData& pd = PlayerData::Get();
 	pd.lives--;
-	pd.returnScene = id;   // level to resume if lives remain
+	pd.returnScene = id;
 
-	// Lives remaining -> death screen (Enter resumes this level).
-	// Out of lives    -> game-over screen (Enter replays from the start).
 	if (pd.lives > 0)
 		GameManager::GetInstance()->InitiateSwitchScene(SCENE::DEATH);
 	else
@@ -910,5 +851,5 @@ void PlayScene::Unload()
 	}
 	objects.clear();
 	player = NULL;
-	menuOptions = NULL;   // was owned by `objects`, already deleted above
+	menuOptions = NULL;
 }

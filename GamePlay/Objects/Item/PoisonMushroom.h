@@ -6,7 +6,8 @@ constexpr float POISON_MUSHROOM_BBOX_HEIGHT = 16.0f;
 constexpr float POISON_MUSHROOM_GRAVITY     = 0.002f;
 constexpr float POISON_MUSHROOM_SPEED       = 0.05f;
 
-class PoisonMushroom : public Item {
+class PoisonMushroom : public Item
+{
 public:
 	PoisonMushroom(float x, float y, float z) : Item(x, y, z) {
 		vx = POISON_MUSHROOM_SPEED;

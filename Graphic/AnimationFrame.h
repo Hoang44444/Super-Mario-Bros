@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include "Sprite.h"
+
 class AnimationFrame
 {
     LPSPRITE sprite;
-    DWORD time; // thời gian hiển thị frame (ms)
+    DWORD time;
 
 public:
     AnimationFrame(LPSPRITE sprite, DWORD time)

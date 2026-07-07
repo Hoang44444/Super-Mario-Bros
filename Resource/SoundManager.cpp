@@ -23,8 +23,6 @@
 		volume = ClampVolume(volume);
 		if (volume == 0) return DSBVOLUME_MIN;
 
-		// Keep the UI's 0-100 values usable: the old linear -10000..0 mapping
-		// made mid-range values like 49 effectively silent.
 		return -3000 + (volume * 30);
 	}
 
@@ -72,7 +70,6 @@
 		}
 		DebugOut(L"[INFO] SetCooperativeLevel succeeded\n");
 
-		// Create primary buffer
 		DSBUFFERDESC bufferDesc;
 		ZeroMemory(&bufferDesc, sizeof(DSBUFFERDESC));
 		bufferDesc.dwSize = sizeof(DSBUFFERDESC);
@@ -103,7 +100,6 @@
 		}
 		DebugOut(L"[INFO] File opened successfully\n");
 
-		// Read WAV header
 		char riff[4];
 		file.read(riff, 4);
 		if (strncmp(riff, "RIFF", 4) != 0)
@@ -126,7 +122,6 @@
 		}
 		DebugOut(L"[INFO] WAV header validated\n");
 
-		// Find fmt chunk
 		char chunkId[4];
 		DWORD chunkSize;
 		WAVEFORMATEX wf;
@@ -154,7 +149,6 @@
 				if (chunkSize > bytesToRead)
 					file.seekg(chunkSize - bytesToRead, std::ios::cur);
 
-				// Pad to word boundary
 				if (chunkSize % 2 != 0)
 					file.seekg(1, std::ios::cur);
 
@@ -169,17 +163,13 @@
 			}
 			else if (strncmp(chunkId, "LIST", 4) == 0)
 			{
-				// Skip LIST chunks (metadata)
 				file.seekg(chunkSize, std::ios::cur);
-				// Pad to word boundary
 				if (chunkSize % 2 != 0)
 					file.seekg(1, std::ios::cur);
 			}
 			else
 			{
-				// Skip unknown chunks
 				file.seekg(chunkSize, std::ios::cur);
-				// Pad to word boundary
 				if (chunkSize % 2 != 0)
 					file.seekg(1, std::ios::cur);
 			}
@@ -192,7 +182,6 @@
 			return false;
 		}
 
-		// Check if format is PCM (DirectSound requires PCM)
 		if (wf.wFormatTag != WAVE_FORMAT_PCM)
 		{
 			DebugOut(L"[ERROR] WAV file is not PCM format (tag: %d). DirectSound only supports PCM.\n", wf.wFormatTag);
@@ -201,7 +190,6 @@
 		}
 		DebugOut(L"[INFO] WAV format is PCM (supported)\n");
 
-		// Create secondary buffer
 		if (!CreateBuffer(buffer, wf, dataSize, isMusic))
 		{
 			file.close();
@@ -209,7 +197,6 @@
 		}
 		DebugOut(L"[INFO] Secondary buffer created\n");
 
-		// Lock buffer and write data
 		LPVOID audioPtr1 = nullptr;
 		LPVOID audioPtr2 = nullptr;
 		DWORD audioBytes1 = 0;
@@ -353,7 +340,7 @@
 			DebugOut(L"[WARNING] BGM %d not found in bgmBuffers\n", id);
 		}
 
-		
+
 	}
 
 	void SoundManager::StopBGM()
@@ -479,7 +466,6 @@
 
 	void SoundManager::Update()
 	{
-		// Check if BGM has stopped
 		if (currentBGM != -1 && isBGMPlaying)
 		{
 			auto it = bgmBuffers.find(currentBGM);

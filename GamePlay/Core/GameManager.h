@@ -9,12 +9,12 @@
 class GameManager
 {
 	static GameManager* __instance;
-	HWND hWnd;									// Window handle
+	HWND hWnd;
 
 	std::unordered_map<int, LPSCENE> scenes;
 	int current_scene;
 	int next_scene;
-	int game_state;     // one of GAME_STATE::{MENU, PLAY, PAUSE, GAME_OVER}
+	int game_state;
 
 	LPKEYEVENTHANDLER key_handler;
 
@@ -27,14 +27,19 @@ class GameManager
 
 public:
 	GameManager();
+
 	void Init(HWND hWnd, HINSTANCE hInstance);
 
 	void SetKeyHandler(LPKEYEVENTHANDLER handler) { this->key_handler = handler; }
+
 	void ProcessKeyboard();
+
 	void OnKeyDown(int KeyCode);
+
 	void OnKeyUp(int KeyCode);
 
 	void LoadSettings(LPCWSTR gameFile);
+
 	void Load(LPCWSTR gameFile);
 
 	int GetScreenWidth() { return screenWidth; }
@@ -44,12 +49,14 @@ public:
 	int GetCurrentSceneID() { return current_scene; }
 
 	void SwitchScene();
+
 	void InitiateSwitchScene(int scene_id) { next_scene = scene_id; }
 
 	int  GetGameState() { return game_state; }
 	void SetGameState(int s) { game_state = s; }
 
 	void Update(DWORD dt);
+
 	void Render();
 
 	static GameManager* GetInstance();

@@ -48,12 +48,11 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath)
 	ID3D10Resource* pD3D10Resource = NULL;
 	ID3D10Texture2D* tex = NULL;
 
-	// Retrieve image information first 
 	D3DX10_IMAGE_INFO imageInfo;
 	HRESULT hr = D3DX10GetImageInfoFromFile(texturePath, NULL, &imageInfo, NULL);
 	if (FAILED(hr))
 	{
-		DebugOut((wchar_t*)L"[ERROR] D3DX10GetImageInfoFromFile failed for  file: %s with error: %d\n", texturePath, hr);
+		DebugOut(L"[ERROR] D3DX10GetImageInfoFromFile failed for  file: %s with error: %d\n", texturePath, hr);
 		return NULL;
 	}
 
@@ -73,7 +72,6 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath)
 	info.MipFilter = D3DX10_FILTER_NONE;
 	info.pSrcInfo = &imageInfo;
 
-	// Loads the texture into a temporary ID3D10Resource object
 	ID3D10Device* device = Renderer::GetInstance()->GetDevice();
 	hr = D3DX10CreateTextureFromFile(device,
 		texturePath,
@@ -82,23 +80,20 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath)
 		&pD3D10Resource,
 		NULL);
 
-	// Make sure the texture was loaded successfully
 	if (FAILED(hr))
 	{
-		DebugOut((wchar_t*)L"[ERROR] Failed to load texture file: %s with error: %d\n", texturePath, hr);
+		DebugOut(L"[ERROR] Failed to load texture file: %s with error: %d\n", texturePath, hr);
 		return NULL;
 	}
 
-	// Translates the ID3D10Resource object into a ID3D10Texture2D object
 	pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID*)&tex);
 	pD3D10Resource->Release();
 
 	if (!tex) {
-		DebugOut((wchar_t*)L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
+		DebugOut(L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
 		return NULL;
 	}
 
-	// Create a shader resource view of the texture
 	D3D10_TEXTURE2D_DESC desc;
 	tex->GetDesc(&desc);
 
@@ -110,8 +105,6 @@ LPTEXTURE TextureManager::LoadTexture(LPCWSTR texturePath)
 
 	ID3D10ShaderResourceView* gSpriteTextureRV = NULL;
 	device->CreateShaderResourceView(tex, &SRVDesc, &gSpriteTextureRV);
-
-	DebugOut(L"[INFO] Texture loaded Ok from file: %s (w=%d, h=%d)\n", texturePath, desc.Width, desc.Height);
 
 	return new Texture(tex, gSpriteTextureRV);
 }

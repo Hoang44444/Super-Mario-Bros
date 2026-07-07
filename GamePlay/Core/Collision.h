@@ -14,12 +14,12 @@ typedef CollisionEvent* LPCOLLISIONEVENT;
 
 struct CollisionEvent
 {
-	LPGAMEOBJECT src_obj;		// source object : the object from which to calculate collision
-	LPGAMEOBJECT obj;			// the target object
+	LPGAMEOBJECT src_obj;
+	LPGAMEOBJECT obj;
 
 	float t, nx, ny;
 
-	float dx, dy;				// *RELATIVE* movement distance between this object and obj
+	float dx, dy;
 	bool isDeleted;
 
 	CollisionEvent(float t, float nx, float ny, float dx = 0, float dy = 0,
@@ -48,13 +48,13 @@ class Collision
 	static Collision* __instance;
 public:
 	static void SweptAABB(
-		float ml,			// move left 
-		float mt,			// move top
-		float mr,			// move right 
-		float mb,			// move bottom
-		float dx,			// 
-		float dy,			// 
-		float sl,			// static left
+		float ml,
+		float mt,
+		float mr,
+		float mb,
+		float dx,
+		float dy,
+		float sl,
 		float st,
 		float sr,
 		float sb,
@@ -66,6 +66,7 @@ public:
 		LPGAMEOBJECT objSrc,
 		DWORD dt,
 		LPGAMEOBJECT objDest);
+
 	void Scan(
 		LPGAMEOBJECT objSrc,
 		DWORD dt,
@@ -80,6 +81,9 @@ public:
 		int filterBlock,
 		int filterX,
 		int filterY);
+
+	void UpdatePositionFromCollisions(LPGAMEOBJECT objSrc, LPCOLLISIONEVENT colX, LPCOLLISIONEVENT colY, float min_tx, float min_ty, float nx, float ny);
+	void HandleNonBlockingCollisions(LPGAMEOBJECT objSrc, vector<LPCOLLISIONEVENT>& coEvents, LPCOLLISIONEVENT colX, LPCOLLISIONEVENT colY);
 
 	void Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 

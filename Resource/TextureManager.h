@@ -14,9 +14,14 @@ class TextureManager
 
 public:
 	TextureManager();
+
 	void Add(int id, LPCWSTR filePath);
+
 	LPTEXTURE Get(unsigned int i);
+
 	void Clear();
+
 	LPTEXTURE LoadTexture(LPCWSTR texturePath);
+
 	static TextureManager* GetInstance();
 };

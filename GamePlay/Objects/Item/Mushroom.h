@@ -8,7 +8,8 @@ constexpr float MUSHROOM_BBOX_HEIGHT = 16.0f;
 constexpr float MUSHROOM_GRAVITY     = 0.002f;
 constexpr float MUSHROOM_SPEED       = 0.05f;
 
-class Mushroom : public Item {
+class Mushroom : public Item
+{
 public:
 	Mushroom(float x, float y, float z) : Item(x, y, z) {
 		vx = MUSHROOM_SPEED;

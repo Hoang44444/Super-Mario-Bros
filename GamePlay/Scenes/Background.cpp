@@ -12,9 +12,6 @@ void Background::Render()
 
     int currentScene = GameManager::GetInstance()->GetCurrentSceneID();
 
-    // Menu / control / end are single static full-screen images authored at a higher
-    // resolution than the game's logical screen (~440x240). Stretch them to fill the
-    // screen instead of drawing at native pixel size (which would show only a corner).
     if (currentScene == SCENE::MENU ||
         currentScene == SCENE::CONTROL ||
         currentScene == SCENE::END ||
@@ -27,7 +24,6 @@ void Background::Render()
         float logicalW = r->GetBackBufferWidth() / scale;
         float logicalH = r->GetBackBufferHeight() / scale;
 
-        // Anchor to the camera so the image always covers the visible area.
         float camX = Camera::GetInstance()->GetX();
         float camY = Camera::GetInstance()->GetY();
         ani->RenderScaled(camX, camY, z, logicalW, logicalH);

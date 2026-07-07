@@ -13,8 +13,6 @@ void SpriteManager::Add(int id, int left, int top, int right, int bottom, LPTEXT
 {
 	LPSPRITE s = new Sprite(id, left, top, right, bottom, tex);
 	sprites[id] = s;
-
-	DebugOut(L"[INFO] sprite added: %d, %d, %d, %d, %d \n", id, left, top, right, bottom);
 }
 
 LPSPRITE SpriteManager::Get(int id)

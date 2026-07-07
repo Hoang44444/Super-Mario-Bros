@@ -1,7 +1,8 @@
 #pragma once
 #include "InvisibleObject.h"
 #include "Scene.h"
-class SwitchScenePoint : public InvisibleObject {
+class SwitchScenePoint : public InvisibleObject
+{
 private:
 	Scene* targetScene;
 public:

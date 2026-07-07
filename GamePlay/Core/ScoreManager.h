@@ -14,7 +14,7 @@ namespace SCORE_VALUES
 	constexpr int FIREBALL_KILL = 100;
 	constexpr int STAR_KILL = 100;
 	constexpr int QUESTION_BLOCK_COIN = 200;
-	constexpr int LEVEL_COMPLETION = 0; // To be implemented if needed
+	constexpr int LEVEL_COMPLETION = 0;
 }
 
 namespace COMBO_SCORES
@@ -46,36 +46,36 @@ public:
 		return instance;
 	}
 
-	// Prevent copying
 	ScoreManager(const ScoreManager&) = delete;
 	ScoreManager& operator=(const ScoreManager&) = delete;
 
-	// Core API
 	void AddScore(int value);
+
 	int GetScore();
+
 	void ResetScore();
 
-	// Combo system
 	void IncrementCombo();
+
 	void ResetCombo();
+
 	int GetComboScore();
+
 	bool IsMaxCombo();
 
-	// Ground state for combo reset
 	void SetOnGround(bool onGround);
+
 	bool IsOnGround() const;
 
-	// Coin system
 	void AddCoin(int amount = 1);
+
 	int GetCoins();
 
-	// Life system
 	void AddLife(int amount = 1);
+
 	int GetLives();
 
-	// Reset all scoring state (for new game)
 	void ResetAll();
 
-	// Get current combo count (for debugging/display)
 	int GetComboCount() const { return comboCount; }
 };

@@ -8,6 +8,7 @@
 #include <time.h>
 #include <stdlib.h>
 
+
 #define _W(x)  __W(x)
 #define __W(x)  L##x
 
@@ -19,5 +20,7 @@
 }
 
 void DebugOut(const wchar_t* fmt, ...);
+
 void DebugOutTitle(const wchar_t* fmt, ...);
+
 void SetDebugWindow(HWND hwnd);

@@ -13,105 +13,103 @@ WinApp::~WinApp() {
 }
 
 bool WinApp::Initialize(HINSTANCE hInstance, int width, int height) {
-    m_hInstance = hInstance;
+	m_hInstance = hInstance;
 
-    GameManager::GetInstance()->LoadSettings(L"super-mario-bros.txt");
-    int screenWidth = GameManager::GetInstance()->GetScreenWidth();
-    int screenHeight = GameManager::GetInstance()->GetScreenHeight();
+	GameManager::GetInstance()->LoadSettings(L"super-mario-bros.txt");
+	int screenWidth = GameManager::GetInstance()->GetScreenWidth();
+	int screenHeight = GameManager::GetInstance()->GetScreenHeight();
 
-    if (screenWidth == 0) screenWidth = width;
-    if (screenHeight == 0) screenHeight = height;
+	if (screenWidth == 0) screenWidth = width;
+	if (screenHeight == 0) screenHeight = height;
 
-    // 1. Đăng ký lớp cửa sổ
-    WNDCLASSEX wc = { 0 };
-    wc.cbSize = sizeof(WNDCLASSEX);
-    wc.style = CS_HREDRAW | CS_VREDRAW;
-    wc.lpfnWndProc = WindowProc;
-    wc.hInstance = m_hInstance;
-    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.lpszClassName = L"WindowClass";
-    RegisterClassEx(&wc);
+	WNDCLASSEX wc = { 0 };
+	wc.cbSize = sizeof(WNDCLASSEX);
+	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc = WindowProc;
+	wc.hInstance = m_hInstance;
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.lpszClassName = L"WindowClass";
+	RegisterClassEx(&wc);
 
-    RECT rect = { 0, 0, screenWidth, screenHeight };
-    AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
-    int windowWidth = rect.right - rect.left;
-    int windowHeight = rect.bottom - rect.top;
+	RECT rect = { 0, 0, screenWidth, screenHeight };
+	AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
+	int windowWidth = rect.right - rect.left;
+	int windowHeight = rect.bottom - rect.top;
 
-    // 2. Tạo cửa sổ
-    m_hwnd = CreateWindowEx(0, L"WindowClass", L"C++ DirectX Game Engine",
-        WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-        windowWidth, windowHeight, NULL, NULL, m_hInstance, this);
+	m_hwnd = CreateWindowEx(0, L"WindowClass", L"C++ DirectX Game Engine",
+		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+		windowWidth, windowHeight, NULL, NULL, m_hInstance, this);
 
-    if (!m_hwnd) return false;
+	if (!m_hwnd) return false;
 
-    ShowWindow(m_hwnd, SW_SHOW);                  
-    UpdateWindow(m_hwnd);
+	ShowWindow(m_hwnd, SW_SHOW);
+	UpdateWindow(m_hwnd);
 
-    GameManager::GetInstance()->Init(m_hwnd, hInstance);
+	GameManager::GetInstance()->Init(m_hwnd, hInstance);
+	Camera::GetInstance()->SetSize(Renderer::INTERNAL_SCREEN_WIDTH, Renderer::INTERNAL_SCREEN_HEIGHT);
 
-    Camera::GetInstance()->SetSize(Renderer::INTERNAL_SCREEN_WIDTH, Renderer::INTERNAL_SCREEN_HEIGHT);
+	GameManager::GetInstance()->Load(L"super-mario-bros.txt");
 
-
-    GameManager::GetInstance()->Load(L"super-mario-bros.txt");
-
-    m_isRunning = true;
-    return true;
+	m_isRunning = true;
+	return true;
 }
 
 int WinApp::Run() {
-    MSG msg = { 0 };
-    ULONGLONG frameStart = GetTickCount64();
-    ULONGLONG tickPerFrame = 1000 / MAX_FRAME_RATE;
-    
-    while (m_isRunning) {
-        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+	MSG msg = { 0 };
+	ULONGLONG frameStart = GetTickCount64();
+	ULONGLONG tickPerFrame = 1000 / MAX_FRAME_RATE;
 
-            if (msg.message == WM_QUIT)
-                m_isRunning = false;
-        }
-        ULONGLONG now = GetTickCount64();
-        ULONGLONG dt = now - frameStart;
+	while (m_isRunning) {
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
 
-        if (dt >= tickPerFrame)
-        {
-            frameStart = now;
-            // Clamp dt: loading a new scene makes one frame very long; without this the
-            // huge dt is fed into the physics and launches Mario ("JUMP_SPEED tăng").
-            if (dt > tickPerFrame) dt = tickPerFrame;
-            GameManager::GetInstance()->ProcessKeyboard();
-            Update((float)dt);
-            Render();
-        }
-        else
-            Sleep((DWORD)(tickPerFrame - dt));
-    }
-    return (int)msg.wParam;
+			if (msg.message == WM_QUIT)
+				m_isRunning = false;
+		}
+
+		ULONGLONG now = GetTickCount64();
+		ULONGLONG dt = now - frameStart;
+
+		if (dt >= tickPerFrame)
+		{
+			frameStart = now;
+
+			if (dt > tickPerFrame) dt = tickPerFrame;
+
+			GameManager::GetInstance()->ProcessKeyboard();
+			Update((float)dt);
+			Render();
+		}
+		else
+			Sleep((DWORD)(tickPerFrame - dt));
+	}
+	return (int)msg.wParam;
 }
 
 void WinApp::Update(float deltaTime) {
-    GameManager::GetInstance()->Update((DWORD)deltaTime);
+	GameManager::GetInstance()->Update((DWORD)deltaTime);
 }
 
 void WinApp::Render() {
-    Renderer::GetInstance()->BeginRender();
-    GameManager::GetInstance()->Render();
-    Renderer::GetInstance()->EndRender();
+	Renderer::GetInstance()->BeginRender();
+
+	GameManager::GetInstance()->Render();
+
+	Renderer::GetInstance()->EndRender();
 }
 
-// Xử lý sự kiện cửa sổ
 LRESULT CALLBACK WinApp::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
-    switch (message) {
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        return 0;
-    case WM_KEYDOWN:
-        GameManager::GetInstance()->OnKeyDown((int)wParam);
-        break;
-    case WM_KEYUP:
-        GameManager::GetInstance()->OnKeyUp((int)wParam);
-        break;
-    }
-    return DefWindowProc(hWnd, message, wParam, lParam);
+	switch (message) {
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+	case WM_KEYDOWN:
+		GameManager::GetInstance()->OnKeyDown((int)wParam);
+		break;
+	case WM_KEYUP:
+		GameManager::GetInstance()->OnKeyUp((int)wParam);
+		break;
+	}
+	return DefWindowProc(hWnd, message, wParam, lParam);
 }

@@ -12,7 +12,9 @@ class AnimationManager
 
 public:
 	void Add(int id, LPANIMATION ani);
+
 	LPANIMATION Get(int id);
+
 	void Clear();
 
 	static AnimationManager* GetInstance();
