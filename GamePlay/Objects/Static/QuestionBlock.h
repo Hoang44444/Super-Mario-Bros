@@ -12,7 +12,7 @@ namespace QUESTION_BLOCK_STATE
 
 class QuestionBlock : public StaticObject {
 private:
-	int itemType;        // OBJECT type id of the item released when hit
+	int itemType;
 	void Break();
 	void SpawnItem(Mario* mario);
 public:

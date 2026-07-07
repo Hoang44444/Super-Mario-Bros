@@ -1,4 +1,4 @@
-#include "Mario.h"
+﻿#include "Mario.h"
 #include "AnimationManager.h"
 #include "../Resource/AssetID.h"
 #include "debug.h"
@@ -9,7 +9,7 @@
 #include "InvisibleObject.h"
 #include "DynamicPlatform.h"
 #include "../../../Resource/SoundManager.h"
-#include "../../WindCycle.h"
+#include "WindCycle.h"
 #include "../../Core/ScoreManager.h"
 #include "../../Core/MarioPhysics.h"
 #include "../../Core/GameManager.h"
@@ -31,8 +31,6 @@ static const wchar_t* MarioAnimStateName(MarioAnimState state)
 }
 
 void Mario::MovementUpdate(DWORD dt) {
-	// Position only. Velocity (gravity) is integrated once per frame in Update(),
-	// so it still accelerates on frames where a collision skips this path.
 	this->x += this->vx * dt;
 	this->y += this->vy * dt;
 }
@@ -61,7 +59,6 @@ void Mario::UpdateAnimationState(DWORD dt)
 	if (lastAnimMoveDir != 0 && physicsInput.moveDirection == 0
 		&& (animState == MarioAnimState::RUNNING || animState == MarioAnimState::WALKING))
 	{
-		// Debug: trace after releasing movement to verify WALK/RUN -> IDLE stability.
 		animReleaseLogTimer = 2000;
 	}
 
@@ -72,7 +69,6 @@ void Mario::UpdateAnimationState(DWORD dt)
 		animStopLogCaptured = true;
 	}
 
-	// 1. Determine next state based on physics but with HYSTERESIS
 	if (!isOnGround)
 	{
 		nextState = MarioAnimState::JUMPING;
@@ -83,7 +79,6 @@ void Mario::UpdateAnimationState(DWORD dt)
 	}
 	else
 	{
-		// Idle / Walk / Run — B1: RUN cần cả isRunning, không chỉ absVx
 		if (animState == MarioAnimState::IDLE || animState == MarioAnimState::SITTING || animState == MarioAnimState::JUMPING)
 		{
 			if (physState.isRunning && absVx > MARIO_PARAMS::RUN_START_THRESHOLD)
@@ -107,20 +102,17 @@ void Mario::UpdateAnimationState(DWORD dt)
 			else if (!physState.isRunning || absVx < MARIO_PARAMS::WALK_BACK_THRESHOLD)
 				nextState = MarioAnimState::WALKING;
 		}
-		
-		// 2. Special case: SKIDDING (Sửa LỖI 2: dùng nguồn chân lý từ MarioPhysics)
+
 		if (physState.isSkidding && isOnGround)
 		{
 			nextState = MarioAnimState::SKIDDING;
 		}
 		else if (animState == MarioAnimState::SKIDDING)
 		{
-			// Thoát skid khi physics báo không còn skid
 			nextState = (absVx > MARIO_PARAMS::WALK_START_THRESHOLD) ? MarioAnimState::WALKING : MarioAnimState::IDLE;
 		}
 	}
 
-	// Log only when animState changes
 	static MarioAnimState lastLoggedState = MarioAnimState::IDLE;
 	if (animState != lastLoggedState)
 	{
@@ -128,7 +120,6 @@ void Mario::UpdateAnimationState(DWORD dt)
 		lastLoggedState = animState;
 	}
 
-	// 3. Apply DEBOUNCE — B2: SKIDDING ưu tiên để không bị walk/idle đè khi trượt
 	bool isPriorityTransition = (nextState == MarioAnimState::IDLE || nextState == MarioAnimState::JUMPING || nextState == MarioAnimState::DYING
 		|| nextState == MarioAnimState::SITTING || nextState == MarioAnimState::SKIDDING);
 	if (nextState != animState)
@@ -141,7 +132,6 @@ void Mario::UpdateAnimationState(DWORD dt)
 		}
 	}
 
-	// 4. Update FACING (Sửa YÊU CẦU CHUNG: lấy trực tiếp từ physics)
 	animFacing = physState.facing;
 
 	if (animReleaseLogTimer > 0 || animStopLogTimer > 0)
@@ -163,8 +153,6 @@ void Mario::UpdateAnimationState(DWORD dt)
 
 void Mario::SetStarPower(DWORD duration)
 {
-	// Save current BGM to restore later when star power ends
-	// Note: SoundManager doesn't expose GetCurrentBGM(), so we need to infer from scene
 	int sceneId = GameManager::GetInstance()->GetCurrentSceneID();
 	if (sceneId == SCENE::WORLD_1_2)
 		previousBGM = BGM::UNDERWORLD_THEME;
@@ -175,14 +163,12 @@ void Mario::SetStarPower(DWORD duration)
 
 	DebugOut(L"[STAR_BGM_DEBUG] Star power activated, saved previous BGM=%d, playing STAR_THEME\n", previousBGM);
 
-	// Play star theme BGM
 	SoundManager::GetInstance()->PlayBGM(BGM::STAR_THEME, true);
 
-	// Increase running speed when star power is active
 	MarioPhysicsState ps = physics.GetState();
 	MarioPhysicsConfig config = physics.GetConfig();
 	originalMaxRunSpeed = config.maxRunSpeed;
-	config.maxRunSpeed = 0.30f;  // Increase from 0.20f to 0.30f (50% faster)
+	config.maxRunSpeed = 0.30f;
 	physics.SetConfig(config);
 
 	isStarPower = true;
@@ -191,10 +177,6 @@ void Mario::SetStarPower(DWORD duration)
 
 void Mario::SetLevel(int level)
 {
-	// (x,y) là góc trên-trái, bbox nở xuống dưới. Khi đổi level mà giữ nguyên y thì
-	// phần cao thêm sẽ lòi xuống lòng platform -> Mario lọt/đứng lệch.
-	// Giữ nguyên ĐÁY (chân) bằng cách dời y theo chênh lệch chiều cao bbox.
-	// Chiều cao phải khớp với GetBoundingBox (giữ nguyên chân khi đổi cấp).
 	auto bboxHeight = [](int lv) -> float {
 		return lv == MARIO_LEVEL::SMALL ? MARIO_PARAMS::SMALL_BBOX_HEIGHT : MARIO_PARAMS::BIG_BBOX_HEIGHT;
 	};
@@ -203,25 +185,23 @@ void Mario::SetLevel(int level)
 	this->level = level;
 	this->canShoot = (level == MARIO_LEVEL::FIRE);
 
-	PlayerData::Get().level = level;   // lưu lại để giữ qua các màn
+	PlayerData::Get().level = level;
 
-	// Đổi cấp (ăn item lên cấp / trúng đòn tụt xuống small) -> bất tử ngắn + nhấp nháy.
 	SetInvincible(MARIO_PARAMS::HIT_GRACE_TIME);
 }
 
 void Mario::TakeDamage()
 {
-	// Ignore hits while invincible (star power / post-hit grace) or already dying.
 	if (isInvincible || state == MARIO_STATE::DIE) return;
 
 	if (level != MARIO_LEVEL::SMALL)
 	{
-		SetLevel(MARIO_LEVEL::SMALL);              // shrink one tier instead of dying
-		SetInvincible(MARIO_PARAMS::HIT_GRACE_TIME); // short grace so the same enemy can't re-hit
+		SetLevel(MARIO_LEVEL::SMALL);
+		SetInvincible(MARIO_PARAMS::HIT_GRACE_TIME);
 	}
 	else
 	{
-		SetState(MARIO_STATE::DIE);                // already small -> lose a life
+		SetState(MARIO_STATE::DIE);
 	}
 }
 
@@ -265,36 +245,31 @@ bool Mario::CheckGroundProbe(vector<LPGAMEOBJECT>* coObjects)
 {
 	if (coObjects == nullptr) return false;
 
-	// Tạo probe AABB ngay dưới chân Mario
 	float ml, mt, mr, mb;
 	GetBoundingBox(ml, mt, mr, mb);
 
-	// Probe: từ đáy Mario (mb) mở rộng xuống dưới epsilon
 	float probeTop = mb;
 	float probeBottom = mb + MARIO_PARAMS::GROUND_PROBE_EPSILON;
-	float probeLeft = ml + 1.0f;  // thu hẹp nhẹ để tránh cạnh
+	float probeLeft = ml + 1.0f;
 	float probeRight = mr - 1.0f;
 
-	// Check overlap với tất cả blocking objects (platforms, tiles)
 	for (auto obj : *coObjects) {
 		if (obj == nullptr || obj->IsDeleted()) continue;
-		if (!obj->IsBlocking()) continue;  // chỉ check blocking objects
+		if (!obj->IsBlocking()) continue;
 
 		float ol, ot, or_, ob;
 		obj->GetBoundingBox(ol, ot, or_, ob);
 
-		// AABB overlap test
 		if (probeRight > ol && probeLeft < or_ && probeBottom > ot && probeTop < ob) {
-			return true;  // phát hiện đất dưới chân
+			return true;
 		}
 	}
 
-	return false;  // không có đất dưới chân
+	return false;
 }
 
 void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	// Death animation: pop up once, then fall straight down ignoring all collisions.
 	if (state == MARIO_STATE::DIE)
 	{
 		vy += gravity * dt;
@@ -302,14 +277,13 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
-	// Debug: Fly mode - fix y=150, vô hiệu hóa trọng lực, cho phép di chuyển ngang
 	if (flyMode)
 	{
-		physics.Update(dt, physicsInput);  // Cập nhật vx từ input
-		y = 150.0f;  // Fix vị trí Y
-		vy = 0.0f;   // Vô hiệu hóa trọng lực
-		MovementUpdate(dt);  // Update di chuyển ngang
-		return;  // Bỏ qua collision và physics khác
+		physics.Update(dt, physicsInput);
+		y = 150.0f;
+		vy = 0.0f;
+		MovementUpdate(dt);
+		return;
 	}
 
 	if (isInvincible)
@@ -317,7 +291,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (invincibleTime > dt) invincibleTime -= dt;
 		else
 		{
-			// Star power ending: restore previous BGM and run speed
 			if (isStarPower)
 			{
 				DebugOut(L"[STAR_BGM_DEBUG] Star power ending, restoring BGM=%d\n", previousBGM);
@@ -328,7 +301,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 				previousBGM = -1;
 
-				// Restore original run speed
 				MarioPhysicsConfig config = physics.GetConfig();
 				config.maxRunSpeed = originalMaxRunSpeed;
 				physics.SetConfig(config);
@@ -339,34 +311,25 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	// DON'T reset currentPlatform at start of frame
-	// It persists across frames to allow gravity to be disabled when on platform
-	// It will be reset when Mario actually leaves the platform (logic at line 440-442)
 
-	// A5: đẩy vx/vy Mario -> physics trước khi tích phân (collision frame trước có thể đã sửa trực tiếp)
 	MarioPhysicsState ps = physics.GetState();
 	ps.vx = vx;
 	ps.vy = vy;
 	physics.SetState(ps);
 	physics.SetOnGround(isOnGround);
-	// physics.SetFacing(direction);  // Đã xóa: để physics tự quản lý facing theo logic skid
 
 	bool jumpRequested = physicsInput.jumpJustPressed;
 	const bool groundedBeforePhysics = isOnGround;
 	bool jumpedThisFrame = false;
 
-	// Di chuyển ngang + trọng lực ( chưa nhảy)
 	physics.Update(dt, physicsInput);
 
-	// Disable gravity when standing on dynamic platform
-	// This prevents Mario from being pulled down by gravity between collision events
 	if (currentPlatform != nullptr) {
 		ps = physics.GetState();
-		ps.vy = 0;  // Override gravity
+		ps.vy = 0;
 		physics.SetState(ps);
 	}
 
-	// A2: nhảy lần 1 — đã trên đất từ frame trước
 	if (jumpRequested && groundedBeforePhysics && level != MARIO_LEVEL::FROG)
 	{
 		if (physics.TryJump(jumpRequested))
@@ -382,39 +345,31 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	direction = ps.facing;
 	isOnGround = ps.isOnGround;
 
-	// Gió kéo Mario lùi về bên trái trong suốt đợt thổi. Dùng chung trạng thái
-	// với hiệu ứng lá (WindCycle) nên lực đẩy và lá luôn đồng pha.
 	if (this->isWindyScene && WindCycle::GetInstance()->IsActive())
 	{
-		constexpr float WIND_ACCEL = 0.001f;  // Giảm từ 0.003f xuống 0.001f (~33%)
-		constexpr float WIND_MAX_FORCE = 0.08f;  // Giới hạn tốc độ tối đa gió có thể đẩy
+		constexpr float WIND_ACCEL = 0.001f;
+		constexpr float WIND_MAX_FORCE = 0.08f;
 
 		float windForce = -WIND_ACCEL * dt;
 		this->vx += windForce;
 
-		// Cap wind force để tránh cộng dồn không giới hạn
 		if (this->vx < -WIND_MAX_FORCE)
 			this->vx = -WIND_MAX_FORCE;
 	}
 
-	// Save previous ground state for jump logic (don't clear yet)
 	bool wasOnGround = isOnGround;
 
-	// Log Mario.y BEFORE Collision::Process() (for vertical flicker debugging)
 	float marioYBeforeCollision = y;
 
 	ResolveOverlapWithPlatforms(coObjects);
 	Collision::GetInstance()->Process(this, dt, coObjects);
 
-	// Log Mario.y AFTER Collision::Process() (for vertical flicker debugging)
 	float marioYAfterCollision = y;
 	DebugOut(L"[VERTICAL_FLICKER_DEBUG] marioYBeforeCollision=%.6f marioYAfterCollision=%.6f delta=%.6f\n",
 		marioYBeforeCollision, marioYAfterCollision, marioYAfterCollision - marioYBeforeCollision);
 
-	// Ground probe: xác định isOnGround độc lập từ việc có collision event hay không
 	isOnGround = CheckGroundProbe(coObjects);
 
-	// Log: Check for double parenting (Mario overlapping with multiple platforms)
 	int platformCount = 0;
 	for (auto obj : *coObjects) {
 		if (obj == nullptr || obj->IsDeleted()) continue;
@@ -425,7 +380,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			float ml, mt, mr, mb;
 			GetBoundingBox(ml, mt, mr, mb);
 
-			// Check if Mario is overlapping with this platform
 			if (mr > pl && ml < pr && mb > pt && mt < pb) {
 				platformCount++;
 			}
@@ -435,7 +389,6 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		DebugOut(L"[VERTICAL_FLICKER_DEBUG] WARNING: Double parenting detected! Mario overlapping with %d platforms\n", platformCount);
 	}
 
-	// Debug log: ground probe result
 	FILE* groundProbeLog = nullptr;
 	if (_wfopen_s(&groundProbeLog, L"mario_ground_probe.log", L"a, ccs=UTF-8") == 0 && groundProbeLog != nullptr)
 	{
@@ -443,130 +396,97 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		fclose(groundProbeLog);
 	}
 
-	// ========== DYNAMIC PLATFORM PARENTING ==========
-	// Check if Mario has left the platform
-	constexpr float EPSILON = 1.0f;  // Tolerance for floating point comparison
+	constexpr float EPSILON = 1.0f;
 	if (currentPlatform != nullptr) {
 		float pl, pt, pr, pb;
 		currentPlatform->GetBoundingBox(pl, pt, pr, pb);
 		float ml, mt, mr, mb;
 		GetBoundingBox(ml, mt, mr, mb);
 
-		// If Mario is no longer overlapping with platform
-		// Use EPSILON to avoid floating point precision issues
-		// NOTE: Don't check isOnGround here - Mario can be on platform even if ground probe fails momentarily
 		if (mr < pl - EPSILON || ml > pr + EPSILON || mb < pt - EPSILON || mt > pb + EPSILON) {
-			currentPlatform = nullptr;  // Reset immediately
+			currentPlatform = nullptr;
 		}
 	}
 
-	// Parent Mario to platform using delta (actual movement, not velocity)
-	// Apply parenting EVERY frame when currentPlatform is set, not just when isOnGround is true
-	// This prevents gravity from pulling Mario down between collision events
 	if (currentPlatform != nullptr) {
 		float platformX, platformY, platformZ;
 		currentPlatform->GetPosition(platformX, platformY, platformZ);
 		int platformType = currentPlatform->GetType();
 
 		if (platformType == DYNAMIC_PLATFORM_TYPE::VERTICAL) {
-			// Vertical platform: apply deltaY
 			float deltaY = platformY - currentPlatform->GetPrevY();
 
-			// Log: Check if parenting is being called
 			DebugOut(L"[VERTICAL_FLICKER_DEBUG] Parenting called: deltaY=%.6f\n", deltaY);
 
-			// Check ceiling collision when platform moves up (deltaY < 0)
-			// This prevents Mario from being pushed through ceiling blocks
-			// Added for future-proofing in case levels have platforms moving up near obstacles
 			if (deltaY < 0) {
 				float ml, mt, mr, mb;
 				GetBoundingBox(ml, mt, mr, mb);
-				float probeTop = mt - 2.0f;  // 2 pixels above Mario
+				float probeTop = mt - 2.0f;
 				float probeBottom = mt;
 
-				// Check collision with blocking objects above
 				for (auto obj : *coObjects) {
 					if (obj == nullptr || obj->IsDeleted() || !obj->IsBlocking()) continue;
-					if (obj == currentPlatform) continue;  // Skip current platform
+					if (obj == currentPlatform) continue;
 
 					float ol, ot, or_, ob;
 					obj->GetBoundingBox(ol, ot, or_, ob);
 
-					// If there's an obstacle above, limit deltaY
 					if (mr > ol && ml < or_ && probeBottom > ot && probeTop < ob) {
-						deltaY = 0;  // Don't move up
+						deltaY = 0;
 						break;
 					}
 				}
 			}
 
-			// Apply deltaY to Mario's position (only once, at the end of the frame)
 			float marioYBefore = y;
 			y += deltaY;
 
-			// Log: Check Mario.y after parenting
 			DebugOut(L"[VERTICAL_FLICKER_DEBUG] After parenting: marioYBefore=%.6f marioYAfter=%.6f delta=%.6f\n",
 				marioYBefore, y, y - marioYBefore);
 
-			// Debug log to verify gap stability
 			DebugOut(L"[VERTICAL_PLATFORM] marioYBefore=%.6f deltaY=%.6f marioYAfter=%.6f platformTop=%.6f gap=%.6f\n",
 				marioYBefore, deltaY, y, platformY, y - platformY);
 		}
 		else if (platformType == DYNAMIC_PLATFORM_TYPE::HORIZONTAL) {
-			// Horizontal platform: apply deltaX
 			float deltaX = platformX - currentPlatform->GetPrevX();
 
-			// Check side collision (left/right) before applying deltaX
-			// This prevents Mario from being pushed through walls
 			if (deltaX != 0) {
 				float ml, mt, mr, mb;
 				GetBoundingBox(ml, mt, mr, mb);
-				float probeLeft = ml - 2.0f;  // 2 pixels to the left of Mario
-				float probeRight = mr + 2.0f;  // 2 pixels to the right of Mario
+				float probeLeft = ml - 2.0f;
+				float probeRight = mr + 2.0f;
 
-				// Check collision with blocking objects on the side
 				for (auto obj : *coObjects) {
 					if (obj == nullptr || obj->IsDeleted() || !obj->IsBlocking()) continue;
-					if (obj == currentPlatform) continue;  // Skip current platform
+					if (obj == currentPlatform) continue;
 
 					float ol, ot, or_, ob;
 					obj->GetBoundingBox(ol, ot, or_, ob);
 
-					// If moving right (deltaX > 0), check right side
 					if (deltaX > 0 && mr > ol && ml < or_ && mb > ot && mt < ob) {
-						// Check if obstacle is to the right
 						if (or_ > mr - EPSILON && or_ < mr + 2.0f) {
-							deltaX = 0;  // Don't move right
+							deltaX = 0;
 							break;
 						}
 					}
-					// If moving left (deltaX < 0), check left side
 					else if (deltaX < 0 && mr > ol && ml < or_ && mb > ot && mt < ob) {
-						// Check if obstacle is to the left
 						if (ol < ml + EPSILON && ol > ml - 2.0f) {
-							deltaX = 0;  // Don't move left
+							deltaX = 0;
 							break;
 						}
 					}
 				}
 			}
 
-			// Apply deltaX to Mario's position (only once, at the end of the frame)
-			// Note: physics set vx at line 361-365, which runs BEFORE this parenting
-			// So parenting will override the position, not the velocity
 			float marioXBefore = x;
 			x += deltaX;
 
-			// Debug log to verify horizontal movement
 			DebugOut(L"[HORIZONTAL_PLATFORM] marioXBefore=%.6f deltaX=%.6f marioXAfter=%.6f platformLeft=%.6f gap=%.6f\n",
 				marioXBefore, deltaX, x, platformX, x - platformX);
 		}
 	}
-	// ========== END DYNAMIC PLATFORM PARENTING ==========
 
 
-	// A2: nhảy lần 2 sau collision — sửa cửa sổ chết khi vừa chạm đất cùng frame bấm nhảy.
-	// Giữ phím Space khi tiếp đất (!wasOnGround -> isOnGround) cũng kích hoạt nhảy lại.
 	bool landingIntent = jumpRequested;
 	if (!landingIntent && physicsInput.jumpPressed && !wasOnGround && isOnGround)
 		landingIntent = true;
@@ -588,14 +508,12 @@ void Mario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	// A5: đẩy vx/vy sau collision ngược vào physics (tường có thể zero vx trên Mario)
 	ps = physics.GetState();
 	ps.vx = vx;
 	ps.vy = vy;
 	physics.SetState(ps);
 	physics.SetOnGround(isOnGround);
 
-	// Notify ScoreManager of ground state changes for combo system
 	if (isOnGround != wasOnGround)
 	{
 		ScoreManager::Get().SetOnGround(isOnGround);
@@ -612,16 +530,13 @@ void Mario::SetState(int state)
 	{
 	case MARIO_STATE::WALKING_RIGHT:
 		direction = 1;
-		// Physics system handles velocity - don't override
 		break;
 	case MARIO_STATE::WALKING_LEFT:
 		direction = -1;
-		// Physics system handles velocity - don't override
 		break;
 	case MARIO_STATE::JUMP:
 		if (level == MARIO_LEVEL::FROG && isOnGround)
 		{
-			// A3: Frog nhảy riêng — đồng bộ physics state, isOnGround=false tránh vy bị zero
 			vy = -MARIO_PARAMS::FROG_JUMP_SPEED;
 			vx = MARIO_PARAMS::FROG_JUMP_SPEED_X * direction;
 			isOnGround = false;
@@ -634,10 +549,9 @@ void Mario::SetState(int state)
 		}
 		break;
 	case MARIO_STATE::IDLE:
-		// Physics system handles deceleration
 		break;
 	case MARIO_STATE::DIE:
-		vx = 0;                          // fall straight down, no horizontal drift
+		vx = 0;
 		vy = -MARIO_PARAMS::JUMP_SPEED;
 		SoundManager::GetInstance()->StopBGM();
 		SoundManager::GetInstance()->PlaySFX(SFX::DIE);
@@ -648,11 +562,9 @@ void Mario::SetState(int state)
 		break;
 	case MARIO_STATE::RUNNING_LEFT:
 		direction = -1;
-		// Physics system handles velocity via runHeld input
 		break;
 	case MARIO_STATE::RUNNING_RIGHT:
 		direction = 1;
-		// Physics system handles velocity via runHeld input
 		break;
 	}
 }
@@ -747,7 +659,6 @@ void Mario::MarioFrogRender(int& aniId)
 
 void Mario::Render()
 {
-	// Don't render if invisible (e.g., during stage clear sequence)
 	if (!isVisible)
 		return;
 
@@ -766,7 +677,6 @@ void Mario::Render()
 
 	if (aniId != -1)
 	{
-		// Log when aniId changes
 		static int lastLoggedAniId = -1;
 		if (aniId != lastLoggedAniId)
 		{
@@ -780,9 +690,6 @@ void Mario::Render()
 			lastLoggedAniId = aniId;
 		}
 
-		// Nhấp nháy khi bất tử (biến hình / ăn item / grace sau khi trúng đòn / ngôi sao):
-		// bỏ vẽ ở các khung ~60ms xen kẽ để sprite chớp tắt.
-		// Fly mode: không flicker dù isInvincible = true
 		if (isInvincible && !flyMode && (invincibleTime / 60) % 2 == 0)
 			return;
 
@@ -801,7 +708,7 @@ void Mario::GetBoundingBox(float& l, float& t, float& r, float& b)
 		r = x + MARIO_PARAMS::SMALL_BBOX_WIDTH;
 		b = y + MARIO_PARAMS::SMALL_BBOX_HEIGHT;
 	}
-	else // BIG / FIRE / FROG đều cỡ lớn
+	else
 	{
 		r = x + MARIO_PARAMS::BIG_BBOX_WIDTH;
 		b = y + MARIO_PARAMS::BIG_BBOX_HEIGHT;
@@ -818,9 +725,9 @@ void Mario::OnCollisionWithStaticObject(LPCOLLISIONEVENT e)
 		vy = 0;
 	}
 	else if (e->nx != 0) {
-		vx = 0; // A5: zero vx trên Mario; cuối Update đồng bộ ngược vào physics.state
+		vx = 0;
 	}
-		
+
 	auto staticObject = dynamic_cast<StaticObject*>(e->obj);
 	staticObject->OnMarioCollision(this, e);
 }
@@ -830,8 +737,6 @@ void Mario::OnCollisionWithEnemy(LPCOLLISIONEVENT e)
 	auto enemy = dynamic_cast<Enemy*>(e->obj);
 	if (enemy == nullptr) return;
 
-	// Star power: chạm enemy nào là giết enemy đó (dùng cơ chế chết như trúng đạn).
-	// Lúc bị hạ cấp chỉ có grace (isInvincible) chứ không có isStarPower nên enemy không chết.
 	if (isStarPower)
 	{
 		enemy->OnHitByStar(this);
@@ -841,7 +746,6 @@ void Mario::OnCollisionWithEnemy(LPCOLLISIONEVENT e)
 
 	enemy->OnMarioCollison(this, e->ny);
 
-	// Play stomp sound if Mario is falling on top of enemy
 	if (e->ny < 0)
 	{
 		SoundManager::GetInstance()->PlaySFX(SFX::STOMP);
@@ -870,12 +774,10 @@ void Mario::OnCollisionWithDynamicPlatform(LPCOLLISIONEVENT e)
 		isOnGround = true;
 		vy = platform->GetVy();
 
-		// Track the platform (both vertical and horizontal use same variable)
 		if (platform != nullptr) {
 			currentPlatform = platform;
 		}
 
-		// Debug log: Mario standing on Dynamic Platform
 		if (platform != nullptr)
 		{
 			static float lastMarioX = x;

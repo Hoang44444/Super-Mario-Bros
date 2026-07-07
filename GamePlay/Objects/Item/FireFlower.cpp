@@ -21,9 +21,8 @@ void FireFlower::OnMarioCollision(Mario* mario)
 {
 	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
 	mario->SetLevel(MARIO_LEVEL::FIRE);
-	
-	// Award score for Fire Flower
+
 	ScoreManager::Get().AddScore(SCORE_VALUES::FIRE_FLOWER);
-	
+
 	Delete();
 }

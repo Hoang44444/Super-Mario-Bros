@@ -1,8 +1,5 @@
 #pragma once
 
-// Trạng thái người chơi, giữ xuyên suốt các màn chơi (không bị xoá khi đổi scene).
-// Meyers singleton: dùng static cục bộ trong hàm -> sống suốt vòng đời game,
-// không cần .cpp và không phải thêm file vào .vcxproj.
 
 namespace MARIO_LEVEL
 {
@@ -19,7 +16,7 @@ public:
     int coins = 0;
     int lives = 3;
     int score = 0;
-    int returnScene = 1;   // level to resume after the death screen (default: world 1-1)
+    int returnScene = 1;
 
     static PlayerData& Get()
     {
@@ -27,6 +24,5 @@ public:
         return instance;
     }
 
-    // Gọi khi muốn chơi lại từ đầu (vd: hết mạng / new game)
     void Reset() { level = MARIO_LEVEL::SMALL; coins = 0; lives = 3; score = 0; }
 };

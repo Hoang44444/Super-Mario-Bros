@@ -49,9 +49,8 @@ void SuperStar::OnMarioCollision(Mario* mario)
 {
 	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
 	mario->SetStarPower(MARIO_PARAMS::STAR_POWER_TIME);
-	
-	// Award score for Starman
+
 	ScoreManager::Get().AddScore(SCORE_VALUES::STARMAN);
-	
+
 	Delete();
 }

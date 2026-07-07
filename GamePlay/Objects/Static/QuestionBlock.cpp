@@ -1,8 +1,8 @@
-#include "QuestionBlock.h"
+﻿#include "QuestionBlock.h"
 #include "AnimationManager.h"
 #include "AssetID.h"
 #include "PlayScene.h"
-#include "../../CoinPopupEffect.h"
+#include "CoinPopupEffect.h"
 #include "SoundManager.h"
 #include "../Core/ScoreManager.h"
 
@@ -46,13 +46,12 @@ void QuestionBlock::SpawnItem(Mario* mario) {
 	if (itemType != OBJECT::ITEM_COIN2)
 		SoundManager::GetInstance()->PlaySFX(SFX::POWERUP_APPEARS);
 
-	item->StartEmerge();   // rise out of the block
+	item->StartEmerge();
 
 	playScene->AddObject(item);
 }
 
 void QuestionBlock::OnMarioCollision(Mario* mario, LPCOLLISIONEVENT e) {
-	// Only react to a hit from below while the block still has its item.
 	if (e->ny > 0 && state == QUESTION_BLOCK_STATE::ACTIVE) {
 		SpawnItem(mario);
 		Break();

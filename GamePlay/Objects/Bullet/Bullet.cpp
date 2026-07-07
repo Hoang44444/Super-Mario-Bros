@@ -3,23 +3,20 @@
 #include "../Resource/AssetID.h"
 #include "debug.h"
 #include "Enemy.h"
-#include "../../Cannon.h"
+#include "Cannon.h"
 
 void Bullet::Moving(DWORD dt)
 {
-	// Move along both axes so the bullet follows a parabolic path
 	this->x += this->vx * dt;
 	this->y += this->vy * dt;
 }
 
 void Bullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	// Gravity makes the trajectory a parabola
 	vy += BULLET_GRAVITY * dt;
 
 	Collision::GetInstance()->Process(this, dt, coObjects);
 
-	// Delete once it has travelled far enough from where it was fired
 	if (abs(this->x - startX) > BULLET_MAX_DISTANCE) {
 		this->Delete();
 	}
@@ -44,44 +41,39 @@ void Bullet::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->obj == owner) return;        // Ignore collision with the owner
+	if (e->obj == owner) return;
 
-	if (dynamic_cast<Enemy*>(e->obj)) { // hit an enemy -> handle before the blocking check
-		OnCollisionWithEnemy(e);        // (enemies are non-blocking, so this must come first)
+	if (dynamic_cast<Enemy*>(e->obj)) {
+		OnCollisionWithEnemy(e);
 		return;
 	}
 
-	// Trúng Cannon -> tính 1 phát, đủ 3 phát thì Cannon biến mất; đạn tan.
 	if (Cannon* cannon = dynamic_cast<Cannon*>(e->obj)) {
 		cannon->OnHitByBullet();
 		this->Delete();
 		return;
 	}
 
-	if (!e->obj->IsBlocking()) return;  // pass through other non-static objects
+	if (!e->obj->IsBlocking()) return;
 
-	// Đụng tường theo chiều X -> biến mất.
 	if (e->nx != 0) {
 		this->Delete();
 		return;
 	}
 
-	// Bounce off static objects instead of disappearing
-	if (e->ny < 0) {                    // hit floor -> bounce up
+	if (e->ny < 0) {
 		vy = -BULLET_BOUNCE_SPEED;
 	}
-	else if (e->ny > 0) {               // hit ceiling -> push down
+	else if (e->ny > 0) {
 		vy = BULLET_BOUNCE_SPEED;
 	}
 }
 
 void Bullet::OnCollisionWithEnemy(LPCOLLISIONEVENT e)
 {
-	if (e->obj == owner) return;        // Ignore collision with the owner
-	if (e->obj->IsDeleted()) return;    // Ignore already deleted objects
+	if (e->obj == owner) return;
+	if (e->obj->IsDeleted()) return;
 
-	// Put the enemy into its die state (each enemy decides how it dies),
-	// then remove the bullet.
 	if (Enemy* enemy = dynamic_cast<Enemy*>(e->obj)) {
 		enemy->OnHitByBullet();
 	}

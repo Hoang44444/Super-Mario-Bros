@@ -22,7 +22,6 @@ void Axe::OnMarioCollision(Mario* mario)
 	PlayScene* playScene = dynamic_cast<PlayScene*>(scene);
 	if (playScene != nullptr)
 	{
-		// Collapse every castle bridge in the scene, staggered so they fall in sequence.
 		DWORD bridgeDelay = 0;
 		for (LPGAMEOBJECT obj : playScene->GetObjects())
 		{

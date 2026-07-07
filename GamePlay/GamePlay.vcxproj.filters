@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <!-- Core -->
@@ -151,55 +151,61 @@
     <ClInclude Include="Objects\Player\MarioKeyHandler.h">
       <Filter>Objects\Player\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\Player\PlayerData.h">
+      <Filter>Objects\Player\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\LivesNumber.h">
+      <Filter>Scenes\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Objects\Bullet\Bullet.h">
       <Filter>Objects\Bullet\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Enemy\Enemy.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Blooper.h">
+    <ClInclude Include="Objects\Enemy\Blooper.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bowser.h">
+    <ClInclude Include="Objects\Enemy\Bowser.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BowserFire.h">
+    <ClInclude Include="Objects\Enemy\BowserFire.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BowserFireball.h">
+    <ClInclude Include="Objects\Bullet\BowserFireball.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BulletBill.h">
+    <ClInclude Include="Objects\Enemy\BulletBill.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BuzzyBeetle.h">
+    <ClInclude Include="Objects\Enemy\BuzzyBeetle.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Cannon.h">
+    <ClInclude Include="Objects\Static\Cannon.h">
+      <Filter>Objects\Static\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Enemy\Goomba.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Goomba.h">
+    <ClInclude Include="Objects\Bullet\Hammer.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hammer.h">
+    <ClInclude Include="Objects\Enemy\HammerBro.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HammerBro.h">
+    <ClInclude Include="Objects\Enemy\Koopa.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Koopa.h">
+    <ClInclude Include="Objects\Enemy\Lakitu.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Lakitu.h">
+    <ClInclude Include="Objects\Enemy\PiranhaPlant.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PiranhaPlant.h">
+    <ClInclude Include="Objects\Enemy\Podoboo.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Podoboo.h">
-      <Filter>Objects\Enemy\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Spiny.h">
+    <ClInclude Include="Objects\Enemy\Spiny.h">
       <Filter>Objects\Enemy\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Item\Item.h">
@@ -256,19 +262,19 @@
     <ClInclude Include="Objects\Static\CastleBridge.h">
       <Filter>Objects\Static\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Coin.h">
+    <ClInclude Include="Objects\Item\Coin.h">
       <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ItemCoin2.h">
+    <ClInclude Include="Objects\Item\ItemCoin2.h">
       <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoinCollectEffect.h">
+    <ClInclude Include="Objects\Effect\CoinCollectEffect.h">
       <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoinPopupEffect.h">
+    <ClInclude Include="Objects\Effect\CoinPopupEffect.h">
       <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Mushroom1Up.h">
+    <ClInclude Include="Objects\Item\Mushroom1Up.h">
       <Filter>Objects\Item\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Invisible\EnemyTurnBlock.h">
@@ -289,10 +295,10 @@
     <ClInclude Include="Scenes\MenuOptions.h">
       <Filter>Core\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WindCycle.h">
+    <ClInclude Include="Objects\Effect\WindCycle.h">
       <Filter>Objects\Dynamic\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WindEffect.h">
+    <ClInclude Include="Objects\Effect\WindEffect.h">
       <Filter>Objects\Dynamic\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -369,64 +375,64 @@
     <ClCompile Include="Objects\Static\CastleBridge.cpp">
       <Filter>Objects\Static\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Blooper.cpp">
+    <ClCompile Include="Objects\Enemy\Blooper.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bowser.cpp">
+    <ClCompile Include="Objects\Enemy\Bowser.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BowserFire.cpp">
+    <ClCompile Include="Objects\Enemy\BowserFire.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BowserFireball.cpp">
+    <ClCompile Include="Objects\Bullet\BowserFireball.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BulletBill.cpp">
+    <ClCompile Include="Objects\Enemy\BulletBill.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BuzzyBeetle.cpp">
+    <ClCompile Include="Objects\Enemy\BuzzyBeetle.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cannon.cpp">
+    <ClCompile Include="Objects\Static\Cannon.cpp">
+      <Filter>Objects\Static\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Enemy\Goomba.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Goomba.cpp">
+    <ClCompile Include="Objects\Bullet\Hammer.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Hammer.cpp">
+    <ClCompile Include="Objects\Enemy\HammerBro.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HammerBro.cpp">
+    <ClCompile Include="Objects\Enemy\Koopa.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Koopa.cpp">
+    <ClCompile Include="Objects\Enemy\Lakitu.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Lakitu.cpp">
+    <ClCompile Include="Objects\Enemy\PiranhaPlant.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PiranhaPlant.cpp">
+    <ClCompile Include="Objects\Enemy\Podoboo.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Podoboo.cpp">
+    <ClCompile Include="Objects\Enemy\Spiny.cpp">
       <Filter>Objects\Enemy\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Spiny.cpp">
-      <Filter>Objects\Enemy\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Coin.cpp">
+    <ClCompile Include="Objects\Item\Coin.cpp">
       <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ItemCoin2.cpp">
+    <ClCompile Include="Objects\Item\ItemCoin2.cpp">
       <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CoinCollectEffect.cpp">
+    <ClCompile Include="Objects\Effect\CoinCollectEffect.cpp">
       <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CoinPopupEffect.cpp">
+    <ClCompile Include="Objects\Effect\CoinPopupEffect.cpp">
       <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Mushroom1Up.cpp">
+    <ClCompile Include="Objects\Item\Mushroom1Up.cpp">
       <Filter>Objects\Item\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Invisible\EnemyTurnBlock.cpp">
@@ -435,10 +441,10 @@
     <ClCompile Include="Scenes\MenuHUD.cpp">
       <Filter>Core\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WindCycle.cpp">
+    <ClCompile Include="Objects\Effect\WindCycle.cpp">
       <Filter>Objects\Dynamic\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WindEffect.cpp">
+    <ClCompile Include="Objects\Effect\WindEffect.cpp">
       <Filter>Objects\Dynamic\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

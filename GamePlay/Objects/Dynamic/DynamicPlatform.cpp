@@ -5,7 +5,6 @@
 #include "AssetID.h"
 
 void DynamicPlatform::Movement(DWORD dt) {
-	// Lưu vị trí hiện tại trước khi di chuyển (để tính delta cho parenting Mario)
 	prevX = x;
 	prevY = y;
 
@@ -13,27 +12,25 @@ void DynamicPlatform::Movement(DWORD dt) {
 		x += direction * speed * dt;
 		if (x < minBound) {
 			x = minBound;
-			direction = 1; // Move right
+			direction = 1;
 		}
 		else if (x > maxBound) {
 			x = maxBound;
-			direction = -1; // Move left
+			direction = -1;
 		}
 	}
 	else if (type == DYNAMIC_PLATFORM_TYPE::VERTICAL) {
 		y += direction * speed * dt;
 		if (y < minBound) {
 			y = minBound;
-			direction = 1; // Move down
+			direction = 1;
 		}
 		else if (y > maxBound) {
 			y = maxBound;
-			direction = -1; // Move up
+			direction = -1;
 		}
 	}
 
-	// keep velocity in sync with the (possibly just-flipped) direction
-	// so other objects reading our speed don't lag one frame behind
 	this->vx = GetVx();
 	this->vy = GetVy();
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -77,7 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;$(ProjectDir)Objects\Effect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -94,7 +94,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;$(ProjectDir)Objects\Effect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;$(ProjectDir)Objects\Effect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -126,7 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\Resource;..\Graphic;$(ProjectDir)Core;$(ProjectDir)Scenes;$(ProjectDir)Objects\Player;$(ProjectDir)Objects\Bullet;$(ProjectDir)Objects\Enemy;$(ProjectDir)Objects\Item;$(ProjectDir)Objects\Static;$(ProjectDir)Objects\Dynamic;$(ProjectDir)Objects\Invisible;$(ProjectDir)Objects\Effect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -153,31 +153,33 @@
     <ClInclude Include="Scenes\MenuHUD.h" />
     <ClInclude Include="Scenes\Background.h" />
     <ClInclude Include="Scenes\MenuOptions.h" />
+    <ClInclude Include="Scenes\LivesNumber.h" />
     <ClInclude Include="Objects\Player\Mario.h" />
     <ClInclude Include="Objects\Player\MarioKeyHandler.h" />
+    <ClInclude Include="Objects\Player\PlayerData.h" />
     <ClInclude Include="Objects\Bullet\Bullet.h" />
     <ClInclude Include="Objects\Enemy\Enemy.h" />
-    <ClInclude Include="Blooper.h" />
-    <ClInclude Include="Bowser.h" />
-    <ClInclude Include="BowserFire.h" />
-    <ClInclude Include="BowserFireball.h" />
-    <ClInclude Include="BulletBill.h" />
-    <ClInclude Include="BuzzyBeetle.h" />
-    <ClInclude Include="Cannon.h" />
-    <ClInclude Include="Goomba.h" />
-    <ClInclude Include="Hammer.h" />
-    <ClInclude Include="HammerBro.h" />
-    <ClInclude Include="Koopa.h" />
-    <ClInclude Include="Lakitu.h" />
-    <ClInclude Include="PiranhaPlant.h" />
-    <ClInclude Include="Podoboo.h" />
-    <ClInclude Include="Spiny.h" />
+    <ClInclude Include="Objects\Enemy\Blooper.h" />
+    <ClInclude Include="Objects\Enemy\Bowser.h" />
+    <ClInclude Include="Objects\Enemy\BowserFire.h" />
+    <ClInclude Include="Objects\Bullet\BowserFireball.h" />
+    <ClInclude Include="Objects\Enemy\BulletBill.h" />
+    <ClInclude Include="Objects\Enemy\BuzzyBeetle.h" />
+    <ClInclude Include="Objects\Static\Cannon.h" />
+    <ClInclude Include="Objects\Enemy\Goomba.h" />
+    <ClInclude Include="Objects\Bullet\Hammer.h" />
+    <ClInclude Include="Objects\Enemy\HammerBro.h" />
+    <ClInclude Include="Objects\Enemy\Koopa.h" />
+    <ClInclude Include="Objects\Enemy\Lakitu.h" />
+    <ClInclude Include="Objects\Enemy\PiranhaPlant.h" />
+    <ClInclude Include="Objects\Enemy\Podoboo.h" />
+    <ClInclude Include="Objects\Enemy\Spiny.h" />
     <ClInclude Include="Objects\Item\Item.h" />
-    <ClInclude Include="Coin.h" />
-    <ClInclude Include="ItemCoin2.h" />
-    <ClInclude Include="CoinCollectEffect.h" />
-    <ClInclude Include="CoinPopupEffect.h" />
-    <ClInclude Include="Mushroom1Up.h" />
+    <ClInclude Include="Objects\Item\Coin.h" />
+    <ClInclude Include="Objects\Item\ItemCoin2.h" />
+    <ClInclude Include="Objects\Effect\CoinCollectEffect.h" />
+    <ClInclude Include="Objects\Effect\CoinPopupEffect.h" />
+    <ClInclude Include="Objects\Item\Mushroom1Up.h" />
     <ClInclude Include="Objects\Static\StaticObject.h" />
     <ClInclude Include="Objects\Static\Brick.h" />
     <ClInclude Include="Objects\Static\QuestionBlock.h" />
@@ -196,9 +198,9 @@
     <ClInclude Include="Objects\Item\SuperStar.h" />
     <ClInclude Include="Objects\Item\Axe.h" />
     <ClInclude Include="Objects\Static\CastleBridge.h" />
-    <ClInclude Include="WindCycle.h" />
-    <ClInclude Include="WindEffect.h" />
-    <ClInclude Include="EarthquakeCycle.h" />
+    <ClInclude Include="Objects\Effect\WindCycle.h" />
+    <ClInclude Include="Objects\Effect\WindEffect.h" />
+    <ClInclude Include="Objects\Effect\EarthquakeCycle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -240,29 +242,29 @@
     <ClCompile Include="Objects\Item\SuperStar.cpp" />
     <ClCompile Include="Objects\Item\Axe.cpp" />
     <ClCompile Include="Objects\Static\CastleBridge.cpp" />
-    <ClCompile Include="Blooper.cpp" />
-    <ClCompile Include="Bowser.cpp" />
-    <ClCompile Include="BowserFire.cpp" />
-    <ClCompile Include="BowserFireball.cpp" />
-    <ClCompile Include="BulletBill.cpp" />
-    <ClCompile Include="BuzzyBeetle.cpp" />
-    <ClCompile Include="Cannon.cpp" />
-    <ClCompile Include="Goomba.cpp" />
-    <ClCompile Include="Hammer.cpp" />
-    <ClCompile Include="HammerBro.cpp" />
-    <ClCompile Include="Koopa.cpp" />
-    <ClCompile Include="Lakitu.cpp" />
-    <ClCompile Include="PiranhaPlant.cpp" />
-    <ClCompile Include="Podoboo.cpp" />
-    <ClCompile Include="Spiny.cpp" />
-    <ClCompile Include="Coin.cpp" />
-    <ClCompile Include="ItemCoin2.cpp" />
-    <ClCompile Include="CoinCollectEffect.cpp" />
-    <ClCompile Include="CoinPopupEffect.cpp" />
-    <ClCompile Include="Mushroom1Up.cpp" />
-    <ClCompile Include="WindCycle.cpp" />
-    <ClCompile Include="WindEffect.cpp" />
-    <ClCompile Include="EarthquakeCycle.cpp" />
+    <ClCompile Include="Objects\Enemy\Blooper.cpp" />
+    <ClCompile Include="Objects\Enemy\Bowser.cpp" />
+    <ClCompile Include="Objects\Enemy\BowserFire.cpp" />
+    <ClCompile Include="Objects\Bullet\BowserFireball.cpp" />
+    <ClCompile Include="Objects\Enemy\BulletBill.cpp" />
+    <ClCompile Include="Objects\Enemy\BuzzyBeetle.cpp" />
+    <ClCompile Include="Objects\Static\Cannon.cpp" />
+    <ClCompile Include="Objects\Enemy\Goomba.cpp" />
+    <ClCompile Include="Objects\Bullet\Hammer.cpp" />
+    <ClCompile Include="Objects\Enemy\HammerBro.cpp" />
+    <ClCompile Include="Objects\Enemy\Koopa.cpp" />
+    <ClCompile Include="Objects\Enemy\Lakitu.cpp" />
+    <ClCompile Include="Objects\Enemy\PiranhaPlant.cpp" />
+    <ClCompile Include="Objects\Enemy\Podoboo.cpp" />
+    <ClCompile Include="Objects\Enemy\Spiny.cpp" />
+    <ClCompile Include="Objects\Item\Coin.cpp" />
+    <ClCompile Include="Objects\Item\ItemCoin2.cpp" />
+    <ClCompile Include="Objects\Effect\CoinCollectEffect.cpp" />
+    <ClCompile Include="Objects\Effect\CoinPopupEffect.cpp" />
+    <ClCompile Include="Objects\Item\Mushroom1Up.cpp" />
+    <ClCompile Include="Objects\Effect\WindCycle.cpp" />
+    <ClCompile Include="Objects\Effect\WindEffect.cpp" />
+    <ClCompile Include="Objects\Effect\EarthquakeCycle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,7 +3,6 @@
 #include "AssetID.h"
 
 void Pipe::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	// Pipes are static, so no update logic is needed
 }
 
 void Pipe::Render() {

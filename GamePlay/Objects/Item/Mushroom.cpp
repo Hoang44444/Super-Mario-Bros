@@ -48,9 +48,8 @@ void Mushroom::OnMarioCollision(Mario* mario)
 {
 	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
 	mario->SetLevel(MARIO_LEVEL::BIG);
-	
-	// Award score for Super Mushroom
+
 	ScoreManager::Get().AddScore(SCORE_VALUES::SUPER_MUSHROOM);
-	
+
 	Delete();
 }

@@ -22,11 +22,11 @@ class DynamicPlatform : public GameObject{
 private:
 	float speed = DYNAMIC_PLATFORM_PARAMS::SPEED;
 	float minBound, maxBound;
-	float direction = 1; //1: rightn(down), -1: left(up)
-	float prevX;  // vị trí X ở frame trước (để tính deltaX cho parenting Mario)
-	float prevY;  // vị trí Y ở frame trước (để tính deltaY cho parenting Mario)
+	float direction = 1;
+	float prevX;
+	float prevY;
 
-	int type; // 0: horizontal, 1: vertical
+	int type;
 public:
 	DynamicPlatform(float x, float y, float z, int type, int initialDirection = 1) : GameObject(x, y, z) {
 		this->type = type;

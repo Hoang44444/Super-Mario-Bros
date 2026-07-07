@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
@@ -35,26 +35,26 @@
 #include "CastleBridge.h"
 #include "Axe.h"
 // Items
-#include "../Coin.h"
-#include "../ItemCoin2.h"
-#include "../Mushroom1Up.h"
+#include "Coin.h"
+#include "ItemCoin2.h"
+#include "Mushroom1Up.h"
 // Enemies
-#include "../Goomba.h"
-#include "../Koopa.h"
-#include "../BuzzyBeetle.h"
-#include "../HammerBro.h"
-#include "../Blooper.h"
-#include "../Bowser.h"
-#include "../BulletBill.h"
-#include "../Cannon.h"
-#include "../Lakitu.h"
-#include "../Podoboo.h"
-#include "../Spiny.h"
-#include "../PiranhaPlant.h"
+#include "Goomba.h"
+#include "Koopa.h"
+#include "BuzzyBeetle.h"
+#include "HammerBro.h"
+#include "Blooper.h"
+#include "Bowser.h"
+#include "BulletBill.h"
+#include "Cannon.h"
+#include "Lakitu.h"
+#include "Podoboo.h"
+#include "Spiny.h"
+#include "PiranhaPlant.h"
 #include "../../Resource/SoundManager.h"
 // Wind Effect
-#include "../WindEffect.h"
-#include "../WindCycle.h"
+#include "WindEffect.h"
+#include "WindCycle.h"
 using namespace std;
 
 namespace
@@ -102,14 +102,14 @@ void PlayScene::Load()
 	{
 		string line(str);
 
-		// Strip UTF-8 BOM (EF BB BF) nếu có ở đầu dòng
+		// Strip UTF-8 BOM (EF BB BF) náº¿u cÃ³ á»Ÿ Ä‘áº§u dÃ²ng
 		if (line.size() >= 3 &&
 			(unsigned char)line[0] == 0xEF &&
 			(unsigned char)line[1] == 0xBB &&
 			(unsigned char)line[2] == 0xBF)
 			line = line.substr(3);
 
-		// Strip carriage return '\r' cuối dòng (Windows CRLF)
+		// Strip carriage return '\r' cuá»‘i dÃ²ng (Windows CRLF)
 		if (!line.empty() && line.back() == '\r')
 			line.pop_back();
 
@@ -213,15 +213,15 @@ void PlayScene::Load()
 
 	SoundManager::GetInstance()->ApplyVolumeSettings();
 
-	// Hiệu ứng động đất ở màn cuối (Bowser): camera rung từng đợt cho tới khi
-	// Mario đứng được lên cầu. Các màn khác đảm bảo tắt rung (camera dùng chung).
+	// Hiá»‡u á»©ng Ä‘á»™ng Ä‘áº¥t á»Ÿ mÃ n cuá»‘i (Bowser): camera rung tá»«ng Ä‘á»£t cho tá»›i khi
+	// Mario Ä‘á»©ng Ä‘Æ°á»£c lÃªn cáº§u. CÃ¡c mÃ n khÃ¡c Ä‘áº£m báº£o táº¯t rung (camera dÃ¹ng chung).
 	if (id == SCENE::WORLD_1_4)
 		Camera::GetInstance()->StartEarthquake();
 	else
 		Camera::GetInstance()->StopEarthquake();
 
-	// Gió ở màn 1-3: bật chu kỳ gió dùng chung (đồng bộ lá + lực đẩy Mario).
-	// Các màn khác tắt để không sót trạng thái.
+	// GiÃ³ á»Ÿ mÃ n 1-3: báº­t chu ká»³ giÃ³ dÃ¹ng chung (Ä‘á»“ng bá»™ lÃ¡ + lá»±c Ä‘áº©y Mario).
+	// CÃ¡c mÃ n khÃ¡c táº¯t Ä‘á»ƒ khÃ´ng sÃ³t tráº¡ng thÃ¡i.
 	if (id == SCENE::WORLD_1_3)
 	{
 		DebugOut(L"[SFX_DEBUG] Starting wind cycle for level 1-3\n");
@@ -233,7 +233,7 @@ void PlayScene::Load()
 		WindCycle::GetInstance()->Stop();
 	}
 
-	// Boss màn 1-4: tìm Bowser để kích hoạt khi Mario bước lên cầu (mặc định nó đứng yên).
+	// Boss mÃ n 1-4: tÃ¬m Bowser Ä‘á»ƒ kÃ­ch hoáº¡t khi Mario bÆ°á»›c lÃªn cáº§u (máº·c Ä‘á»‹nh nÃ³ Ä‘á»©ng yÃªn).
 	bossBowser = nullptr;
 	if (id == SCENE::WORLD_1_4)
 	{
@@ -284,7 +284,7 @@ void PlayScene::LoadAssets(LPCWSTR assetFile)
 			(unsigned char)line[2] == 0xBF)
 			line = line.substr(3);
 
-		// Strip carriage return '\r' cuối dòng
+		// Strip carriage return '\r' cuá»‘i dÃ²ng
 		if (!line.empty() && line.back() == '\r')
 			line.pop_back();
 
@@ -339,10 +339,10 @@ void PlayScene::_ParseSection_ANIMATIONS(string line)
 	stringstream ss(line);
 	string token;
 	
-	// Cắt token cẩn thận, loại bỏ phần comment (bắt đầu bằng '#')
+	// Cáº¯t token cáº©n tháº­n, loáº¡i bá» pháº§n comment (báº¯t Ä‘áº§u báº±ng '#')
 	while (ss >> token) 
 	{
-		if (token.empty() || token[0] == '#') break; // Bỏ qua comment inline
+		if (token.empty() || token[0] == '#') break; // Bá» qua comment inline
 		tokens.push_back(token);
 	}
 
@@ -351,8 +351,8 @@ void PlayScene::_ParseSection_ANIMATIONS(string line)
 	int ani_id = atoi(tokens[0].c_str());
 	LPANIMATION ani = new Animation();
 
-	// Token[0] là ID animation
-	// Token[i] là sprite_id, Token[i+1] là frame_time
+	// Token[0] lÃ  ID animation
+	// Token[i] lÃ  sprite_id, Token[i+1] lÃ  frame_time
 	for (size_t i = 1; i + 1 < tokens.size(); i += 2)
 	{
 		int sprite_id = atoi(tokens[i].c_str());
@@ -554,7 +554,7 @@ void PlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT::LIVES_NUMBER:
 	{
-		// tokens: 51 x y z [w] [h]  — x,y là toạ độ logic; w,h là kích thước vẽ.
+		// tokens: 51 x y z [w] [h]  â€” x,y lÃ  toáº¡ Ä‘á»™ logic; w,h lÃ  kÃ­ch thÆ°á»›c váº½.
 		float w = (tokens.size() >= 5) ? (float)atof(tokens[4].c_str()) : 11.0f;
 		float h = (tokens.size() >= 6) ? (float)atof(tokens[5].c_str()) : 18.0f;
 		obj = new LivesNumber(x, y, z, w, h);
@@ -622,7 +622,7 @@ void PlayScene::Update(DWORD dt)
 		}
 	}
 
-	// Boss màn 1-4: Bowser chỉ bắt đầu hoạt động khi Mario đã bước lên cầu.
+	// Boss mÃ n 1-4: Bowser chá»‰ báº¯t Ä‘áº§u hoáº¡t Ä‘á»™ng khi Mario Ä‘Ã£ bÆ°á»›c lÃªn cáº§u.
 	if (bossBowser != nullptr && !bossBowser->IsDeleted() && IsPlayerOnCastleBridge())
 		static_cast<Bowser*>(bossBowser)->Activate();
 
@@ -700,7 +700,7 @@ void PlayScene::Update(DWORD dt)
 		{
 			ULONGLONG countdownElapsed = elapsed - STAGE_CLEAR_BGM_DURATION;
 			int countdownSteps = (int)(countdownElapsed / COUNTDOWN_SPEED);
-			int timeToSubtract = countdownSteps * 3;  // Giảm 3 giây mỗi lần countdown
+			int timeToSubtract = countdownSteps * 3;  // Giáº£m 3 giÃ¢y má»—i láº§n countdown
 
 			if (timeToSubtract > stageClearDisplayTime)
 				timeToSubtract = stageClearDisplayTime;
@@ -711,8 +711,8 @@ void PlayScene::Update(DWORD dt)
 				stageClearDisplayTime -= timeToSubtract;
 				if (stageClearDisplayTime < 0) stageClearDisplayTime = 0;
 
-				// Tính điểm: thời gian còn lại thực tế x 50
-				// Mỗi lần countdown giảm 3 giây hiển thị, nhưng điểm dựa trên stageClearTime thực tế
+				// TÃ­nh Ä‘iá»ƒm: thá»i gian cÃ²n láº¡i thá»±c táº¿ x 50
+				// Má»—i láº§n countdown giáº£m 3 giÃ¢y hiá»ƒn thá»‹, nhÆ°ng Ä‘iá»ƒm dá»±a trÃªn stageClearTime thá»±c táº¿
 				int scoreToAdd = stageClearTime * TIME_BONUS_MULTIPLIER;
 				ScoreManager::Get().AddScore(scoreToAdd);
 
@@ -802,7 +802,7 @@ void PlayScene::Update(DWORD dt)
 		Camera::GetInstance()->Follow(cx, fixedCameraY);
 	}
 
-	// Động đất màn cuối: rung camera từng đợt, dừng hẳn khi Mario lên được cầu.
+	// Äá»™ng Ä‘áº¥t mÃ n cuá»‘i: rung camera tá»«ng Ä‘á»£t, dá»«ng háº³n khi Mario lÃªn Ä‘Æ°á»£c cáº§u.
 	if (Camera::GetInstance()->IsEarthquakeActive())
 	{
 		if (IsPlayerOnCastleBridge())
@@ -853,7 +853,7 @@ bool PlayScene::IsPlayerOnCastleBridge()
 		float bl, bt, br, bb;
 		bridge->GetBoundingBox(bl, bt, br, bb);
 
-		// Mario chồng theo phương ngang và chân (đáy) tì lên mặt trên của cầu.
+		// Mario chá»“ng theo phÆ°Æ¡ng ngang vÃ  chÃ¢n (Ä‘Ã¡y) tÃ¬ lÃªn máº·t trÃªn cá»§a cáº§u.
 		bool overlapX     = (mr > bl) && (ml < br);
 		bool restingOnTop = (mb >= bt - 4.0f) && (mb <= bt + 8.0f);
 		if (overlapX && restingOnTop)
@@ -866,8 +866,8 @@ void PlayScene::StartStageClear()
 {
 	stageClearActive = true;
 	stageClearStart = GetTickCount64();
-	stageClearTime = hud->GetRemainingTime();  // Thời gian thực tế để tính điểm
-	stageClearDisplayTime = 100;  // Debug: hiển thị countdown 100 giây, giảm từng 5 giây
+	stageClearTime = hud->GetRemainingTime();  // Thá»i gian thá»±c táº¿ Ä‘á»ƒ tÃ­nh Ä‘iá»ƒm
+	stageClearDisplayTime = 100;  // Debug: hiá»ƒn thá»‹ countdown 100 giÃ¢y, giáº£m tá»«ng 5 giÃ¢y
 
 	// Stop current BGM (including warning BGM if playing)
 	SoundManager::GetInstance()->StopBGM();

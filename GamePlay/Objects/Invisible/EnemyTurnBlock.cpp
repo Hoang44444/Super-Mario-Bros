@@ -17,21 +17,17 @@ void EnemyTurnBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	for (LPGAMEOBJECT obj : *coObjects) {
 		if (obj == NULL || obj->IsDeleted()) continue;
 
-		// Only enemies are affected; everything else (Mario, items, ...) is ignored.
 		Enemy* enemy = dynamic_cast<Enemy*>(obj);
 		if (enemy == NULL) continue;
 
-		// Skip enemies that are alive but not moving (idle shell, hidden, ...) or dying.
 		if (!enemy->CanBeTurnedByBlock()) continue;
 
 		float el, et, er, eb;
 		enemy->GetBoundingBox(el, et, er, eb);
 
-		// AABB overlap test
 		bool overlap = !(er < bl || el > br || eb < bt || et > bb);
 		if (!overlap) continue;
 
-		// Flip on contact, throttled so it turns at most once per cooldown window.
 		enemy->ReverseDirection(ENEMY_TURN_BLOCK::TURN_COOLDOWN);
 	}
 }

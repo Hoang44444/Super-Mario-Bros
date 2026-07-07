@@ -10,10 +10,8 @@ class MarioKeyHandler : public KeyEventHandler
 {
 	PlayScene* scene;
 
-	// A1/A4: một nguồn edge duy nhất — set từ OnKeyDown, consume trong KeyState
 	bool jumpPending = false;
 
-	// Debug: Fly mode toggle (kháng sát thương, bay ở y=150, không flicker)
 	bool flyMode = false;
 
 public:
@@ -27,34 +25,26 @@ public:
 
 		if (mario->GetState() == MARIO_STATE::DIE) return;
 
-		// Determine movement direction
 		int moveDir = 0;
 		if (states[VK_RIGHT] & 0x80)
 			moveDir = 1;
 		else if (states[VK_LEFT] & 0x80)
 			moveDir = -1;
 
-		// A4: jumpPressed = polling (variable jump height); jumpJustPressed = event jumpPending
 		bool jumpPressed = (states[VK_SPACE] & 0x80) != 0;
 		bool jumpJustPressed = jumpPending;
 
-		// NES gốc: chạy = giữ phím hướng liên tục (không có phím Run; Shift = bắn)
 		bool runHeld = (moveDir != 0);
 
-		// Check sit button state (Down)
 		bool sitPressed = (states[VK_DOWN] & 0x80) != 0;
 
-		// Provide input to physics system
 		Mario* marioObj = dynamic_cast<Mario*>(mario);
 		if (marioObj != nullptr)
 		{
 			marioObj->SetPhysicsInput(moveDir, jumpPressed, jumpJustPressed, runHeld);
 		}
-		jumpPending = false; // A1: consume event edge sau khi đẩy sang Mario
+		jumpPending = false;
 
-		// Set animation state based on movement (for rendering)
-		// NOTE: When Mario is DEAD, this entire function returns early (line 25),
-		// so no animation state changes occur during death.
 		if (sitPressed)
 		{
 			mario->SetState(MARIO_STATE::SIT);
@@ -73,8 +63,6 @@ public:
 	}
 
 	virtual void OnKeyDown(int KeyCode) {
-		// 'P' pauses the game. While paused, input is handled by PauseKeyHandler
-		// (GameManager routes by game state), so we only need to enter PAUSE here.
 		if (KeyCode == 'P') {
 			GameManager::GetInstance()->SetGameState(GAME_STATE::PAUSE);
 			return;
@@ -85,14 +73,10 @@ public:
 
 		if (mario->GetState() == MARIO_STATE::DIE) return;
 
-		// Handle non-physics actions (shooting)
-		// NOTE: When Mario is DEAD, this entire function returns early (line 81),
-		// so no input affects Mario's state or velocity during death.
 		switch (KeyCode)
 		{
 		case 'G':
 		{
-			// Debug: Toggle fly mode (kháng sát thương, bay ở y=150, không flicker)
 			flyMode = !flyMode;
 			Mario* marioObj = dynamic_cast<Mario*>(mario);
 			if (marioObj != nullptr)
@@ -100,12 +84,12 @@ public:
 				marioObj->SetFlyMode(flyMode);
 				if (flyMode)
 				{
-					marioObj->SetInvincible(999999999); // Kháng sát thương vô thời hạn
+					marioObj->SetInvincible(999999999);
 					DebugOut(L"[DEBUG] Fly mode ON\n");
 				}
 				else
 				{
-					marioObj->SetInvincible(0); // Tắt miễn thương
+					marioObj->SetInvincible(0);
 					DebugOut(L"[DEBUG] Fly mode OFF\n");
 				}
 			}
@@ -116,13 +100,12 @@ public:
 			mario->SetState(MARIO_STATE::SHOOT);
 			break;
 		case VK_SPACE:
-			jumpPending = true; // A4: bắt tap nhanh (< 1 frame) không phụ thuộc polling
+			jumpPending = true;
 			mario->SetState(MARIO_STATE::JUMP);
 			break;
 		}
 	}
 
 	virtual void OnKeyUp(int KeyCode) {
-		// A1: không reset edge nhảy ở đây — tránh xung đột với jumpPending
 	}
 };

@@ -3,6 +3,8 @@
 	#include <iostream>
 	#include "debug.h"
 
+	#pragma comment(lib, "dsound.lib")
+
 	SoundManager* SoundManager::__instance = nullptr;
 
 	SoundManager::SoundManager()
