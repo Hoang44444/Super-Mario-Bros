@@ -22,6 +22,121 @@ void Lakitu::GetBoundingBox(float& l, float& t, float& r, float& b)
     l = x; t = y; r = l + LAKITU_BBOX_WIDTH; b = t + LAKITU_BBOX_HEIGHT;
 }
 
+Mario* Lakitu::FindMario(vector<LPGAMEOBJECT>* coObjects)
+{
+	for (size_t i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<Mario*>(coObjects->at(i)))
+		{
+			return dynamic_cast<Mario*>(coObjects->at(i));
+		}
+	}
+	return nullptr;
+}
+
+int Lakitu::CountActiveSpinies(vector<LPGAMEOBJECT>* coObjects, float camX)
+{
+	const float SCREEN_WIDTH = 800.0f;
+	int activeSpinies = 0;
+
+	for (size_t i = 0; i < coObjects->size(); i++)
+	{
+		Spiny* spiny = dynamic_cast<Spiny*>(coObjects->at(i));
+
+		if (spiny != nullptr && !spiny->IsDeleted())
+		{
+			float sx, sy, sz;
+			spiny->GetPosition(sx, sy, sz);
+
+			if (sx >= camX && sx <= camX + SCREEN_WIDTH)
+			{
+				activeSpinies++;
+			}
+		}
+	}
+	return activeSpinies;
+}
+
+void Lakitu::HandleActivationAndEntry(float anchorX, float camY, float hoverY, DWORD dt)
+{
+	// Chưa kích hoạt: nấp phía trên đỉnh màn (ẩn) cho tới khi vị trí Lakitu chạm spawnX.
+	if (!activated)
+	{
+		this->x = anchorX;
+		this->y = camY - LAKITU_ENTRY_START_OFFSET;
+
+		if (anchorX >= spawnX)
+		{
+			activated = true;
+			entering = true;
+		}
+		return;
+	}
+
+	// Đã kích hoạt nhưng Mario lùi làm vị trí Lakitu ra khỏi mép trái vùng (< spawnX):
+	// ngừng di chuyển và ngừng ném, lơ lửng đứng yên tại chỗ tới khi trở lại vùng.
+	if (anchorX < spawnX)
+	{
+		return;
+	}
+
+	// Trong vùng [spawnX, endX]: neo theo mép phải màn hình.
+	this->x = anchorX;
+
+	// Đang bay từ đỉnh màn xuống vị trí hover: chưa ném Spiny cho tới khi vào vị trí.
+	if (entering)
+	{
+		this->y += LAKITU_ENTRY_SPEED * dt;
+		if (this->y >= hoverY)
+		{
+			this->y = hoverY;
+			entering = false;
+		}
+	}
+}
+
+void Lakitu::HandleLeaving(float camY, DWORD dt)
+{
+	y -= LAKITU_LEAVE_SPEED * dt;
+
+	const float CULL_BUFFER = 100.0f;
+	if (this->y < camY - CULL_BUFFER)
+		this->Delete();
+}
+
+void Lakitu::HandleHoverAndThrow(vector<LPGAMEOBJECT>* coObjects, float anchorX, float hoverY, float mx)
+{
+	// Hover ổn định ở góc trên-phải.
+	this->x = anchorX;
+	this->y = hoverY;
+	isFacingRight = (mx >= this->x);
+
+	if (GetTickCount64() - throw_start > LAKITU_THROW_COOLDOWN)
+	{
+		throw_start = GetTickCount64();
+
+		float cx = Camera::GetInstance()->GetX();
+
+		int activeSpinies = CountActiveSpinies(coObjects, cx);
+
+		if (activeSpinies < 4)
+		{
+			// Trứng thả ngay tại vị trí Lakitu (góc trên-phải), rơi thẳng đứng xuống.
+			Spiny* egg = new Spiny(this->x, this->y, this->z);
+			egg->SetState(SPINY_STATE_EGG);
+
+			int lakituDirection = (mx >= this->x) ? 1 : -1;   // spiny đi về phía Mario sau khi tiếp đất
+			egg->SetFacingDirection(lakituDirection);
+
+			PlayScene* currentScene = dynamic_cast<PlayScene*>(this->scene);
+			if (currentScene != nullptr)
+			{
+				currentScene->AddObject(egg);
+			}
+		}
+	}
+}
+
 void Lakitu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
     if (this->vx > 0) isFacingRight = true;
@@ -57,18 +172,9 @@ void Lakitu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         return;
     }
 
-    Mario* mario = NULL;
+    Mario* mario = FindMario(coObjects);
 
-    for (size_t i = 0; i < coObjects->size(); i++)
-    {
-        if (dynamic_cast<Mario*>(coObjects->at(i)))
-        {
-            mario = dynamic_cast<Mario*>(coObjects->at(i));
-            break;
-        }
-    }
-
-    if (mario == NULL || mario->GetState() == MARIO_STATE_DIE)
+    if (mario == nullptr || mario->GetState() == MARIO_STATE_DIE)
         return;
 
     float mx, my, mz;
@@ -80,7 +186,7 @@ void Lakitu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     float camX = Camera::GetInstance()->GetX();
     float camY = Camera::GetInstance()->GetY();
 
-    float anchorX = camX + screenW - LAKITU_BBOX_WIDTH - LAKITU_CORNER_MARGIN_X;
+    float anchorX = camX + (float)screenW - LAKITU_BBOX_WIDTH - LAKITU_CORNER_MARGIN_X;
     float hoverY  = camY + LAKITU_CORNER_MARGIN_Y;
 
     // Lakitu chỉ hoạt động khi VỊ TRÍ của nó (mép phải màn) nằm trong vùng [spawnX, endX].
@@ -91,88 +197,18 @@ void Lakitu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         return;
     }
 
-    // Chưa kích hoạt: nấp phía trên đỉnh màn (ẩn) cho tới khi vị trí Lakitu chạm spawnX.
-    if (!activated)
-    {
-        this->x = anchorX;
-        this->y = camY - LAKITU_ENTRY_START_OFFSET;
+    // Handle activation and entry
+    HandleActivationAndEntry(anchorX, camY, hoverY, dt);
 
-        if (anchorX >= spawnX)
-        {
-            activated = true;
-            entering = true;
-        }
+    // Handle leaving
+    if (leaving)
+    {
+        HandleLeaving(camY, dt);
         return;
     }
 
-    // Đã kích hoạt nhưng Mario lùi làm vị trí Lakitu ra khỏi mép trái vùng (< spawnX):
-    // ngừng di chuyển và ngừng ném, lơ lửng đứng yên tại chỗ tới khi trở lại vùng.
-    if (anchorX < spawnX)
-    {
-        isFacingRight = (mx >= this->x);
-        return;
-    }
-
-    // Trong vùng [spawnX, endX]: neo theo mép phải màn hình.
-    this->x = anchorX;
-    isFacingRight = (mx >= this->x);
-
-    // Đang bay từ đỉnh màn xuống vị trí hover: chưa ném Spiny cho tới khi vào vị trí.
-    if (entering)
-    {
-        this->y += LAKITU_ENTRY_SPEED * dt;
-        if (this->y >= hoverY)
-        {
-            this->y = hoverY;
-            entering = false;
-        }
-        return;
-    }
-
-    // Hover ổn định ở góc trên-phải.
-    this->y = hoverY;
-
-    if (GetTickCount64() - throw_start > LAKITU_THROW_COOLDOWN)
-    {
-        throw_start = GetTickCount64();
-
-        float cx = Camera::GetInstance()->GetX();
-
-        const float SCREEN_WIDTH = 800.0f;
-
-        int activeSpinies = 0;
-        for (size_t i = 0; i < coObjects->size(); i++)
-        {
-            Spiny* spiny = dynamic_cast<Spiny*>(coObjects->at(i));
-
-            if (spiny != NULL && !spiny->IsDeleted())
-            {
-                float sx, sy, sz;
-                spiny->GetPosition(sx, sy, sz);
-
-                if (sx >= cx && sx <= cx + SCREEN_WIDTH)
-                {
-                    activeSpinies++;
-                }
-            }
-        }
-
-        if (activeSpinies < 4)
-        {
-            // Trứng thả ngay tại vị trí Lakitu (góc trên-phải), rơi thẳng đứng xuống.
-            Spiny* egg = new Spiny(this->x, this->y, this->z);
-            egg->SetState(SPINY_STATE_EGG);
-
-            int lakituDirection = (mx >= this->x) ? 1 : -1;   // spiny đi về phía Mario sau khi tiếp đất
-            egg->SetFacingDirection(lakituDirection);
-
-            PlayScene* currentScene = dynamic_cast<PlayScene*>(this->scene);
-            if (currentScene != NULL)
-            {
-                currentScene->AddObject(egg);
-            }
-        }
-    }
+    // Handle hover and throw
+    HandleHoverAndThrow(coObjects, anchorX, hoverY, mx);
 }
 
 bool Lakitu::IsCollidable()
@@ -216,7 +252,7 @@ void Lakitu::OnMarioCollison(Mario* mario, float ny)
         if (ny < 0)
         {
             SetState(LAKITU_STATE_DIE);
-            float mx, my, mz, mvx, mvy;
+            float mvx, mvy;
             mario->GetSpeed(mvx, mvy);
             mario->SetSpeed(mvx, -0.4f);
 

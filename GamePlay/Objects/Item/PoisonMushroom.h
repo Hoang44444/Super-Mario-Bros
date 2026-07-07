@@ -6,7 +6,9 @@ constexpr float POISON_MUSHROOM_BBOX_HEIGHT = 16.0f;
 constexpr float POISON_MUSHROOM_GRAVITY     = 0.002f;
 constexpr float POISON_MUSHROOM_SPEED       = 0.05f;
 
-class PoisonMushroom : public Item {
+// Nấm độc - Mario ăn sẽ bị giảm level hoặc chết
+class PoisonMushroom : public Item
+{
 public:
 	PoisonMushroom(float x, float y, float z) : Item(x, y, z) {
 		vx = POISON_MUSHROOM_SPEED;
@@ -23,5 +25,5 @@ public:
 	virtual void OnMarioCollision(Mario* mario) override;
 
 protected:
-	void OnEmergeComplete() override { vx = POISON_MUSHROOM_SPEED * direction; }
+	void OnEmergeComplete() override { vx = POISON_MUSHROOM_SPEED * direction; }  // Bắt đầu đi sau khi nhảy xong
 };

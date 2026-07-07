@@ -208,20 +208,18 @@ void HUD::Update(DWORD dt)
 		elapsedMs -= 1000;
 	}
 
-	// Timer warning BGM: play when time <= 100s
-	// Skip this logic during stage clear (stageClearOverride = true)
+	// Timer warning BGM: play khi thời gian <= 100s
+	// Bỏ qua logic này trong stage clear (stageClearOverride = true)
 	if (!stageClearOverride)
 	{
 		if (remainingTime <= 100 && !warningBGMPlaying)
 		{
-			DebugOut(L"[WARNING_BGM_DEBUG] Time <= 100s (%d), playing WARNING_THEME\n", remainingTime);
 			SoundManager::GetInstance()->PlayBGM(BGM::WARNING_THEME, true);
 			warningBGMPlaying = true;
 		}
 		else if (remainingTime > 100 && warningBGMPlaying)
 		{
-			// Time went back above 100 (shouldn't happen normally, but handle it)
-			DebugOut(L"[WARNING_BGM_DEBUG] Time > 100s (%d), stopping WARNING_THEME\n", remainingTime);
+			// Thời gian quay trên 100 (không nên xảy ra, nhưng xử lý để an toàn)
 			SoundManager::GetInstance()->StopBGM();
 			warningBGMPlaying = false;
 		}
@@ -270,8 +268,8 @@ void HUD::Render()
 	ID3D10SamplerState* oldSamplerState = nullptr;
 	device->PSGetSamplers(0, 1, &oldSamplerState);
 
-	// The world is buffered through the same sprite helper. Flush it before
-	// ID3DX10Font changes sprite transforms/state for screen-space text.
+	// World được buffer qua cùng sprite helper. Flush trước khi
+	// ID3DX10Font thay đổi sprite transforms/state cho text screen-space.
 	spriteHandler->Flush();
 
 	const int score = ScoreManager::Get().GetScore();
@@ -308,14 +306,14 @@ void HUD::Render()
 		RenderMarioLivesIcon(marioLivesY);
 	spriteHandler->Flush();
 
-	// 1. Draw top row (Labels)
+	// 1. Vẽ hàng trên cùng (Labels)
 	DrawTextLine(L"SCORE", (int)col0_X, 20, 200, 60);
 	DrawTextLine(L"COINS", (int)col1_X, 20, 200, 60);
 	DrawTextLine(L"WORLD", (int)col2_X, 20, 200, 60);
 	DrawTextLine(L"TIME", (int)col3_X, 20, 200, 60);
 	DrawTextLine(L"LIVES", (int)col4_X, 20, 200, 60);
 
-	// 2. Draw values (Row 2)
+	// 2. Vẽ giá trị (Hàng 2)
 	wchar_t line[128];
 	swprintf_s(line, L"%06d", score);
 	DrawTextLine(line, (int)col0_X-10, 80, 200, 60);
@@ -335,19 +333,19 @@ void HUD::Render()
 	swprintf_s(line, L"x%d", lives);
 	DrawTextLine(line, (int)col4_X + 35, 80, 200, 60);
 
-	// 3. Render Center Screen Content for INTRO / DEATH
+	// 3. Render nội dung giữa màn hình cho INTRO / DEATH
 	if (sceneId == SCENE::INTRO)
 	{
 		// Render WORLD <world>-<stage>
 		swprintf_s(line, L"WORLD %d-%d", world, stage);
 		DrawCenteredTextLine(line, (int)(screenHeight * 0.5f - 80.0f), 60);
 
-		// Render Mario small and x<lives>
+		// Render Mario nhỏ và x<lives>
 		DrawMarioLivesText(lives, marioLivesY);
 	}
 	else if (sceneId == SCENE::DEATH)
 	{
-		// Render Mario small and x<lives> centered
+		// Render Mario nhỏ và x<lives> căn giữa
 		DrawMarioLivesText(lives, marioLivesY);
 	}
 

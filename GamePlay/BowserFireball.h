@@ -5,6 +5,7 @@
 #define BOWSER_FIREBALL_HEIGHT 8.0f
 #define BOWSER_FIREBALL_SPEED 0.1f
 
+// BowserFireball - đạn lửa của Bowser bay theo chiều ngang
 class BowserFireball : public GameObject
 {
 public:

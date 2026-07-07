@@ -38,24 +38,24 @@ void PoisonMushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (dynamic_cast<StaticObject*>(e->obj))
 	{
-		if (e->ny < 0) vy = 0;
-		else if (e->nx != 0) { direction = -direction; vx = POISON_MUSHROOM_SPEED * direction; }
+		if (e->ny < 0) vy = 0;  // Chạm đất
+		else if (e->nx != 0) { direction = -direction; vx = POISON_MUSHROOM_SPEED * direction; }  // Chạm tường -> đảo hướng
 	}
 }
 
 void PoisonMushroom::OnMarioCollision(Mario* mario)
 {
-	if (mario->IsInvincible()) { Delete(); return; }
+	if (mario->IsInvincible()) { Delete(); return; }  // Nếu Mario bất tử thì xóa nấm mà không ảnh hưởng
 
 	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
 
 	if (mario->CanShoot())
-		mario->SetCanShoot(false);
+		mario->SetCanShoot(false);  // Mất khả năng bắn đạn
 
 	if (mario->GetLevel() != MARIO_LEVEL::SMALL)
-		mario->SetLevel(MARIO_LEVEL::SMALL);
+		mario->SetLevel(MARIO_LEVEL::SMALL);  // Giảm level
 	else
-		mario->SetState(MARIO_STATE::DIE);
+		mario->SetState(MARIO_STATE::DIE);  // Đã là Small thì chết
 
 	Delete();
 }

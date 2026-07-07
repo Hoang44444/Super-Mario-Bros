@@ -1,9 +1,12 @@
 #pragma once
 #include "InvisibleObject.h"
 #include "Scene.h"
-class SwitchScenePoint : public InvisibleObject {
+// Điểm chuyển scene - Mario chạm vào sẽ chuyển sang level tiếp theo hoặc màn hình end
+// Dùng ở cuối mỗi level
+class SwitchScenePoint : public InvisibleObject
+{
 private:
-	Scene* targetScene;
+	Scene* targetScene;  // Scene đích (không dùng hiện tại)
 public:
 	SwitchScenePoint(float x, float y, float z) : InvisibleObject(x, y, z){
 		this->targetScene = nullptr;

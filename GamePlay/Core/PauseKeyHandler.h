@@ -3,9 +3,9 @@
 #include "GameManager.h"
 #include "../Resource/AssetID.h"
 
-// Input handler used while the game is paused (GAME_STATE::PAUSE).
-//   'P'  : resume play
-//   Esc  : quit to the menu
+// Xử lý phím khi game đang pause (GAME_STATE::PAUSE)
+// P: Tiếp tục chơi
+// Esc: Về menu chính
 class PauseKeyHandler : public KeyEventHandler
 {
 public:
@@ -16,11 +16,11 @@ public:
 		switch (KeyCode)
 		{
 		case 'P':
-			gm->SetGameState(GAME_STATE::PLAY);     // resume
+			gm->SetGameState(GAME_STATE::PLAY);  // Tiếp tục chơi
 			break;
 		case VK_ESCAPE:
-			gm->SetGameState(GAME_STATE::PLAY);     // leave pause so the switch can run
-			gm->InitiateSwitchScene(SCENE::MENU);   // quit to menu
+			gm->SetGameState(GAME_STATE::PLAY);  // Thoát pause để chuyển scene
+			gm->InitiateSwitchScene(SCENE::MENU);  // Về menu
 			break;
 		}
 	}

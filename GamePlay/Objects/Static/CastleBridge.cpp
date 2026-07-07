@@ -12,17 +12,17 @@ void CastleBridge::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (isCollapsing && !isFalling)
 	{
-		if (collapseDelay > dt) { collapseDelay -= dt; return; }
+		if (collapseDelay > dt) { collapseDelay -= dt; return; }  // Chờ delay
 		collapseDelay = 0;
-		isFalling = true;
+		isFalling = true;  // Bắt đầu rơi
 		vy = 0;
 	}
 
 	if (isFalling)
 	{
-		vy += CASTLE_BRIDGE_GRAVITY * dt;
+		vy += CASTLE_BRIDGE_GRAVITY * dt;  // Trọng lực
 		y  += vy * dt;
-		if (y > 260) Delete();
+		if (y > 260) Delete();  // Xóa khi rơi quá xa
 	}
 }
 

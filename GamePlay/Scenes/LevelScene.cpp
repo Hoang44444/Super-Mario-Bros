@@ -11,10 +11,11 @@
 #include "../Resource/AssetID.h"
 #include "../Objects/Player/PlayerData.h"
 
+// Key handler cho LevelScene - xử lý input bàn phím cho menu chọn level
 class LevelSceneKeyHandler : public KeyEventHandler
 {
 private:
-	LevelScene* scene;
+	LevelScene* scene;  // Con trỏ đến LevelScene
 
 public:
 	LevelSceneKeyHandler(LevelScene* scene) : scene(scene) {}
@@ -24,16 +25,16 @@ public:
 		switch (keyCode)
 		{
 		case VK_LEFT:
-			scene->MoveSelection(-1);
+			scene->MoveSelection(-1);  // Di trái
 			break;
 		case VK_RIGHT:
-			scene->MoveSelection(1);
+			scene->MoveSelection(1);  // Di phải
 			break;
-		case VK_RETURN:
-			scene->ConfirmSelection();
+		case VK_SPACE:
+			scene->ConfirmSelection();  // Xác nhận
 			break;
 		case VK_ESCAPE:
-			scene->BackToMenu();
+			scene->BackToMenu();  // Quay về menu
 			break;
 		}
 	}
@@ -56,6 +57,8 @@ LevelScene::~LevelScene()
 	key_handler = nullptr;
 }
 
+// Đọc file scene để lấy đường dẫn background
+// Nếu không tìm thấy, dùng mặc định
 void LevelScene::LoadBackgroundPath()
 {
 	std::ifstream f(sceneFilePath.c_str());
@@ -129,6 +132,7 @@ void LevelScene::CreateFontIfNeeded()
 		&titleFont);
 }
 
+// Load background, reset camera
 void LevelScene::Load()
 {
 	LoadBackgroundPath();
@@ -160,6 +164,7 @@ void LevelScene::Update(DWORD dt)
 {
 }
 
+// Vẽ background stretch để lấp đầy màn hình
 void LevelScene::DrawBackground()
 {
 	if (background == nullptr) return;
@@ -174,6 +179,7 @@ void LevelScene::DrawBackground()
 	r->DrawScaled(camX, camY, 0.99f, background, logicalW, logicalH);
 }
 
+// Vẽ text với font thường
 void LevelScene::DrawTextLine(const wchar_t* text, int x, int y, int width, int height, D3DXCOLOR color, DWORD format)
 {
 	if (font == nullptr) return;
@@ -187,6 +193,7 @@ void LevelScene::DrawTextLine(const wchar_t* text, int x, int y, int width, int 
 	font->DrawText(Renderer::GetInstance()->GetSpriteHandler(), text, -1, &rect, format, color);
 }
 
+// Vẽ text với font lớn (title)
 void LevelScene::DrawTitleText(const wchar_t* text, int x, int y, int width, int height, D3DXCOLOR color, DWORD format)
 {
 	if (titleFont == nullptr) return;
@@ -200,6 +207,7 @@ void LevelScene::DrawTitleText(const wchar_t* text, int x, int y, int width, int
 	titleFont->DrawText(Renderer::GetInstance()->GetSpriteHandler(), text, -1, &rect, format, color);
 }
 
+// Vẽ text căn giữa màn hình với font lớn
 void LevelScene::DrawCenteredText(const wchar_t* text, int y, int height, D3DXCOLOR color)
 {
 	DrawTitleText(text, 0, y, Renderer::GetInstance()->GetBackBufferWidth(), height, color, DT_CENTER | DT_TOP | DT_NOCLIP);
@@ -245,16 +253,27 @@ void LevelScene::Render()
 		return;
 	}
 
-	// UI layout: adjust these values to reposition the level selector.
-	float titleY = 170.0f;
-	float levelY = 380.0f;
-	float startX = 270.0f;
-	float spacing = 310.0f;
-	float levelWidth = 120.0f;
-	float levelHeight = 70.0f;
+	// UI layout: responsive theo kích thước màn hình (original: 440x240 logical)
+	Renderer* r = Renderer::GetInstance();
+	int screenWidth = r->GetBackBufferWidth();
+	int screenHeight = r->GetBackBufferHeight();
+	float scale = r->GetGlobalScale();
+	float logicalW = screenWidth / scale;
+	float logicalH = screenHeight / scale;
 
+	// Original values: titleY=170, levelY=380, startX=270, spacing=310, levelWidth=120, levelHeight=70 (cho 1280x720)
+	// Scale factors dựa trên resolution logic 440x240
+	float titleY = logicalH * 0.70f;   // ~170/240
+	float levelY = logicalH * 1.58f;  // ~380/240
+	float startX = logicalW * 0.61f;   // ~270/440
+	float spacing = logicalW * 0.70f; // ~310/440
+	float levelWidth = logicalW * 0.27f; // ~120/440
+	float levelHeight = logicalH * 0.29f; // ~70/240
+
+	// Vẽ title "LEVEL" ở giữa màn hình
 	DrawCenteredText(L"LEVEL", (int)titleY, 120, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
+	// Vẽ các level 1-1, 1-2, 1-3, 1-4 với highlight cho level được chọn
 	const wchar_t* levels[] = { L"1-1", L"1-2", L"1-3", L"1-4" };
 	for (int i = 0; i < 4; i++)
 	{
@@ -264,7 +283,7 @@ void LevelScene::Render()
 		DrawTextLine(levels[i], (int)(startX + spacing * i), (int)levelY, (int)levelWidth, (int)levelHeight, color, DT_CENTER | DT_TOP | DT_NOCLIP);
 	}
 
-	DrawTextLine(L">", (int)(startX + spacing * selectedLevel - 10.0f), (int)levelY, 40, (int)levelHeight, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	// Vẽ cursor ">" bên trái level được chọn
 	spriteHandler->Flush();
 
 	spriteHandler->SetProjectionTransform(&oldProjection);
@@ -284,6 +303,7 @@ void LevelScene::AddObject(LPGAMEOBJECT obj)
 {
 }
 
+// Di chuyển lựa chọn với wrap-around (0 <-> 3)
 void LevelScene::MoveSelection(int delta)
 {
 	selectedLevel += delta;
@@ -291,6 +311,7 @@ void LevelScene::MoveSelection(int delta)
 	if (selectedLevel > 3) selectedLevel = 0;
 }
 
+// Xác nhận: set returnScene và chuyển qua INTRO scene
 void LevelScene::ConfirmSelection()
 {
 	const int levelScenes[] = {
@@ -300,11 +321,12 @@ void LevelScene::ConfirmSelection()
 		SCENE::WORLD_1_4
 	};
 
-	// Set returnScene to the selected level, then go through INTRO scene
+	// Set returnScene thành level được chọn, rồi đi qua INTRO scene
 	PlayerData::Get().returnScene = levelScenes[selectedLevel];
 	GameManager::GetInstance()->InitiateSwitchScene(SCENE::INTRO);
 }
 
+// Quay về menu chính
 void LevelScene::BackToMenu()
 {
 	GameManager::GetInstance()->InitiateSwitchScene(SCENE::MENU);

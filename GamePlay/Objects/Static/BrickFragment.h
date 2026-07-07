@@ -6,9 +6,11 @@ namespace BRICK_FRAGMENT_PARAMS
 	constexpr float GRAVITY = 0.001f;
 }
 
-class BrickFragment : public GameObject{
+// Mảnh gạch bay ra khi gạch bị phá - có trọng lực, tự xóa khi chạm death zone
+class BrickFragment : public GameObject
+{
 private:
-	int aniId;
+	int aniId;  // Animation ID của mảnh gạch
 public:
 	BrickFragment(float x, float y, float z, float vx, float vy, int aniId) : GameObject(x, y, z) {
 		this->vx = vx;

@@ -12,9 +12,8 @@ void Background::Render()
 
     int currentScene = GameManager::GetInstance()->GetCurrentSceneID();
 
-    // Menu / control / end are single static full-screen images authored at a higher
-    // resolution than the game's logical screen (~440x240). Stretch them to fill the
-    // screen instead of drawing at native pixel size (which would show only a corner).
+    // Menu/control/end là ảnh tĩnh toàn màn hình có độ phân giải cao hơn màn hình logic (~440x240)
+    // Stretch để lấp đầy màn hình thay vì vẽ ở kích thước gốc (chỉ hiện góc ảnh)
     if (currentScene == SCENE::MENU ||
         currentScene == SCENE::CONTROL ||
         currentScene == SCENE::END ||
@@ -27,7 +26,7 @@ void Background::Render()
         float logicalW = r->GetBackBufferWidth() / scale;
         float logicalH = r->GetBackBufferHeight() / scale;
 
-        // Anchor to the camera so the image always covers the visible area.
+        // Anchor vào camera để ảnh luôn lấp đầy vùng nhìn thấy
         float camX = Camera::GetInstance()->GetX();
         float camY = Camera::GetInstance()->GetY();
         ani->RenderScaled(camX, camY, z, logicalW, logicalH);
@@ -41,6 +40,7 @@ int Background::WorldRender()
 {
 	int currentScene = GameManager::GetInstance()->GetCurrentSceneID();
 
+	// Trả về animation ID tương ứng với scene hiện tại
 	if (currentScene == SCENE::WORLD_1_1)
 		return ANIMATION::BACKGROUND_LEVEL1_1;
 	if (currentScene == SCENE::WORLD_1_2)

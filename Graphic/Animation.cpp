@@ -3,71 +3,81 @@
 
 void Animation::Add(LPSPRITE sprite, DWORD time)
 {
-    frames.push_back(new AnimationFrame(sprite, time));
+	// Thêm frame mới vào danh sách
+	frames.push_back(new AnimationFrame(sprite, time));
 }
 
 void Animation::Render(float x, float y, float z)
 {
-    Render(x, y, z, false);
+	// Delegate cho phiên bản với flipX = false
+	Render(x, y, z, false);
 }
 
 void Animation::Render(float x, float y, float z, bool flipX)
 {
-    if (frames.size() == 0) return;
+	if (frames.size() == 0) return;
 
-    DWORD now = GetTickCount64();
+	DWORD now = GetTickCount64();
 
-    if (currentFrame == -1)
-    {
-        currentFrame = 0;
-        lastFrameTime = now;
-    }
-    else if (frames.size() > 1) 
-    {
-        DWORD t = frames[currentFrame]->GetTime();
-        if (now - lastFrameTime > t)
-        {
-            currentFrame++;
-            if (currentFrame >= frames.size())
-                currentFrame = 0;
+	// Nếu là lần render đầu tiên, bắt đầu từ frame 0
+	if (currentFrame == -1)
+	{
+		currentFrame = 0;
+		lastFrameTime = now;
+	}
+	// Nếu có nhiều hơn 1 frame, kiểm tra xem có cần chuyển frame không
+	else if (frames.size() > 1) 
+	{
+		DWORD t = frames[currentFrame]->GetTime();
+		// Nếu đã đủ thời gian hiển thị frame hiện tại, chuyển sang frame tiếp theo
+		if (now - lastFrameTime > t)
+		{
+			currentFrame++;
+			// Loop về frame đầu nếu đã hết
+			if (currentFrame >= frames.size())
+				currentFrame = 0;
 
-            lastFrameTime = now;
-        }
-    }
+			lastFrameTime = now;
+		}
+	}
 
-    LPSPRITE sprite = frames[currentFrame]->GetSprite();
-    if (sprite == nullptr) return;
+	// Lấy sprite của frame hiện tại
+	LPSPRITE sprite = frames[currentFrame]->GetSprite();
+	if (sprite == nullptr) return;
 
-    RECT rect = sprite->GetRect();
-    if (sprite->GetTexture() == nullptr) return;
+	RECT rect = sprite->GetRect();
+	if (sprite->GetTexture() == nullptr) return;
 
-    Renderer::GetInstance()->Draw(
-        x, y, z,
-        sprite->GetTexture(),
-        &rect,
-        1.0f,
-        flipX
-    );
+	// Render sprite qua Renderer
+	Renderer::GetInstance()->Draw(
+		x, y, z,
+		sprite->GetTexture(),
+		&rect,
+		1.0f,  // alpha
+		flipX
+	);
 }
 
 void Animation::RenderScaled(float x, float y, float z, float destWidth, float destHeight)
 {
-    if (frames.size() == 0) return;
+	if (frames.size() == 0) return;
 
-    if (currentFrame == -1)
-        currentFrame = 0;
+	// Nếu là lần render đầu tiên, bắt đầu từ frame 0
+	if (currentFrame == -1)
+		currentFrame = 0;
 
-    LPSPRITE sprite = frames[currentFrame]->GetSprite();
-    if (sprite == nullptr || sprite->GetTexture() == nullptr) return;
+	LPSPRITE sprite = frames[currentFrame]->GetSprite();
+	if (sprite == nullptr || sprite->GetTexture() == nullptr) return;
 
-    RECT rect = sprite->GetRect();
+	RECT rect = sprite->GetRect();
 
-    Renderer::GetInstance()->DrawScaled(
-        x, y, z,
-        sprite->GetTexture(),
-        destWidth, destHeight,
-        &rect,
-        1.0f,
-        false
-    );
+	// Render với kích thước tùy chỉnh (scale)
+	Renderer::GetInstance()->DrawScaled(
+		x, y, z,
+		sprite->GetTexture(),
+		destWidth, destHeight,
+		&rect,
+		1.0f,  // alpha
+		false  // không flipX cho background
+	);
 }

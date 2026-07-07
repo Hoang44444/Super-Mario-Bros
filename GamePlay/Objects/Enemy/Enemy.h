@@ -3,9 +3,12 @@
 #include "Mario.h"
 #include "../Core/ScoreManager.h"
 
-class Enemy : public GameObject{
+// Base class cho tất cả các enemy trong game
+// Xử lý va chạm với Mario, đạn, và star power
+class Enemy : public GameObject
+{
 protected:
-	ULONGLONG lastTurnTime = 0; // last time direction was flipped by a turn block (ms)
+	ULONGLONG lastTurnTime = 0; // Lần cuối hướng bị đảo bởi turn block (ms)
 public:
 	Enemy(float x, float y, float z) : GameObject(x, y, z) {};
 	virtual ~Enemy() {};
@@ -13,17 +16,16 @@ public:
 	bool IsCollidable() { return  true; }
 	bool IsBlocking() { return false; }
 
-	// Flip both facing and horizontal velocity, so enemies that only set their
-	// speed inside SetState() still turn around immediately.
+	// Đảo cả hướng nhìn và tốc độ ngang, để enemy chỉ set tốc độ trong SetState() vẫn quay ngay lập tức
 	void ReverseDirection() {
 		direction = -direction;
 		vx = -vx;
 	}
 
-	// Reverse only if at least cooldownMs has elapsed since the last flip.
-	// Used by EnemyTurnBlock so an enemy overlapping the block flips at most
-	// once per cooldown window (and keeps flipping every cooldown if it stays).
-	// Returns true if it actually reversed this call.
+	// Chỉ đảo nếu đã trôi qua cooldownMs kể từ lần đảo cuối
+	// Dùng bởi EnemyTurnBlock để enemy đè lên block chỉ đảo tối đa 1 lần mỗi cooldown
+	// (và tiếp tục đảo mỗi cooldown nếu vẫn ở đó)
+	// Trả về true nếu thực sự đảo trong lần gọi này
 	bool ReverseDirection(ULONGLONG cooldownMs) {
 		ULONGLONG now = GetTickCount64();
 		if (now - lastTurnTime < cooldownMs) return false;
@@ -32,19 +34,20 @@ public:
 		return true;
 	}
 
-	virtual void OnMarioCollison(Mario* mario, float ny) = 0; // Define this in derived classes to specify what happens when Mario collides with the enemy
+	// Xử lý khi Mario va chạm với enemy (mỗi class con định nghĩa riêng)
+	virtual void OnMarioCollison(Mario* mario, float ny) = 0;
 
-	// Called when a bullet hits this enemy. Default: just remove the enemy.
-	// Enemies that have a death animation override this to switch to their die state instead.
+	// Được gọi khi đạn trúng enemy. Mặc định: xóa enemy ngay.
+	// Enemy có animation chết override để chuyển sang trạng thái chết thay vì xóa.
 	virtual void OnHitByBullet() { 
-		// Award score for fireball kill (no combo for fireball/star kills)
+		// Cộng điểm khi giết bằng đạn lửa (không combo cho fireball/star kills)
 		ScoreManager::Get().AddScore(SCORE_VALUES::FIREBALL_KILL);
 		Delete(); 
 	}
 
-	// Called when star power kills this enemy
+	// Được gọi khi star power giết enemy
 	virtual void OnHitByStar(Mario* mario) {
-		// Award score with combo system for star kills
+		// Cộng điểm với hệ thống combo cho star kills
 		ScoreManager& scoreMgr = ScoreManager::Get();
 		scoreMgr.IncrementCombo();
 		
@@ -60,9 +63,9 @@ public:
 		Delete();
 	}
 
-	// Whether a turn block (id 44) is allowed to flip this enemy. Only enemies that are
-	// alive (IsCollidable() is false in death states) and actually moving (vx != 0) get
-	// turned; enemies that are alive but standing still (idle shell, hidden, ...) are left alone.
+	// Cho phép turn block (id 44) đảo hướng enemy này không.
+	// Chỉ enemy đang sống (IsCollidable() false ở trạng thái chết) và đang di chuyển (vx != 0) mới bị đảo
+	// Enemy sống nhưng đứng yên (shell idle, ẩn, ...) được giữ nguyên
 	virtual bool CanBeTurnedByBlock() { return IsCollidable() && vx != 0; }
 };
 

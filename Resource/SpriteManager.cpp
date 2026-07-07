@@ -1,6 +1,7 @@
 #include "SpriteManager.h"
 #include "debug.h"
 
+// Khởi tạo instance singleton tĩnh
 SpriteManager* SpriteManager::__instance = NULL;
 
 SpriteManager* SpriteManager::GetInstance()
@@ -11,10 +12,9 @@ SpriteManager* SpriteManager::GetInstance()
 
 void SpriteManager::Add(int id, int left, int top, int right, int bottom, LPTEXTURE tex)
 {
+	// Tạo sprite mới với vùng cho trước trên texture
 	LPSPRITE s = new Sprite(id, left, top, right, bottom, tex);
 	sprites[id] = s;
-
-	DebugOut(L"[INFO] sprite added: %d, %d, %d, %d, %d \n", id, left, top, right, bottom);
 }
 
 LPSPRITE SpriteManager::Get(int id)
@@ -27,6 +27,7 @@ LPSPRITE SpriteManager::Get(int id)
 
 void SpriteManager::Clear()
 {
+	// Xóa tất cả đối tượng Sprite để giải phóng bộ nhớ
 	for (auto x : sprites)
 	{
 		LPSPRITE s = x.second;

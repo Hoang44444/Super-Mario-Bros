@@ -17,11 +17,12 @@
 
 #define KOOPA_SHELL_TIMEOUT 5000
 
+// Koopa - enemy rùa có thể bị stomp thành shell, kick shell để giết enemy khác
 class Koopa : public Enemy
 {
 public:
-    ULONGLONG shell_start = 0;
-    bool isFacingRight;
+    ULONGLONG shell_start = 0;  // Tick khi bắt đầu state shell (để timeout)
+    bool isFacingRight;  // Hướng đang nhìn
 
     Koopa(float x, float y, float z = 0);
     virtual ~Koopa() {}
@@ -35,7 +36,7 @@ public:
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
     virtual void OnMarioCollison(Mario* mario, float ny) override;
     virtual void OnHitByBullet() override { SetState(KOOPA_STATE_DIE); }
-    // Only a normally-walking Koopa is flipped by a turn block; a spinning/sliding shell is not.
+    // Chỉ Koopa đang đi bộ bị flip bởi turn block; shell đang spin không bị.
     virtual bool CanBeTurnedByBlock() override { return state == KOOPA_STATE_WALKING; }
     virtual bool IsCollidable() override;
 };

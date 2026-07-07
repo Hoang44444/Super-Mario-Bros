@@ -5,9 +5,11 @@
 constexpr float PIPE_BBOX_WIDTH = 32.0f;
 constexpr float PIPE_BBOX_HEIGHT = 32.0f;
 
-class Pipe : public StaticObject {
+// Ống (pipe) - vật tĩnh dùng để đi vào hoặc làm chướng ngại vật
+class Pipe : public StaticObject
+{
 private:
-	int animationId = ANIMATION::PIPE_OVERWORLD;
+	int animationId = ANIMATION::PIPE_OVERWORLD;  // Animation ID của ống
 public:
 	Pipe(float x, float y, float z) : StaticObject(x, y, z) {}
 	Pipe(float x, float y, float z, int animationId) : StaticObject(x, y, z) {

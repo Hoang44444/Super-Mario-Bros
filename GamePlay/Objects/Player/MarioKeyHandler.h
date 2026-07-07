@@ -6,15 +6,14 @@
 #include "../Resource/AssetID.h"
 #include "debug.h"
 
+// Xử lý input bàn phím cho Mario trong gameplay
+// Chuyển đổi input người chơi thành hành động của Mario (di chuyển, nhảy, bắn, pause)
 class MarioKeyHandler : public KeyEventHandler
 {
 	PlayScene* scene;
 
 	// A1/A4: một nguồn edge duy nhất — set từ OnKeyDown, consume trong KeyState
 	bool jumpPending = false;
-
-	// Debug: Fly mode toggle (kháng sát thương, bay ở y=150, không flicker)
-	bool flyMode = false;
 
 public:
 	MarioKeyHandler(PlayScene* s) : KeyEventHandler() {
@@ -27,24 +26,24 @@ public:
 
 		if (mario->GetState() == MARIO_STATE::DIE) return;
 
-		// Determine movement direction
+		// Xác định hướng di chuyển
 		int moveDir = 0;
 		if (states[VK_RIGHT] & 0x80)
 			moveDir = 1;
 		else if (states[VK_LEFT] & 0x80)
 			moveDir = -1;
 
-		// A4: jumpPressed = polling (variable jump height); jumpJustPressed = event jumpPending
+		// A4: jumpPressed = polling (chiều cao nhảy biến đổi); jumpJustPressed = event jumpPending
 		bool jumpPressed = (states[VK_SPACE] & 0x80) != 0;
 		bool jumpJustPressed = jumpPending;
 
 		// NES gốc: chạy = giữ phím hướng liên tục (không có phím Run; Shift = bắn)
 		bool runHeld = (moveDir != 0);
 
-		// Check sit button state (Down)
+		// Kiểm tra trạng thái phím ngồi (Down)
 		bool sitPressed = (states[VK_DOWN] & 0x80) != 0;
 
-		// Provide input to physics system
+		// Cung cấp input cho hệ thống physics
 		Mario* marioObj = dynamic_cast<Mario*>(mario);
 		if (marioObj != nullptr)
 		{
@@ -52,9 +51,9 @@ public:
 		}
 		jumpPending = false; // A1: consume event edge sau khi đẩy sang Mario
 
-		// Set animation state based on movement (for rendering)
-		// NOTE: When Mario is DEAD, this entire function returns early (line 25),
-		// so no animation state changes occur during death.
+		// Set trạng thái animation dựa trên di chuyển (để render)
+		// LƯU Ý: Khi Mario DEAD, hàm này return sớm (dòng 25),
+		// nên không có thay đổi trạng thái animation trong lúc chết.
 		if (sitPressed)
 		{
 			mario->SetState(MARIO_STATE::SIT);
@@ -73,8 +72,8 @@ public:
 	}
 
 	virtual void OnKeyDown(int KeyCode) {
-		// 'P' pauses the game. While paused, input is handled by PauseKeyHandler
-		// (GameManager routes by game state), so we only need to enter PAUSE here.
+		// 'P' pause game. Khi pause, input được xử lý bởi PauseKeyHandler
+		// (GameManager route theo game state), nên chỉ cần vào PAUSE ở đây.
 		if (KeyCode == 'P') {
 			GameManager::GetInstance()->SetGameState(GAME_STATE::PAUSE);
 			return;
@@ -85,34 +84,12 @@ public:
 
 		if (mario->GetState() == MARIO_STATE::DIE) return;
 
-		// Handle non-physics actions (shooting)
-		// NOTE: When Mario is DEAD, this entire function returns early (line 81),
-		// so no input affects Mario's state or velocity during death.
+		// Xử lý các hành động không phải physics (bắn)
+		// LƯU Ý: Khi Mario DEAD, hàm này return sớm (dòng 81),
+		// nên không có input ảnh hưởng trạng thái hoặc tốc độ Mario trong lúc chết.
 		switch (KeyCode)
 		{
-		case 'G':
-		{
-			// Debug: Toggle fly mode (kháng sát thương, bay ở y=150, không flicker)
-			flyMode = !flyMode;
-			Mario* marioObj = dynamic_cast<Mario*>(mario);
-			if (marioObj != nullptr)
-			{
-				marioObj->SetFlyMode(flyMode);
-				if (flyMode)
-				{
-					marioObj->SetInvincible(999999999); // Kháng sát thương vô thời hạn
-					DebugOut(L"[DEBUG] Fly mode ON\n");
-				}
-				else
-				{
-					marioObj->SetInvincible(0); // Tắt miễn thương
-					DebugOut(L"[DEBUG] Fly mode OFF\n");
-				}
-			}
-			break;
-		}
 		case VK_SHIFT:
-			DebugOut(L"[KEYBOARD] Key 'Shift' pressed: Shooting bullet\n");
 			mario->SetState(MARIO_STATE::SHOOT);
 			break;
 		case VK_SPACE:

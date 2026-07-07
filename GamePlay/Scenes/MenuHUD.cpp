@@ -14,7 +14,7 @@ MenuHUD::MenuHUD()
 	this->font = nullptr;
 	this->selectedOption = 0;
 	
-	// Cursor initial position (will be updated in Update)
+	// Vị trí con trỏ ban đầu (sẽ được cập nhật trong Update)
 	this->cursorX = 150.0f;
 	this->cursorY = 200.0f;
 
@@ -42,7 +42,7 @@ void MenuHUD::CreateFontIfNeeded()
 
 	D3DX10CreateFont(
 		device,
-		80,  // Height (changed from 60 to 80 for bigger buttons)
+		80,  // Chiều cao font (tăng từ 60 lên 80 để chữ lớn hơn)
 		0,
 		FW_BOLD,
 		1,
@@ -118,9 +118,9 @@ void MenuHUD::Update()
 		cursorHeight = (float)(rect.bottom - rect.top);
 	}
 
-	// Position the cursor to the left of the menu starting position
+	// Đặt con trỏ bên trái menu
 	cursorX = menuStartX - (cursorWidth * scale) - 20.0f;
-	// Vertically center the cursor relative to the text line
+	// Căn giữa con trỏ theo chiều dọc so với dòng text
 	cursorY = menuStartY + selectedOption * menuSpacing + (fontHeight - cursorHeight * scale) / 2.0f;
 }
 
@@ -152,7 +152,7 @@ void MenuHUD::Render()
 	ID3D10SamplerState* oldSamplerState = nullptr;
 	device->PSGetSamplers(0, 1, &oldSamplerState);
 
-	// 1. Flush background
+	// 1. Xóa background
 	spriteHandler->Flush();
 
 	Renderer* r = Renderer::GetInstance();
@@ -163,7 +163,7 @@ void MenuHUD::Render()
 	float camX = Camera::GetInstance()->GetX();
 	float camY = Camera::GetInstance()->GetY();
 
-	// 2. Render Mario decoration (world-space)
+	// 2. Vẽ Mario trang trí (world-space)
 	LPANIMATION marioAni = AnimationManager::GetInstance()->Get(1100); // MARIO_SMALL_IDLE_RIGHT
 	if (marioAni != nullptr)
 	{
@@ -176,28 +176,28 @@ void MenuHUD::Render()
 		);
 	}
 
-	// 3. Render Cursor (world-space)
+	// 3. Vẽ con trỏ chọn (world-space)
 	DrawCursor();
 
-	// 4. Flush Mario and Cursor sprites
+	// 4. Xóa sprite Mario và con trỏ
 	spriteHandler->Flush();
 
-	// 5. Draw menu items (screen-space)
+	// 5. Vẽ các tùy chọn menu (screen-space)
 	const wchar_t* menuItems[] = { L"START", L"LEVEL", L"HELP", L"QUIT" };
 	
 	for (int i = 0; i < 4; i++)
 	{
 		D3DXCOLOR color = (i == selectedOption) ? 
-			D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f) :  // Yellow for selected
-			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);   // White for unselected
+			D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f) :  // Vàng cho tùy chọn đang chọn
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);   // Trắng cho tùy chọn khác
 		
 		DrawTextLine(menuItems[i], (int)menuStartX, (int)(menuStartY + i * menuSpacing), 400, (int)fontHeight, color);
 	}
 
-	// 6. Flush text drawings
+	// 6. Xóa text
 	spriteHandler->Flush();
 
-	// 7. Restore original transforms and pipeline state
+	// 7. Khôi phục trạng thái ban đầu
 	spriteHandler->SetProjectionTransform(&oldProjection);
 	spriteHandler->SetViewTransform(&oldView);
 	device->RSSetViewports(oldViewportCount, oldViewports);
@@ -215,7 +215,7 @@ void MenuHUD::MoveSelection(int delta)
 {
 	selectedOption += delta;
 	
-	// Clamp to valid range
+	// Giới hạn trong khoảng 0-3 (vòng lại)
 	if (selectedOption < 0) selectedOption = 3;
 	if (selectedOption > 3) selectedOption = 0;
 }

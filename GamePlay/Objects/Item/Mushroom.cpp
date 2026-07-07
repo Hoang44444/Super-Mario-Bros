@@ -39,8 +39,8 @@ void Mushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (dynamic_cast<StaticObject*>(e->obj))
 	{
-		if (e->ny < 0) vy = 0;
-		else if (e->nx != 0) { direction = -direction; vx = MUSHROOM_SPEED * direction; }
+		if (e->ny < 0) vy = 0;  // Chạm đất
+		else if (e->nx != 0) { direction = -direction; vx = MUSHROOM_SPEED * direction; }  // Chạm tường -> đảo hướng
 	}
 }
 
@@ -49,7 +49,7 @@ void Mushroom::OnMarioCollision(Mario* mario)
 	SoundManager::GetInstance()->PlaySFX(SFX::POWERUP);
 	mario->SetLevel(MARIO_LEVEL::BIG);
 	
-	// Award score for Super Mushroom
+	// Cộng điểm cho Super Mushroom
 	ScoreManager::Get().AddScore(SCORE_VALUES::SUPER_MUSHROOM);
 	
 	Delete();

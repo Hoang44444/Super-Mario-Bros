@@ -13,27 +13,27 @@ void DynamicPlatform::Movement(DWORD dt) {
 		x += direction * speed * dt;
 		if (x < minBound) {
 			x = minBound;
-			direction = 1; // Move right
+			direction = 1; // Đi phải
 		}
 		else if (x > maxBound) {
 			x = maxBound;
-			direction = -1; // Move left
+			direction = -1; // Đi trái
 		}
 	}
 	else if (type == DYNAMIC_PLATFORM_TYPE::VERTICAL) {
 		y += direction * speed * dt;
 		if (y < minBound) {
 			y = minBound;
-			direction = 1; // Move down
+			direction = 1; // Xuống
 		}
 		else if (y > maxBound) {
 			y = maxBound;
-			direction = -1; // Move up
+			direction = -1; // Lên
 		}
 	}
 
-	// keep velocity in sync with the (possibly just-flipped) direction
-	// so other objects reading our speed don't lag one frame behind
+	// Đồng bộ tốc độ với hướng (có thể vừa đảo)
+	// để các đối tượng khác đọc tốc độ không bị trễ 1 frame
 	this->vx = GetVx();
 	this->vy = GetVy();
 }
@@ -54,6 +54,7 @@ void DynamicPlatform::GetBoundingBox(float& l, float& t, float& r, float& b) {
 }
 
 void DynamicPlatform::OnCollisionWith(LPCOLLISIONEVENT e) {
+	// Chạm vật tĩnh hoặc sàn khác -> đảo hướng
 	if (dynamic_cast<StaticObject*>(e->obj) || dynamic_cast<DynamicPlatform*>(e->obj)) {
 		direction *= -1;
 		vx = GetVx();

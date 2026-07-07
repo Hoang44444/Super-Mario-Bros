@@ -1,6 +1,7 @@
 #include "ScoreManager.h"
 #include "debug.h"
 
+// Thêm điểm (cap tại 999999)
 void ScoreManager::AddScore(int value)
 {
 	if (value <= 0) return;
@@ -18,16 +19,19 @@ void ScoreManager::AddScore(int value)
 	}
 }
 
+// Lấy điểm hiện tại
 int ScoreManager::GetScore()
 {
 	return PlayerData::Get().score;
 }
 
+// Reset điểm về 0
 void ScoreManager::ResetScore()
 {
 	PlayerData::Get().score = 0;
 }
 
+// Tăng combo count (khi giết enemy trên không)
 void ScoreManager::IncrementCombo()
 {
 	comboCount++;
@@ -37,11 +41,13 @@ void ScoreManager::IncrementCombo()
 	}
 }
 
+// Reset combo về 0
 void ScoreManager::ResetCombo()
 {
 	comboCount = 0;
 }
 
+// Lấy điểm combo hiện tại dựa trên combo count
 int ScoreManager::GetComboScore()
 {
 	if (comboCount == 0) return 0;
@@ -60,14 +66,16 @@ int ScoreManager::GetComboScore()
 	}
 }
 
+// Kiểm tra đã đạt max combo chưa
 bool ScoreManager::IsMaxCombo()
 {
 	return comboCount >= COMBO_SCORES::MAX_LEVEL;
 }
 
+// Set trạng thái on ground (reset combo khi chạm đất)
 void ScoreManager::SetOnGround(bool onGround)
 {
-	// Reset combo when landing on ground
+	// Reset combo khi chạm đất
 	if (onGround && !isOnGround)
 	{
 		ResetCombo();
@@ -75,11 +83,14 @@ void ScoreManager::SetOnGround(bool onGround)
 	isOnGround = onGround;
 }
 
+// Kiểm tra có đang on ground không
 bool ScoreManager::IsOnGround() const
 {
 	return isOnGround;
 }
 
+// Thêm xu (mặc định 1)
+// Cộng 200 điểm mỗi xu và 1UP mỗi 100 xu
 void ScoreManager::AddCoin(int amount)
 {
 	if (amount <= 0) return;
@@ -98,11 +109,14 @@ void ScoreManager::AddCoin(int amount)
 	}
 }
 
+// Lấy số xu hiện tại
 int ScoreManager::GetCoins()
 {
 	return PlayerData::Get().coins;
 }
 
+// Thêm mạng (mặc định 1)
+// Cap tại 99
 void ScoreManager::AddLife(int amount)
 {
 	if (amount <= 0) return;
@@ -117,11 +131,13 @@ void ScoreManager::AddLife(int amount)
 	}
 }
 
+// Lấy số mạng hiện tại
 int ScoreManager::GetLives()
 {
 	return PlayerData::Get().lives;
 }
 
+// Reset tất cả scoring state (cho game mới)
 void ScoreManager::ResetAll()
 {
 	PlayerData::Get().Reset();

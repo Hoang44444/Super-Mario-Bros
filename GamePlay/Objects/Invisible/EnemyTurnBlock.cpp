@@ -17,21 +17,21 @@ void EnemyTurnBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	for (LPGAMEOBJECT obj : *coObjects) {
 		if (obj == NULL || obj->IsDeleted()) continue;
 
-		// Only enemies are affected; everything else (Mario, items, ...) is ignored.
+		// Chỉ enemy bị ảnh hưởng; các đối tượng khác (Mario, items, ...) bị bỏ qua
 		Enemy* enemy = dynamic_cast<Enemy*>(obj);
 		if (enemy == NULL) continue;
 
-		// Skip enemies that are alive but not moving (idle shell, hidden, ...) or dying.
+		// Bỏ qua enemy đang sống nhưng không di chuyển (shell idle, ẩn, ...) hoặc đang chết
 		if (!enemy->CanBeTurnedByBlock()) continue;
 
 		float el, et, er, eb;
 		enemy->GetBoundingBox(el, et, er, eb);
 
-		// AABB overlap test
+		// Kiểm tra AABB overlap
 		bool overlap = !(er < bl || el > br || eb < bt || et > bb);
 		if (!overlap) continue;
 
-		// Flip on contact, throttled so it turns at most once per cooldown window.
+		// Đảo hướng khi chạm, giới hạn để đảo tối đa 1 lần mỗi cooldown
 		enemy->ReverseDirection(ENEMY_TURN_BLOCK::TURN_COOLDOWN);
 	}
 }

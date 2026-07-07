@@ -7,19 +7,19 @@
 
 void Bullet::Moving(DWORD dt)
 {
-	// Move along both axes so the bullet follows a parabolic path
+	// Di chuyển theo cả 2 trục để đạn đi theo đường parabol
 	this->x += this->vx * dt;
 	this->y += this->vy * dt;
 }
 
 void Bullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	// Gravity makes the trajectory a parabola
+	// Trọng lực tạo đường cong parabol
 	vy += BULLET_GRAVITY * dt;
 
 	Collision::GetInstance()->Process(this, dt, coObjects);
 
-	// Delete once it has travelled far enough from where it was fired
+	// Xóa khi bay quá xa so với vị trí bắn
 	if (abs(this->x - startX) > BULLET_MAX_DISTANCE) {
 		this->Delete();
 	}
@@ -44,10 +44,10 @@ void Bullet::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->obj == owner) return;        // Ignore collision with the owner
+	if (e->obj == owner) return;        // Bỏ qua va chạm với chủ sở hữu
 
-	if (dynamic_cast<Enemy*>(e->obj)) { // hit an enemy -> handle before the blocking check
-		OnCollisionWithEnemy(e);        // (enemies are non-blocking, so this must come first)
+	if (dynamic_cast<Enemy*>(e->obj)) { // Trúng enemy -> xử lý trước khi check blocking
+		OnCollisionWithEnemy(e);        // (enemy không blocking, nên phải xử lý trước)
 		return;
 	}
 
@@ -58,7 +58,7 @@ void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 		return;
 	}
 
-	if (!e->obj->IsBlocking()) return;  // pass through other non-static objects
+	if (!e->obj->IsBlocking()) return;  // Lọt qua các đối tượng không tĩnh
 
 	// Đụng tường theo chiều X -> biến mất.
 	if (e->nx != 0) {
@@ -66,22 +66,22 @@ void Bullet::OnCollisionWith(LPCOLLISIONEVENT e)
 		return;
 	}
 
-	// Bounce off static objects instead of disappearing
-	if (e->ny < 0) {                    // hit floor -> bounce up
+	// Nảy lên khi chạm vật tĩnh thay vì biến mất
+	if (e->ny < 0) {                    // Chạm đất -> nảy lên
 		vy = -BULLET_BOUNCE_SPEED;
 	}
-	else if (e->ny > 0) {               // hit ceiling -> push down
+	else if (e->ny > 0) {               // Chạm trần -> đẩy xuống
 		vy = BULLET_BOUNCE_SPEED;
 	}
 }
 
 void Bullet::OnCollisionWithEnemy(LPCOLLISIONEVENT e)
 {
-	if (e->obj == owner) return;        // Ignore collision with the owner
-	if (e->obj->IsDeleted()) return;    // Ignore already deleted objects
+	if (e->obj == owner) return;        // Bỏ qua va chạm với chủ sở hữu
+	if (e->obj->IsDeleted()) return;    // Bỏ qua đối tượng đã xóa
 
-	// Put the enemy into its die state (each enemy decides how it dies),
-	// then remove the bullet.
+	// Chuyển enemy sang trạng thái chết (mỗi enemy tự quyết định cách chết),
+	// sau đó xóa đạn.
 	if (Enemy* enemy = dynamic_cast<Enemy*>(e->obj)) {
 		enemy->OnHitByBullet();
 	}

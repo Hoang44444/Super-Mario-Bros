@@ -4,15 +4,15 @@
 #include "PlayerData.h"
 #include "../Resource/AssetID.h"
 
-// Input handler used on the game-over screen (GAME_STATE::GAME_OVER, out of lives).
-// Enter/Space resets the run and replays from the first level ("chơi lại từ đầu").
+// Xử lý input khi màn hình Game Over xuất hiện (GAME_STATE::GAME_OVER, hết mạng)
+// Enter/Space reset dữ liệu người chơi và về menu chính
 class GameOverHandler : public KeyEventHandler
 {
 public:
 	void KeyState(BYTE* states) override {}
 
 	void OnKeyDown(int KeyCode) override {
-		if (KeyCode == VK_RETURN || KeyCode == VK_SPACE)
+		if (KeyCode == VK_SPACE)
 		{
 			PlayerData::Get().Reset();
 			GameManager::GetInstance()->InitiateSwitchScene(SCENE::MENU);

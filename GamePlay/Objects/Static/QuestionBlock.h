@@ -10,11 +10,14 @@ namespace QUESTION_BLOCK_STATE
 	constexpr int DELETED = 1;
 }
 
-class QuestionBlock : public StaticObject {
+// Block hỏi dấu ? - Mario đụng từ dưới sẽ ra item (coin, mushroom, flower, star)
+// Sau khi dùng sẽ chuyển sang trạng thái đã dùng (block trống)
+class QuestionBlock : public StaticObject
+{
 private:
-	int itemType;        // OBJECT type id of the item released when hit
-	void Break();
-	void SpawnItem(Mario* mario);
+	int itemType;        // ID loại item được giải phóng khi bị đụng
+	void Break();  // Chuyển sang trạng thái đã dùng
+	void SpawnItem(Mario* mario);  // Tạo item từ block
 public:
 	QuestionBlock(float x, float y, float z, int itemType = OBJECT::COIN) : StaticObject(x, y, z) {
 		this->state = QUESTION_BLOCK_STATE::ACTIVE;

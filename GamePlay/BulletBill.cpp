@@ -17,7 +17,7 @@ void BulletBill::SetMovement(int dir)
 void BulletBill::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	x += vx * dt;
-	// remove if out too far of screen 
+	// xóa nếu ra quá xa màn hình 
 	if (x < 0 || x > 5120)
 	{
 		Delete();

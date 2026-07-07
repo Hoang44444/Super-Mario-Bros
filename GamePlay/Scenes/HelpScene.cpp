@@ -11,10 +11,11 @@
 #include "TextureManager.h"
 #include "../Resource/AssetID.h"
 
+// Key handler cho HelpScene - xử lý input bàn phím cho menu settings
 class HelpSceneKeyHandler : public KeyEventHandler
 {
 private:
-	HelpScene* scene;
+	HelpScene* scene;  // Con trỏ đến HelpScene
 
 public:
 	HelpSceneKeyHandler(HelpScene* scene) : scene(scene) {}
@@ -24,22 +25,22 @@ public:
 		switch (keyCode)
 		{
 		case VK_UP:
-			scene->MoveSelection(-1);
+			scene->MoveSelection(-1);  // Di lên
 			break;
 		case VK_DOWN:
-			scene->MoveSelection(1);
+			scene->MoveSelection(1);  // Di xuống
 			break;
 		case VK_LEFT:
-			scene->AdjustSelection(-10);
+			scene->AdjustSelection(-10);  // Giảm giá trị
 			break;
 		case VK_RIGHT:
-			scene->AdjustSelection(10);
+			scene->AdjustSelection(10);  // Tăng giá trị
 			break;
-		case VK_RETURN:
-			scene->ConfirmSelection();
+		case VK_SPACE:
+			scene->ConfirmSelection();  // Xác nhận
 			break;
 		case VK_ESCAPE:
-			scene->BackToMenu();
+			scene->BackToMenu();  // Quay về menu
 			break;
 		}
 	}
@@ -61,6 +62,8 @@ HelpScene::~HelpScene()
 	key_handler = nullptr;
 }
 
+// Đọc file scene để lấy đường dẫn background
+// Nếu không tìm thấy, dùng mặc định
 void HelpScene::LoadBackgroundPath()
 {
 	std::ifstream f(sceneFilePath.c_str());
@@ -78,11 +81,13 @@ void HelpScene::LoadBackgroundPath()
 		if (line.empty() || line[0] == '#') continue;
 		if (!line.empty() && line.back() == '\r') line.pop_back();
 
-		if (line == "[BACKGROUND]") { section = 1; continue; }
-		if (line[0] == '[') { section = 0; continue; }
+	// Parse file scene: tìm section [BACKGROUND] và đường dẫn ảnh
+	if (line == "[BACKGROUND]") { section = 1; continue; }  // Bắt đầu section background
+	if (line[0] == '[') { section = 0; continue; }  // Section khác -> thoát
 
 		if (section == 1)
 		{
+			// Đọc đường dẫn background từ file
 			std::stringstream ss(line);
 			std::string path;
 			ss >> path;
@@ -122,6 +127,7 @@ void HelpScene::CreateFontIfNeeded()
 
 void HelpScene::Load()
 {
+	// Load background, reset camera, áp dụng volume settings
 	LoadBackgroundPath();
 	Camera::GetInstance()->SetPosition(0.0f, 0.0f);
 	ApplyVolumes();
@@ -146,6 +152,7 @@ void HelpScene::Update(DWORD dt)
 {
 }
 
+// Vẽ background stretch để lấp đầy màn hình
 void HelpScene::DrawBackground()
 {
 	if (background == nullptr) return;
@@ -175,6 +182,8 @@ void HelpScene::DrawTextLine(const wchar_t* text, int x, int y, int width, int h
 
 void HelpScene::DrawVolumeOption(const wchar_t* label, int value, int x, int y, bool selected)
 {
+	// Vẽ option volume với label, value và highlight nếu được chọn
+	// Format: "< value >" với màu vàng
 	wchar_t line[128];
 	swprintf_s(line, L"%s < %3d >", label, value);
 
@@ -186,6 +195,8 @@ void HelpScene::DrawVolumeOption(const wchar_t* label, int value, int x, int y, 
 	DrawTextLine(line, x, y, 520, 44, color, DT_LEFT | DT_TOP | DT_NOCLIP);
 }
 
+// Điều chỉnh volume của option được chọn (master/music/sfx)
+// Giới hạn trong khoảng [0, 100]
 void HelpScene::AdjustSelectedVolume(int delta)
 {
 	SoundManager* sound = SoundManager::GetInstance();
@@ -208,6 +219,8 @@ void HelpScene::AdjustSelectedVolume(int delta)
 
 void HelpScene::ApplyVolumes()
 {
+	// Áp dụng volume settings: tính effective volume = master * setting / 100
+	// Áp dụng cho BGM và tất cả SFX
 	SoundManager* sound = SoundManager::GetInstance();
 	int masterVolume = sound->GetMasterVolume();
 	int musicVolume = sound->GetMusicVolume();
@@ -286,28 +299,42 @@ void HelpScene::Render()
 		return;
 	}
 
-	// UI layout: adjust these values to reposition help text and volume controls.
-	const int leftX = 420;
-	const int rightX = 840;
-	const int controlsY = 170;
-	const int lineHeight = 52;
-	const int volumeY = 370;
+	// Layout UI: responsive theo kích thước màn hình (original: 440x240 logical)
+	// Scale factors dựa trên resolution logic 440x240
+	Renderer* r = Renderer::GetInstance();
+	int screenWidth = r->GetBackBufferWidth();
+	int screenHeight = r->GetBackBufferHeight();
+	float scale = r->GetGlobalScale();
+	int logicalW = (int)(screenWidth / scale);
+	int logicalH = (int)(screenHeight / scale);
 
-	DrawTextLine(L"Move left / right", leftX, controlsY, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	// Original values: leftX=420, rightX=840, controlsY=170, lineHeight=52, volumeY=370 (cho 1280x720)
+	// Scale factors dựa trên resolution logic 440x240
+	const int leftX = (int)(logicalW * 0.95f);   // ~420/440
+	const int rightX = (int)(logicalW * 1.90f);  // ~840/440
+	const int controlsY = (int)(logicalH * 0.70f); // ~170/240
+	const int lineHeight = (int)(logicalH * 0.22f);  // ~52/240
+	const int volumeY = (int)(logicalH * 1.54f);   // ~370/240
+
+	// Vẽ hướng dẫn điều khiển (bên trái: action, bên phải: phím)
+	DrawTextLine(L"Move", leftX, controlsY, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Left / Right Arrow", rightX, controlsY, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
-	DrawTextLine(L"Jump", leftX, controlsY + lineHeight, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	DrawTextLine(L"Jump / Interact", leftX, controlsY + lineHeight, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Space", rightX, controlsY + lineHeight, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Shoot", leftX, controlsY + lineHeight * 2, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Shift", rightX, controlsY + lineHeight * 2, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	DrawTextLine(L"Back", leftX, controlsY + lineHeight * 3, 380, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
+	DrawTextLine(L"Esc", rightX, controlsY + lineHeight * 3, 520, 44, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), DT_LEFT | DT_TOP | DT_NOCLIP);
 
 	SoundManager* sound = SoundManager::GetInstance();
 	DrawVolumeOption(L"Master Volume", sound->GetMasterVolume(), leftX, volumeY, selectedOption == 0);
 	DrawVolumeOption(L"Music Volume ", sound->GetMusicVolume(), leftX, volumeY + lineHeight, selectedOption == 1);
 	DrawVolumeOption(L"SFX Volume   ", sound->GetSFXVolume(), leftX, volumeY + lineHeight * 2, selectedOption == 2);
 
+// Vẽ nút Back với highlight nếu được chọn
 	D3DXCOLOR backColor = (selectedOption == 3) ?
-		D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f) :
-		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f) :
+		D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
 	DrawTextLine(L"<", leftX - 42, volumeY + lineHeight * 3, 40, 44, backColor, DT_LEFT | DT_TOP | DT_NOCLIP);
 	DrawTextLine(L"Back", leftX, volumeY + lineHeight * 3, 200, 44, backColor, DT_LEFT | DT_TOP | DT_NOCLIP);
 
@@ -330,6 +357,7 @@ void HelpScene::AddObject(LPGAMEOBJECT obj)
 {
 }
 
+// Di chuyển lựa chọn với wrap-around (0 <-> 3)
 void HelpScene::MoveSelection(int delta)
 {
 	selectedOption += delta;
@@ -337,6 +365,7 @@ void HelpScene::MoveSelection(int delta)
 	if (selectedOption > 3) selectedOption = 0;
 }
 
+// Điều chỉnh giá trị của option hiện tại (volume)
 void HelpScene::AdjustSelection(int delta)
 {
 	AdjustSelectedVolume(delta);
@@ -344,10 +373,12 @@ void HelpScene::AdjustSelection(int delta)
 
 void HelpScene::ConfirmSelection()
 {
+	// Xác nhận: nếu chọn Back thì quay về menu
 	if (selectedOption == 3)
 		BackToMenu();
 }
 
+// Quay về menu chính
 void HelpScene::BackToMenu()
 {
 	GameManager::GetInstance()->InitiateSwitchScene(SCENE::MENU);

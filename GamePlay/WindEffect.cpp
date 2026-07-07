@@ -52,12 +52,12 @@ void WindEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
     // Gió xuất hiện ngay tại mép phải khung hình (cx + screenW) rồi trôi vào,
     // nên đợt gió bắt đầu vừa khít với khung hình.
-    float spawnX = cx + screenW - WIND_SPAWN_INSET;
+    float spawnX = cx + (float)screenW - WIND_SPAWN_INSET;
 
     if (this->isWindActive)
     {
         float time = (float)GetTickCount64();
-        float flutter = sin(time * WIND_FLUTTER_FREQ) * WIND_FLUTTER_AMP;
+        float flutter = (float)(sin(time * WIND_FLUTTER_FREQ) * WIND_FLUTTER_AMP);
 
         this->x += vx * dt;
         this->y += (vy + flutter) * dt;

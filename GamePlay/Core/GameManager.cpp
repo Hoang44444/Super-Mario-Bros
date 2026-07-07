@@ -16,9 +16,10 @@
 #include "debug.h"
 #include "Renderer.h"
 
+// Khởi tạo instance singleton tĩnh
 GameManager* GameManager::__instance = NULL;
 
-// State-specific input handlers (don't belong to any scene file).
+// State-specific input handlers (không thuộc scene nào)
 static PauseKeyHandler s_pauseHandler;
 static GameOverHandler s_gameOverHandler;
 
@@ -33,12 +34,14 @@ GameManager::GameManager()
 	key_handler = NULL;
 }
 
+// Lấy instance singleton - tạo mới nếu chưa tồn tại
 GameManager* GameManager::GetInstance()
 {
 	if (__instance == NULL) __instance = new GameManager();
 	return __instance;
 }
 
+// Khởi tạo các hệ thống game (Renderer, SoundManager)
 void GameManager::Init(HWND hWnd, HINSTANCE hInstance)
 {
 	this->hWnd = hWnd;
@@ -46,6 +49,8 @@ void GameManager::Init(HWND hWnd, HINSTANCE hInstance)
 	SoundManager::GetInstance()->Init(hWnd);
 }
 
+// Xử lý keyboard state (được gọi mỗi frame)
+// Nếu game đang pause -> bỏ qua
 void GameManager::ProcessKeyboard()
 {
 	if (game_state == GAME_STATE::PAUSE) return; // frozen: ignore held-key movement
@@ -60,26 +65,36 @@ void GameManager::ProcessKeyboard()
 	}
 }
 
+// Xử lý key down event
+// Route key press đến handler phù hợp với game state hiện tại
 void GameManager::OnKeyDown(int KeyCode)
 {
 	// Route discrete key presses to the handler that matches the current game state.
 	if (game_state == GAME_STATE::PAUSE) { s_pauseHandler.OnKeyDown(KeyCode); return; }
 	if (game_state == GAME_STATE::GAME_OVER) { s_gameOverHandler.OnKeyDown(KeyCode); return; }
 
+	// ESC để thoát về menu khi đang chơi
+	if (game_state == GAME_STATE::PLAY && KeyCode == VK_ESCAPE) {
+		SetGameState(GAME_STATE::MENU);
+		InitiateSwitchScene(SCENE::MENU);
+		return;
+	}
+
 	if (key_handler != NULL)
 		key_handler->OnKeyDown(KeyCode);
 }
 
+// Xử lý key up event
 void GameManager::OnKeyUp(int KeyCode)
 {
 	if (key_handler != NULL)
 		key_handler->OnKeyUp(KeyCode);
 }
 
+// Load settings (screen width/height) từ file config
+// Chỉ parse section [SETTINGS]
 void GameManager::LoadSettings(LPCWSTR gameFile)
 {
-	DebugOut(L"[INFO] Start loading game settings from : %s \n", gameFile);
-
 	ifstream f;
 	f.open(gameFile);
 
@@ -108,11 +123,10 @@ void GameManager::LoadSettings(LPCWSTR gameFile)
 
 /*
 	Load master configuration file
+	Parse các section: [SETTINGS], [SCENES], [TEXTURES]
 */
 void GameManager::Load(LPCWSTR gameFile)
 {
-	DebugOut(L"[INFO] Start loading game from : %s \n", gameFile);
-
 	ifstream f;
 	f.open(gameFile);
 
@@ -142,13 +156,11 @@ void GameManager::Load(LPCWSTR gameFile)
 		}
 	}
 	f.close();
-
-	DebugOut(L"[INFO] Done loading game from : %s \n", gameFile);
-
+	// Chuyển đến scene khởi đầu
 	SwitchScene();
 }
 
-// Better parser for GameManager::Load
+// Parser cho section [SETTINGS]
 void GameManager::_ParseSection_SETTINGS(string line)
 {
 	vector<string> tokens;
@@ -166,6 +178,8 @@ void GameManager::_ParseSection_SETTINGS(string line)
 		screenHeight = atoi(tokens[1].c_str());
 }
 
+// Parser cho section [SCENES]
+// Tạo scene instance dựa trên ID
 void GameManager::_ParseSection_SCENES(string line)
 {
 	vector<string> tokens;
@@ -187,6 +201,8 @@ void GameManager::_ParseSection_SCENES(string line)
 		scenes[id] = new PlayScene(id, wpath.c_str());
 }
 
+// Parser cho section [TEXTURES]
+// Load texture vào TextureManager
 void GameManager::_ParseSection_TEXTURES(string line)
 {
 	vector<string> tokens;
@@ -203,21 +219,24 @@ void GameManager::_ParseSection_TEXTURES(string line)
 	TextureManager::GetInstance()->Add(id, wpath.c_str());
 }
 
+// Chuyển scene (thực hiện chuyển đổi thực tế)
 void GameManager::SwitchScene()
 {
+	// Không chuyển nếu không có scene mới hoặc đang ở scene đó rồi
 	if (next_scene < 0 || next_scene == current_scene) return;
 
-	DebugOut(L"[INFO] Switching to scene %d\n", next_scene);
-
+	// Unload scene hiện tại nếu có
 	if (current_scene != -1)
 		scenes[current_scene]->Unload();
 
+	// Clear sprite và animation resources
 	SpriteManager::GetInstance()->Clear();
 	AnimationManager::GetInstance()->Clear();
 
+	// Chuyển sang scene mới
 	current_scene = next_scene;
 
-	// Derive the high-level game state from the scene just entered.
+	// Xác định game state dựa trên scene ID
 	if (current_scene >= SCENE::WORLD_1_1 && current_scene <= SCENE::WORLD_1_4)
 		game_state = GAME_STATE::PLAY;
 	else if (current_scene == SCENE::GAME_OVER)
@@ -225,30 +244,38 @@ void GameManager::SwitchScene()
 	else
 		game_state = GAME_STATE::MENU;        // menu / control / end(win) / death-continue
 
+	// Set key handler và load scene mới
 	LPSCENE s = scenes[current_scene];
 	GameManager::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
 	s->Load();
 }
 
+// Update scene hiện tại (được gọi mỗi frame)
 void GameManager::Update(DWORD dt)
 {
+	// Nếu game đang pause -> không update
 	if (game_state == GAME_STATE::PAUSE) return; // frozen: keep last frame, skip updates
 
+	// Update scene hiện tại
 	if (current_scene != -1)
 		scenes[current_scene]->Update(dt);
 
+	// Kiểm tra xem có cần chuyển scene không
 	if (next_scene != current_scene && next_scene >= 0)
 		SwitchScene();
 
+	// Update sound manager
 	SoundManager::GetInstance()->Update();
 }
 
+// Render scene hiện tại (được gọi mỗi frame)
 void GameManager::Render()
 {
 	if (current_scene != -1)
 		scenes[current_scene]->Render();
 }
 
+// Destructor - release sound manager
 GameManager::~GameManager()
 {
 	SoundManager::ReleaseInstance();

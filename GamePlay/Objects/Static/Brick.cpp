@@ -19,8 +19,8 @@ void Brick::GetBoundingBox(float& l, float& t, float& r, float& b) {
 }
 
 void Brick::OnMarioCollision(Mario* mario, LPCOLLISIONEVENT e) {
-	if (mario->GetLevel() == MARIO_LEVEL::SMALL) return;
-	if (e->ny > 0) {
+	if (mario->GetLevel() == MARIO_LEVEL::SMALL) return;  // Mario Small không phá được
+	if (e->ny > 0) {  // Đụng từ dưới
 		Break();
 	}
 }
@@ -28,7 +28,7 @@ void Brick::OnMarioCollision(Mario* mario, LPCOLLISIONEVENT e) {
 void Brick::Break() {
 	SoundManager::GetInstance()->PlaySFX(SFX::BRICK_BREAK);
 
-	// Award score for destroying brick
+	// Cộng điểm khi phá gạch
 	ScoreManager::Get().AddScore(SCORE_VALUES::BRICK_DESTROYED);
 
 	float fragmentVx[] = { -0.1f, 0.1f, -0.1f, 0.1f };
@@ -42,6 +42,7 @@ void Brick::Break() {
 		isUnderworld ? ANIMATION::BRICK_FRAGMENT_UNDERWORLD_BOTTOM_RIGHT: ANIMATION::BRICK_FRAGMENT_OVERWORLD_BOTTOM_RIGHT,
 	};
 
+	// Tạo 4 mảnh gạch bay ra
 	for (int i = 0; i < 4; i++) {
 		float fragmentX = x + (i % 2) * (BRICK_BBOX_WIDTH / 2);
 		float fragmentY = y + (i / 2) * (BRICK_BBOX_HEIGHT / 2);
